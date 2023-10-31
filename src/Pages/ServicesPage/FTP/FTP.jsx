@@ -18,6 +18,7 @@ import {
   Pagination,
   CheckBox,
   Loader,
+  DeleteModal,
 } from '@components'
 import { ftpOperations, ftpSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -50,6 +51,7 @@ export default function FTP() {
   const [filters, setFilters] = useState([])
   const [emptyFilter, setEmptyFilter] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
+  const [idForDeleteModal, setIdForDeleteModal] = useState([])
 
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
@@ -207,6 +209,18 @@ export default function FTP() {
     isAllActive ? setActiveServices([]) : setActiveServices(ftpRenderData?.ftpList)
   }
 
+  const deleteServer = () => {
+    dispatch(
+      ftpOperations.deleteFtp(
+        idForDeleteModal,
+        () => setIdForDeleteModal([]),
+        signal,
+        setIsLoading,
+      ),
+    )
+    setActiveServices([])
+  }
+
   return (
     <div>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -299,6 +313,7 @@ export default function FTP() {
         setActiveServices={setActiveServices}
         activeServices={activeServices}
         rights={rights}
+        setIdForDeleteModal={setIdForDeleteModal}
       />
 
       {ftpCount > 5 && (
@@ -326,6 +341,21 @@ export default function FTP() {
         })}
       >
         <div className={s.buttons_wrapper}>
+          <HintWrapper label={t('delete', { ns: 'other' })}>
+            <IconButton
+              className={s.tools_icon}
+              onClick={() =>
+                setIdForDeleteModal(activeServices.map(server => server.id.$))
+              }
+              disabled={
+                activeServices.some(
+                  server =>
+                    server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
+                ) || !rights?.delete
+              }
+              icon="delete"
+            />
+          </HintWrapper>
           <HintWrapper label={t('prolong')}>
             <IconButton
               className={s.tools_icon}
@@ -395,6 +425,15 @@ export default function FTP() {
               ),
             )
           }
+          isOpen
+        />
+      )}
+      {idForDeleteModal.length > 0 && (
+        <DeleteModal
+          names={getServerName(idForDeleteModal)}
+          deleteFn={deleteServer}
+          closeModal={() => setIdForDeleteModal([])}
+          isDeleteLater
           isOpen
         />
       )}

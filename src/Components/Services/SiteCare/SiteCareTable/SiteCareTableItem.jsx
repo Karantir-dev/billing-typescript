@@ -75,7 +75,11 @@ export default function Component(props) {
           <div className={cn(s.item_text, s.seventh_item)}>{cost}</div>
         </div>
         <div className={s.dots}>
-          <Icon name="MoreDots" onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+          <Icon
+            name="MoreDots"
+            onClick={() => setIsOpened(!isOpened)}
+            className={s.dotIcons}
+          />
 
           <div
             role="button"
@@ -93,7 +97,7 @@ export default function Component(props) {
               onClick={() => editSiteCareHandler(id)}
               disabled={!rights?.edit}
             >
-              <Icon name="Edit"/>
+              <Icon name="Edit" />
               <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
 
@@ -114,19 +118,22 @@ export default function Component(props) {
               <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
             </button>
 
-            {item_status?.$orig !== '5_open' && (
-              <button
-                className={s.settings_btn}
-                onClick={() => {
-                  deleteSiteCareHandler(id)
-                  setDeleteIds(id)
-                }}
-                disabled={!rights?.delete}
-              >
-                <Icon name="Delete" />
-                <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
-              </button>
-            )}
+            <button
+              className={s.settings_btn}
+              onClick={() => {
+                deleteSiteCareHandler(id)
+                setDeleteIds(id)
+              }}
+              disabled={
+                !rights?.delete ||
+                item_status?.$orig === '5_open' ||
+                el?.scheduledclose?.$ === 'on' ||
+                el?.status?.$ === '5'
+              }
+            >
+              <Icon name="Delete" />
+              <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
+            </button>
           </div>
         </div>
       </div>

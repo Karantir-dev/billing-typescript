@@ -402,7 +402,7 @@ const deleteSiteCare =
           throw new Error(data.doc.error.msg.$)
         }
 
-        toast.success(i18n.t('Site care deleted successfully', { ns: 'domains' }), {
+        toast.success(i18n.t('server_deleted_success', { ns: 'other', id: body.elid }), {
           position: 'bottom-right',
         })
 

@@ -169,7 +169,7 @@
   "Server has been successfully rebooted": "Сервер успешно перезагружена",
   "Name servers has been successfully changed": "Серверы имен были успешно изменены",
   "services_selected": "Выбрано услуг:",
-  "server_deleted": "Сервер {{id}} удален",
+  "server_deleted_success": "{{id}} Операция успешна",
   "unknown_error": "Похоже что-то пошло не так, приносим извинения за неудобства. Вы можете обратиться в нашу техническую поддержку support@zomro.com",
   "and_more": "и еще {{value}}",
   "Services per page": "Элементов на странице",

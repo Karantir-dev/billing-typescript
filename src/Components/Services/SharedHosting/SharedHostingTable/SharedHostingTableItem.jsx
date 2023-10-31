@@ -29,6 +29,7 @@ export default function Component(props) {
     rights,
     activeServices,
     setActiveServices,
+    setIdForDeleteModal,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds', 'dedicated_servers'])
   const mobile = useMediaQuery({ query: '(max-width: 1599px)' })
@@ -124,7 +125,11 @@ export default function Component(props) {
           </div>
         </div>
         <div className={s.dots}>
-          <Icon name="MoreDots" onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+          <Icon
+            name="MoreDots"
+            onClick={() => setIsOpened(!isOpened)}
+            className={s.dotIcons}
+          />
 
           <div
             role="button"
@@ -191,6 +196,16 @@ export default function Component(props) {
             >
               <Icon name="ExitSign" />
               <p className={s.setting_text}>{t('go_to_panel', { ns: 'vds' })}</p>
+            </button>
+            <button
+              disabled={
+                el?.status?.$ === '5' || el?.scheduledclose?.$ === 'on' || !rights?.delete
+              }
+              className={s.settings_btn}
+              onClick={() => setIdForDeleteModal([id])}
+            >
+              <Icon name="Delete" />
+              <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
             </button>
           </div>
         </div>

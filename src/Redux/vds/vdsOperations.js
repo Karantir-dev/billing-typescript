@@ -407,7 +407,7 @@ const deleteVDS =
         dispatch(getVDS({ setServers, setElemsTotal, signal, setIsLoading }))
         closeFn()
 
-        toast.success(t('server_deleted', { ns: 'other', id: `#${id.join(', #')}` }), {
+        toast.success(t('server_deleted_success', { ns: 'other', id: `#${id.join(', #')}` }), {
           position: 'bottom-right',
         })
 

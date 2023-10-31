@@ -462,6 +462,7 @@ export default function VDS({ isDedic }) {
           deleteFn={deleteServer}
           closeModal={() => setIdForDeleteModal([])}
           isOpen
+          isDeleteLater
         />
       )}
 

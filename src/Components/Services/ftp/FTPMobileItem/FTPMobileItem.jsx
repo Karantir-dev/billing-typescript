@@ -18,6 +18,7 @@ export default function FTPMobileItem({
   activeServices,
   setActiveServices,
   rights,
+  setIdForDeleteModal,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -130,6 +131,20 @@ export default function FTPMobileItem({
                     >
                       <Icon name="ExitSign" className={s.tool_icon} />
                       {t('go_to_panel')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={
+                        storage?.status?.$ === '5' ||
+                        storage?.scheduledclose?.$ === 'on' ||
+                        !rights?.delete
+                      }
+                      className={s.tool_btn}
+                      onClick={() => setIdForDeleteModal([storage.id.$])}
+                    >
+                      <Icon name="Delete" />
+                      <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
                     </button>
                   </li>
                 </ul>

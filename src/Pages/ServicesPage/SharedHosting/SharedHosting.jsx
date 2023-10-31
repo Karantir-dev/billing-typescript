@@ -12,6 +12,7 @@ import {
   ProlongModal,
   InstructionModal,
   Loader,
+  DeleteModal,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -64,6 +65,8 @@ export default function Component({ type }) {
   const [instructionModal, setInstructionModal] = useState(false)
 
   const [isFiltered, setIsFiltered] = useState(false)
+
+  const [idForDeleteModal, setIdForDeleteModal] = useState([])
 
   const conditionalRendering =
     type === 'vhost'
@@ -328,6 +331,19 @@ export default function Component({ type }) {
     )
   }
 
+  const deleteServer = () => {
+    dispatch(
+      vhostOperations.deleteVhost(
+        idForDeleteModal,
+        type,
+        () => setIdForDeleteModal([]),
+        signal,
+        setIsLoading,
+      ),
+    )
+    setActiveServices([])
+  }
+
   return (
     <>
       <div className={s.page_wrapper}>
@@ -388,6 +404,7 @@ export default function Component({ type }) {
             setActiveServices={setActiveServices}
             elidForProlongModal={elidForProlongModal}
             setElidForProlongModal={setElidForProlongModal}
+            setIdForDeleteModal={setIdForDeleteModal}
           />
         )}
 
@@ -416,6 +433,21 @@ export default function Component({ type }) {
           })}
         >
           <div className={s.buttons_wrapper}>
+            <HintWrapper label={t('delete', { ns: 'other' })}>
+              <IconButton
+                className={s.tools_icon}
+                onClick={() =>
+                  setIdForDeleteModal(activeServices.map(server => server.id.$))
+                }
+                disabled={
+                  activeServices.some(
+                    server =>
+                      server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
+                  ) || !rights?.delete
+                }
+                icon="delete"
+              />
+            </HintWrapper>
             <HintWrapper label={t('prolong')}>
               <IconButton
                 className={s.tools_icon}
@@ -498,6 +530,16 @@ export default function Component({ type }) {
             title={`${t('Instruction', { ns: 'domains' })} ${selctedItem?.name?.$}`}
             dispatchInstruction={dispatchInstruction}
             closeModal={closeInstructionModalHandler}
+            isOpen
+          />
+        )}
+
+        {idForDeleteModal.length > 0 && (
+          <DeleteModal
+            names={getServerName(idForDeleteModal)}
+            deleteFn={deleteServer}
+            closeModal={() => setIdForDeleteModal([])}
+            isDeleteLater
             isOpen
           />
         )}
