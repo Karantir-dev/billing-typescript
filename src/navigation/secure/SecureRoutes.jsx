@@ -87,7 +87,7 @@ const Component = ({ fromPromotionLink }) => {
     if (isUserClosedBanner) return
 
     const isPromotionActive = salesList?.some(el => {
-      return el.promotion.$ === '1month-hosting'
+      return el?.promotion?.$ === '1month-hosting'
     })
 
     if (!isPromotionActive && paymentsList?.length && salesList && fromPromotionLink) {
