@@ -22,6 +22,7 @@ export default function DedicList({
   activeServices,
   signal,
   setIsLoading,
+  setIdForDeleteModal
 }) {
   const { t } = useTranslation(['vds', 'other', 'access_log', 'dedicated_servers'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -122,6 +123,7 @@ export default function DedicList({
               setActiveServices={setActiveServices}
               rights={rights}
               handleEditSubmit={handleEditSubmit}
+              setIdForDeleteModal={setIdForDeleteModal}
             />
           ) : (
             <DedicMobileItem
@@ -136,6 +138,7 @@ export default function DedicList({
               activeServices={activeServices}
               rights={rights}
               handleEditSubmit={handleEditSubmit}
+              setIdForDeleteModal={setIdForDeleteModal}
             />
           )
         })}
