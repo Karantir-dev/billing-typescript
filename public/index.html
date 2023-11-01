@@ -121,5 +121,15 @@
     </script>
 
     <div id="portal"></div>
+    <script>
+      if (window.location.pathname === '/billing/payments/success') {
+        console.log('_')
+
+        document.body.insertAdjacentHTML(
+          'beforeend',
+          '<script src="https://tracker.zomro.com/trackpixel/track.js" />',
+        )
+      }
+    </script>
   </body>
 </html>
