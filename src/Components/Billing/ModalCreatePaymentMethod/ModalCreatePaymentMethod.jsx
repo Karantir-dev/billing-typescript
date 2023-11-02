@@ -28,7 +28,7 @@ export default function Component(props) {
 
   const payersList = useSelector(payersSelectors.getPayersList)
 
-  const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
+  const paymentsMethodList = useSelector(billingSelectors.getPaymentMethodList)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
   const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)
   const payersData = useSelector(payersSelectors.getPayersData)
