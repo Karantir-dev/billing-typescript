@@ -8,6 +8,7 @@ import {
   Portal,
   CartFromSite,
   EmailTrigger,
+  UpdateService,
   MainEmailConfirmation,
   PromotionBanner,
   SuccessPayment,
@@ -122,6 +123,10 @@ const Component = ({ fromPromotionLink }) => {
         return navigate(route.SHARED_HOSTING_ORDER, {
           replace: true,
         })
+      } else if (funcName === 'wordpress.order.param') {
+        return navigate(route.WORDPRESS_ORDER, {
+          replace: true,
+        })
       } else if (funcName === 'forexbox.order.param') {
         return navigate(route.FOREX_ORDER, {
           replace: true,
@@ -157,6 +162,7 @@ const Component = ({ fromPromotionLink }) => {
       {isShowPromotion && promotionType && (
         <PromotionBanner type={promotionType} closeBanner={closePromotionBanner} />
       )}
+      <UpdateService />
       <EmailTrigger />
       <div className={s.page}>
         <Routes>
@@ -178,6 +184,14 @@ const Component = ({ fromPromotionLink }) => {
           <Route path={route.VPS_IP} element={<VDSipLazy />} />
           <Route path={route.SHARED_HOSTING} element={<SharedHostingLazy />} />
           <Route path={route.SHARED_HOSTING_ORDER} element={<SharedHostingOrderLazy />} />
+          <Route
+            path={route.WORDPRESS}
+            element={<SharedHostingLazy type="wordpress" />}
+          />
+          <Route
+            path={route.WORDPRESS_ORDER}
+            element={<SharedHostingOrderLazy type="wordpress" />}
+          />
           <Route path={route.SITE_CARE} element={<SiteCareLazy />} />
           <Route path={route.SITE_CARE_ORDER} element={<SiteCareOrderLazy />} />
           <Route path={route.VPN} element={<VPNLazy />} />

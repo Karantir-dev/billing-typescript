@@ -129,6 +129,15 @@ export default function ServicesList() {
       icon_width: '106',
       icon_height: '130',
     },
+    {
+      name: t('burger_menu.services.services_list.wordpress_hosting'),
+      id: 10,
+      routeName: routes.WORDPRESS,
+      allowedToRender: isVirtualHostAllowedToRender,
+      icon_name: 'wordpress',
+      icon_width: '131',
+      icon_height: '100',
+    },
   ]
 
   const filteredServicesMenuList = servicesMenuList.filter(item => item.allowedToRender)

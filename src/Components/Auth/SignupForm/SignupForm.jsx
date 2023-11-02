@@ -21,6 +21,7 @@ import * as routes from '@src/routes'
 import {
   SPECIAL_CHARACTERS_REGEX,
   EMAIL_SPECIAL_CHARACTERS_REGEX,
+  CYRILLIC_ALPHABET_PROHIBITED,
   PASS_REGEX,
 } from '@utils/constants'
 import s from './SignupForm.module.scss'
@@ -64,6 +65,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       .required(t('warnings.name_required')),
     email: Yup.string()
       .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
+      .matches(CYRILLIC_ALPHABET_PROHIBITED, t('warnings.cyrillic_prohibited'))
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
     password: Yup.string()
@@ -90,6 +92,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
   })
   const partner = Cookies.get('billpartner')
   const sesid = Cookies.get('sesid')
+  const referrer = Cookies.get('referrer')
 
   const handleSubmit = async (values, { setFieldValue }) => {
     const resetRecaptcha = () => {
@@ -101,7 +104,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       authOperations.register(
         values,
         partner,
-        sesid,
+        sesid || referrer,
         setErrMsg,
         successRegistration,
         resetRecaptcha,

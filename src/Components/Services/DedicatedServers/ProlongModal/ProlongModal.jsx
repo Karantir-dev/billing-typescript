@@ -214,7 +214,7 @@ export default function ProlongModal({ elidList, closeModal, pageName, names, is
                         isShadow
                         itemsList={initialState?.slist[0]?.val?.map(el => {
                           return {
-                            label: translatePeriod(el?.$, t),
+                            label: translatePeriod(el?.$, el.$key, t),
                             value: el.$key,
                           }
                         })}

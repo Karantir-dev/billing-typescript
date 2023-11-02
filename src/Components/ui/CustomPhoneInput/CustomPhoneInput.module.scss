@@ -25,7 +25,6 @@
   &.extra_style.opened {
     background-color: var(--nearby-elements-bgc);
     border: none;
-    z-index: 8;
     &.opened {
       background-color: var(--nearby-elements-bgc);
     }
@@ -77,6 +76,7 @@
 .drop_down {
   &.list {
     background-color: var(--nearby-elements-bgc);
+    z-index: 10;
   }
 
   &.list {

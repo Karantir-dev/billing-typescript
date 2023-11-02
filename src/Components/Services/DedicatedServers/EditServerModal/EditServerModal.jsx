@@ -189,7 +189,7 @@ export default function EditServerModal({
                       getElement={item => setFieldValue('autoprolong', item)}
                       isShadow
                       itemsList={initialState?.autoprolonglList?.map(el => ({
-                        label: translatePeriod(el?.$, t),
+                        label: translatePeriod(el?.$, el.$key, t),
                         value: el.$key,
                       }))}
                       className={s.select}

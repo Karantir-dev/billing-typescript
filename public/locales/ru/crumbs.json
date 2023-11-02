@@ -23,5 +23,8 @@
   "site_care_order": "Заказ ухода за сайтом",
   "vpn": "VPN",
   "vpn_order": "Заказ VPN",
-  "dedicated": "Выделенные серверы"
+  "dedicated": "Выделенные серверы",
+  "wordpress": "Wordpress хостинг",
+  "wordpress_order": "Заказ Wordpress хостинга"
+
 }

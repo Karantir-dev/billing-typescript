@@ -1045,7 +1045,7 @@ export default function DedicOrderPage() {
                           isTarifChosen === 'vds'
                             ? getOptionsListExtended('autoprolong')
                             : values?.autoprolonglList?.map(el => ({
-                                label: translatePeriod(el?.$, t),
+                                label: translatePeriod(el?.$, el.$key, t),
                                 value: el.$key,
                               }))
                         }

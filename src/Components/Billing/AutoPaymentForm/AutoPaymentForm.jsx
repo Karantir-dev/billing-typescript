@@ -11,7 +11,7 @@ import {
   authSelectors,
 } from '@redux'
 
-import { PRIVACY_URL } from '@config/config'
+import { OFERTA_URL } from '@config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'
@@ -303,7 +303,7 @@ export default function AutoPaymentForm(props) {
                       <br />
                       <a
                         target="_blank"
-                        href={PRIVACY_URL}
+                        href={OFERTA_URL}
                         rel="noreferrer"
                         className={s.offerBlockLink}
                       >
