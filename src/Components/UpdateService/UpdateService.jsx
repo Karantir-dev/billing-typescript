@@ -29,8 +29,10 @@ export default function UpdateService() {
   const { $id: ownerId, $realname: userName } = useSelector(userSelectors.getUserInfo)
   const tickerList = useSelector(supportSelectors.getTicketList)
 
-  // name below will be changed
-  const g7Ticket = tickerList?.find(obj => obj?.name?.$?.includes('G7'))
+  const g7Ticket = tickerList?.find(obj => {
+    const name = obj?.name?.$
+    return name?.includes('Config 47') && name?.includes('Config 43') && name?.includes('VDS XL')
+  })
 
   const ticketId = g7Ticket?.id?.$
 
