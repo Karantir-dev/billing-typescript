@@ -121,11 +121,15 @@
     </script>
 
     <div id="portal"></div>
-    <!-- <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmn43GdPCBuZpFkIsWkFpU__Ycd1qusZE&libraries=places&callback=initMap"
-    ></script> -->
+    <script>
+      if (window.location.pathname === '/billing/payments/success') {
+        console.log('_')
+
+        document.body.insertAdjacentHTML(
+          'beforeend',
+          '<script src="https://tracker.zomro.com/trackpixel/track.js" />',
+        )
+      }
+    </script>
   </body>
-  <!--  special change for new pull request  -->
 </html>

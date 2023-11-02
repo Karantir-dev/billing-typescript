@@ -23,5 +23,7 @@
   "site_care_order": "Сайтқа күтім жасау тапсырысы",
   "vpn": "VPN",
   "vpn_order": "VPN тапсырысы",
-  "dedicated": "Белгіленген серверлер"
+  "dedicated": "Белгіленген серверлер",
+  "wordpress": "Wordpress хостинг",
+  "wordpress_order": "Wordpress үшін хостинг жасау"
 }

@@ -9,7 +9,7 @@ export default function Component(props) {
 
   const [data, setData] = useState(null)
 
-  const { tariff, selected, setPriceHandler, period } = props
+  const { tariff, selected, setPriceHandler, period, type } = props
 
   useEffect(() => {
     const data = {}
@@ -83,8 +83,11 @@ export default function Component(props) {
     const corporate = require('@images/vhost/corporate.png')
     const favourable = require('@images/vhost/favourable.png')
     const optimal = require('@images/vhost/optimal.png')
+    const wordpress = require('@images/vhost/wordpress.png')
 
-    if (name === 'AFFORDABLE') {
+    if (type === 'wordpress') {
+      return wordpress
+    } else if (name === 'AFFORDABLE') {
       return vhostCloud
     } else if (name === 'CORPORATE') {
       return corporate
@@ -110,7 +113,7 @@ export default function Component(props) {
         [s.disabled]: period === 'Trial period' && data?.name !== 'AFFORDABLE',
       })}
     >
-      <div className={s.cardBlock}>
+      <div className={cn(s.cardBlock, s[type])}>
         <img src={renderImage(data?.name)} alt="VhostCloud" />
         <div className={s.charBlock}>
           <div className={s.tariffName}>{data?.name}</div>
@@ -134,22 +137,30 @@ export default function Component(props) {
             </span>
           )}
           <div className={s.line} />
-          <div className={s.charText}>
-            {data?.ssd === 'unlimited' ? <Icon name="Infinity" /> : data?.ssd} SSD
-          </div>
-          <div className={s.charText}>
-            {data?.sites === 'unlimited' ? <Icon name="Infinity" /> : data?.sites} {t('Sites')}
-          </div>
-          <div className={s.charText}>
-            {data?.subdomains === 'unlimited' ? <Icon name="Infinity" /> : data?.subdomains}{' '}
-            {t('Subdomains')}
-          </div>
-          <div className={s.charText}>
-            {data?.database === 'unlimited' ? <Icon name="Infinity" /> : data?.database}{' '}
-            {t('Database')}
-          </div>
-          <div className={s.charText}>
-            {data?.ram === 'unlimited' ? <Icon name="Infinity" /> : data?.ram} {t('RAM')}
+          <div className={s.charText_wrapper}>
+            <div className={s.charText}>
+              {data?.ssd === 'unlimited' ? <Icon name="Infinity" /> : data?.ssd} SSD
+            </div>
+            <div className={s.charText}>
+              {data?.sites === 'unlimited' ? <Icon name="Infinity" /> : data?.sites}{' '}
+              {t('Sites')}
+            </div>
+            <div className={s.charText}>
+              {data?.subdomains === 'unlimited' ? (
+                <Icon name="Infinity" />
+              ) : (
+                data?.subdomains
+              )}{' '}
+              {t('Subdomains')}
+            </div>
+            <div className={s.charText}>
+              {data?.database === 'unlimited' ? <Icon name="Infinity" /> : data?.database}{' '}
+              {t('Database')}
+            </div>
+            <div className={s.charText}>
+              {data?.ram === 'unlimited' ? <Icon name="Infinity" /> : data?.ram}{' '}
+              {t('RAM')}
+            </div>
           </div>
         </div>
       </div>

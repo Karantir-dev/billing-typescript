@@ -27,7 +27,8 @@
         "dns_hosting": "DNS-hosting",
         "external_ftp": "External FTP storage",
         "wetsite_care": "Website care",
-        "forex_server": "Forex server"
+        "forex_server": "Forex server",
+        "wordpress_hosting": "Wordpress hosting"
       }
     },
     "ref_program": {

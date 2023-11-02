@@ -27,7 +27,8 @@
         "dns_hosting": "DNS-хостинг",
         "external_ftp": "Внешнее FTP хранилище",
         "wetsite_care": "Забота о сайте",
-        "forex_server": "Сервер для Forex"
+        "forex_server": "Сервер для Forex",
+        "wordpress_hosting": "Wordpress хостинг"
       }
     },
     "ref_program": {

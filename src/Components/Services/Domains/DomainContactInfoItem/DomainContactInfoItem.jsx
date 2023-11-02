@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { FormikProvider, useFormik } from 'formik'
 import {
   EMAIL_SPECIAL_CHARACTERS_REGEX,
+  CYRILLIC_ALPHABET_PROHIBITED,
   LATIN_NUMBER_REGEX,
   LATIN_REGEX,
 } from '@utils/constants'
@@ -104,6 +105,11 @@ export default function Component(props) {
         EMAIL_SPECIAL_CHARACTERS_REGEX,
         t('warnings.special_characters', { ns: 'auth' }),
       )
+      .matches(
+        CYRILLIC_ALPHABET_PROHIBITED,
+        t('warnings.cyrillic_prohibited', { ns: 'auth' }),
+      )
+
       .email(t('warnings.invalid_email', { ns: 'auth' }))
       .required(t('warnings.email_required', { ns: 'auth' })),
     company: Yup.string().required(t('Is a required field', { ns: 'other' })),

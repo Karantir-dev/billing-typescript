@@ -86,6 +86,11 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
       routeName: routes.FOREX,
       allowedToRender: isForexServerAllowedToRender,
     },
+    {
+      name: t('burger_menu.services.services_list.wordpress_hosting'),
+      routeName: routes.WORDPRESS,
+      allowedToRender: isVirtualHostAllowedToRender,
+    },
   ]
 
   // REF PROGRAMM

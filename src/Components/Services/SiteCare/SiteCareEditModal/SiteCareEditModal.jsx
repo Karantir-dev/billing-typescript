@@ -66,7 +66,7 @@ export default function Component(props) {
                     }}
                     isShadow
                     itemsList={editData?.autoprolong_list?.map(({ $key, $ }) => ({
-                      label: translatePeriod($, t),
+                      label: translatePeriod($, $key,  t),
                       value: $key,
                     }))}
                     className={s.select}

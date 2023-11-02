@@ -1205,6 +1205,8 @@ const payProlongPeriod =
           routeAfterBuying = route.FOREX
         } else if (pageName === 'shared_hosting') {
           routeAfterBuying = route.SHARED_HOSTING
+        } else if (pageName === 'wordpress') {
+          routeAfterBuying = route.WORDPRESS
         }
 
         handleModal()
@@ -1268,6 +1270,8 @@ const payProlongPeriodFewElems =
           routeAfterBuying = route.FOREX
         } else if (pageName === 'shared_hosting') {
           routeAfterBuying = route.SHARED_HOSTING
+        } else if (pageName === 'wordpress') {
+          routeAfterBuying = route.WORDPRESS
         }
 
         handleModal()

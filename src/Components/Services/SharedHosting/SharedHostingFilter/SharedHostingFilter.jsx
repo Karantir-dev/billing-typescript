@@ -14,7 +14,7 @@ import {
 } from '@components'
 import * as routes from '@src/routes'
 import s from './SharedHostingFilter.module.scss'
-import { actions, vhostOperations, vhostSelectors } from '@redux'
+import { actions, vhostSelectors } from '@redux'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
@@ -23,17 +23,15 @@ export default function Component(props) {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
 
   const {
-    setCurrentPage,
     hostingList,
     activeServices,
     setActiveServices,
-    setIsFiltered,
-    setSelctedItem,
     isFilterActive,
     isFiltered,
     rights,
-    signal,
-    setIsLoading
+    resetFilter,
+    setFilter,
+    type,
   } = props
 
   const [filterModal, setFilterModal] = useState(false)
@@ -52,42 +50,13 @@ export default function Component(props) {
   const dispatch = useDispatch()
 
   const resetFilterHandler = () => {
-    const clearField = {
-      id: '',
-      ip: '',
-      datacenter: '',
-      domain: '',
-      pricelist: '',
-      period: '',
-      status: '',
-      service_status: '',
-      opendate: '',
-      expiredate: '',
-      orderdatefrom: '',
-      orderdateto: '',
-      cost_from: '',
-      cost_to: '',
-      autoprolong: '',
-    }
-    setCurrentPage(1)
+    resetFilter()
     setFilterModal(false)
-    setIsFiltered(false)
-    setSelctedItem(null)
-    setActiveServices([])
-    dispatch(vhostOperations.getVhostFilters({ ...clearField, sok: 'ok' }, true, signal, setIsLoading))
   }
 
-  useEffect(() => {
-    resetFilterHandler()
-  }, [])
-
   const setFilterHandler = values => {
-    setCurrentPage(1)
+    setFilter(values)
     setFilterModal(false)
-    setIsFiltered(true)
-    setSelctedItem(null)
-    setActiveServices([])
-    dispatch(vhostOperations.getVhostFilters({ ...values, sok: 'ok' }, true, signal, setIsLoading))
   }
 
   const isAllActive = activeServices?.length === hostingList?.length
@@ -119,10 +88,15 @@ export default function Component(props) {
             label={t('to_order', { ns: 'other' })}
             type="button"
             onClick={() => {
-              navigate(routes.SHARED_HOSTING_ORDER, {
-                state: { isVhostOrderAllowed: rights?.new },
-                replace: true,
-              })
+              type === 'vhost'
+                ? navigate(routes.SHARED_HOSTING_ORDER, {
+                    state: { isVhostOrderAllowed: rights?.new },
+                    replace: true,
+                  })
+                : navigate(routes.WORDPRESS_ORDER, {
+                    state: { isVhostOrderAllowed: rights?.new },
+                    replace: true,
+                  })
             }}
           />
 
