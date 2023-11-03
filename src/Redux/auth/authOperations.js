@@ -331,7 +331,7 @@ const register =
           country: values.country,
           state: values.region,
           partner: partner,
-          sesid: sesid,
+          sesid: sesid || ' ',
           'g-recaptcha-response': values.reCaptcha,
           out: 'json',
           sok: 'ok',

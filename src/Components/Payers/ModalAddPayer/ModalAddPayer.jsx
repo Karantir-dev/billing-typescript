@@ -130,7 +130,8 @@ export default function ModalAddPayer(props) {
             postcode_physical: payersSelectedFields?.postcode_physical || '',
             passport: payersSelectedFields?.passport || '',
             address_physical: payersSelectedFields?.address_physical || '',
-            city_physical: payersSelectedFields?.city_physical || '',
+            city_physical:
+              payersSelectedFields?.city_physical || geoData?.clients_city || '',
             [payersSelectedFields?.offer_field]: elid ? null : false,
           }}
           onSubmit={elid ? editPayerHandler : createPayerHandler}

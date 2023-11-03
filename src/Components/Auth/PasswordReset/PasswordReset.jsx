@@ -10,6 +10,10 @@ import { authOperations } from '@redux'
 import * as routes from '@src/routes'
 import { Button, Icon } from '@components'
 import s from './PasswordReset.module.scss'
+import {
+  EMAIL_SPECIAL_CHARACTERS_REGEX,
+  CYRILLIC_ALPHABET_PROHIBITED,
+} from '@src/utils/constants'
 
 export default function PasswordReset() {
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
@@ -24,6 +28,8 @@ export default function PasswordReset() {
   const [errorTime, setErrorTime] = useState('')
 
   const validationSchema = Yup.string()
+    .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
+    .matches(CYRILLIC_ALPHABET_PROHIBITED, t('warnings.cyrillic_prohibited'))
     .email(t('warnings.invalid_email'))
     .required(t('warnings.email'))
 

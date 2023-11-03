@@ -27,7 +27,8 @@
         "dns_hosting": "DNS-хостинг",
         "external_ftp": "Сыртқы FTP қоймасы",
         "wetsite_care": "Сайтқа күтім жасау",
-        "forex_server": "Forex сервері"
+        "forex_server": "Forex сервері",
+        "wordpress_hosting": "Wordpress хостинг"
       }
     },
     "ref_program": {

@@ -276,7 +276,7 @@ export default function FTPOrder() {
                         getElement={item => setFieldValue('autoprolong', item)}
                         isShadow
                         itemsList={values?.autoprolonglList?.map(el => {
-                          let labeltext = translatePeriod(el.$, t)
+                          let labeltext = translatePeriod(el.$, el.$key, t)
 
                           return {
                             label: labeltext,
