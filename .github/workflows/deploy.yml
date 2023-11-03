@@ -70,8 +70,8 @@ jobs:
       - run: npm install
       - name: Run List
         env:
-          REACT_APP_API_URL=${{ vars.API_URL }}
-          REACT_APP_BASE_URL=${{ vars.API_URL }}
+          REACT_APP_API_URL: ${{ vars.API_URL }}
+          REACT_APP_BASE_URL: ${{ vars.API_URL }}
         run: npm run lint
 
       - name: Send fail start in Slack
@@ -101,13 +101,14 @@ jobs:
         with:
           node-version: 16.13.1
           cache: 'npm'
+      - run: npm install -g npm@8.1.2
+      - run: npm install
 
       - name: Build js
         env:
-          REACT_APP_API_URL=${{ vars.API_URL }}
-          REACT_APP_BASE_URL=${{ vars.API_URL }}
+          REACT_APP_API_URL: ${{ vars.API_URL }}
+          REACT_APP_BASE_URL: ${{ vars.API_URL }}
         run: |
-          npm install;
           npm run build
 
       - name: Login to Docker Hub
