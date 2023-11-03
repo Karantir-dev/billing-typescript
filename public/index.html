@@ -123,12 +123,9 @@
     <div id="portal"></div>
     <script>
       if (window.location.pathname === '/billing/payments/success') {
-        console.log('_')
-
-        document.body.insertAdjacentHTML(
-          'beforeend',
-          '<script src="https://tracker.zomro.com/trackpixel/track.js" />',
-        )
+        const scriptEl = document.createElement('script')
+        scriptEl.src = 'https://tracker.zomro.com/trackpixel/track.js'
+        document.body.insertAdjacentElement('beforeend', scriptEl)
       }
     </script>
   </body>
