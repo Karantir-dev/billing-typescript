@@ -71,7 +71,7 @@ jobs:
       - name: Run List
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
-          REACT_APP_BASE_URL: ${{ vars.API_URL }}
+          REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
         run: npm run lint
 
       - name: Send fail start in Slack
@@ -107,7 +107,7 @@ jobs:
       - name: Build js
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
-          REACT_APP_BASE_URL: ${{ vars.API_URL }}
+          REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
         run: |
           npm run build
 
