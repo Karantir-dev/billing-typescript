@@ -58,7 +58,7 @@ jobs:
         node-version: [ v16.13.1 ]
         npm-version: [ 8.1.2 ]
     environment:
-      name: bill-update
+      name: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
