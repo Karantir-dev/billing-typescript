@@ -1,27 +1,15 @@
-FROM  nikolaik/python-nodejs:latest AS build
+FROM  node:16.13.1-alpine AS build
 
-COPY . /usr/local/src
+WORKDIR /app
+COPY . .
 
-RUN cd /usr/local/src && \
-       npm install  && \
-       npm run build
+RUN npm install && \
+  npm run build
 
 
 FROM nginx:1.25-alpine-slim
 
-RUN apk add --no-cache apache2-utils openssl g++ make && \
-    echo 'admin:$apr1$kme5sfz3$je0SQadFV7bUoX0dtFSEB0' > /etc/nginx/.htpasswd && \
-    mkdir -p /etc/nginx/ssl/ && \
-    openssl req -x509 -nodes -days 365 \
-        -subj  "/C=CA/ST=QC/O=Company Inc/CN=portal.com" \
-        -newkey rsa:2048 -keyout /etc/nginx/ssl/cert.key \
-        -out etc/nginx/ssl/cert.crt
-    # addgroup -S portal && adduser -S portal -G portal && \
-    # chown -R portal:portal /etc/nginx/ssl/ && \
-    # chown -R portal:portal /etc/nginx/ && \
-    # chown -R portal:portal /var/cache/nginx/
-
-COPY --from=build /usr/local/src/build/ /web
+COPY --from=build /app/build/ /web
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
@@ -30,4 +18,3 @@ WORKDIR /web
 # USER portal 
 
 EXPOSE 8080
-EXPOSE 8443
