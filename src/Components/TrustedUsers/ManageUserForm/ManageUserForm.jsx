@@ -85,7 +85,6 @@ export default function ManageUserForm({
       isOpen={isOpen}
       closeModal={closeModal}
       data-testid={dataTestid}
-      className={s.modal}
     >
       <Modal.Header>
         <div className={s.title_wrapper}>
@@ -166,6 +165,7 @@ export default function ManageUserForm({
                   buttonClass={s.phoneInputButton}
                 />
 
+                <div className={s.password_wrapper}>
                 <InputField
                   dataTestid="input_password"
                   label={
@@ -201,6 +201,8 @@ export default function ManageUserForm({
                   background={true}
                   inputClassName={s.field_bg}
                 />
+                </div>
+
               </Form>
             )
           }}

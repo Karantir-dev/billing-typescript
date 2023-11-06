@@ -219,22 +219,24 @@ export default function Component(props) {
                 <Form id="create-payment">
                   <ScrollToFieldError />
                   <div className={s.addPayerBlock}>
-                    <div className={s.field_wrapper}>
-                      <label className={s.label}>
-                        {t('Payment method', { ns: 'other' })}
-                      </label>
-                      <div className={s.stripeCard}>
-                        <img
-                          src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`}
-                          alt="icon"
-                        />
-                        <div className={s.stripeDescr}>
-                          <span>Stripe</span>
-                          <span>
-                            {t('Payment amount from 1.00 EUR. ', {
-                              ns: 'cart',
-                            })}
-                          </span>
+                    <div className={s.paymentMethodsList}>
+                      <div className={s.field_wrapper}>
+                        <label className={s.label}>
+                          {t('Payment method', { ns: 'other' })}
+                        </label>
+                        <div className={s.stripeCard}>
+                          <img
+                            src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`}
+                            alt="icon"
+                          />
+                          <div className={s.stripeDescr}>
+                            <span>Stripe</span>
+                            <span>
+                              {t('Payment amount from 1.00 EUR. ', {
+                                ns: 'cart',
+                              })}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
