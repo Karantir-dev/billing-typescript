@@ -407,18 +407,16 @@ const deleteVDS =
         dispatch(getVDS({ setServers, setElemsTotal, signal, setIsLoading }))
         closeFn()
 
-        toast.success(t('server_deleted', { ns: 'other', id: `#${id.join(', #')}` }), {
-          position: 'bottom-right',
-        })
+        toast.success(
+          t('server_deleted_success', { ns: 'other', id: `#${id.join(', #')}` }),
+        )
 
         dispatch(actions.hideLoader())
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         closeFn()
-        toast.error(t('unknown_error', { ns: 'other' }), {
-          position: 'bottom-right',
-        })
+
         dispatch(actions.hideLoader())
       })
   }
@@ -447,7 +445,6 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
       toast.success(
         `${t('passwd_change_success', { ns: 'vds' })} ${data.doc.banner[0].param.$}`,
         {
-          position: 'bottom-right',
           toastId: 'customId',
         },
       )
@@ -456,9 +453,7 @@ const changePassword = (id, passwd, confirm) => (dispatch, getState) => {
     })
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
-      toast.error(t('unknown_error', { ns: 'other' }), {
-        position: 'bottom-right',
-      })
+
       dispatch(actions.hideLoader())
     })
 }
@@ -485,7 +480,6 @@ const groupChangePassword = (id, passwd, confirm) => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
       toast.success(`${t('passwd_change_success', { ns: 'vds' })} #${id.join(', #')}`, {
-        position: 'bottom-right',
         toastId: 'customId',
       })
 
@@ -493,9 +487,7 @@ const groupChangePassword = (id, passwd, confirm) => (dispatch, getState) => {
     })
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
-      toast.error(t('unknown_error', { ns: 'other' }), {
-        position: 'bottom-right',
-      })
+
       dispatch(actions.hideLoader())
     })
 }
@@ -518,16 +510,12 @@ const rebootServer = id => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-      toast.success(t('reboot_launched', { ns: 'vds' }) + `: #${id.join(', #')}`, {
-        position: 'bottom-right',
-      })
+      toast.success(t('reboot_launched', { ns: 'vds' }) + `: #${id.join(', #')}`)
       dispatch(actions.hideLoader())
     })
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
-      toast.error(t('unknown_error', { ns: 'other' }), {
-        position: 'bottom-right',
-      })
+
       dispatch(actions.hideLoader())
     })
 }

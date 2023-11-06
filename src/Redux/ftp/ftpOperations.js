@@ -417,6 +417,44 @@ const getFTPFilters =
       })
   }
 
+const deleteFtp = (id, closeFn, signal, setIsLoading) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'storage.delete',
+        auth: sessionId,
+        elid: id.join(', '),
+        out: 'json',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      dispatch(getFTPList({}, signal, setIsLoading))
+      closeFn()
+
+      toast.success(
+        i18n.t('server_deleted_success', { ns: 'other', id: `#${id.join(', #')}` }),
+      )
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      checkIfTokenAlive(err.message, dispatch)
+      closeFn()
+
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getTarifs,
   getFTPList,
@@ -427,4 +465,5 @@ export default {
   editFTP,
   getServiceInstruction,
   getFTPFilters,
+  deleteFtp,
 }

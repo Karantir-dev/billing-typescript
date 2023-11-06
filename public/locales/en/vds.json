@@ -70,7 +70,8 @@
   "warning_domain": "Введите валидное доменное имя",
   "attention": "Attention",
   "delete_message": "Do you really want to delete the selected service",
-
+  "warn_message": "The service will be removed after the expiration date",
+  
   "password_change_desc": "VPS reboot is needed to apply the changes (it will be suspended for some time).",
   "new_password": "New password",
   "new_password_placeholder": "Enter new password",

@@ -38,7 +38,11 @@ export default function VDS(props) {
           <HintWrapper label={t('delete', { ns: 'other' })}>
             <IconButton
               className={s.tools_icon}
-              disabled={selctedItem?.length === 0 || !rights?.edit}
+              disabled={
+                selctedItem.some(
+                  item => item?.status?.$ === '5' || item?.scheduledclose?.$ === 'on',
+                ) || !rights?.delete
+              }
               onClick={() => {
                 setDeleteIds(parseSelectedItemId())
                 deleteSiteCare()
