@@ -389,22 +389,15 @@ const deleteSiteCare =
                 'The minimum order period for this service is {{min}}. {{left}} are left',
                 { ns: 'other', min: min, left: left },
               )}`,
-              {
-                position: 'bottom-right',
-              },
             )
           } else {
-            toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`, {
-              position: 'bottom-right',
-            })
+            toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`)
           }
 
           throw new Error(data.doc.error.msg.$)
         }
 
-        toast.success(i18n.t('server_deleted_success', { ns: 'other', id: body.elid }), {
-          position: 'bottom-right',
-        })
+        toast.success(i18n.t('server_deleted_success', { ns: 'other', id: body.elid }))
 
         setDeleteModal && setDeleteModal(false)
         dispatch(getSiteCare({ p_num: body?.p_num }))

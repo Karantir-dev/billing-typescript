@@ -1525,9 +1525,6 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
 
       toast.success(
         i18n.t('server_deleted_success', { ns: 'other', id: `#${id.join(', #')}` }),
-        {
-          position: 'bottom-right',
-        },
       )
 
       dispatch(actions.hideLoader())
@@ -1535,9 +1532,7 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       closeFn()
-      toast.error(i18n.t('unknown_error', { ns: 'other' }), {
-        position: 'bottom-right',
-      })
+
       dispatch(actions.hideLoader())
     })
 }

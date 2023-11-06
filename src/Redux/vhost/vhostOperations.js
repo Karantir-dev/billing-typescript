@@ -779,9 +779,6 @@ const deleteVhost = (id, type, closeFn, signal, setIsLoading) => (dispatch, getS
 
       toast.success(
         i18n.t('server_deleted_success', { ns: 'other', id: `#${id.join(', #')}` }),
-        {
-          position: 'bottom-right',
-        },
       )
 
       dispatch(actions.hideLoader())
@@ -789,9 +786,7 @@ const deleteVhost = (id, type, closeFn, signal, setIsLoading) => (dispatch, getS
     .catch(err => {
       checkIfTokenAlive(err.message, dispatch)
       closeFn()
-      toast.error(i18n.t('unknown_error', { ns: 'other' }), {
-        position: 'bottom-right',
-      })
+
       dispatch(actions.hideLoader())
     })
 }
