@@ -168,7 +168,7 @@
   "Server has been successfully rebooted": "სერვერი წარმატებით გადაიტვირთა",
   "Name servers has been successfully changed": "სახელების სერვერები წარმატებით შეიცვალა",
   "services_selected": "შერჩეულია სერვისები:",
-  "server_deleted": "სერვერი {{id}} წაიშალა",
+  "server_deleted_success": "{{id}} Მოქმედება წარმატებით დასრულდა",
   "unknown_error": "როგორც ჩანს, რაღაც შეფერხდა, ბოდიშს გიხდით შექმნილი უხერხულობისთვის. შეგიძლიათ დაუკავშირდეთ ჩვენს ტექნიკურ მხარდაჭერას support@zomro.com",
   "services_deletion": "და მეტი {{value}} სერვისი?",
   "and_more": "და მეტი {{value}}",

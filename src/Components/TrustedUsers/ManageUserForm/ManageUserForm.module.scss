@@ -1,12 +1,12 @@
 @import '../../../scss/placeholders.scss';
 
-.modal {
-  width: calc(100% - 60px);
-}
-
 .form {
   display: grid;
-  gap: 15px;
+}
+
+.password_wrapper {
+  display: grid;
+  padding-top: 20px;
 }
 
 .title_wrapper {
@@ -50,8 +50,16 @@
 // ADAPTIVE
 
 @media screen and (min-width: 768px) {
-  .modal {
-    width: 390px;
+  .form {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .password_wrapper {
+    grid-column: 1/3;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding-top: unset;
   }
 
   .submit_btn.btn {

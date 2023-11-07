@@ -396,7 +396,8 @@ export default function VDS({ isDedic }) {
                 activeServices.some(
                   server =>
                     (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                    server?.item_status?.$.trim() === 'Suspended by Administrator',
+                    server?.item_status?.$.trim() === 'Suspended by Administrator' ||
+                    server?.pricelist?.$?.toLowerCase()?.includes('ddos'),
                 ) || !rights?.prolong
               }
               onClick={() => setIdForProlong(activeServices.map(server => server.id.$))}
@@ -462,6 +463,7 @@ export default function VDS({ isDedic }) {
           deleteFn={deleteServer}
           closeModal={() => setIdForDeleteModal([])}
           isOpen
+          isDeleteLater
         />
       )}
 

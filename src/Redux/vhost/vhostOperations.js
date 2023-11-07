@@ -754,6 +754,43 @@ const orderParamVhost =
       })
   }
 
+const deleteVhost = (id, type, closeFn, signal, setIsLoading) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'vhost.delete',
+        auth: sessionId,
+        elid: id.join(', '),
+        out: 'json',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      dispatch(getVhosts({}, type, signal, setIsLoading))
+      closeFn()
+
+      toast.success(
+        i18n.t('server_deleted_success', { ns: 'other', id: `#${id.join(', #')}` }),
+      )
+
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      checkIfTokenAlive(err.message, dispatch)
+      closeFn()
+
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getVhosts,
   getVhostFilters,
@@ -767,4 +804,5 @@ export default {
   changeTariffSaveVhost,
   orderVhost,
   orderParamVhost,
+  deleteVhost,
 }

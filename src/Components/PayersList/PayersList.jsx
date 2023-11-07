@@ -213,6 +213,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
           />
         )}
 
+        <div className={s.geo_wrapper}>
         {!selectedPayerFields?.person && (
           <SelectGeo
             selectValue={values.country}
@@ -258,6 +259,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             </button>
           </div>
         )}
+        </div>
 
         {payersSelectedFields?.eu_vat_field && !selectedPayerFields?.eu_vat ? (
           <InputField

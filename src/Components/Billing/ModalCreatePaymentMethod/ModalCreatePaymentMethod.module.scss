@@ -1,8 +1,13 @@
 .modal {
-  max-width: 690px;
+  max-width: 870px;
   &:not(.visible) {
     opacity: 0;
   }
+}
+
+.paymentMethodsList {
+  display: grid;
+  gap: 15px 20px;
 }
 
 .modalBg {
@@ -374,6 +379,10 @@
 }
 
 @media screen and (min-width: 768px) {
+  .paymentMethodsList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .paymentMethodBtn {
     max-width: 31%;
     flex-basis: 31%;
@@ -419,10 +428,6 @@
 
   .saveBtn {
     width: 254px;
-  }
-
-  .field_wrapper {
-    max-width: 48%;
   }
 }
 

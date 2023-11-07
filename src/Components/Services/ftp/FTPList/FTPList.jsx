@@ -17,6 +17,7 @@ export default function FTPList({
   rights,
   setActiveServices,
   activeServices,
+  setIdForDeleteModal,
 }) {
   const { t } = useTranslation([
     'vds',
@@ -98,6 +99,7 @@ export default function FTPList({
               setActiveServices={setActiveServices}
               activeServices={activeServices}
               rights={rights}
+              setIdForDeleteModal={setIdForDeleteModal}
             />
           ) : (
             <FTPMobileItem
@@ -110,6 +112,7 @@ export default function FTPList({
               setActiveServices={setActiveServices}
               activeServices={activeServices}
               rights={rights}
+              setIdForDeleteModal={setIdForDeleteModal}
             />
           )
         })}

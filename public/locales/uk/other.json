@@ -172,7 +172,7 @@
   "Name servers has been successfully changed": "Сервери імен успішно змінено",
   "Changes saved successfully": "Зміни успішно збережені",
   "services_selected": "Обрано послуг:",
-  "server_deleted": "Сервер {{id}} видалений",
+  "server_deleted_success": "{{id}} Операція успішна",
   "unknown_error": "Схоже щось пішло не так, приносимо вибачення за незручності. Ви можете звернутись в нашу техпідтримку support@zomro.com",
   "and_more": "і ще {{value}}",
   "Services per page": "Елементів на сторінці",

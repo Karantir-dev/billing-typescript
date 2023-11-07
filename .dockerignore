@@ -4,3 +4,4 @@ deployment/
 Dockerfile
 node_modules/
 .env_example
+.env

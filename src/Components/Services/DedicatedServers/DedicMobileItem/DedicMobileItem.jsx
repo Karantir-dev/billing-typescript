@@ -21,6 +21,7 @@ export default function DedicMobileItem({
   setActiveServices,
   activeServices,
   handleEditSubmit,
+  setIdForDeleteModal,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const dropdownEl = useRef()
@@ -175,6 +176,20 @@ export default function DedicMobileItem({
                     >
                       <Icon name="ExitSign" className={s.tool_icon} />
                       {t('go_to_panel')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={
+                        server?.status?.$ === '5' ||
+                        server?.scheduledclose?.$ === 'on' ||
+                        !rights?.delete
+                      }
+                      className={s.tool_btn}
+                      onClick={() => setIdForDeleteModal([server.id.$])}
+                    >
+                      <Icon name="Delete" />
+                      <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
                     </button>
                   </li>
                 </ul>
