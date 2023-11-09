@@ -66,8 +66,8 @@ export const SBER_PHONE_COUNTRIES = ['ru']
 
 // VDS ids
 
-export const VDS_IDS_LIKE_DEDICS = ['6322', '6334']
-export const VDS_IDS_TO_ORDER = ['6322']
+export const VDS_IDS_LIKE_DEDICS = ['6322', '6334', '6370']
+export const VDS_IDS_TO_ORDER = ['6322', '6370']
 
 export const WORDPRESS_VHOST = ['6346', '6349', '6352', '6361']
 
