@@ -28,7 +28,7 @@ export default function Component(props) {
 
   const payersList = useSelector(payersSelectors.getPayersList)
 
-  const paymentsMethodList = useSelector(billingSelectors.getPaymentMethodList)
+  // const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
   const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)
   const payersData = useSelector(payersSelectors.getPayersData)
@@ -211,32 +211,30 @@ export default function Component(props) {
                 return null
               }
 
-              const stripeMethod = paymentsMethodList?.find(
-                e => e?.paymethod?.$ === isStripeAvailable.paymethod.$,
-              )
+              // const stripeMethod = paymentsMethodList?.find(
+              //   e => e?.paymethod?.$ === isStripeAvailable.paymethod.$,
+              // )
 
               return (
                 <Form id="create-payment">
                   <ScrollToFieldError />
                   <div className={s.addPayerBlock}>
-                    <div className={s.paymentMethodsList}>
-                      <div className={s.field_wrapper}>
-                        <label className={s.label}>
-                          {t('Payment method', { ns: 'other' })}
-                        </label>
-                        <div className={s.stripeCard}>
-                          <img
-                            src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`}
-                            alt="icon"
-                          />
-                          <div className={s.stripeDescr}>
-                            <span>Stripe</span>
-                            <span>
-                              {t('Payment amount from 1.00 EUR. ', {
-                                ns: 'cart',
-                              })}
-                            </span>
-                          </div>
+                    <div className={s.field_wrapper}>
+                      <label className={s.label}>
+                        {t('Payment method', { ns: 'other' })}
+                      </label>
+                      <div className={s.stripeCard}>
+                        <img
+                          src={`${process.env.REACT_APP_BASE_URL}${isStripeAvailable?.image?.$}`}
+                          alt="icon"
+                        />
+                        <div className={s.stripeDescr}>
+                          <span>Stripe</span>
+                          <span>
+                            {t('Payment amount from 1.00 EUR. ', {
+                              ns: 'cart',
+                            })}
+                          </span>
                         </div>
                       </div>
                     </div>
