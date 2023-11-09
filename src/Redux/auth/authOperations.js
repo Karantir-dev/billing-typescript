@@ -188,9 +188,8 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
       setEmailSended(true)
       dispatch(actions.hideLoader())
     })
-    .catch(err => {
+    .catch(() => {
       dispatch(actions.hideLoader())
-      checkIfTokenAlive('recovery - ' + err.message, dispatch)
     })
 }
 
@@ -230,9 +229,8 @@ const changePassword =
         onChangeSuccess()
         dispatch(actions.hideLoader())
       })
-      .catch(err => {
+      .catch(() => {
         dispatch(actions.hideLoader())
-        checkIfTokenAlive('recovery.change - ' + err.message, dispatch)
       })
   }
 
