@@ -43,12 +43,12 @@ export default function Component(props) {
           className={s.searchBtn}
           isShadow
           size="medium"
-          onClick={() => deleteHandler()}
-          label={t('delete', { ns: 'other' })}
+          onClick={closeModal}
+          label={t('Cancel', { ns: 'other' })}
           type="button"
         />
-        <button onClick={closeModal} type="button" className={s.clearFilters}>
-          {t('Cancel', { ns: 'other' })}
+        <button onClick={() => deleteHandler()} type="button" className={s.clearFilters}>
+          {t('delete', { ns: 'other' })}
         </button>
       </Modal.Footer>
     </Modal>
