@@ -12,7 +12,12 @@ const bankCardsMirRegex =
 const purseCurrencyRegex =
   /"__purse_currency__" currency code must match the payment currency/
 
-export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
+export default function checkIfTokenAlive(
+  err,
+  dispatch,
+  isLocalLoader,
+  disableDefaultError,
+) {
   const uglyErrorText = err.message || err
   const errorText = uglyErrorText.trim()
 
@@ -55,7 +60,7 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
       // need to check whether it has sense (look for error translation)
       if (isTranslationExists(errorText)) {
         toast.error(t(errorText, { ns: ['auth', 'other'] }))
-      } else {
+      } else if (!disableDefaultError) {
         toast.error(t('warnings.unknown_error', { ns: 'auth' }), {
           toastId: 'unknown_error',
           updateId: 'unknown_error',
