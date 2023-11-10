@@ -188,7 +188,7 @@ export default function DedicMobileItem({
                       className={s.tool_btn}
                       onClick={() => setIdForDeleteModal([server.id.$])}
                     >
-                      <Icon name="Delete" />
+                      <Icon name="Delete" className={s.tool_icon} />
                       <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
                     </button>
                   </li>
