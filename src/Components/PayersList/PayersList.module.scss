@@ -3,6 +3,11 @@
   flex-direction: column;
 }
 
+.geo_wrapper {
+  display: grid;
+  gap: 15px 20px;
+}
+
 .formBlockTitle {
   font-style: normal;
   font-weight: 400;
@@ -23,9 +28,7 @@
 
 .payerBlock {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
+  display: grid;
   gap: 15px 20px;
 }
 
@@ -103,12 +106,6 @@
 }
 
 @media screen and (min-width: 768px) {
-  .select,
-  .nsInputBlock,
-  .inputBig {
-    max-width: calc(50% - 10px);
-  }
-
   .nsInputBlock {
     position: relative;
     width: 100%;
@@ -122,10 +119,13 @@
     }
   }
 
-
-
   .payerBlock {
-    flex-direction: row;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .geo_wrapper {
+    grid-template-columns: repeat(3, 1fr);
+    grid-column: 1/4;
   }
 }
 

@@ -66,17 +66,19 @@ export default function VdsItem({ el, deleteItemHandler }) {
   return (
     <div className={s.items_wrapper}>
       <div className={s.server_item}>
-        <button
-          className={cn(s.shevron_btn, { [s.opened]: dropOpened })}
-          type="button"
-          onClick={onShevronClick}
-        >
-          <Icon
-            name="Shevron"
-            width={11}
-            className={cn({ [s.shevron]: true, [s.opened]: dropOpened })}
-          />
-        </button>
+        {!(el.count > 1) && (
+          <button
+            className={cn(s.shevron_btn, { [s.opened]: dropOpened })}
+            type="button"
+            onClick={onShevronClick}
+          >
+            <Icon
+              name="Shevron"
+              width={11}
+              className={cn({ [s.shevron]: true, [s.opened]: dropOpened })}
+            />
+          </button>
+        )}
 
         <div className={s.main_info_wrapper} ref={infoEl}>
           <div>
@@ -106,62 +108,63 @@ export default function VdsItem({ el, deleteItemHandler }) {
             </div>
           )}
         </div>
+        {!(el.count > 1) && (
+          <div className={s.dropdown} ref={dropdownEl}>
+            {hasBasePrice && (
+              <span className={s.value}>
+                <b>{t('processors')}:</b>{' '}
+                {getTranslatedText(/CPU count(.+?)(?=<br\/>)/)?.trim()}, &nbsp;
+              </span>
+            )}
 
-        <div className={s.dropdown} ref={dropdownEl}>
-          {hasBasePrice && (
-            <span className={s.value}>
-              <b>{t('processors')}:</b>{' '}
-              {getTranslatedText(/CPU count(.+?)(?=<br\/>)/)?.trim()}, &nbsp;
-            </span>
-          )}
+            {hasBasePrice && (
+              <span className={s.value}>
+                <b>{t('memory')}:</b> {getTranslatedText(/Memory(.+?)(?=<br\/>)/)}, &nbsp;
+              </span>
+            )}
 
-          {hasBasePrice && (
-            <span className={s.value}>
-              <b>{t('memory')}:</b> {getTranslatedText(/Memory(.+?)(?=<br\/>)/)}, &nbsp;
-            </span>
-          )}
+            {hasBasePrice && (
+              <span className={s.value}>
+                <b>{t('disk_space')}:</b> {getTranslatedText(/Disk space(.+?)(?=<br\/>)/)}
+                , &nbsp;
+              </span>
+            )}
 
-          {hasBasePrice && (
-            <span className={s.value}>
-              <b>{t('disk_space')}:</b> {getTranslatedText(/Disk space(.+?)(?=<br\/>)/)},
-              &nbsp;
-            </span>
-          )}
+            {IPaddresses && IPaddressesCountText?.length > 0 && (
+              <span className={s.value}>
+                <b>{t('IPcount')}:</b>{' '}
+                {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
+                  ? IPaddressesCountText[1].replace('Unit', t('Unit'))
+                  : ''}
+                , &nbsp;
+              </span>
+            )}
 
-          {IPaddresses && IPaddressesCountText?.length > 0 && (
-            <span className={s.value}>
-              <b>{t('IPcount')}:</b>{' '}
-              {IPaddressesCountText?.length > 1 && IPaddressesCountText[1]
-                ? IPaddressesCountText[1].replace('Unit', t('Unit'))
-                : ''}
-              , &nbsp;
-            </span>
-          )}
+            {hasBasePrice && portSpeedCountText?.length > 0 && (
+              <span className={s.value}>
+                <b>{t('port_speed')}:</b>{' '}
+                {portSpeedCountText?.length > 1 && portSpeedCountText[2]
+                  ? portSpeedCountText[2]
+                  : ''}
+                , &nbsp;
+              </span>
+            )}
 
-          {hasBasePrice && portSpeedCountText?.length > 0 && (
-            <span className={s.value}>
-              <b>{t('port_speed')}:</b>{' '}
-              {portSpeedCountText?.length > 1 && portSpeedCountText[2]
-                ? portSpeedCountText[2]
-                : ''}
-              , &nbsp;
-            </span>
-          )}
+            {controlPanel && (
+              <span className={s.value}>
+                <b>{t('license_to_panel')}:</b>{' '}
+                {getTranslatedCP(getTranslatedText(/Control panel (.+?)(?=$|<br\/>)/))}{' '}
+                &nbsp;
+              </span>
+            )}
 
-          {controlPanel && (
-            <span className={s.value}>
-              <b>{t('license_to_panel')}:</b>{' '}
-              {getTranslatedCP(getTranslatedText(/Control panel (.+?)(?=$|<br\/>)/))}{' '}
-              &nbsp;
-            </span>
-          )}
-
-          {el?.desc?.$.includes('Service limits') && (
-            <span className={s.value}>
-              <b>{t('Service limits')}:</b> {t('port_speed_limits')} &nbsp;
-            </span>
-          )}
-        </div>
+            {el?.desc?.$.includes('Service limits') && (
+              <span className={s.value}>
+                <b>{t('Service limits')}:</b> {t('port_speed_limits')} &nbsp;
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       {typeof deleteItemHandler === 'function' && tabletOrHigher && (

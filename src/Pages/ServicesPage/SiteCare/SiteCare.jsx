@@ -346,6 +346,7 @@ export default function Component() {
             deleteIds={deleteIds}
             deleteSiteCareHandler={deleteSiteCareHandler}
             name={parseSelectedItemNameArr()}
+            isDeleteLater
             isOpen
           />
         )}

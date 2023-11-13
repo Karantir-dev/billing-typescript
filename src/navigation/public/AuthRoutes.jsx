@@ -107,7 +107,7 @@ const Component = () => {
           path={route.RESET_PASSWORD}
           element={<AuthPage children={<PasswordReset />} />}
         />
-        <Route path={route.CHANGE_PASSWORD} element={<PasswordChange />} />
+        <Route path={route.CHANGE_PASSWORD} element={<AuthPage children={<PasswordChange />} />} />
         <Route path={route.SOC_NET_AUTH} element={<SocialNetAuth />} />
         <Route
           path={route.GEO_CONFIRM}

@@ -142,7 +142,7 @@ export default function ForexItem({
                       className={s.tool_btn}
                       type="button"
                       disabled={
-                        !server.id.$ || !pageRights?.delete || server?.status?.$ === '1'
+                        !server.id.$ || !pageRights?.delete || server?.status?.$ === '5'
                       }
                       onClick={() => {
                         handleToolBtnClick(setElidForDeletionModal)

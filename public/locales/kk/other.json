@@ -170,7 +170,7 @@
   "Server has been successfully rebooted": "Сервер сәтті қайта жүктелді",
   "Name servers has been successfully changed": "Атау серверлері сәтті өзгертілді",
   "services_selected": "Қызметтер таңдалды:",
-  "server_deleted": "{{id}} сервері жойылды",
+  "server_deleted_success": "{{id}} Операция сәтті аяқталды",
   "unknown_error": "Бірдеңе дұрыс болмады, қолайсыздықтар үшін кешірім сұраймыз. Сіз біздің техникалық қолдау көрсетуге support@zomro.com хабарласа аласыз",
   "and_more": "және тағы басқа {{value}}",
   "Services per page": "Әр беттегі элементтер",

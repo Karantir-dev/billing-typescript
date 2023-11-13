@@ -6,7 +6,13 @@ import cn from 'classnames'
 
 import s from './DeleteModal.module.scss'
 
-export default function DeleteModal({ closeModal, names, deleteFn, isOpen }) {
+export default function DeleteModal({
+  closeModal,
+  names,
+  isDeleteLater = false,
+  deleteFn,
+  isOpen,
+}) {
   const { t } = useTranslation(['vds', 'other'])
   const [namesOpened, setNamesOpened] = useState(false)
   const [firstRender, setFirstRender] = useState(true)
@@ -36,6 +42,7 @@ export default function DeleteModal({ closeModal, names, deleteFn, isOpen }) {
       <Modal.Body>
         <p className={s.title}>{t('attention')}!</p>
         <p className={s.text}>{t('delete_message')}?</p>
+        {isDeleteLater && <p className={s.warn}>{t('warn_message')}</p>}
         <div>
           <p className={cn(s.names_block, { [s.opened]: namesOpened })} ref={namesBlock}>
             {names.map((name, idx) => {

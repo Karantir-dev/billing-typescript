@@ -15,6 +15,7 @@ import {
   Pagination,
   CheckBox,
   Loader,
+  DeleteModal,
 } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 import { actions, dedicOperations, dedicSelectors } from '@redux'
@@ -51,6 +52,8 @@ export default function DedicatedServersPage() {
 
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
+
+  const [idForDeleteModal, setIdForDeleteModal] = useState([])
 
   useEffect(() => {
     if (filterModal) {
@@ -221,6 +224,18 @@ export default function DedicatedServersPage() {
     isAllActive ? setActiveServices([]) : setActiveServices(dedicRenderData?.serversList)
   }
 
+  const deleteServer = () => {
+    dispatch(
+      dedicOperations.deleteDedic(
+        idForDeleteModal,
+        () => setIdForDeleteModal([]),
+        signal,
+        setIsLoading,
+      ),
+    )
+    setActiveServices([])
+  }
+
   return (
     <div>
       <div className={s.tools_wrapper}>
@@ -309,6 +324,7 @@ export default function DedicatedServersPage() {
         activeServices={activeServices}
         signal={signal}
         setIsLoading={setIsLoading}
+        setIdForDeleteModal={setIdForDeleteModal}
       />
 
       {dedicCount > 5 && (
@@ -336,6 +352,21 @@ export default function DedicatedServersPage() {
         })}
       >
         <div className={s.buttons_wrapper}>
+          <HintWrapper label={t('delete', { ns: 'other' })}>
+            <IconButton
+              className={s.tools_icon}
+              onClick={() =>
+                setIdForDeleteModal(activeServices.map(server => server.id.$))
+              }
+              disabled={
+                activeServices.some(
+                  server =>
+                    server?.status?.$ === '5' || server?.scheduledclose?.$ === 'on',
+                ) || !rights?.delete
+              }
+              icon="delete"
+            />
+          </HintWrapper>
           <HintWrapper label={t('reload')}>
             <IconButton
               className={s.tools_icon}
@@ -430,6 +461,16 @@ export default function DedicatedServersPage() {
           id={elidForRebootModal}
           names={getServerName(elidForRebootModal)}
           closeModal={() => setElidForRebootModal([])}
+          isOpen
+        />
+      )}
+
+      {idForDeleteModal.length > 0 && (
+        <DeleteModal
+          names={getServerName(idForDeleteModal)}
+          deleteFn={deleteServer}
+          closeModal={() => setIdForDeleteModal([])}
+          isDeleteLater
           isOpen
         />
       )}

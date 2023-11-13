@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './FTPItem.module.scss'
-import { CheckBox, ServerState,Icon  } from '@components'
+import { CheckBox, ServerState, Icon } from '@components'
 import { useDispatch } from 'react-redux'
 import { useOutsideAlerter } from '@utils'
 import { dedicOperations } from '@redux'
@@ -18,6 +18,7 @@ export default function FTPItem({
   setElidForEditModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
+  setIdForDeleteModal,
 }) {
   const { t } = useTranslation(['vds', 'other'])
 
@@ -149,6 +150,20 @@ export default function FTPItem({
                     >
                       <Icon name="ExitSign" className={s.tool_icon} />
                       {t('go_to_panel')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={
+                        storage?.status?.$ === '5' ||
+                        storage?.scheduledclose?.$ === 'on' ||
+                        !rights?.delete
+                      }
+                      className={s.tool_btn}
+                      onClick={() => setIdForDeleteModal([storage.id.$])}
+                    >
+                      <Icon name="Delete" className={s.tool_icon} />
+                      <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
                     </button>
                   </li>
                 </ul>

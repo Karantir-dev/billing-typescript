@@ -176,13 +176,17 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
     )
     .then(({ data }) => {
       if (data.doc.error) {
-        setErrorType(data.doc.error.$type)
+        if (isTranslationExists(`warnings.${data.doc.error.$type}`, { ns: 'auth' })) {
+          setErrorType(data.doc.error.$type)
 
-        if (data.doc.error.$type === 'min_email_send_timeout') {
-          setErrorTime(data.doc.error.param[1].$)
+          if (data.doc.error.$type === 'min_email_send_timeout') {
+            setErrorTime(data.doc.error.param[1].$)
+          }
+          dispatch(actions.hideLoader())
+          return
+        } else {
+          throw new Error(data.doc.error.msg.$)
         }
-
-        throw new Error(data.doc.error.msg.$)
       }
 
       setEmailSended(true)
@@ -213,8 +217,13 @@ const changePassword =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          setErrType(data.doc.error.$type)
-          throw new Error(data.doc.error.msg.$)
+          if (isTranslationExists(`warnings.${data.doc.error.$type}`, { ns: 'auth' })) {
+            setErrType(data.doc.error.$type)
+            dispatch(actions.hideLoader())
+            return
+          } else {
+            throw new Error(data.doc.error.msg.$)
+          }
         }
 
         axiosInstance.post(
@@ -232,7 +241,7 @@ const changePassword =
       })
       .catch(err => {
         dispatch(actions.hideLoader())
-        checkIfTokenAlive('recovery.change - ' + err.message, dispatch)
+        checkIfTokenAlive('recovery - ' + err.message, dispatch)
       })
   }
 

@@ -28,7 +28,7 @@ export default function Component(props) {
 
   const payersList = useSelector(payersSelectors.getPayersList)
 
-  const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
+  // const paymentsMethodList = useSelector(billingSelectors.getPaymentsMethodList)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
   const isStripeAvailable = useSelector(billingSelectors.getIsStripeAvailable)
   const payersData = useSelector(payersSelectors.getPayersData)
@@ -211,9 +211,9 @@ export default function Component(props) {
                 return null
               }
 
-              const stripeMethod = paymentsMethodList?.find(
-                e => e?.paymethod?.$ === isStripeAvailable.paymethod.$,
-              )
+              // const stripeMethod = paymentsMethodList?.find(
+              //   e => e?.paymethod?.$ === isStripeAvailable.paymethod.$,
+              // )
 
               return (
                 <Form id="create-payment">
@@ -225,7 +225,7 @@ export default function Component(props) {
                       </label>
                       <div className={s.stripeCard}>
                         <img
-                          src={`${process.env.REACT_APP_BASE_URL}${stripeMethod?.image?.$}`}
+                          src={`${process.env.REACT_APP_BASE_URL}${isStripeAvailable?.image?.$}`}
                           alt="icon"
                         />
                         <div className={s.stripeDescr}>
