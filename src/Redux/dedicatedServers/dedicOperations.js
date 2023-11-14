@@ -1518,7 +1518,42 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
       }),
     )
     .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      if (data.doc.error) {
+        if (data.doc.error.$type === 'pricelist_min_order') {
+          const strings = data?.doc?.error?.msg?.$?.split('.')
+          const parsePrice = price => {
+            const words = price?.match(/[\d|.|\\+]+/g)
+            const amounts = []
+
+            if (words.length > 0) {
+              words.forEach(w => {
+                if (!isNaN(w)) {
+                  amounts.push(w)
+                }
+              })
+            } else {
+              return
+            }
+
+            return amounts[0]
+          }
+
+          const min = parsePrice(strings[0])
+          const left = parsePrice(strings[1])
+          toast.error(
+            `${i18n.t(
+              'The minimum order period for this service is {{min}}. {{left}} are left',
+              { ns: 'other', min: min, left: left },
+            )}`,
+          )
+
+          closeFn()
+          dispatch(actions.hideLoader())
+          return
+        }
+
+        throw new Error(data.doc.error.msg.$)
+      }
 
       dispatch(getServersList({}, signal, setIsLoading))
       closeFn()

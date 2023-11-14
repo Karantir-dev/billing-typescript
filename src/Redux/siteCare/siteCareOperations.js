@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 import qs from 'qs'
 import i18n from '@src/i18n'
 import { actions, cartActions, siteCareActions } from '@redux'
@@ -361,9 +362,7 @@ const deleteSiteCare =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          if (
-            data.doc.error.msg.$.includes('The minimum order period for this service')
-          ) {
+          if (data.doc.error.$type === 'pricelist_min_order') {
             const strings = data?.doc?.error?.msg?.$?.split('.')
             const parsePrice = price => {
               const words = price?.match(/[\d|.|\\+]+/g)
@@ -390,8 +389,10 @@ const deleteSiteCare =
                 { ns: 'other', min: min, left: left },
               )}`,
             )
-          } else {
-            toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`)
+
+            setDeleteModal && setDeleteModal(false)
+            dispatch(actions.hideLoader())
+            return
           }
 
           throw new Error(data.doc.error.msg.$)
@@ -406,6 +407,7 @@ const deleteSiteCare =
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
+        setDeleteModal && setDeleteModal(false)
         dispatch(actions.hideLoader())
       })
   }
