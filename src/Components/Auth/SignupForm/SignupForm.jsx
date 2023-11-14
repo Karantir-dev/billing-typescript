@@ -33,6 +33,9 @@ import classNames from 'classnames'
 const GOOGLE_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google&project=4&currency=153&rparams='
 
+const VK_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte&project=4&currency=153&rparams='
+
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
 export default function SignupForm({ geoCountryId, geoStateId }) {
@@ -131,6 +134,8 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       window.location.href = 'https://cp.omro.host/signup'
     }
   }, [seconds])
+
+  const isVKAllowed = geoCountryId === '80' || geoCountryId === '113'
 
   if (geoCountryId === '182') {
     return (
@@ -302,6 +307,13 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
               <Icon name="Google" />
             </a>
           </li>
+          {isVKAllowed && (
+            <li>
+              <a href={VK_LINK}>
+                <Icon name="Vk" />
+              </a>
+            </li>
+          )}
         </ul>
       </div>
     </div>

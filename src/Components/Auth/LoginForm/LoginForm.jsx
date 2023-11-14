@@ -94,6 +94,9 @@ export default function LoginForm({ geoCountryId }) {
     }
   }, [formVisibility])
 
+  const isVKAllowed =
+    geoCountryId === '182' || geoCountryId === '80' || geoCountryId === '113'
+
   return (
     <div className={s.form_wrapper}>
       <LoginBtnBlock login />
@@ -193,7 +196,9 @@ export default function LoginForm({ geoCountryId }) {
 
       <div>
         <p className={s.social_title}>{t('login_with')}</p>
-        <ul className={cn(s.social_list, { [s.list_view]: geoCountryId === '182' })}>
+        <ul
+          className={cn(s.social_list)}
+        >
           {/* <li>
             <a href={FACEBOOK_LINK}>
               <Icon name="Facebook" />
@@ -204,7 +209,7 @@ export default function LoginForm({ geoCountryId }) {
               <Icon name="Google" />
             </a>
           </li>
-          {geoCountryId === '182' && (
+          {isVKAllowed && (
             <li>
               <a href={VK_LINK}>
                 <Icon name="Vk" />
