@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '@components'
 
+import cn from 'classnames'
 import s from './UpdateService.module.scss'
 
 import { userSelectors, supportSelectors, supportOperations } from '@redux'
@@ -56,7 +57,7 @@ export default function UpdateService() {
     <>
       {g7Ticket || g8Ticket ? (
         <button
-          className={s.wrapper}
+          className={cn(s.wrapper, { [s.wrapper_exception]: g7Ticket && g8Ticket })}
           type="button"
           onClick={() => {
             if (g7Ticket && g8Ticket) {

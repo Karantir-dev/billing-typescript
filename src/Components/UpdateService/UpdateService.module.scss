@@ -13,6 +13,10 @@
   cursor: pointer;
   text-align: start;
   margin-bottom: 25px;
+
+  &.wrapper_exception {
+    cursor: auto;
+  }
 }
 
 .icon {
