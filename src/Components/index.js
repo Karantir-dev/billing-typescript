@@ -26,6 +26,7 @@ export { default as Container } from './Container/Container'
 //==========================================UI==========================================//
 export { default as Modal } from './ui/Modal/Modal'
 export { default as InputField } from './ui/InputField/InputField'
+export { default as InputWithInfo } from './ui/InputWithInfo/InputWithInfo'
 export { default as CustomPhoneInput } from './ui/CustomPhoneInput/CustomPhoneInput'
 export { default as LoginBtnBlock } from './ui/LoginBtnBlock/LoginBtnBlock'
 
