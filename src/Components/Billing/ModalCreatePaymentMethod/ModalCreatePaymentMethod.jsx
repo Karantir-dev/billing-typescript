@@ -291,7 +291,7 @@ export default function Component(props) {
             className={s.saveBtn}
             isShadow
             size="medium"
-            label={t('FINISH')}
+            label={t('Proceed', { ns: 'other' })}
             type="submit"
             form="create-payment"
           />

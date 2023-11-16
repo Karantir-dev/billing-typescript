@@ -166,7 +166,7 @@ export default function DedicOrderPage() {
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
-            iconName={name}
+            iconName={name.toLowerCase()}
             itemsList={optionsList}
             state={state}
             getElement={value => {
@@ -184,7 +184,7 @@ export default function DedicOrderPage() {
             key={el[0].$key}
             value={el[0].$key}
             state={state}
-            iconName={name}
+            iconName={name.toLowerCase()}
             label={el[0].$}
             onClick={value => {
               setFieldValue(fieldName, value)
@@ -349,7 +349,7 @@ export default function DedicOrderPage() {
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
-            iconName={name}
+            iconName={name.toLowerCase()}
             itemsList={optionsList}
             state={state}
             getElement={value => {
@@ -378,7 +378,7 @@ export default function DedicOrderPage() {
             key={el[0].$key}
             value={el[0].$key}
             state={state}
-            iconName={name}
+            iconName={name.toLowerCase()}
             label={el[0].$}
             onClick={value => {
               if (fieldName === 'ostempl') {

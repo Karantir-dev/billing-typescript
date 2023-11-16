@@ -238,7 +238,7 @@ export default function VDSOrder() {
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
-            iconName={name}
+            iconName={name.toLowerCase()}
             itemsList={optionsList}
             state={state}
             getElement={value => {
@@ -267,7 +267,7 @@ export default function VDSOrder() {
             key={el[0].$key}
             value={el[0].$key}
             state={state}
-            iconName={name}
+            iconName={name.toLowerCase()}
             label={el[0].$}
             onClick={value => {
               if (fieldName === 'ostempl') {
