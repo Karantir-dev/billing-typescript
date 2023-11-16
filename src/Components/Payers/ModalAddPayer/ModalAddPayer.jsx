@@ -213,7 +213,7 @@ export default function ModalAddPayer(props) {
                         error={!!errors.eu_vat}
                         touched={!!touched.eu_vat}
                         inputClassName={s.field}
-                        infoText={t('ue_vat_info_text', { ns: 'other' })}
+                        infoText={t('eu_vat_info_text', { ns: 'other' })}
                       />
                     ) : null}
                   </div>

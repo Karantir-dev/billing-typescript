@@ -273,7 +273,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             touched={!!touched.eu_vat}
             value={values.eu_vat}
             onChange={e => setState({ euVat: e.target.value })}
-            infoText={t('ue_vat_info_text', { ns: 'other' })}
+            infoText={t('eu_vat_info_text', { ns: 'other' })}
           />
         ) : null}
       </div>
