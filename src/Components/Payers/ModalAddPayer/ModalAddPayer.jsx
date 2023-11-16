@@ -11,7 +11,6 @@ import {
   SelectGeo,
   Modal,
   Icon,
-  InputWithInfo,
 } from '@components'
 import { payersOperations, payersSelectors, authSelectors } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
@@ -204,7 +203,7 @@ export default function ModalAddPayer(props) {
                     />
 
                     {payersSelectedFields?.eu_vat_field ? (
-                      <InputWithInfo
+                      <InputField
                         inputWrapperClass={s.inputHeight}
                         name="eu_vat"
                         label={`${t('EU VAT-number')}:`}

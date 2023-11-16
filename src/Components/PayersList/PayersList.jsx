@@ -1,4 +1,4 @@
-import { Select, InputField, InputWithAutocomplete, SelectGeo, Icon, InputWithInfo } from '@components'
+import { Select, InputField, InputWithAutocomplete, SelectGeo, Icon } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, payersOperations, payersActions, payersSelectors } from '@redux'
@@ -262,7 +262,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
         </div>
 
         {payersSelectedFields?.eu_vat_field && !selectedPayerFields?.eu_vat ? (
-          <InputWithInfo
+          <InputField
             inputWrapperClass={s.inputHeight}
             name="eu_vat"
             label={`${t('EU VAT-number')}:`}
