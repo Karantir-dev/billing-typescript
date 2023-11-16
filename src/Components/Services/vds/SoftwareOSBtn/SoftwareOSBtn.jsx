@@ -16,10 +16,12 @@ export default function SoftwareOSBtn({ iconName, label, value, state, onClick }
 
   const renderImg = () => {
     if (inList) {
-      return require(`@images/soft_os/${darkTheme ? icon + '_dt' : icon}.png`)
+      return require(`@images/soft_os_icons/${
+        darkTheme ? icon + '_dt' : icon
+      }.png`)
     }
 
-    return require(`@images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
+    return require(`@images/soft_os_icons/linux-logo${darkTheme ? '_dt' : ''}.png`)
   }
 
   return (

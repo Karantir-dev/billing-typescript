@@ -27,12 +27,12 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
 
   const renderImg = () => {
     if (inList) {
-      return require(`@images/soft_os/${
+      return require(`@images/soft_os_icons/${
         darkTheme ? iconName + '_dt' : iconName
       }.png`)
     }
 
-    return require(`@images/soft_os/linux-logo${darkTheme ? '_dt' : ''}.png`)
+    return require(`@images/soft_os_icons/linux-logo${darkTheme ? '_dt' : ''}.png`)
   }
 
   return (
