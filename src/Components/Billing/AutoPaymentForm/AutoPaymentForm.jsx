@@ -81,12 +81,7 @@ export default function AutoPaymentForm(props) {
           selectedMethod?.payment_minamount?.$
         } EUR`,
       )
-      .min(
-        selectedMethod?.payment_minamount?.$,
-        `${t('The amount must be greater than')} ${
-          selectedMethod?.payment_minamount?.$
-        } EUR`,
-      )
+      .min(1, `${t('min_payment_amount', { ns: 'billing' })}: 1 EUR`)
       .max(
         selectedMethod?.payment_maxamount?.$ > 0
           ? selectedMethod?.payment_maxamount?.$
@@ -209,7 +204,7 @@ export default function AutoPaymentForm(props) {
             '',
           person:
             payersData.state?.person ?? payersData.selectedPayerFields?.person ?? '',
-          maxamount: state.maxamount || autoPaymentConfig?.maxamount || '',
+          maxamount: state.maxamount ?? (autoPaymentConfig?.maxamount || ''),
           paymethod: selectedMethod?.paymethod?.$ || '',
           name: payersData.state?.name || payersData.selectedPayerFields?.name || '',
           address_physical:
