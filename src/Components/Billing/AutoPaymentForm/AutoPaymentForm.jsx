@@ -41,6 +41,9 @@ export default function AutoPaymentForm(props) {
   const [selectedMethod, setSelectedMethod] = useState(null)
   const [isDescrOpened, setIsDescrOpened] = useState(false)
 
+  const recommendedMaxAmount =
+    +autoPaymentConfig?.maxamount < 1 ? '1' : autoPaymentConfig?.maxamount
+
   useEffect(() => {
     if (autoPaymentConfig && autoPaymentConfig?.elem?.length > 0) {
       setSelectedMethod(autoPaymentConfig?.elem[0])
@@ -176,7 +179,7 @@ export default function AutoPaymentForm(props) {
       <div className={s.description_wrapper} ref={descrWrapper}>
         <p className={s.paragraph}>
           {t('Auto payment form instruction', {
-            max_pay_amount: autoPaymentConfig?.maxamount || '0.00',
+            max_pay_amount: recommendedMaxAmount,
             min_amount:
               getAmountsFromString(autoPaymentConfig?.info)?.min_amount || '0.00',
             max_amount:
@@ -204,7 +207,7 @@ export default function AutoPaymentForm(props) {
             '',
           person:
             payersData.state?.person ?? payersData.selectedPayerFields?.person ?? '',
-          maxamount: state.maxamount ?? (autoPaymentConfig?.maxamount || ''),
+          maxamount: state.maxamount ?? (recommendedMaxAmount || ''),
           paymethod: selectedMethod?.paymethod?.$ || '',
           name: payersData.state?.name || payersData.selectedPayerFields?.name || '',
           address_physical:
