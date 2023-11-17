@@ -8,7 +8,7 @@ import { SOFTWARE_ICONS_LIST } from '@utils/constants'
 
 export default function SoftwareOSBtn({ iconName, label, value, state, onClick }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-console.log(iconName);
+
   const icon =
     iconName === 'alma' ? 'almalinux' : iconName === 'astra' ? 'astralinux' : iconName
 
