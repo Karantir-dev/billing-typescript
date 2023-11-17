@@ -41,6 +41,7 @@ export const SOFTWARE_ICONS_LIST = [
   'zabbix',
   'chrome',
   'astralinux',
+  'proxmox'
 ]
 
 // phone countries for yookassa payment method (QIWI)
