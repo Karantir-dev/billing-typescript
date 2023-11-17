@@ -266,5 +266,6 @@
   "Payer creation function is temporarily unavailable": "Payer creation function is temporarily unavailable",
   "Dear": "Dear",
   "Update your server": "The server you are using needs to be replaced. Please take a look at the Replacement Options",
-  "here": "here"
+  "here": "here",
+  "eu_vat_info_text": "If you have a valid European VAT ID, fill it in with the country prefix, e.g. NL123456, DE123456."
 }
