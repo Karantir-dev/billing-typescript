@@ -390,8 +390,8 @@ const setPersonalSettings =
       })
   }
 
-const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const setupEmailConfirm = (elid, data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
 
   const userParamsData = {
     email: data?.email_notif || null,
@@ -434,12 +434,11 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      dispatch(getUserEdit(elid, true))
+      dispatch(getUserEdit(elid, true, null, null, signal, setIsLoading))
     })
 
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
     })
 }
 
