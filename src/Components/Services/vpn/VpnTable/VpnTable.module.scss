@@ -69,6 +69,7 @@
   position: absolute;
   right: 25px;
   top: 25px;
+  cursor: pointer;
 }
 
 .tableBlockFirst,
@@ -178,6 +179,17 @@
     pointer-events: none;
     svg {
       fill: var(--disabled_icon_color);
+    }
+  }
+
+  &_delete {
+    color: var(--red-text);
+    &:hover,
+    & {
+      svg,
+      path {
+        fill: var(--red-text);
+      }
     }
   }
 }
@@ -303,7 +315,6 @@
     position: relative;
     top: 0;
     right: 0;
-    // display: none;
   }
 
   .table {

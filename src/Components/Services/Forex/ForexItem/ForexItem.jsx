@@ -81,7 +81,7 @@ export default function ForexItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <Icon name="MoreDots" />
+              <Icon name="Settings" />
             </button>
 
             {toolsOpened && (
@@ -90,42 +90,6 @@ export default function ForexItem({
                   <div className={s.pointer}></div>
                 </div>
                 <ul>
-                  <li className={s.tool_item}>
-                    <button
-                      disabled={!pageRights?.edit || server?.status?.$ === '1'}
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal)}
-                    >
-                      <Icon name="Edit" className={s.tool_icon} />
-                      {t('edit', { ns: 'other' })}
-                    </button>
-                  </li>
-
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={server?.status?.$ === '1' || !pageRights?.prolong}
-                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
-                    >
-                      <Icon name="Clock" className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      disabled={!pageRights?.history || server?.status?.$ === '1'}
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => {
-                        handleToolBtnClick(setElidForHistoryModal)
-                      }}
-                    >
-                      <Icon name="Refund" className={s.tool_icon} />
-                      {t('history')}
-                    </button>
-                  </li>
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -141,6 +105,41 @@ export default function ForexItem({
                     <button
                       className={s.tool_btn}
                       type="button"
+                      disabled={server?.status?.$ === '1' || !pageRights?.prolong}
+                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
+                    >
+                      <Icon name="Clock" className={s.tool_icon} />
+                      {t('prolong')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={!pageRights?.edit || server?.status?.$ === '1'}
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(setElidForEditModal)}
+                    >
+                      <Icon name="Edit" className={s.tool_icon} />
+                      {t('edit', { ns: 'other' })}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={!pageRights?.history || server?.status?.$ === '1'}
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => {
+                        handleToolBtnClick(setElidForHistoryModal)
+                      }}
+                    >
+                      <Icon name="Refund" className={s.tool_icon} />
+                      {t('history')}
+                    </button>
+                  </li>
+                  <li className={cn(s.tool_item, s.tool_item_delete)}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
                       disabled={
                         !server.id.$ || !pageRights?.delete || server?.status?.$ === '5'
                       }
@@ -148,11 +147,14 @@ export default function ForexItem({
                         handleToolBtnClick(setElidForDeletionModal)
                       }}
                     >
-                      <Icon name="Delete" className={s.tool_icon} />
+                      <Icon
+                        name="Delete"
+                        className={cn(s.tool_icon, s.tool_icon_delete)}
+                      />
                       {t('delete', { ns: 'other' })}
                     </button>
                   </li>
-                </ul>
+                </ul>{' '}
               </div>
             )}
           </div>

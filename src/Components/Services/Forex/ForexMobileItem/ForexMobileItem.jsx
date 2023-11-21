@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 
 import s from './ForexMobileItem.module.scss'
 import { CheckBox, ServerState, Icon } from '@components'
+import cn from 'classnames'
 
 export default function ForexMobileItem({
   server,
@@ -57,7 +58,7 @@ export default function ForexMobileItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <Icon name="MoreDots" />
+              <Icon name="Settings" />
             </button>
 
             {toolsOpened && (
@@ -68,16 +69,15 @@ export default function ForexMobileItem({
                 <ul>
                   <li className={s.tool_item}>
                     <button
-                      disabled={!pageRights?.edit || server?.status?.$ === '1'}
                       className={s.tool_btn}
                       type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal)}
+                      disabled={server?.status?.$ === '1' || !pageRights?.instruction}
+                      onClick={() => handleToolBtnClick(setElidForInstructionModal)}
                     >
-                      <Icon name="Edit" className={s.tool_icon} />
-                      {t('edit', { ns: 'other' })}
+                      <Icon name="Info" className={s.tool_icon} />
+                      {t('instruction')}
                     </button>
                   </li>
-
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -87,6 +87,17 @@ export default function ForexMobileItem({
                     >
                       <Icon name="Clock" className={s.tool_icon} />
                       {t('prolong')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={!pageRights?.edit || server?.status?.$ === '1'}
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(setElidForEditModal)}
+                    >
+                      <Icon name="Edit" className={s.tool_icon} />
+                      {t('edit', { ns: 'other' })}
                     </button>
                   </li>
                   <li className={s.tool_item}>
@@ -102,19 +113,7 @@ export default function ForexMobileItem({
                       {t('history')}
                     </button>
                   </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={server?.status?.$ === '1' || !pageRights?.instruction}
-                      onClick={() => handleToolBtnClick(setElidForInstructionModal)}
-                    >
-                      <Icon name="Info" className={s.tool_icon} />
-                      {t('instruction')}
-                    </button>
-                  </li>
-                  {console.log(server, ' servers')}
-                  <li className={s.tool_item}>
+                  <li className={cn(s.tool_item, s.tool_item_delete)}>
                     <button
                       className={s.tool_btn}
                       type="button"
@@ -125,7 +124,10 @@ export default function ForexMobileItem({
                         handleToolBtnClick(setElidForDeletionModal)
                       }}
                     >
-                      <Icon name="Delete" className={s.tool_icon} />
+                      <Icon
+                        name="Delete"
+                        className={cn(s.tool_icon, s.tool_icon_delete)}
+                      />
                       {t('delete', { ns: 'other' })}
                     </button>
                   </li>
