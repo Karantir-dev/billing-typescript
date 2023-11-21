@@ -431,6 +431,7 @@ const setupEmailConfirm = (elid, data, signal, setIsLoading) => (dispatch, getSt
         auth: sessionId,
         ...userParamsData,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
