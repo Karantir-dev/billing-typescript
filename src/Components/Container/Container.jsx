@@ -2,13 +2,21 @@ import { useEffect, useState } from 'react'
 import AsideServicesMenu from './AsideServicesMenu/AsideServicesMenu'
 import Header from './Header/Header'
 import dayjs from 'dayjs'
-import { authSelectors, userOperations, userSelectors, selectors } from '@redux'
+import {
+  authSelectors,
+  userOperations,
+  userSelectors,
+  selectors,
+  userActions,
+} from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import Div100vh from 'react-div-100vh'
 import cn from 'classnames'
+import { toast } from 'react-toastify'
 
 import s from './Container.module.scss'
+import { useLocation } from 'react-router-dom'
 
 function getFaviconEl() {
   return document.getElementById('favicon')
@@ -19,7 +27,8 @@ function getFaviconMobEl() {
 }
 
 export default function Component({ children }) {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation(['other'])
+  const location = useLocation()
 
   dayjs.locale(i18n.language)
 
@@ -42,7 +51,7 @@ export default function Component({ children }) {
       intervalId = setInterval(() => {
         dispatch(userOperations.getNotify())
         dispatch(userOperations.getTickets())
-      }, 60000)
+      }, 6000)
     }
 
     return () => {
@@ -51,6 +60,24 @@ export default function Component({ children }) {
 
     // getNotifyHandler()
   }, [sessionId, online])
+
+  useEffect(() => {
+    dispatch(userActions.setIsNewMessage(areNewTickets))
+
+    if (areNewTickets) {
+      if (location.pathname.match(/\/support\/requests\/(\d+)/)) {
+        return
+      }
+
+      const ticketId = userTickets.find(ticket => ticket.tstatus.$ === 'New replies')?.id
+        .$
+
+      toast.info(t('new_ticket_message', { id: ticketId }), {
+        position: 'bottom-right',
+        autoClose: 8000,
+      })
+    }
+  }, [areNewTickets])
 
   // const getNotifyHandler = () => {
   //   if (sessionId) {

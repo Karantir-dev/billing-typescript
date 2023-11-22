@@ -8,7 +8,7 @@ import { useMediaQuery } from 'react-responsive'
 import * as route from '@src/routes'
 
 export default function Component(props) {
-  const { id, theme, date, setSelctedTicket, selected } = props
+  const { id, theme, date, selected } = props
   const { t } = useTranslation(['support', 'other'])
   const navigate = useNavigate()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
@@ -28,12 +28,11 @@ export default function Component(props) {
       role="button"
       tabIndex={0}
       onKeyDown={() => {}}
-      onDoubleClick={() =>
+      onClick={() =>
         navigate(`${route.SUPPORT}/requests_archive/${id}`, {
           replace: true,
         })
       }
-      onClick={() => setSelctedTicket(id)}
       className={cn(s.item, { [s.selected]: selected })}
     >
       <span className={s.tableBlockFirst}>

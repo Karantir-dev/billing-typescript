@@ -82,36 +82,36 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
     })
 }
 
-const archiveTicketsHandler = idTicket => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const {
-    auth: { sessionId },
-  } = getState()
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'clientticket.archive',
-        sok: 'ok',
-        out: 'json',
-        auth: sessionId,
-        clickstat: 'yes',
-        lang: 'en',
-        elid: idTicket,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) {
-        throw new Error(data.doc.error.msg.$)
-      }
-      dispatch(supportActions.updateTickets(idTicket))
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+const archiveTicketsHandler =
+  (idTicket, setCurrentPage, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
+    const {
+      auth: { sessionId },
+    } = getState()
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket.archive',
+          sok: 'ok',
+          out: 'json',
+          auth: sessionId,
+          clickstat: 'yes',
+          lang: 'en',
+          elid: idTicket,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+        dispatch(getTicketsHandler({}, signal, setIsLoading))
+        setCurrentPage(1)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 const getTicketsArchiveHandler =
   (body = {}, signal, setIsLoading) =>

@@ -12,6 +12,7 @@ const showUserInfoLoading = createAction('SHOW_USER_INFO_LOADING')
 const hideUserInfoLoading = createAction('HIDE_USER_INFO_LOADING')
 
 const setEmailStatus = createAction('SET_EMAIL_STATUS')
+const setIsNewMessage = createAction('SET_IS_NEW_MESSAGE')
 
 export default {
   setItems,
@@ -23,4 +24,5 @@ export default {
   removeItems,
   setEmailStatus,
   updateUserInfo,
+  setIsNewMessage
 }

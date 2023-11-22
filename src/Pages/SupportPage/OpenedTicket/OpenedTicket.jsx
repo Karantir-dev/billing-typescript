@@ -14,7 +14,12 @@ import {
   Icon,
 } from '@components'
 import TipsModal from '../TipsModal/TipsModal'
-import { supportSelectors, supportOperations, supportActions } from '@redux'
+import {
+  supportSelectors,
+  supportOperations,
+  supportActions,
+  userSelectors,
+} from '@redux'
 import * as route from '@src/routes'
 import s from './OpenedTicket.module.scss'
 import { useMediaQuery } from 'react-responsive'
@@ -29,6 +34,7 @@ export default function Component() {
   const [successModal, setSuccessModal] = useState(false)
 
   const ticket = useSelector(supportSelectors.getTicket)
+  const isNewMessage = useSelector(userSelectors.getIsNewMessage)
 
   const closeTipsModal = () => {
     setTipsModa(!tipsModal)
@@ -38,6 +44,10 @@ export default function Component() {
     getTicketHandler()
     return () => dispatch(supportActions.clearTicket())
   }, [params])
+
+  useEffect(() => {
+    getTicketHandler()
+  }, [isNewMessage])
 
   const getTicketHandler = () => {
     dispatch(supportOperations.getTicketByIdHandler(params?.id))

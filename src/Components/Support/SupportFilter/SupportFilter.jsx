@@ -15,7 +15,7 @@ export default function Component(props) {
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const {
-    selctedTicket,
+    selectedTickets,
     setCurrentPage,
     isFiltered,
     setIsFiltered,
@@ -138,10 +138,21 @@ export default function Component(props) {
           >
             <IconButton
               dataTestid={'archiveBtn'}
-              disabled={selctedTicket?.toarchive?.$ !== 'on'}
-              onClick={() =>
-                dispatch(supportOperations.archiveTicketsHandler(selctedTicket?.id?.$))
+              disabled={
+                selectedTickets.length
+                  ? !selectedTickets.every(ticket => ticket?.toarchive?.$ === 'on')
+                  : true
               }
+              onClick={() => {
+                dispatch(
+                  supportOperations.archiveTicketsHandler(
+                    selectedTickets.map(el => el?.id?.$).join(', '),
+                    setCurrentPage,
+                    signal,
+                    setIsLoading,
+                  ),
+                )
+              }}
               icon="archive"
             />
           </HintWrapper>
@@ -166,9 +177,9 @@ export default function Component(props) {
 }
 
 Component.propTypes = {
-  selctedTicket: PropTypes.oneOfType([PropTypes.oneOf([null]), PropTypes.object]),
+  selectedTickets: PropTypes.array,
 }
 
 Component.defaultProps = {
-  selctedTicket: null,
+  selectedTickets: [],
 }

@@ -29,7 +29,7 @@ export default function Component() {
       initialValues={{ message: '', files: [] }}
       onSubmit={sendMessageHandle}
     >
-      {({ values, setFieldValue }) => {
+      {({ values, setFieldValue, submitForm }) => {
         let checkItemSize = values?.files.filter(el => el?.size >= 10000000)
         return (
           <Form className={s.form}>
@@ -39,6 +39,12 @@ export default function Component() {
                 filesError={checkItemSize.length !== 0}
                 files={values.files}
                 onChangeFiles={value => setFieldValue('files', value)}
+                onKeyDown={e => {
+                  if (e.code === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    submitForm()
+                  }
+                }}
               />
             </div>
             <div className={s.btnsBlock}>
