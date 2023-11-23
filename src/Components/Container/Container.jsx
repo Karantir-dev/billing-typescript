@@ -51,7 +51,7 @@ export default function Component({ children }) {
       intervalId = setInterval(() => {
         dispatch(userOperations.getNotify())
         dispatch(userOperations.getTickets())
-      }, 6000)
+      }, 60000)
     }
 
     return () => {
