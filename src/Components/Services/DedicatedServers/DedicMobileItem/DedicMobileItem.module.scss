@@ -78,7 +78,7 @@
 
 .tool_item {
   &_delete {
-    color: var(--red-text);
+    color: var(--red-text_2);
   }
   &:not(:last-child) {
     margin-bottom: 15px;
@@ -113,7 +113,7 @@
   margin-right: 12px;
   width: 20px;
   &_delete {
-    fill: var(--red-text);
+    fill: var(--red-text_2);
   }
 }
 

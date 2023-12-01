@@ -189,12 +189,12 @@
     }
   }
   &_delete {
-    color: var(--red-text);
+    color: var(--red-text_2);
     &:hover,
     & {
       svg,
       path {
-        fill: var(--red-text);
+        fill: var(--red-text_2);
       }
     }
   }
