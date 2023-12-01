@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import i18n from '@src/i18n'
 import * as route from '@src/routes'
 import { actions, cartActions, forexActions } from '@redux'
@@ -41,15 +41,11 @@ const getForexList = (data, signal, setIsLoading) => (dispatch, getState) => {
       dispatch(forexActions.setForexList(forexRenderData))
       dispatch(forexActions.setForexCount(count))
       // setForexList(data.doc.elem ? data.doc.elem : [])
-      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+      handleLoadersClosing('closeLoader', dispatch, setIsLoading)
     })
     .catch(error => {
-      if (setIsLoading) {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-      } else {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      }
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -112,7 +108,8 @@ const getTarifs =
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -158,7 +155,8 @@ const getParameters =
       })
 
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -457,7 +455,8 @@ const getForexFilters =
         if (error.message.includes('filter')) {
           dispatch(getForexList({ p_num: 1 }, signal, setIsLoading))
         }
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
