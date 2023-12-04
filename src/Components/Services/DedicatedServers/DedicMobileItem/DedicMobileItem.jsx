@@ -130,7 +130,12 @@ export default function DedicMobileItem({
                     <button
                       className={s.tool_btn}
                       type="button"
-                      disabled={server?.status?.$ === '1' || !rights?.prolong}
+                      disabled={
+                        server?.status?.$ === '1' ||
+                        !rights?.prolong ||
+                        server.name?.$.includes('Config 47') ||
+                        server.name?.$.includes('Config 48')
+                      }
                       onClick={() => handleToolBtnClick(setElidForProlongModal)}
                     >
                       <Icon name="Clock" className={s.tool_icon} />

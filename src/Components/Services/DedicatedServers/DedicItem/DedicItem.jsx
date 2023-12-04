@@ -178,7 +178,9 @@ export default function DedicItem({
                       disabled={
                         (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
                         server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
-                        !rights?.prolong
+                        !rights?.prolong ||
+                        server.name?.$.includes('Config 47') ||
+                        server.name?.$.includes('Config 48')
                       }
                       onClick={() =>
                         handleToolBtnClick(setElidForProlongModal, server.id.$)

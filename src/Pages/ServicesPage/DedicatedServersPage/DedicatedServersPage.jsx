@@ -388,7 +388,9 @@ export default function DedicatedServersPage() {
                 activeServices.some(
                   server =>
                     (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                    server?.item_status?.$.trim() === 'Suspended by Administrator',
+                    server?.item_status?.$.trim() === 'Suspended by Administrator' ||
+                    server.name?.$.includes('Config 47') ||
+                    server.name?.$.includes('Config 48'),
                 ) || !rights?.prolong
               }
               onClick={() =>

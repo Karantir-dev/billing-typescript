@@ -132,6 +132,10 @@ export default function EditServerModal({
     ),
   })
 
+  const isProlongDisabled =
+    initialState?.name?.$.includes('Config 47') ||
+    initialState?.name?.$.includes('Config 48')
+
   return (
     <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
       <Modal.Header>
@@ -147,7 +151,9 @@ export default function EditServerModal({
             domainname: initialState?.domain?.$ || '',
             ipTotal: initialState?.ipamount?.$ || null,
             price: null,
-            autoprolong: initialState?.autoprolong?.$ || null,
+            autoprolong: isProlongDisabled
+              ? 'null'
+              : initialState?.autoprolong?.$ || null,
             ostempl: initialState?.ostempl?.$ || null,
             recipe: initialState?.recipe?.$ || null,
             managePanel: initialState?.managePanel,
@@ -193,6 +199,7 @@ export default function EditServerModal({
                         value: el.$key,
                       }))}
                       className={s.select}
+                      disabled={isProlongDisabled}
                     />
                     <InputField
                       label={t('domain_name')}
