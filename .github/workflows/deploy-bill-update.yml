@@ -44,7 +44,7 @@ jobs:
 #        with:
 #          status: ${{ job.status }}
 #          fields: all
-#          mention: 'channel'
+#          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
 #          channel: 'github-actions'
 #          if_mention: always
 #        env:
@@ -79,7 +79,7 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: all
-          mention: 'channel'
+          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
           channel: 'github-actions'
           if_mention: always
         env:
@@ -134,7 +134,7 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: all
-          mention: 'channel'
+          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
           channel: 'github-actions'
           if_mention: always
         env:
@@ -182,7 +182,7 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: all
-          mention: 'channel'
+          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
           channel: 'github-actions'
           if_mention: always
         env:
