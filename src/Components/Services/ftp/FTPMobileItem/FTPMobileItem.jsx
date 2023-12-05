@@ -8,6 +8,7 @@ import { CheckBox, ServerState, Icon } from '@components'
 
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
+import cn from 'classnames'
 
 export default function FTPMobileItem({
   storage,
@@ -60,7 +61,7 @@ export default function FTPMobileItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <Icon name="MoreDots" />
+              <Icon name="Settings" />
             </button>
 
             {toolsOpened && (
@@ -69,42 +70,6 @@ export default function FTPMobileItem({
                   <div className={s.pointer}></div>
                 </div>
                 <ul>
-                  <li className={s.tool_item}>
-                    <button
-                      disabled={!rights?.edit || storage?.status?.$ === '1'}
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal)}
-                    >
-                      <Icon name="Edit" className={s.tool_icon} />
-                      {t('edit', { ns: 'other' })}
-                    </button>
-                  </li>
-
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={storage?.status?.$ === '1' || !rights?.prolong}
-                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
-                    >
-                      <Icon name="Clock" className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={!rights?.history || storage?.status?.$ === '1'}
-                      onClick={() => {
-                        handleToolBtnClick(setElidForHistoryModal)
-                      }}
-                    >
-                      <Icon name="Refund" className={s.tool_icon} />
-                      {t('history')}
-                    </button>
-                  </li>
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -135,6 +100,41 @@ export default function FTPMobileItem({
                   </li>
                   <li className={s.tool_item}>
                     <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={storage?.status?.$ === '1' || !rights?.prolong}
+                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
+                    >
+                      <Icon name="Clock" className={s.tool_icon} />
+                      {t('prolong')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={!rights?.edit || storage?.status?.$ === '1'}
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(setElidForEditModal)}
+                    >
+                      <Icon name="Edit" className={s.tool_icon} />
+                      {t('edit', { ns: 'other' })}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={!rights?.history || storage?.status?.$ === '1'}
+                      onClick={() => {
+                        handleToolBtnClick(setElidForHistoryModal)
+                      }}
+                    >
+                      <Icon name="Refund" className={s.tool_icon} />
+                      {t('history')}
+                    </button>
+                  </li>
+                  <li className={cn(s.tool_item, s.tool_item_delete)}>
+                    <button
                       disabled={
                         storage?.status?.$ === '5' ||
                         storage?.scheduledclose?.$ === 'on' ||
@@ -143,7 +143,7 @@ export default function FTPMobileItem({
                       className={s.tool_btn}
                       onClick={() => setIdForDeleteModal([storage.id.$])}
                     >
-                      <Icon name="Delete" className={s.tool_icon} />
+                      <Icon name="Delete" className={cn(s.tool_icon, s.tool_icon_delete)} />
                       <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
                     </button>
                   </li>

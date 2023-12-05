@@ -126,6 +126,10 @@
   &:last-child .tool_btn {
     padding-bottom: 12px;
   }
+
+  &_delete {
+    color: var(--red-text_2);
+  }
 }
 
 .tool_btn {
@@ -140,7 +144,7 @@
 
   &:hover {
     background-color: var(--select_option_bgc);
-    svg {
+    svg:not(.tool_icon_delete) {
       fill: url('#gradient');
     }
   }
@@ -170,6 +174,9 @@
   margin-right: 12px;
   width: 20px;
   fill: var(--icon-color_2);
+  &_delete {
+    fill: var(--red-text_2);
+  }
 }
 
 .check_box {

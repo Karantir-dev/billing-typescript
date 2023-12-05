@@ -75,7 +75,7 @@ export default function VDSmobileItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <Icon name="MoreDots" />
+              <Icon name="Settings" />
             </button>
 
             {toolsOpened && (
@@ -84,6 +84,51 @@ export default function VDSmobileItem({
                   <div className={s.pointer}></div>
                 </div>
                 <ul>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(setIdForInstruction)}
+                      disabled={
+                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                        !rights?.instruction
+                      }
+                    >
+                      <Icon name="Info" className={s.tool_icon} />
+                      {t('instruction')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(goToPanelFn)}
+                      disabled={
+                        server?.transition?.$ !== 'on' ||
+                        server?.status?.$ !== '2' ||
+                        !rights?.gotoserver
+                      }
+                    >
+                      <Icon name="ExitSign" className={s.tool_icon} />
+                      {t('go_to_panel')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(setIdForProlong)}
+                      disabled={
+                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                        server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
+                        !rights?.prolong ||
+                        server?.pricelist?.$?.toLowerCase()?.includes('ddos')
+                      }
+                    >
+                      <Icon name="Clock" className={s.tool_icon} />
+                      {t('prolong')}
+                    </button>
+                  </li>
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -98,7 +143,6 @@ export default function VDSmobileItem({
                       {t('edit', { ns: 'other' })}
                     </button>
                   </li>
-
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -114,7 +158,6 @@ export default function VDSmobileItem({
                       {t('password_change')}
                     </button>
                   </li>
-
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -126,7 +169,6 @@ export default function VDSmobileItem({
                       {t('reload')}
                     </button>
                   </li>
-
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -147,24 +189,6 @@ export default function VDSmobileItem({
                       {t('ip_addresses')}
                     </button>
                   </li>
-
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForProlong)}
-                      disabled={
-                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                        server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
-                        !rights?.prolong ||
-                        server?.pricelist?.$?.toLowerCase()?.includes('ddos')
-                      }
-                    >
-                      <Icon name="Clock" className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -179,39 +203,7 @@ export default function VDSmobileItem({
                       {t('history')}
                     </button>
                   </li>
-
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForInstruction)}
-                      disabled={
-                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                        !rights?.instruction
-                      }
-                    >
-                      <Icon name="Info" className={s.tool_icon} />
-                      {t('instruction')}
-                    </button>
-                  </li>
-
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(goToPanelFn)}
-                      disabled={
-                        server?.transition?.$ !== 'on' ||
-                        server?.status?.$ !== '2' ||
-                        !rights?.gotoserver
-                      }
-                    >
-                      <Icon name="ExitSign" className={s.tool_icon} />
-                      {t('go_to_panel')}
-                    </button>
-                  </li>
-
-                  <li className={s.tool_item}>
+                  <li className={cn(s.tool_item, s.tool_item_delete)}>
                     <button
                       disabled={
                         server?.status?.$ === '5' ||
@@ -222,7 +214,7 @@ export default function VDSmobileItem({
                       type="button"
                       onClick={() => handleToolBtnClick(setIdForDeleteModal)}
                     >
-                      <Icon name="Delete" className={s.tool_icon} />
+                      <Icon name="Delete" className={cn(s.tool_icon, s.tool_icon_delete)} />
                       {t('delete', { ns: 'other' })}
                     </button>
                   </li>

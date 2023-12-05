@@ -77,7 +77,7 @@ export default function Component(props) {
         </div>
         <div className={s.dots}>
           <Icon
-            name="MoreDots"
+            name="Settings"
             onClick={() => setIsOpened(!isOpened)}
             className={cn(s.dotIcons, { [s.opened]: isOpened })}
           />
@@ -94,20 +94,20 @@ export default function Component(props) {
             ref={dropDownEl}
           >
             <button
-              disabled={!rights?.edit}
-              className={s.settings_btn}
-              onClick={() => editDomainHandler(id)}
-            >
-              <Icon name="Edit" />
-              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
-            </button>
-            <button
               disabled={!rights?.prolong}
               className={s.settings_btn}
               onClick={() => renewDomainHandler(id)}
             >
               <Icon name="Clock" />
               <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
+            </button>
+            <button
+              disabled={!rights?.edit}
+              className={s.settings_btn}
+              onClick={() => editDomainHandler(id)}
+            >
+              <Icon name="Edit" />
+              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
             <button
               disabled={!rights?.history}
