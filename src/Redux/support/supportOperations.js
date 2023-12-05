@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { axiosInstance } from '@config/axiosInstance'
 import { actions, supportActions, userOperations } from '@redux'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import { toast } from 'react-toastify'
 import i18n from '@src/i18n'
 import translateSupportPaymentError from '@utils/translateSupportPaymentError'
@@ -41,12 +41,8 @@ const getTicketsHandler =
         dispatch(getTicketsFiltersSettingsHandler(signal, setIsLoading))
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -147,7 +143,8 @@ const getTicketsArchiveHandler =
         dispatch(getTicketsArchiveFiltersSettingsHandler(signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -408,15 +405,11 @@ const getTicketsFiltersSettingsHandler =
           dispatch(supportActions.getCurrentFilters(currentFilter))
         })
 
-        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -467,7 +460,8 @@ const getTicketsFiltersHandler = (data, signal, setIsLoading) => (dispatch, getS
       dispatch(getTicketsHandler({ p_cnt: data?.p_cnt }, signal, setIsLoading))
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -534,7 +528,8 @@ const getTicketsArchiveFiltersSettingsHandler =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -587,7 +582,8 @@ const getTicketsArchiveFiltersHandler =
         dispatch(getTicketsArchiveHandler({}, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 

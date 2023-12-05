@@ -24,7 +24,10 @@ import s from './PersonalSettings.module.scss'
 import * as routes from '@src/routes'
 import * as Yup from 'yup'
 import 'yup-phone'
-import { CYRILLIC_ALPHABET_PROHIBITED, EMAIL_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
+import {
+  CYRILLIC_ALPHABET_PROHIBITED,
+  EMAIL_SPECIAL_CHARACTERS_REGEX,
+} from '@utils/constants'
 
 export default function Component({ isComponentAllowedToEdit, signal, setIsLoading }) {
   const dispatch = useDispatch()
@@ -52,7 +55,9 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
   }
 
   const confirmEmailHandler = values => {
-    dispatch(settingsOperations?.setupEmailConfirm(userInfo?.$id, values))
+    dispatch(
+      settingsOperations?.setupEmailConfirm(userInfo?.$id, values, signal, setIsLoading),
+    )
   }
 
   useEffect(() => {

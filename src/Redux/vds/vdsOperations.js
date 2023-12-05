@@ -3,7 +3,7 @@ import { axiosInstance } from '@config/axiosInstance'
 import { actions, cartActions, authSelectors } from '@redux'
 import * as routes from '@src/routes'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, renameAddonFields } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
 import { t } from 'i18next'
 import i18n from '@src/i18n'
 import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
@@ -54,7 +54,8 @@ const getVDS =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -140,7 +141,7 @@ const editVDS =
               { signal },
             )
             .then(() => {
-              signal ? setIsLoading(false) : dispatch(actions.hideLoader())
+              handleLoadersClosing('closeLoader', dispatch, setIsLoading)
 
               dispatch(
                 cartActions.setCartIsOpenedState({
@@ -171,12 +172,12 @@ const editVDS =
 
         getVDSHandler && getVDSHandler()
 
-        signal ? setIsLoading(false) : dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(err => {
         if (checkIfTokenAlive(err.message, dispatch, !!signal)) {
           getVDSHandler && getVDSHandler()
-          signal ? setIsLoading(false) : dispatch(actions.hideLoader())
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         }
       })
   }
@@ -206,7 +207,8 @@ const getVDSOrderInfo =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -234,7 +236,8 @@ const getNewPeriodInfo =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -267,7 +270,8 @@ const getTariffParameters =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -330,7 +334,8 @@ const changeOrderFormField =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -546,7 +551,8 @@ const getIpInfo =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -762,7 +768,8 @@ const setVdsFilters =
           dispatch(getVDS({ setServers, setRights, setElemsTotal, signal, setIsLoading }))
         }
 
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
