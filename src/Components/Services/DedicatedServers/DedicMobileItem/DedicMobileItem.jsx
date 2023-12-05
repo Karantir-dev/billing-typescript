@@ -117,7 +117,21 @@ export default function DedicMobileItem({
                     <button
                       className={s.tool_btn}
                       type="button"
-                      disabled={server?.status?.$ === '1' || !rights?.prolong}
+                      disabled={
+                        server?.status?.$ === '1' ||
+                        !rights?.prolong ||
+                        server.name?.$.includes('Config 47') ||
+                        server.name?.$.includes('Config 48') ||
+                        server.name?.$.includes(
+                          '[NL] Intel 2xL5630 / 32GB RAM / 2x300GB SSD',
+                        ) ||
+                        server.name?.$.includes(
+                          '[NL] Intel 2xL5630 / 32GB RAM / 2x240GB SSD',
+                        ) ||
+                        server.name?.$.includes(
+                          '[NL] Intel 2xL5640 / 64GB RAM / 2x600GB SSD',
+                        )
+                      }
                       onClick={() => handleToolBtnClick(setElidForProlongModal)}
                     >
                       <Icon name="Clock" className={s.tool_icon} />
@@ -165,7 +179,6 @@ export default function DedicMobileItem({
                       {t('ip_addresses')}
                     </button>
                   </li>
-
                   <li className={s.tool_item}>
                     <button
                       disabled={server?.status?.$ === '1' || !rights?.history}

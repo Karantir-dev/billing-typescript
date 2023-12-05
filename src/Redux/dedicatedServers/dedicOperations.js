@@ -528,6 +528,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         userpassword,
         password,
         server_name,
+        name,
       } = data.doc
 
       const amountIPName = currentSumIp.join('').slice(0, 10)
@@ -565,6 +566,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         userpassword,
         password,
         server_name,
+        name,
       }
 
       setInitialParams(editModalData)
