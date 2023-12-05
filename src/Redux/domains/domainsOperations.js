@@ -4,7 +4,7 @@ import axios from 'axios'
 import { actions, domainsActions, cartActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import * as route from '@src/routes'
 
 const getDomains =
@@ -46,7 +46,8 @@ const getDomains =
         dispatch(getDomainsFilters({}, false, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -105,7 +106,8 @@ const getDomainsFilters =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -150,10 +152,10 @@ const getDomainsOrderName =
             .then(response => {
               setAutoprolongPrices(response.data)
             })
-            .catch(
-              error =>
-                checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false),
-            ))
+            .catch(error => {
+              handleLoadersClosing(error?.message, dispatch, setIsLoading)
+              checkIfTokenAlive(error.message, dispatch, true)
+            }))
 
         if (!search) {
           domainData?.list?.forEach(l => {
@@ -241,7 +243,8 @@ const getDomainsOrderName =
           })
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -409,7 +412,8 @@ const getDomainsContacts =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -443,7 +447,8 @@ const getDomainsNS =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -506,7 +511,8 @@ const getDomainPaymentInfo =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -549,7 +555,8 @@ const createDomain =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -578,7 +585,8 @@ const getTermsOfConditionalText =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -699,7 +707,8 @@ const renewService =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -741,7 +750,8 @@ const deleteDomain =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -878,7 +888,8 @@ const editDomainNS =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 

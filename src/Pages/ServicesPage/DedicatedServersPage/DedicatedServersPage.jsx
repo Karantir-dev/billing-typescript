@@ -390,7 +390,16 @@ export default function DedicatedServersPage() {
                     (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
                     server?.item_status?.$.trim() === 'Suspended by Administrator' ||
                     server.name?.$.includes('Config 47') ||
-                    server.name?.$.includes('Config 48'),
+                    server.name?.$.includes('Config 48') ||
+                    server.name?.$.includes(
+                      '[NL] Intel 2xL5630 / 32GB RAM / 2x300GB SSD',
+                    ) ||
+                    server.name?.$.includes(
+                      '[NL] Intel 2xL5630 / 32GB RAM / 2x240GB SSD',
+                    ) ||
+                    server.name?.$.includes(
+                      '[NL] Intel 2xL5640 / 64GB RAM / 2x600GB SSD',
+                    ),
                 ) || !rights?.prolong
               }
               onClick={() =>

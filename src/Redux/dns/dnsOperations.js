@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import i18n from '@src/i18n'
 import * as route from '@src/routes'
 import { actions, cartActions, dnsActions } from '@redux'
@@ -41,15 +41,11 @@ const getDNSList = (data, signal, setIsLoading) => (dispatch, getState) => {
       dispatch(dnsActions.setDNSList(dnsRenderData))
       dispatch(dnsActions.setDNSCount(count))
 
-      setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+      handleLoadersClosing('closeLoader', dispatch, setIsLoading)
     })
     .catch(error => {
-      if (setIsLoading) {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-      } else {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      }
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -98,7 +94,8 @@ const getTarifs =
         if (error.message === 'No tariff plans available for order') {
           setTarifs(error.message)
         }
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -174,7 +171,8 @@ const getParameters =
       })
 
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -207,7 +205,8 @@ const updateDNSPrice =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -582,7 +581,8 @@ const getDNSFilters =
         if (error.message.includes('filter')) {
           dispatch(getDNSList({ p_num: 1 }, signal, setIsLoading))
         }
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 

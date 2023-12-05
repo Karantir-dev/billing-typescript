@@ -8,7 +8,7 @@ import {
 } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import i18n from '@src/i18n'
 
 const getUserEdit =
@@ -95,12 +95,8 @@ const getUserEdit =
         )
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -242,7 +238,7 @@ const getUserParams =
             ),
           )
         }
-        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .then(() => {
         if (checkEmail) {
@@ -250,12 +246,8 @@ const getUserParams =
         }
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -382,16 +374,18 @@ const setPersonalSettings =
             dispatch(getUserEdit(elid, false, false, false, signal, setIsLoading))
           })
           .catch(error => {
-            checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+            handleLoadersClosing(error?.message, dispatch, setIsLoading)
+            checkIfTokenAlive(error.message, dispatch, true)
           })
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
-const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const setupEmailConfirm = (elid, data, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading(true)
 
   const userParamsData = {
     email: data?.email_notif || null,
@@ -431,15 +425,16 @@ const setupEmailConfirm = (elid, data) => (dispatch, getState) => {
         auth: sessionId,
         ...userParamsData,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
-      dispatch(getUserEdit(elid, true))
+      dispatch(getUserEdit(elid, true, null, null, signal, setIsLoading))
     })
 
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -467,7 +462,8 @@ const sendEmailConfirm = (signal, setIsLoading) => (dispatch, getState) => {
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 

@@ -2,7 +2,7 @@ import qs from 'qs'
 import { axiosInstance } from '@config/axiosInstance'
 import { accessLogsActions } from '@redux'
 import i18n from 'i18next'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 
 const getAccessLogsHandler =
   (body = {}, signal, setIsLoading) =>
@@ -37,7 +37,8 @@ const getAccessLogsHandler =
         dispatch(getAccessLogsFiltersHandler({}, signal, setIsLoading))
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -74,7 +75,8 @@ const getAccessLogsFiltersHandler =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -127,11 +129,13 @@ const filterDataHandler =
             setIsLoading(false)
           })
           .catch(error => {
-            checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+            handleLoadersClosing(error?.message, dispatch, setIsLoading)
+            checkIfTokenAlive(error.message, dispatch, true)
           })
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -165,7 +169,8 @@ const getAccessLogsCvs = (p_cnt, signal, setIsLoading) => (dispatch, getState) =
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 

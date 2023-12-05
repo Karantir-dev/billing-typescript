@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, cartActions, dedicActions, vdsOperations } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { checkIfTokenAlive, replaceAllFn, handleLoadersClosing } from '@utils'
 import i18n from '@src/i18n'
 import * as route from '@src/routes'
 
@@ -46,7 +46,8 @@ const getServersList = (data, signal, setIsLoading) => (dispatch, getState) => {
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -106,7 +107,8 @@ const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -153,7 +155,8 @@ const getUpdatedTarrifs =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -214,7 +217,8 @@ const getUpdatedPeriod =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -305,7 +309,8 @@ const getParameters =
       })
 
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -362,7 +367,8 @@ const updatePrice =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -428,7 +434,8 @@ const orderServer =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -720,7 +727,8 @@ const editDedicServerNoExtraPay =
         handleModal && handleModal()
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -811,7 +819,8 @@ const getIPList =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -1498,7 +1507,8 @@ const getDedicFilters =
         if (error.message.includes('filter')) {
           dispatch(getServersList({ p_num: 1 }, signal, setIsLoading))
         }
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
