@@ -49,10 +49,7 @@
   width: 146px;
   margin: 0 auto;
   justify-content: center;
-
-  &.list_view {
-    justify-content: space-between;
-  }
+  gap: 26px;
 }
 
 .captcha {

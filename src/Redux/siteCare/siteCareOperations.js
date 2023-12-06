@@ -1,9 +1,10 @@
+/* eslint-disable no-unreachable */
 import qs from 'qs'
 import i18n from '@src/i18n'
 import { actions, cartActions, siteCareActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import * as route from '@src/routes'
 
 const getSiteCare =
@@ -44,12 +45,8 @@ const getSiteCare =
         dispatch(getSiteCareFilters({}, false, signal, setIsLoading))
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -107,15 +104,11 @@ const getSiteCareFilters =
 
         dispatch(siteCareActions.setSiteCareFilters(currentFilters))
         dispatch(siteCareActions.setSiteCareFiltersLists(filters))
-        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -361,9 +354,7 @@ const deleteSiteCare =
       )
       .then(({ data }) => {
         if (data.doc.error) {
-          if (
-            data.doc.error.msg.$.includes('The minimum order period for this service')
-          ) {
+          if (data.doc.error.$type === 'pricelist_min_order') {
             const strings = data?.doc?.error?.msg?.$?.split('.')
             const parsePrice = price => {
               const words = price?.match(/[\d|.|\\+]+/g)
@@ -390,8 +381,10 @@ const deleteSiteCare =
                 { ns: 'other', min: min, left: left },
               )}`,
             )
-          } else {
-            toast.error(`${i18n.t(data.doc.error.msg.$.trim(), { ns: 'other' })}`)
+
+            setDeleteModal && setDeleteModal(false)
+            dispatch(actions.hideLoader())
+            return
           }
 
           throw new Error(data.doc.error.msg.$)
@@ -406,6 +399,7 @@ const deleteSiteCare =
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
+        setDeleteModal && setDeleteModal(false)
         dispatch(actions.hideLoader())
       })
   }
@@ -463,7 +457,8 @@ const orderSiteCare =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -524,7 +519,8 @@ const orderSiteCarePricelist =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 

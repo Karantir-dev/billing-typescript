@@ -76,7 +76,11 @@ export default function Component(props) {
           <div className={cn(s.item_text, s.seventh_item)}>{cost}</div>
         </div>
         <div className={s.dots}>
-          <Icon name="MoreDots" onClick={() => setIsOpened(!isOpened)} className={s.dotIcons} />
+          <Icon
+            name="Settings"
+            onClick={() => setIsOpened(!isOpened)}
+            className={s.dotIcons}
+          />
 
           <div
             role="button"
@@ -90,43 +94,48 @@ export default function Component(props) {
             ref={dropDownEl}
           >
             <button
-              className={s.settings_btn}
-              onClick={() => editSiteCareHandler(id)}
-              disabled={!rights?.edit}
-            >
-              <Icon name="Edit" />
-              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
-            </button>
-
-            <button
-              className={s.settings_btn}
-              onClick={() => prolongSiteCareHandler(id)}
-              disabled={!rights?.prolong}
-            >
-              <Icon name="Clock" />
-              <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
-            </button>
-            <button
-              className={s.settings_btn}
-              onClick={() => historySiteCareHandler(id)}
-              disabled={!rights?.history}
-            >
-              <Icon name="Refund" />
-              <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
-            </button>
-
-            <button
-              disabled={!rights?.instruction || el?.status?.$ === '1'}
+              disabled={
+                (el?.status?.$ !== '3' && el?.status?.$ !== '2') || !rights?.instruction
+              }
               className={s.settings_btn}
               onClick={() => instructionVhostHandler(id)}
             >
               <Icon name="Info" />
               <p className={s.setting_text}>{t('instruction', { ns: 'vds' })}</p>
             </button>
-
+            <button
+              className={s.settings_btn}
+              onClick={() => prolongSiteCareHandler(id)}
+              disabled={
+                (el?.status?.$ !== '3' && el?.status?.$ !== '2') ||
+                el?.item_status?.$?.trim() === 'Suspended by Administrator' ||
+                !rights?.prolong
+              }
+            >
+              <Icon name="Clock" />
+              <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
+            </button>
+            <button
+              className={s.settings_btn}
+              onClick={() => editSiteCareHandler(id)}
+              disabled={(el?.status?.$ !== '3' && el?.status?.$ !== '2') || !rights?.edit}
+            >
+              <Icon name="Edit" />
+              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
+            </button>
+            <button
+              className={s.settings_btn}
+              onClick={() => historySiteCareHandler(id)}
+              disabled={
+                (el?.status?.$ !== '3' && el?.status?.$ !== '2') || !rights?.history
+              }
+            >
+              <Icon name="Refund" />
+              <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
+            </button>
             {item_status?.$orig !== '5_open' && (
               <button
-                className={s.settings_btn}
+                className={cn(s.settings_btn, s.settings_btn_delete)}
                 onClick={() => {
                   deleteSiteCareHandler(id)
                   setDeleteIds(id)

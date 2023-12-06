@@ -188,6 +188,16 @@
       fill: var(--disabled_icon_color);
     }
   }
+  &_delete {
+    color: var(--red-text_2);
+    &:hover,
+    & {
+      svg,
+      path {
+        fill: var(--red-text_2);
+      }
+    }
+  }
 
   &:first-of-type {
     border-top-left-radius: 5px;

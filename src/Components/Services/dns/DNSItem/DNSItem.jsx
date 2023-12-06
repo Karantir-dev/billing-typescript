@@ -84,7 +84,7 @@ export default function DNSItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <Icon name="MoreDots" />
+              <Icon name="Settings" />
             </button>
 
             {toolsOpened && (
@@ -97,42 +97,6 @@ export default function DNSItem({
                     <button
                       className={s.tool_btn}
                       type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal)}
-                      disabled={!pageRights?.edit || storage?.status?.$ === '1'}
-                    >
-                      <Icon name="Edit" className={s.tool_icon} />
-                      {t('edit', { ns: 'other' })}
-                    </button>
-                  </li>
-
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={storage?.status?.$ === '1' || !pageRights?.prolong}
-                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
-                    >
-                      <Icon name="Clock" className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      disabled={!pageRights?.history || storage?.status?.$ === '1'}
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => {
-                        handleToolBtnClick(setElidForHistoryModal)
-                      }}
-                    >
-                      <Icon name="Refund" className={s.tool_icon} />
-                      {t('history')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
                       disabled={storage?.status?.$ === '1' || !pageRights?.instruction}
                       onClick={() => handleToolBtnClick(setElidForInstructionModal)}
                     >
@@ -140,6 +104,7 @@ export default function DNSItem({
                       {t('instruction')}
                     </button>
                   </li>
+
                   <li className={s.tool_item}>
                     <button
                       className={s.tool_btn}
@@ -155,6 +120,41 @@ export default function DNSItem({
                     >
                       <Icon name="ExitSign" className={s.tool_icon} />
                       {t('go_to_panel')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={storage?.status?.$ === '1' || !pageRights?.prolong}
+                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
+                    >
+                      <Icon name="Clock" className={s.tool_icon} />
+                      {t('prolong')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => handleToolBtnClick(setElidForEditModal)}
+                      disabled={!pageRights?.edit || storage?.status?.$ === '1'}
+                    >
+                      <Icon name="Edit" className={s.tool_icon} />
+                      {t('edit', { ns: 'other' })}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      disabled={!pageRights?.history || storage?.status?.$ === '1'}
+                      className={s.tool_btn}
+                      type="button"
+                      onClick={() => {
+                        handleToolBtnClick(setElidForHistoryModal)
+                      }}
+                    >
+                      <Icon name="Refund" className={s.tool_icon} />
+                      {t('history')}
                     </button>
                   </li>
                 </ul>

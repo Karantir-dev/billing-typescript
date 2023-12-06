@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, usersActions } from '@redux'
 import i18n from '@src/i18n'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import { axiosInstance } from '@config/axiosInstance'
 
 const getUsers = (signal, setIsLoading) => (dispatch, getState) => {
@@ -30,7 +30,8 @@ const getUsers = (signal, setIsLoading) => (dispatch, getState) => {
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -255,15 +256,11 @@ const getRights =
         setRightsForRender && setRightsForRender(metadata)
 
         !setRightsForRender && dispatch(usersActions.setRights(elem))
-        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -348,15 +345,11 @@ const getAvailableRights =
         const { metadata } = data.doc
 
         setRights(metadata)
-        setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 

@@ -121,7 +121,7 @@ export default function DedicItem({
               type="button"
               onClick={() => setToolsOpened(true)}
             >
-              <Icon name="MoreDots" />
+              <Icon name="Settings" />
             </button>
 
             {toolsOpened && (
@@ -132,10 +132,64 @@ export default function DedicItem({
                 <ul>
                   <li className={s.tool_item}>
                     <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={server?.status?.$ === '1' || !rights?.instruction}
+                      onClick={() => handleToolBtnClick(setElidForInstructionModal)}
+                    >
+                      <Icon name="Info" className={s.tool_icon} />
+                      {t('instruction')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={
+                        server.transition?.$ !== 'on' ||
+                        server?.status?.$ !== '2' ||
+                        !rights?.gotoserver
+                      }
+                      onClick={() => {
+                        dispatch(dedicOperations.goToPanel(server.id.$))
+                      }}
+                    >
+                      <Icon name="ExitSign" className={s.tool_icon} />
+                      {t('go_to_panel')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
+                      className={s.tool_btn}
+                      type="button"
+                      disabled={
+                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+                        server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
+                        !rights?.prolong ||
+                        server.name?.$.includes('Config 47') ||
+                        server.name?.$.includes('Config 48') ||
+                        server.name?.$.includes(
+                          '[NL] Intel 2xL5630 / 32GB RAM / 2x300GB SSD',
+                        ) ||
+                        server.name?.$.includes(
+                          '[NL] Intel 2xL5630 / 32GB RAM / 2x240GB SSD',
+                        ) ||
+                        server.name?.$.includes(
+                          '[NL] Intel 2xL5640 / 64GB RAM / 2x600GB SSD',
+                        )
+                      }
+                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
+                    >
+                      <Icon name="Clock" className={s.tool_icon} />
+                      {t('prolong')}
+                    </button>
+                  </li>
+                  <li className={s.tool_item}>
+                    <button
                       disabled={!rights?.edit}
                       className={s.tool_btn}
                       type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal, server.id.$)}
+                      onClick={() => handleToolBtnClick(setElidForEditModal)}
                     >
                       <Icon name="Edit" className={s.tool_icon} />
                       {t('edit', { ns: 'other' })}
@@ -173,23 +227,6 @@ export default function DedicItem({
                   </li>
                   <li className={s.tool_item}>
                     <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={
-                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                        server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
-                        !rights?.prolong
-                      }
-                      onClick={() =>
-                        handleToolBtnClick(setElidForProlongModal, server.id.$)
-                      }
-                    >
-                      <Icon name="Clock" className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
                       disabled={server?.status?.$ === '1' || !rights?.history}
                       className={s.tool_btn}
                       type="button"
@@ -201,37 +238,8 @@ export default function DedicItem({
                       {t('history')}
                     </button>
                   </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={server?.status?.$ === '1' || !rights?.instruction}
-                      onClick={() =>
-                        handleToolBtnClick(setElidForInstructionModal, server.id.$)
-                      }
-                    >
-                      <Icon name="Info" className={s.tool_icon} />
-                      {t('instruction')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={
-                        server.transition?.$ !== 'on' ||
-                        server?.status?.$ !== '2' ||
-                        !rights?.gotoserver
-                      }
-                      onClick={() => {
-                        dispatch(dedicOperations.goToPanel(server.id.$))
-                      }}
-                    >
-                      <Icon name="ExitSign" className={s.tool_icon} />
-                      {t('go_to_panel')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
+
+                  <li className={cn(s.tool_item, s.tool_item_delete)}>
                     <button
                       disabled={
                         server?.status?.$ === '5' ||
@@ -241,7 +249,10 @@ export default function DedicItem({
                       className={s.tool_btn}
                       onClick={() => setIdForDeleteModal([server.id.$])}
                     >
-                      <Icon name="Delete" className={s.tool_icon} />
+                      <Icon
+                        name="Delete"
+                        className={cn(s.tool_icon, s.tool_icon_delete)}
+                      />
                       <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
                     </button>
                   </li>

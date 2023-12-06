@@ -432,7 +432,7 @@ const getPayerEditInfo =
         })
 
         const hideLoader = () =>
-          setIsLoading ? setIsLoading(false) : dispatch(actions.hideLoader())
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
 
         dispatch(payersActions.setPayersSelectedFields(selectedFields))
         dispatch(payersActions.setPayersSelectLists(filters))
@@ -447,12 +447,8 @@ const getPayerEditInfo =
         hideLoader()
       })
       .catch(error => {
-        if (setIsLoading) {
-          checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
-        } else {
-          checkIfTokenAlive(error.message, dispatch)
-          dispatch(actions.hideLoader())
-        }
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 

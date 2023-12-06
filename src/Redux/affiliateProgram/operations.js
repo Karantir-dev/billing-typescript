@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { axiosInstance } from '@config/axiosInstance'
 import { actions, affiliateActions, authSelectors } from '@redux'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 
 const getReferralLink = (signal, setIsLoading) => (dispatch, getState) => {
   setIsLoading(true)
@@ -27,7 +27,8 @@ const getReferralLink = (signal, setIsLoading) => (dispatch, getState) => {
       setIsLoading(false)
     })
     .catch(err => {
-      checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(err?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(err.message, dispatch, true)
     })
 }
 
@@ -79,7 +80,8 @@ const getInitialIncomeInfo =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -127,7 +129,8 @@ const getChartInfo =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -203,7 +206,8 @@ const getInitialStatistics =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -261,7 +265,8 @@ const getFilteredStatistics =
           })
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -291,7 +296,8 @@ const getNextPageStatistics =
         setIsLoading(false)
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 
@@ -336,7 +342,8 @@ const dropFilters =
           })
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(err.message, dispatch, true)
       })
   }
 

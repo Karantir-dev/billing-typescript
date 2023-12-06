@@ -29,6 +29,7 @@ const InputField = function InputField(props) {
     isRequired,
     inputAuth,
     onPlusClick,
+    infoText,
     ...anotherProps
   } = props
 
@@ -103,7 +104,7 @@ const InputField = function InputField(props) {
             [s.input]: true,
             [s.inputAuth]: inputAuth,
             [s.iconLeft]: iconLeft,
-            [s.iconRight]: iconRight || type === 'password',
+            [s.iconRight]: iconRight || type === 'password' || infoText,
             [s.shadow]: isShadow,
             [s.field_bgc]: background,
             [s.error]: error && touched,
@@ -125,6 +126,14 @@ const InputField = function InputField(props) {
         {tabletOrHigher && type !== 'password' && renderIcon(iconRight, 'right')}
 
         {renderPasswordShown(type)}
+        {infoText && (
+          <>
+            <button type="button" className={s.infoBtn}>
+              <Icon name="Info" />
+            </button>
+            <div className={s.infoText}>{infoText}</div>
+          </>
+        )}
       </div>
       <ErrorMessage className={s.error_message} name={name} component="span" />
     </div>

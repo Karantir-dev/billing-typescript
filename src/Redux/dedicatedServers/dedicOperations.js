@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, cartActions, dedicActions, vdsOperations } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { checkIfTokenAlive, replaceAllFn, handleLoadersClosing } from '@utils'
 import i18n from '@src/i18n'
 import * as route from '@src/routes'
 
@@ -46,7 +46,8 @@ const getServersList = (data, signal, setIsLoading) => (dispatch, getState) => {
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -106,7 +107,8 @@ const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -153,7 +155,8 @@ const getUpdatedTarrifs =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -214,7 +217,8 @@ const getUpdatedPeriod =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -305,7 +309,8 @@ const getParameters =
       })
 
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -362,7 +367,8 @@ const updatePrice =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -428,7 +434,8 @@ const orderServer =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -521,6 +528,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         userpassword,
         password,
         server_name,
+        name,
       } = data.doc
 
       const amountIPName = currentSumIp.join('').slice(0, 10)
@@ -558,6 +566,7 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         userpassword,
         password,
         server_name,
+        name,
       }
 
       setInitialParams(editModalData)
@@ -718,7 +727,8 @@ const editDedicServerNoExtraPay =
         handleModal && handleModal()
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -809,7 +819,8 @@ const getIPList =
         setIsLoading(false)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -1496,7 +1507,8 @@ const getDedicFilters =
         if (error.message.includes('filter')) {
           dispatch(getServersList({ p_num: 1 }, signal, setIsLoading))
         }
-        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
       })
   }
 
@@ -1518,7 +1530,42 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
       }),
     )
     .then(({ data }) => {
-      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      if (data.doc.error) {
+        if (data.doc.error.$type === 'pricelist_min_order') {
+          const strings = data?.doc?.error?.msg?.$?.split('.')
+          const parsePrice = price => {
+            const words = price?.match(/[\d|.|\\+]+/g)
+            const amounts = []
+
+            if (words.length > 0) {
+              words.forEach(w => {
+                if (!isNaN(w)) {
+                  amounts.push(w)
+                }
+              })
+            } else {
+              return
+            }
+
+            return amounts[0]
+          }
+
+          const min = parsePrice(strings[0])
+          const left = parsePrice(strings[1])
+          toast.error(
+            `${i18n.t(
+              'The minimum order period for this service is {{min}}. {{left}} are left',
+              { ns: 'other', min: min, left: left },
+            )}`,
+          )
+
+          closeFn()
+          dispatch(actions.hideLoader())
+          return
+        }
+
+        throw new Error(data.doc.error.msg.$)
+      }
 
       dispatch(getServersList({}, signal, setIsLoading))
       closeFn()

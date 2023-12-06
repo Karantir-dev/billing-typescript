@@ -153,7 +153,7 @@ export default function AffiliateProgramStatistics() {
                 <span className={s.row_value}>
                   {dayjs(cdate.$).format('DD MMM YYYY')}{' '}
                   {t('short_year', { ns: 'other' })}
-                  <span className={s.time}>{dayjs(cdate.$).format('hh:mm')}</span>
+                  <span className={s.time}>{dayjs(cdate.$).format('HH:mm')}</span>
                 </span>
 
                 <span className={cn(s.row_value, s.website)}>

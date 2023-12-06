@@ -69,6 +69,7 @@
   position: absolute;
   right: 25px;
   top: 25px;
+  cursor: pointer;
 }
 
 .tableBlockFirst,
@@ -171,6 +172,25 @@
   &:last-of-type {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+  }
+
+  &:disabled {
+    color: var(--transparent-color);
+    pointer-events: none;
+    svg {
+      fill: var(--disabled_icon_color);
+    }
+  }
+
+  &_delete {
+    color: var(--red-text_2);
+    &:hover,
+    & {
+      svg,
+      path {
+        fill: var(--red-text_2);
+      }
+    }
   }
 }
 
@@ -295,7 +315,6 @@
     position: relative;
     top: 0;
     right: 0;
-    // display: none;
   }
 
   .table {

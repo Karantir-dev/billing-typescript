@@ -76,7 +76,7 @@ export default function Component(props) {
         </div>
         <div className={s.dots}>
           <Icon
-            name="MoreDots"
+            name="Settings"
             onClick={() => setIsOpened(!isOpened)}
             className={s.dotIcons}
           />
@@ -94,20 +94,19 @@ export default function Component(props) {
           >
             <button
               className={s.settings_btn}
-              onClick={() => editSiteCareHandler(id)}
-              disabled={!rights?.edit}
-            >
-              <Icon name="Edit" />
-              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
-            </button>
-
-            <button
-              className={s.settings_btn}
               onClick={() => prolongSiteCareHandler(id)}
               disabled={!rights?.prolong}
             >
               <Icon name="Clock" />
               <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
+            </button>
+            <button
+              className={s.settings_btn}
+              onClick={() => editSiteCareHandler(id)}
+              disabled={!rights?.edit}
+            >
+              <Icon name="Edit" />
+              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
             </button>
             <button
               className={s.settings_btn}
@@ -117,9 +116,8 @@ export default function Component(props) {
               <Icon name="Refund" />
               <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
             </button>
-
             <button
-              className={s.settings_btn}
+              className={cn(s.settings_btn, s.settings_btn_delete)}
               onClick={() => {
                 deleteSiteCareHandler(id)
                 setDeleteIds(id)

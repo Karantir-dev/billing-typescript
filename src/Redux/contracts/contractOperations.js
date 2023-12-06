@@ -1,7 +1,7 @@
 import qs from 'qs'
 import { actions, contarctsActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 
 const getContracts = (data, signal, setIsLoading) => (dispatch, getState) => {
   setIsLoading(true)
@@ -38,7 +38,8 @@ const getContracts = (data, signal, setIsLoading) => (dispatch, getState) => {
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 
@@ -72,7 +73,8 @@ const getPdfFile = (elid, name, signal, setIsLoading) => (dispatch, getState) =>
       setIsLoading(false)
     })
     .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      checkIfTokenAlive(error.message, dispatch, true)
     })
 }
 

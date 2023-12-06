@@ -14,27 +14,34 @@ export const URL_REGEX =
   /^(?:https?:\/\/)(?:www\.)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,}(?:\/[^\s]*)?$/
 
 export const SOFTWARE_ICONS_LIST = [
-  'AlmaLinux',
-  'Bitrix',
-  'CentOS',
-  'Debian',
-  'Django',
-  'Fedora',
-  'FreeBSD',
-  'HestiaCP',
-  'ISPmanager',
-  'LAMP',
-  'LEMP',
+  'almalinux',
+  'bitrix',
+  'centos',
+  'debian',
+  'django',
+  'fedora',
+  'freebsd',
+  'hestiacp',
+  'ispmanager',
+  'lamp',
+  'lemp',
   'null',
-  'Openvpn',
-  'Redmine',
-  'Teamspeak',
-  'Tomcat',
-  'Ubuntu',
-  'VestaCP',
-  'VMmanager',
-  'Windows',
-  'Rocky',
+  'openvpn',
+  'redmine',
+  'teamspeak',
+  'tomcat',
+  'ubuntu',
+  'vestacp',
+  'vmmanager',
+  'windows',
+  'rocky',
+  'oracle',
+  'nagios',
+  'wireguard',
+  'zabbix',
+  'chrome',
+  'astralinux',
+  'proxmox'
 ]
 
 // phone countries for yookassa payment method (QIWI)
@@ -92,6 +99,17 @@ export const USERS_WITH_G7 = [
   216377, 183382, 361793, 335326, 361909, 361952, 362236, 34450, 257388, 363389, 356163,
   346720, 252023, 351211, 363975, 364041, 364067, 334169, 36971, 366046, 40520, 367015,
   354039, 365250, 359551, 343138, 368290, 363037,
+  // this is test account id:
+  370352,
+]
+
+export const USERS_WITH_G8 = [
+  187203, 193637, 218528, 175454, 184984, 198704, 46867, 66741, 40719, 264012, 276602,
+  285137, 12710, 297593, 296984, 213605, 319146, 210192, 243286, 274583, 204338, 334840,
+  260597, 347435, 223783, 348308, 348271, 225858, 344125, 346084, 245925, 336823, 235716,
+  351661, 343766, 349795, 348393, 172925, 257908, 41803, 272622, 365208, 353563, 367739,
+  237556, 359441,
+
   // this is test account id:
   370352,
 ]

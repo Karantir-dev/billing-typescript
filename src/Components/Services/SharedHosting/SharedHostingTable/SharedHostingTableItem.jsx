@@ -126,7 +126,7 @@ export default function Component(props) {
         </div>
         <div className={s.dots}>
           <Icon
-            name="MoreDots"
+            name="Settings"
             onClick={() => setIsOpened(!isOpened)}
             className={s.dotIcons}
           />
@@ -142,43 +142,6 @@ export default function Component(props) {
             })}
             ref={dropDownEl}
           >
-            <button
-              disabled={!rights?.edit}
-              className={s.settings_btn}
-              onClick={() => editVhostHandler()}
-            >
-              <Icon name="Edit" />
-              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
-            </button>
-            <button
-              disabled={!rights?.changepricelist || el?.status?.$ === '1'}
-              className={s.settings_btn}
-              onClick={changeTariffVhostHandler}
-            >
-              <Icon name="ChangeTariff" />
-              <p className={s.setting_text}>
-                {t('trusted_users.Change tariff', { ns: 'trusted_users' })}
-              </p>
-            </button>
-            <button
-              disabled={!rights?.prolong || el?.status?.$ === '1'}
-              className={s.settings_btn}
-              onClick={() => {
-                prolongVhostHandler()
-                setElidForProlongModal([id])
-              }}
-            >
-              <Icon name="Clock" />
-              <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
-            </button>
-            <button
-              disabled={!rights?.history}
-              className={s.settings_btn}
-              onClick={historyVhostHandler}
-            >
-              <Icon name="Refund" />
-              <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
-            </button>
             <button
               disabled={!rights?.instruction || el?.status?.$ === '1'}
               className={s.settings_btn}
@@ -198,10 +161,49 @@ export default function Component(props) {
               <p className={s.setting_text}>{t('go_to_panel', { ns: 'vds' })}</p>
             </button>
             <button
+              disabled={!rights?.prolong || el?.status?.$ === '1'}
+              className={s.settings_btn}
+              onClick={() => {
+                prolongVhostHandler()
+                setElidForProlongModal([id])
+              }}
+            >
+              <Icon name="Clock" />
+              <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
+            </button>
+            <button
+              disabled={!rights?.edit}
+              className={s.settings_btn}
+              onClick={() => editVhostHandler()}
+            >
+              <Icon name="Edit" />
+              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
+            </button>
+            <button
+              disabled={!rights?.changepricelist || el?.status?.$ === '1'}
+              className={s.settings_btn}
+              onClick={changeTariffVhostHandler}
+            >
+              <Icon name="ChangeTariff" />
+              <p className={s.setting_text}>
+                {t('trusted_users.Change tariff', { ns: 'trusted_users' })}
+              </p>
+            </button>
+
+            <button
+              disabled={!rights?.history}
+              className={s.settings_btn}
+              onClick={historyVhostHandler}
+            >
+              <Icon name="Refund" />
+              <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
+            </button>
+
+            <button
               disabled={
                 el?.status?.$ === '5' || el?.scheduledclose?.$ === 'on' || !rights?.delete
               }
-              className={s.settings_btn}
+              className={cn(s.settings_btn, s.settings_btn_delete)}
               onClick={() => setIdForDeleteModal([id])}
             >
               <Icon name="Delete" />
