@@ -77,6 +77,7 @@ export default function ModalAddPayer(props) {
     }
 
     if (window.fbq) window.fbq('track', 'AddPaymentInfo')
+    if (window.qp) window.qp('track', 'AddPaymentInfo')
 
     if (values.profiletype && values.profiletype !== '1') {
       data.jobtitle = 'jobtitle'
