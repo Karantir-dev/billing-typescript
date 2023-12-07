@@ -160,10 +160,15 @@ export default function ModalCreatePayment(props) {
       data.name = values?.name || ''
     }
 
-    // facebook pixel event
+    // Facebook pixel event
     if (!values?.profile && window.fbq) {
       window.fbq('track', 'AddPaymentInfo')
     }
+    // Quora pixel event
+    if (!values?.profile && window.qp) {
+      window.qp('track', 'AddPaymentInfo')
+    }
+    if (window.qp) window.qp('track', 'InitiateCheckout')
 
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }

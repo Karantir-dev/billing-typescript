@@ -105,6 +105,7 @@ export default function useAnalyticsSender() {
 
             window.fbq('track', 'Purchase', fbAnalytics)
           }
+          if (window.qp) window.qp('track', 'Purchase')
 
           // if the GTM is absent we add extra field to the front analytics
         } else {
@@ -133,15 +134,22 @@ export default function useAnalyticsSender() {
           // checks if the GTM is already loaded and sends analytics
           if (window.dataLayer?.find(el => el['gtm.start'])) {
             window?.dataLayer?.push(analyticsData)
-            axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
+            axios.post(
+              `${process.env.REACT_APP_API_URL}/api/analytic/add/`,
+              analyticsData,
+            )
 
             if (window.fbq) {
               window.fbq('track', 'Purchase', fbAnalytics)
             }
+            if (window.qp) window.qp('track', 'Purchase')
           } else {
             analyticsData.gtm_absent = true
 
-            axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
+            axios.post(
+              `${process.env.REACT_APP_API_URL}/api/analytic/add/`,
+              analyticsData,
+            )
           }
         }
       }

@@ -353,6 +353,7 @@ const register =
         }
 
         if (window.fbq) window.fbq('track', 'CompleteRegistration')
+        if (window.qp) window.qp('track', 'CompleteRegistration')
 
         successRegistration()
 
@@ -500,6 +501,7 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                   sendInfoToSite({ sessionId })
 
                   if (window.fbq) window.fbq('track', 'CompleteRegistration')
+                  if (window.qp) window.qp('track', 'CompleteRegistration')
 
                   dispatch(authActions.loginSuccess(sessionId))
                 })
