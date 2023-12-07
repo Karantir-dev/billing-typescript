@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { SupportFilter, SupportTable, Pagination, Loader } from '@components'
+import {
+  SupportFilter,
+  SupportTable,
+  Pagination,
+  Loader,
+  HintWrapper,
+  IconButton,
+} from '@components'
 import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsPage.module.scss'
 import { useCancelRequest } from '@src/utils'
@@ -66,6 +73,37 @@ export default function Component() {
             onPageChange={page => setP_num(page)}
             onPageItemChange={items => setP_cnt(items)}
           />
+        </div>
+      )}
+
+      {!!selectedTickets.length && (
+        <div className={s.footer}>
+          <HintWrapper
+            wrapperClassName={s.archiveBtn}
+            popupClassName={s.archivePopUp}
+            label={t('To the archive')}
+          >
+            <IconButton
+              dataTestid={'archiveBtn'}
+              disabled={
+                selectedTickets.length
+                  ? !selectedTickets.every(ticket => ticket?.toarchive?.$ === 'on')
+                  : true
+              }
+              onClick={() => {
+                dispatch(
+                  supportOperations.archiveTicketsHandler(
+                    selectedTickets.map(el => el?.id?.$).join(', '),
+                    setP_num,
+                    setSelectedTickets,
+                    signal,
+                    setIsLoading,
+                  ),
+                )
+              }}
+              icon="archive"
+            />
+          </HintWrapper>
         </div>
       )}
 

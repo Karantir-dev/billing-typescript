@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import cn from 'classnames'
 import FilterModal from './FilterModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useLocation, useParams } from 'react-router-dom'
-import { Button, IconButton, Portal, CreateTicketModal, HintWrapper } from '@components'
+import { Button, IconButton, Portal, CreateTicketModal } from '@components'
 import { actions, supportOperations } from '@redux'
 import s from './SupportFilter.module.scss'
 
@@ -15,7 +14,6 @@ export default function Component(props) {
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const {
-    selectedTickets,
     setCurrentPage,
     isFiltered,
     setIsFiltered,
@@ -130,34 +128,7 @@ export default function Component(props) {
             </div>
           )}
         </div>
-        {params?.path === 'requests' && (
-          <HintWrapper
-            wrapperClassName={s.archiveBtn}
-            popupClassName={s.archivePopUp}
-            label={t('To the archive')}
-          >
-            <IconButton
-              dataTestid={'archiveBtn'}
-              disabled={
-                selectedTickets.length
-                  ? !selectedTickets.every(ticket => ticket?.toarchive?.$ === 'on')
-                  : true
-              }
-              onClick={() => {
-                dispatch(
-                  supportOperations.archiveTicketsHandler(
-                    selectedTickets.map(el => el?.id?.$).join(', '),
-                    setCurrentPage,
-                    signal,
-                    setIsLoading,
-                  ),
-                )
-              }}
-              icon="archive"
-            />
-          </HintWrapper>
-        )}
-      </div>
+       </div>
       {params?.path === 'requests' && (
         <Button
           dataTestid={'new_ticket_btn'}
@@ -174,12 +145,4 @@ export default function Component(props) {
       )}
     </div>
   )
-}
-
-Component.propTypes = {
-  selectedTickets: PropTypes.array,
-}
-
-Component.defaultProps = {
-  selectedTickets: [],
 }

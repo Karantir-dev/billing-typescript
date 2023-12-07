@@ -83,7 +83,7 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
 }
 
 const archiveTicketsHandler =
-  (idTicket, setCurrentPage, signal, setIsLoading) => (dispatch, getState) => {
+  (idTicket, setCurrentPage, setSelectedTickets,signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading(true)
     const {
       auth: { sessionId },
@@ -107,6 +107,7 @@ const archiveTicketsHandler =
         }
         dispatch(getTicketsHandler({}, signal, setIsLoading))
         setCurrentPage(1)
+        setSelectedTickets([])
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
