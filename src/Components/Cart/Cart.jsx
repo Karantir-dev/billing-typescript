@@ -264,6 +264,11 @@ export default function Component() {
     if (!values?.profile && window.fbq) {
       window.fbq('track', 'AddPaymentInfo')
     }
+    // Quora pixel event
+    if (!values?.profile && window.qp) {
+      window.qp('track', 'AddPaymentInfo')
+    }
+    if (window.qp) window.qp('track', 'InitiateCheckout')
 
     if (values.profiletype && values.profiletype !== '1') {
       data.jobtitle = payersData.selectedPayerFields?.jobtitle || 'jobtitle '
