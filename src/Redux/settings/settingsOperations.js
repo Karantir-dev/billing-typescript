@@ -430,6 +430,7 @@ const setupEmailConfirm = (elid, data, signal, setIsLoading) => (dispatch, getSt
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
       dispatch(getUserEdit(elid, true, null, null, signal, setIsLoading))
+      dispatch(userOperations.sendVerificationEmail(userParamsData.email))
     })
 
     .catch(error => {
