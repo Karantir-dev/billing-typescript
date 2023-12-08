@@ -260,15 +260,18 @@ export default function Component() {
       data['alfabank_login'] = values?.alfabank_login
     }
 
-    // facebook pixel event
-    if (!values?.profile && window.fbq) {
-      window.fbq('track', 'AddPaymentInfo')
+    /** ------- Analytics ------- */
+    if (!values?.profile) {
+      // Facebook pixel event
+      if (window.fbq) window.fbq('track', 'AddPaymentInfo')
+      // Quora pixel event
+      if (window.qp) window.qp('track', 'AddPaymentInfo')
+      // GTM
+      window.dataLayer?.push({ event: 'AddPaymentInfo' })
     }
-    // Quora pixel event
-    if (!values?.profile && window.qp) {
-      window.qp('track', 'AddPaymentInfo')
-    }
+
     if (window.qp) window.qp('track', 'InitiateCheckout')
+    /** ------- /Analytics ------- */
 
     if (values.profiletype && values.profiletype !== '1') {
       data.jobtitle = payersData.selectedPayerFields?.jobtitle || 'jobtitle '

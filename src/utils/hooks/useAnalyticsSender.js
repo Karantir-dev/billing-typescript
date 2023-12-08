@@ -105,7 +105,7 @@ export default function useAnalyticsSender() {
 
             window.fbq('track', 'Purchase', fbAnalytics)
           }
-          if (window.qp) window.qp('track', 'Purchase')
+          if (window.qp) window.qp('track', 'Purchase', { value: value })
 
           // if the GTM is absent we add extra field to the front analytics
         } else {
@@ -142,7 +142,7 @@ export default function useAnalyticsSender() {
             if (window.fbq) {
               window.fbq('track', 'Purchase', fbAnalytics)
             }
-            if (window.qp) window.qp('track', 'Purchase')
+            if (window.qp) window.qp('track', 'Purchase', { value: value })
           } else {
             analyticsData.gtm_absent = true
 

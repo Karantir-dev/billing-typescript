@@ -160,15 +160,18 @@ export default function ModalCreatePayment(props) {
       data.name = values?.name || ''
     }
 
-    // Facebook pixel event
-    if (!values?.profile && window.fbq) {
-      window.fbq('track', 'AddPaymentInfo')
+    /** ------- Analytics ------- */
+    if (!values?.profile) {
+      // Facebook pixel event
+      if (window.fbq) window.fbq('track', 'AddPaymentInfo')
+      // Quora pixel event
+      if (window.qp) window.qp('track', 'AddPaymentInfo')
+      // GTM
+      window.dataLayer?.push({ event: 'AddPaymentInfo' })
     }
-    // Quora pixel event
-    if (!values?.profile && window.qp) {
-      window.qp('track', 'AddPaymentInfo')
-    }
+
     if (window.qp) window.qp('track', 'InitiateCheckout')
+    /** ------- /Analytics ------- */
 
     dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
   }
