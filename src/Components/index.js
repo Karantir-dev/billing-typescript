@@ -215,3 +215,4 @@ export { default as UserCard } from './TrustedUsers/UserCard/UserCard'
 export { default as ManageUserForm } from './TrustedUsers/ManageUserForm/ManageUserForm'
 
 export { default as PayersList } from './PayersList/PayersList'
+export { default as Options } from './Options/Options'

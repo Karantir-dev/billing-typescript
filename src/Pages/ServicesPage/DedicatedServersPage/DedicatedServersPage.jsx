@@ -25,7 +25,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import * as route from '@src/routes'
 import s from './DedicatedServersPage.module.scss'
-import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender, isDisabledDedicTariff } from '@utils'
 
 export default function DedicatedServersPage() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'dedic')
@@ -389,17 +389,7 @@ export default function DedicatedServersPage() {
                   server =>
                     (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
                     server?.item_status?.$.trim() === 'Suspended by Administrator' ||
-                    server.name?.$.includes('Config 47') ||
-                    server.name?.$.includes('Config 48') ||
-                    server.name?.$.includes(
-                      '[NL] Intel 2xL5630 / 32GB RAM / 2x300GB SSD',
-                    ) ||
-                    server.name?.$.includes(
-                      '[NL] Intel 2xL5630 / 32GB RAM / 2x240GB SSD',
-                    ) ||
-                    server.name?.$.includes(
-                      '[NL] Intel 2xL5640 / 64GB RAM / 2x600GB SSD',
-                    ),
+                    isDisabledDedicTariff(server?.name?.$),
                 ) || !rights?.prolong
               }
               onClick={() =>

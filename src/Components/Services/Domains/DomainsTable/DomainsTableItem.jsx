@@ -1,11 +1,9 @@
-import { useState, useRef } from 'react'
 import s from './DomainsTable.module.scss'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { ServerState, CheckBox, Icon } from '@components'
-import { useOutsideAlerter } from '@utils'
+import { ServerState, CheckBox, Options } from '@components'
 
 export default function Component(props) {
   const {
@@ -27,17 +25,41 @@ export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 1549px)' })
 
-  const [isOpened, setIsOpened] = useState(false)
-  const dropDownEl = useRef()
-
-  const closeMenuHandler = () => {
-    setIsOpened(!isOpened)
-  }
-
-  useOutsideAlerter(dropDownEl, isOpened, closeMenuHandler)
-
   const isActive = selected?.includes(el)
   const toggleIsActiveHandler = () => setSelctedItem(!isActive, el)
+
+  const options = [
+    {
+      label: t('prolong', { ns: 'vds' }),
+      icon: 'Clock',
+      disabled: !rights?.prolong,
+      onClick: () => renewDomainHandler(id),
+    },
+    {
+      label: t('edit', { ns: 'other' }),
+      icon: 'Edit',
+      disabled: !rights?.edit,
+      onClick: () => editDomainHandler(id),
+    },
+    {
+      label: t('history', { ns: 'vds' }),
+      icon: 'Refund',
+      disabled: !rights?.history,
+      onClick: () => historyDomainHandler(id),
+    },
+    {
+      label: t('whois'),
+      icon: 'Whois',
+      disabled: !rights?.whois,
+      onClick: () => whoisDomainHandler(id),
+    },
+    {
+      label: t('View/change the list of name servers'),
+      icon: 'DomainsListName',
+      disabled: !rights?.ns,
+      onClick: () => NSDomainHandler(id),
+    },
+  ]
 
   return (
     <div className={s.item}>
@@ -76,66 +98,7 @@ export default function Component(props) {
           </div>
         </div>
         <div className={s.dots}>
-          <Icon
-            name="Settings"
-            onClick={() => setIsOpened(!isOpened)}
-            className={cn(s.dotIcons, { [s.opened]: isOpened })}
-          />
-
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyDown={() => null}
-            onClick={e => e.stopPropagation()}
-            className={cn({
-              [s.list]: true,
-              [s.opened]: isOpened,
-            })}
-            ref={dropDownEl}
-          >
-            <button
-              disabled={!rights?.prolong}
-              className={s.settings_btn}
-              onClick={() => renewDomainHandler(id)}
-            >
-              <Icon name="Clock" />
-              <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
-            </button>
-            <button
-              disabled={!rights?.edit}
-              className={s.settings_btn}
-              onClick={() => editDomainHandler(id)}
-            >
-              <Icon name="Edit" />
-              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
-            </button>
-            <button
-              disabled={!rights?.history}
-              className={s.settings_btn}
-              onClick={() => historyDomainHandler(id)}
-            >
-              <Icon name="Refund" />
-              <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
-            </button>
-            <button
-              disabled={!rights?.whois}
-              className={s.settings_btn}
-              onClick={() => whoisDomainHandler(id)}
-            >
-              <Icon name="Whois" />
-              <p className={s.setting_text}>{t('whois')}</p>
-            </button>
-            <button
-              disabled={!rights?.ns}
-              className={s.settings_btn}
-              onClick={() => NSDomainHandler(id)}
-            >
-              <Icon name="DomainsListName" />
-              <p className={s.setting_text}>
-                {t('View/change the list of name servers')}
-              </p>
-            </button>
-          </div>
+          <Options options={options} />
         </div>
       </div>
     </div>

@@ -1,10 +1,9 @@
 import cn from 'classnames'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, HintWrapper, ServerState, EditCell, Icon } from '@components'
+import { CheckBox, HintWrapper, ServerState, EditCell, Options } from '@components'
 import PropTypes from 'prop-types'
 import * as route from '@src/routes'
-import { useOutsideAlerter } from '@utils'
 import { useNavigate } from 'react-router-dom'
 import { SITE_URL } from '@config/config'
 import s from './VDSItem.module.scss'
@@ -27,9 +26,6 @@ export default function VDSItem({
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
-  const dropdownEl = useRef()
-  const [toolsOpened, setToolsOpened] = useState(false)
-  useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
   const [originName, setOriginName] = useState('')
 
@@ -41,7 +37,6 @@ export default function VDSItem({
 
   const handleToolBtnClick = fn => {
     fn()
-    setToolsOpened(false)
   }
 
   const isToolsBtnVisible =
@@ -59,6 +54,84 @@ export default function VDSItem({
     handleEditSubmit(server?.id?.$, { server_name: value }, setOriginName)
     setOriginName(value)
   }
+
+  const options = [
+    {
+      label: t('instruction'),
+      icon: 'Info',
+      disabled:
+        (server?.status?.$ !== '3' && server?.status?.$ !== '2') || !rights?.instruction,
+      onClick: () => handleToolBtnClick(setIdForInstruction),
+    },
+    {
+      label: t('go_to_panel'),
+      icon: 'ExitSign',
+      disabled:
+        server?.transition?.$ !== 'on' ||
+        server?.status?.$ !== '2' ||
+        !rights?.gotoserver,
+      onClick: () => handleToolBtnClick(goToPanelFn),
+    },
+    {
+      label: t('prolong'),
+      icon: 'Clock',
+      disabled:
+        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+        server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
+        !rights?.prolong ||
+        server?.pricelist?.$?.toLowerCase()?.includes('ddos'),
+      onClick: () => handleToolBtnClick(setIdForProlong),
+    },
+    {
+      label: t('edit', { ns: 'other' }),
+      icon: 'Edit',
+      disabled: (server?.status?.$ !== '3' && server?.status?.$ !== '2') || !rights?.edit,
+      onClick: () => handleToolBtnClick(setIdForEditModal),
+    },
+    {
+      label: t('password_change'),
+      icon: 'PassChange',
+      disabled:
+        server?.allow_changepassword?.$ !== 'on' ||
+        !rights?.changepassword ||
+        server?.ostempl?.$?.includes('Windows'),
+      onClick: () => handleToolBtnClick(setIdForPassChange),
+    },
+    {
+      label: t('reload'),
+      icon: 'Reload',
+      disabled: server?.show_reboot?.$ !== 'on' || !rights?.reboot,
+      onClick: () => handleToolBtnClick(setIdForReboot),
+    },
+    {
+      label: t('ip_addresses'),
+      icon: 'IP',
+      disabled:
+        server?.status?.$ === '5' || server?.has_ip_pricelist?.$ !== 'on' || !rights?.ip,
+      onClick: () =>
+        navigate(route.VPS_IP, {
+          state: { id: server?.id?.$ },
+          replace: true,
+        }),
+    },
+    {
+      label: t('history'),
+      icon: 'Refund',
+      disabled:
+        (server?.status?.$ !== '3' && server?.status?.$ !== '2') || !rights?.history,
+      onClick: () => handleToolBtnClick(setIdForHistory),
+    },
+    {
+      label: t('delete', { ns: 'other' }),
+      icon: 'Delete',
+      disabled:
+        server?.status?.$ === '5' ||
+        server?.scheduledclose?.$ === 'on' ||
+        !rights?.delete,
+      onClick: () => handleToolBtnClick(setIdForDeleteModal),
+      isDelete: true,
+    },
+  ]
 
   return (
     <div className={s.item_wrapper}>
@@ -149,164 +222,7 @@ export default function VDSItem({
             </span>
           </>
         )}
-        {isToolsBtnVisible && (
-          <div className={cn(s.dots_wrapper, { [s.disabled]: false })}>
-            <button
-              className={s.dots_btn}
-              type="button"
-              onClick={() => setToolsOpened(true)}
-            >
-              <Icon name="Settings" />
-            </button>
-
-            {toolsOpened && (
-              <div className={s.dropdown} ref={dropdownEl}>
-                <div className={s.pointer_wrapper}>
-                  <div className={s.pointer}></div>
-                </div>
-                <ul>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForInstruction)}
-                      disabled={
-                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                        !rights?.instruction
-                      }
-                    >
-                      <Icon name="Info" className={s.tool_icon} />
-                      {t('instruction')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(goToPanelFn)}
-                      disabled={
-                        server?.transition?.$ !== 'on' ||
-                        server?.status?.$ !== '2' ||
-                        !rights?.gotoserver
-                      }
-                    >
-                      <Icon name="ExitSign" className={s.tool_icon} />
-                      {t('go_to_panel')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForProlong)}
-                      disabled={
-                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                        server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
-                        !rights?.prolong ||
-                        server?.pricelist?.$?.toLowerCase()?.includes('ddos')
-                      }
-                    >
-                      <Icon name="Clock" className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForEditModal)}
-                      disabled={
-                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                        !rights?.edit
-                      }
-                    >
-                      <Icon name="Edit" className={s.tool_icon} />
-                      {t('edit', { ns: 'other' })}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForPassChange)}
-                      disabled={
-                        server?.allow_changepassword?.$ !== 'on' ||
-                        !rights?.changepassword ||
-                        server?.ostempl?.$?.includes('Windows')
-                      }
-                    >
-                      <Icon name="PassChange" className={s.tool_icon} />
-                      {t('password_change')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForReboot)}
-                      disabled={server?.show_reboot?.$ !== 'on' || !rights?.reboot}
-                    >
-                      <Icon name="Reload" className={s.tool_icon} />
-                      {t('reload')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() =>
-                        navigate(route.VPS_IP, {
-                          state: { id: server?.id?.$ },
-                          replace: true,
-                        })
-                      }
-                      disabled={
-                        server?.status?.$ === '5' ||
-                        server?.has_ip_pricelist?.$ !== 'on' ||
-                        !rights?.ip
-                      }
-                    >
-                      <Icon name="IP" className={s.tool_icon} />
-                      {t('ip_addresses')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForHistory)}
-                      disabled={
-                        (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-                        !rights?.history
-                      }
-                    >
-                      <Icon name="Refund" className={s.tool_icon} />
-                      {t('history')}
-                    </button>
-                  </li>
-                  <li className={cn(s.tool_item, s.tool_item_delete)}>
-                    <button
-                      disabled={
-                        server?.status?.$ === '5' ||
-                        server?.scheduledclose?.$ === 'on' ||
-                        !rights?.delete
-                      }
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setIdForDeleteModal)}
-                    >
-                      <Icon
-                        name="Delete"
-                        className={cn(s.tool_icon, s.tool_icon_delete)}
-                      />
-                      {t('delete', { ns: 'other' })}
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
+        {isToolsBtnVisible && <Options options={options} />}
       </li>
     </div>
   )
