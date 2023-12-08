@@ -352,8 +352,11 @@ const register =
           throwServerError(data.doc.error.$type)
         }
 
+        /** ---- Analytics ----  */
+        window.dataLayer?.push({ event: 'signup-success' })
         if (window.fbq) window.fbq('track', 'CompleteRegistration')
         if (window.qp) window.qp('track', 'CompleteRegistration')
+        /** ---- /Analytics ----  */
 
         successRegistration()
 
@@ -500,8 +503,11 @@ const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dis
                   cookies.setCookie('sessionId', sessionId, 1)
                   sendInfoToSite({ sessionId })
 
+                  /** ---- Analytics ----  */
+                  window.dataLayer?.push({ event: 'signup-success' })
                   if (window.fbq) window.fbq('track', 'CompleteRegistration')
                   if (window.qp) window.qp('track', 'CompleteRegistration')
+                  /** ---- /Analytics ----  */
 
                   dispatch(authActions.loginSuccess(sessionId))
                 })

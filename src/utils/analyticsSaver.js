@@ -70,7 +70,7 @@ export default function analyticsSaver(orderInfo, paymentID) {
       if (window.fbq) {
         window.fbq('track', 'Purchase', fbAnalytics)
       }
-      if (window.qp) window.qp('track', 'Purchase')
+      if (window.qp) window.qp('track', 'Purchase', { value: orderAmount })
       axios.post(`${process.env.REACT_APP_API_URL}/api/analytic/add/`, analyticsData)
     } else {
       analyticsData.gtm_absent = true
