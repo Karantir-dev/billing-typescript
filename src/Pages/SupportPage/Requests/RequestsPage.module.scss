@@ -21,6 +21,25 @@
   font-size: 16px;
 }
 
+.footer {
+  position: fixed;
+  bottom: -0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  row-gap: 16px;
+  column-gap: 10px;
+
+  height: fit-content;
+  padding: 15px 35px 15px 30px;
+  background-color: var(--elements-bgc);
+  box-shadow: var(--menu_down_black_shadow);
+  transition: bottom 0.1s ease-in, opacity 0.1s ease-in;
+}
+
 @media screen and (min-width: 768px) {
   .pagination {
     justify-content: flex-end;

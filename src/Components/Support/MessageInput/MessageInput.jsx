@@ -6,7 +6,7 @@ import { Field, ErrorMessage } from 'formik'
 import s from './MessageInput.module.scss'
 
 export default function Component(props) {
-  const { files, message, onChangeFiles, filesError } = props
+  const { files, message, onChangeFiles, onKeyDown,filesError } = props
   const { t } = useTranslation(['support', 'other'])
 
   const textarea = useRef(null)
@@ -28,6 +28,7 @@ export default function Component(props) {
             name="message"
             placeholder={t('Enter your message...')}
             as="textarea"
+            onKeyDown={onKeyDown}
           />
           <label htmlFor="files">
             <div

@@ -5,6 +5,7 @@ const getUserItems = state => state.currentUserInfo.userItems
 const getCurrentSessionRights = state => state.currentUserInfo.currentSessionRights
 
 const getUserInfoLoading = state => state.currentUserInfo.userInfoLoading
+const getIsNewMessage = state => state.currentUserInfo.isNewMessage
 
 export default {
   getUserInfo,
@@ -12,4 +13,5 @@ export default {
   getUserItems,
   getCurrentSessionRights,
   getUserInfoLoading,
+  getIsNewMessage
 }
