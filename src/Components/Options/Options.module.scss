@@ -1,0 +1,97 @@
+.wrapper {
+  position: relative;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+}
+
+.btn {
+  display: flex;
+  transform: scale(1);
+  transition: transform 150ms;
+  cursor: pointer;
+
+  &:hover svg {
+    fill: url('#gradient');
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.dropdown {
+  position: absolute;
+  right: -10px;
+  width: max-content;
+  max-width: 250px;
+  top: calc(100% + 20px);
+  border-radius: 3px;
+  z-index: 1;
+  background-color: var(--forms_bgc_4);
+  box-shadow: var(--forms2_shadow);
+}
+
+.pointer_wrapper {
+  position: absolute;
+  width: 30px;
+  height: 20px;
+  top: -20px;
+  right: 3px;
+  overflow: hidden;
+}
+
+.pointer {
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  transform: translateX(-50%) rotateZ(45deg);
+  width: 14px;
+  height: 14px;
+  background-color: var(--forms_bgc_4);
+  box-shadow: var(--forms2_shadow);
+}
+
+.tool_item_delete {
+  color: var(--red-text_2);
+}
+
+.tool_btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 300;
+  text-align: left;
+
+  &:hover {
+    background-color: var(--select_option_bgc);
+
+    svg:not(.tool_icon_delete) {
+      fill: url('#gradient');
+    }
+  }
+
+  &:disabled {
+    color: var(--transparent-color);
+    pointer-events: none;
+
+    svg {
+      fill: var(--disabled_icon_color);
+    }
+  }
+}
+
+.tool_icon {
+  margin-right: 12px;
+  width: 20px;
+  flex-shrink: 0;
+  fill: var(--icon-color_2);
+  &_delete {
+    fill: var(--red-text_2);
+  }
+}

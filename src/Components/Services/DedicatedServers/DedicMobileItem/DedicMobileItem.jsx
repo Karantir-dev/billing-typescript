@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useOutsideAlerter } from '@utils'
 import PropTypes from 'prop-types'
 import s from './DedicMobileItem.module.scss'
-import { CheckBox, EditCell, ServerState, Icon } from '@components'
+import { CheckBox, EditCell, ServerState, Options } from '@components'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
+import { isDisabledDedicTariff } from '@utils'
 
 export default function DedicMobileItem({
   server,
@@ -24,19 +24,14 @@ export default function DedicMobileItem({
   setIdForDeleteModal,
 }) {
   const { t } = useTranslation(['vds', 'other'])
-  const dropdownEl = useRef()
 
-  const [toolsOpened, setToolsOpened] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const [originName, setOriginName] = useState('')
 
-  useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
-
   const handleToolBtnClick = fn => {
     fn()
-    setToolsOpened(false)
   }
 
   useEffect(() => {
@@ -61,6 +56,68 @@ export default function DedicMobileItem({
       : setActiveServices([...activeServices, server])
   }
 
+  const options = [
+    {
+      label: t('instruction'),
+      icon: 'Info',
+      disabled: server?.status?.$ === '1' || !rights?.instruction,
+      onClick: () => handleToolBtnClick(setElidForInstructionModal),
+    },
+    {
+      label: t('go_to_panel'),
+      icon: 'ExitSign',
+      disabled:
+        server.transition?.$ !== 'on' || server?.status?.$ !== '2' || !rights?.gotoserver,
+      onClick: () => dispatch(dedicOperations.goToPanel(server.id.$)),
+    },
+    {
+      label: t('prolong'),
+      icon: 'Clock',
+      disabled:
+        server?.status?.$ === '1' || !rights?.prolong || isDisabledDedicTariff(server?.name?.$),
+
+      onClick: () => handleToolBtnClick(setElidForProlongModal),
+    },
+    {
+      label: t('edit', { ns: 'other' }),
+      icon: 'Edit',
+      disabled: !rights?.edit,
+      onClick: () => handleToolBtnClick(setElidForEditModal),
+    },
+    {
+      label: t('reload'),
+      icon: 'Reload',
+      disabled: server.show_reboot?.$ !== 'on' || !rights?.reboot,
+      onClick: () => handleToolBtnClick(setElidForRebootModal),
+    },
+    {
+      label: t('ip_addresses'),
+      icon: 'IP',
+      disabled: server.has_ip_pricelist?.$ !== 'on' || !rights?.ip,
+      onClick: () =>
+        navigate(route.DEDICATED_SERVERS_IP, {
+          state: { plid: server?.id?.$, isIpAllowedRender: rights?.ip },
+          replace: true,
+        }),
+    },
+    {
+      label: t('history'),
+      icon: 'Refund',
+      disabled: server?.status?.$ === '1' || !rights?.history,
+      onClick: () => handleToolBtnClick(setElidForHistoryModal),
+    },
+    {
+      label: t('delete', { ns: 'other' }),
+      icon: 'Delete',
+      disabled:
+        server?.status?.$ === '5' ||
+        server?.scheduledclose?.$ === 'on' ||
+        !rights?.delete,
+      onClick: () => setIdForDeleteModal([server.id.$]),
+      isDelete: true,
+    },
+  ]
+
   return (
     <li className={s.item}>
       {isToolsBtnVisible && (
@@ -70,150 +127,7 @@ export default function DedicMobileItem({
             value={isActive}
             onClick={toggleIsActiveHandler}
           />
-          <div className={s.dots_wrapper}>
-            <button
-              className={s.dots_btn}
-              type="button"
-              onClick={() => setToolsOpened(true)}
-            >
-              <Icon name="Settings" />
-            </button>
-
-            {toolsOpened && (
-              <div className={s.dropdown} ref={dropdownEl}>
-                <div className={s.pointer_wrapper}>
-                  <div className={s.pointer}></div>
-                </div>
-                <ul>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={server?.status?.$ === '1' || !rights?.instruction}
-                      onClick={() => handleToolBtnClick(setElidForInstructionModal)}
-                    >
-                      <Icon name="Info" className={s.tool_icon} />
-                      {t('instruction')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={
-                        server.transition?.$ !== 'on' ||
-                        server?.status?.$ !== '2' ||
-                        !rights?.gotoserver
-                      }
-                      onClick={() => {
-                        dispatch(dedicOperations.goToPanel(server.id.$))
-                      }}
-                    >
-                      <Icon name="ExitSign" className={s.tool_icon} />
-                      {t('go_to_panel')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={
-                        server?.status?.$ === '1' ||
-                        !rights?.prolong ||
-                        server.name?.$.includes('Config 47') ||
-                        server.name?.$.includes('Config 48') ||
-                        server.name?.$.includes(
-                          '[NL] Intel 2xL5630 / 32GB RAM / 2x300GB SSD',
-                        ) ||
-                        server.name?.$.includes(
-                          '[NL] Intel 2xL5630 / 32GB RAM / 2x240GB SSD',
-                        ) ||
-                        server.name?.$.includes(
-                          '[NL] Intel 2xL5640 / 64GB RAM / 2x600GB SSD',
-                        )
-                      }
-                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
-                    >
-                      <Icon name="Clock" className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      disabled={!rights?.edit}
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal)}
-                    >
-                      <Icon name="Edit" className={s.tool_icon} />
-                      {t('edit', { ns: 'other' })}
-                    </button>
-                  </li>
-
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={server.show_reboot?.$ !== 'on' || !rights?.reboot}
-                      onClick={() => {
-                        handleToolBtnClick(setElidForRebootModal)
-                      }}
-                    >
-                      <Icon name="Reload" className={s.tool_icon} />
-                      {t('reload')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={server.has_ip_pricelist?.$ !== 'on' || !rights?.ip}
-                      onClick={() =>
-                        navigate(route.DEDICATED_SERVERS_IP, {
-                          state: { plid: server?.id?.$, isIpAllowedRender: rights?.ip },
-                          replace: true,
-                        })
-                      }
-                    >
-                      <Icon name="IP" className={s.tool_icon} />
-                      {t('ip_addresses')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      disabled={server?.status?.$ === '1' || !rights?.history}
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => {
-                        handleToolBtnClick(setElidForHistoryModal)
-                      }}
-                    >
-                      <Icon name="Refund" className={s.tool_icon} />
-                      {t('history')}
-                    </button>
-                  </li>
-
-                  <li className={cn(s.tool_item, s.tool_item_delete)}>
-                    <button
-                      disabled={
-                        server?.status?.$ === '5' ||
-                        server?.scheduledclose?.$ === 'on' ||
-                        !rights?.delete
-                      }
-                      className={s.tool_btn}
-                      onClick={() => setIdForDeleteModal([server.id.$])}
-                    >
-                      <Icon
-                        name="Delete"
-                        className={cn(s.tool_icon, s.tool_icon_delete)}
-                      />
-                      <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
+          <Options options={options} />
         </div>
       )}
 

@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import s from './EditServerModal.module.scss'
 
 import { dedicOperations } from '@redux'
-import { translatePeriod } from '@utils'
+import { translatePeriod, isDisabledDedicTariff } from '@utils'
 
 export default function EditServerModal({
   elid,
@@ -132,12 +132,7 @@ export default function EditServerModal({
     ),
   })
 
-  const isProlongDisabled =
-    initialState?.name?.$.includes('Config 47') ||
-    initialState?.name?.$.includes('Config 48') ||
-    initialState?.name?.$.includes('[NL] Intel 2xL5630 / 32GB RAM / 2x300GB SSD') ||
-    initialState?.name?.$.includes('[NL] Intel 2xL5630 / 32GB RAM / 2x240GB SSD') ||
-    initialState?.name?.$.includes('[NL] Intel 2xL5640 / 64GB RAM / 2x600GB SSD')
+  const isProlongDisabled = isDisabledDedicTariff(initialState?.name?.$)
 
   return (
     <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
