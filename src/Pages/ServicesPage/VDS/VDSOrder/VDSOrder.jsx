@@ -211,14 +211,14 @@ export default function VDSOrder() {
   }
 
   const renderSoftwareOSFields = (fieldName, values, setFieldValue, state, ostempl) => {
-    let dataArr = parametersInfo.slist.find(el => el.$name === fieldName).val
+    let dataArr = parametersInfo.slist.find(el => el.$name === fieldName)?.val
     const elemsData = {}
     if (fieldName === 'recipe') {
-      dataArr = dataArr.filter(el => el.$depend === ostempl && el.$key !== 'null')
+      dataArr = dataArr?.filter(el => el.$depend === ostempl && el.$key !== 'null')
       elemsData.null = [{ $key: 'null', $: t('without_software') }]
     }
 
-    dataArr.forEach(element => {
+    dataArr?.forEach(element => {
       const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
 
       if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
