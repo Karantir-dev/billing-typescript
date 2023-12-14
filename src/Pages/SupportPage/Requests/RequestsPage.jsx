@@ -1,14 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import {
-  SupportFilter,
-  SupportTable,
-  Pagination,
-  Loader,
-  HintWrapper,
-  IconButton,
-} from '@components'
+import { SupportFilter, SupportTable, Pagination, Loader, Button } from '@components'
 import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsPage.module.scss'
 import { useCancelRequest } from '@src/utils'
@@ -78,32 +71,26 @@ export default function Component() {
 
       {!!selectedTickets.length && (
         <div className={s.footer}>
-          <HintWrapper
-            wrapperClassName={s.archiveBtn}
-            popupClassName={s.archivePopUp}
+          <Button
+          className={s.footer_btn}
             label={t('To the archive')}
-          >
-            <IconButton
-              dataTestid={'archiveBtn'}
-              disabled={
-                selectedTickets.length
-                  ? !selectedTickets.every(ticket => ticket?.toarchive?.$ === 'on')
-                  : true
-              }
-              onClick={() => {
-                dispatch(
-                  supportOperations.archiveTicketsHandler(
-                    selectedTickets.map(el => el?.id?.$).join(', '),
-                    setP_num,
-                    setSelectedTickets,
-                    signal,
-                    setIsLoading,
-                  ),
-                )
-              }}
-              icon="archive"
-            />
-          </HintWrapper>
+            onClick={() => {
+              dispatch(
+                supportOperations.archiveTicketsHandler(
+                  selectedTickets.map(el => el?.id?.$).join(', '),
+                  setP_num,
+                  setSelectedTickets,
+                  signal,
+                  setIsLoading,
+                ),
+              )
+            }}
+            disabled={
+              selectedTickets.length
+                ? !selectedTickets.every(ticket => ticket?.toarchive?.$ === 'on')
+                : true
+            }
+          />
         </div>
       )}
 
