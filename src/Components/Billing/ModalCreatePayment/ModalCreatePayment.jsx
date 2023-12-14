@@ -299,7 +299,7 @@ export default function ModalCreatePayment(props) {
           >
             {({ values, setFieldValue, touched, errors, handleBlur }) => {
               const parsePaymentInfo = text => {
-                const splittedText = text?.split('<p>')
+                const splittedText = text?.replace(/&nbsp;/g, '').split('<p>')
                 if (splittedText?.length > 0) {
                   const minAmount = splittedText[0]?.replace('\n', '')
 
