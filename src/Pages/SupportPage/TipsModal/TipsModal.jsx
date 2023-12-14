@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { Button, InputField, Modal } from '@components'
+import { Button, InputField, Modal, MessageInput } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { supportOperations } from '@redux'
@@ -12,9 +12,9 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
   const dispatch = useDispatch()
 
   const paymentHandler = values => {
-    const { summ } = values
+    const { summ, message } = values
 
-    dispatch(supportOperations.paySupportTips(elid, summ, setSuccessModal))
+    dispatch(supportOperations.paySupportTips(elid, summ, message, setSuccessModal))
     closeTipsModal()
   }
 
@@ -36,6 +36,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
           validationSchema={validationSchema}
           initialValues={{
             summ: '',
+            message: '',
           }}
           onSubmit={paymentHandler}
         >
@@ -59,6 +60,16 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
                   <span>*</span>
                   {t('The transfer amount will be debited from your balance')}
                 </p>
+
+                <label htmlFor="tipsComment" className={s.comment}>
+                  {t('Comment')}:
+                </label>
+
+                <MessageInput
+                  message={values.message}
+                  enableFiles={false}
+                  fieldId={'tipsComment'}
+                />
               </Form>
             )
           }}

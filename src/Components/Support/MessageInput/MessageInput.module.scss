@@ -44,6 +44,8 @@
   line-height: 130.5%;
   max-height: 350px;
   color: var(--main-text);
+  overflow: hidden;
+
   &::placeholder {
     color: var(--transparent-color);
   }

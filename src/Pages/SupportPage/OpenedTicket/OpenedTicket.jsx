@@ -156,11 +156,7 @@ export default function Component() {
         <Modal.Header />
         <Modal.Body>
           <Icon name="Smile" className={s.smileIcon} />
-          <p className={s.thanksText}>
-            {t(
-              'Thank you on behalf of our staff. They will receive this bonus to their salary!',
-            )}
-          </p>
+          <p className={s.thanksText}>{t('Thank you for donation')}</p>
         </Modal.Body>
       </Modal>
     </div>
