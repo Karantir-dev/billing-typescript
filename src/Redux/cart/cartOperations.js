@@ -498,7 +498,7 @@ const getTariffParameters =
 
     axiosInstance
       .post(
-        sessionId ? '/' : process.env.REACT_APP_API_URL_DEV,
+        sessionId ? '/' : process.env.REACT_APP_PROXY_API_URL,
         qs.stringify({
           func: `${service}.order.pricelist`,
           out: 'json',
@@ -534,7 +534,7 @@ const getTariffInfo =
 
     axiosInstance
       .post(
-        sessionId ? '/' : process.env.REACT_APP_API_URL_DEV,
+        sessionId ? '/' : process.env.REACT_APP_PROXY_API_URL,
         qs.stringify({
           func: `${service}.order`,
           out: 'json',
