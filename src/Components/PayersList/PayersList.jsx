@@ -173,6 +173,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             isRequired
             value={values.name}
             onChange={e => setState({ name: e.target.value })}
+            onBlur={e => setState({ name: e.target.value.trim() })}
           />
         ) : null}
 
@@ -210,6 +211,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             isRequired
             value={values.person}
             onChange={e => setState({ person: e.target.value })}
+            onBlur={e => setState({ person: e.target.value.trim() })}
           />
         )}
 
@@ -236,6 +238,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
               touched={!!touched.city_physical}
               value={values.city_physical}
               onChange={e => setState({ cityPhysical: e.target.value })}
+              onBlur={e => setState({ cityPhysical: e.target.value.trim() })}
             />
           )}
 
