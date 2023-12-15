@@ -1,0 +1,87 @@
+.step {
+  margin-bottom: 20px;
+  &_header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 12px;
+    gap: 10px;
+    border-radius: 8px;
+    background: var(--gradient_cards_static);
+    color: var(--main-text);
+    font-weight: 600;
+    text-align: left;
+
+    &__completed {
+      pointer-events: none;
+    }
+
+    &:disabled,
+    &__completed {
+      pointer-events: none;
+      color: var(--transparent-color);
+      .step {
+        &_number {
+          border-color: var(--transparent-color);
+        }
+        &_shevron {
+          stroke: var(--transparent-color);
+        }
+      }
+    }
+    @media (min-width: 768px) {
+      gap: 20px;
+    }
+  }
+  &_icon {
+    margin-left: auto;
+  }
+  &_shevron {
+    stroke: var(--main-text);
+    transform: rotate(180deg);
+    stroke-width: 2px;
+    width: 23px;
+    height: 12px;
+    .opened & {
+      transform: none;
+    }
+  }
+  &_number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid var(--main-text);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-weight: 600;
+  }
+  &_body {
+    display: none;
+    flex-direction: column;
+    margin: 20px 0;
+    .opened & {
+      display: flex;
+    }
+    &__content {
+      margin-bottom: 20px;
+    }
+    @media (min-width: 768px) {
+      padding: 0 20px;
+      border-left: 2px solid var(--main-text);
+    }
+  }
+  &_next {
+    align-self: flex-end;
+    max-width: 250px;
+    height: 55px;
+  }
+  &_loader {
+    margin: 0;
+    width: 30px;
+    div {
+      width: 7px;
+      height: 7px;
+    }
+  }
+}

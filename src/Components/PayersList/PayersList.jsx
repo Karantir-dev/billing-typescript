@@ -214,51 +214,51 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
         )}
 
         <div className={s.geo_wrapper}>
-        {!selectedPayerFields?.person && (
-          <SelectGeo
-            selectValue={values.country}
-            selectClassName={s.select}
-            countrySelectClassName={s.countrySelectItem}
-            geoData={geoData}
-            payersSelectLists={payersSelectLists}
-          />
-        )}
-
-        {!selectedPayerFields?.city_physical && (
-          <InputField
-            inputWrapperClass={s.inputHeight}
-            name="city_physical"
-            label={`${t('City', { ns: 'other' })}:`}
-            placeholder={t('Enter city', { ns: 'other' })}
-            isShadow
-            className={s.inputBig}
-            error={!!errors.city_physical}
-            touched={!!touched.city_physical}
-            value={values.city_physical}
-            onChange={e => setState({ cityPhysical: e.target.value })}
-          />
-        )}
-
-        {(!selectedPayerFields?.address_physical || errorFields?.address_physical) && (
-          <div className={cn(s.inputBig, s.nsInputBlock)}>
-            <InputWithAutocomplete
-              fieldName="address_physical"
-              error={!!errors.address_physical}
-              touched={!!touched.address_physical}
-              externalValue={values.address_physical}
-              setFieldValue={val => {
-                setState({ addressPhysical: val })
-              }}
+          {!selectedPayerFields?.person && (
+            <SelectGeo
+              selectValue={values.country}
+              selectClassName={s.select}
+              countrySelectClassName={s.countrySelectItem}
+              geoData={geoData}
+              payersSelectLists={payersSelectLists}
             />
+          )}
 
-            <button type="button" className={s.infoBtn}>
-              <Icon name="Info" />
-              <div className={s.descriptionBlock}>
-                {t('address_format', { ns: 'other' })}
-              </div>
-            </button>
-          </div>
-        )}
+          {!selectedPayerFields?.city_physical && (
+            <InputField
+              inputWrapperClass={s.inputHeight}
+              name="city_physical"
+              label={`${t('City', { ns: 'other' })}:`}
+              placeholder={t('Enter city', { ns: 'other' })}
+              isShadow
+              className={s.inputBig}
+              error={!!errors.city_physical}
+              touched={!!touched.city_physical}
+              value={values.city_physical}
+              onChange={e => setState({ cityPhysical: e.target.value })}
+            />
+          )}
+
+          {(!selectedPayerFields?.address_physical || errorFields?.address_physical) && (
+            <div className={cn(s.inputBig, s.nsInputBlock)}>
+              <InputWithAutocomplete
+                fieldName="address_physical"
+                error={!!errors.address_physical}
+                touched={!!touched.address_physical}
+                externalValue={values.address_physical}
+                setFieldValue={val => {
+                  setState({ addressPhysical: val })
+                }}
+              />
+
+              <button type="button" className={s.infoBtn}>
+                <Icon name="Info" />
+                <div className={s.descriptionBlock}>
+                  {t('address_format', { ns: 'other' })}
+                </div>
+              </button>
+            </div>
+          )}
         </div>
 
         {payersSelectedFields?.eu_vat_field && !selectedPayerFields?.eu_vat ? (

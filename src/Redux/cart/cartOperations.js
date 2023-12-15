@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import i18n from '@src/i18n'
 import {
@@ -7,10 +6,16 @@ import {
   billingOperations,
   userOperations,
   billingActions,
+  authSelectors,
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, analyticsSaver, fraudCheckSender } from '@utils'
+import {
+  checkIfTokenAlive,
+  analyticsSaver,
+  fraudCheckSender,
+  renameAddonFields,
+} from '@utils'
 
 const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
   dispatch(actions.showLoader())
@@ -482,6 +487,107 @@ const getPayMethodItem = (body, setAdditionalPayMethodts) => (dispatch, getState
     })
 }
 
+const getTariffParameters =
+  ({ service, id, period, ...params }, setParameters, setIsError) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        sessionId ? '/' : process.env.REACT_APP_API_URL_DEV,
+        qs.stringify({
+          func: `${service}.order.pricelist`,
+          out: 'json',
+          snext: 'ok',
+          sok: 'ok',
+          lang: 'en',
+          period: period,
+          pricelist: id,
+          auth: sessionId,
+          ...params,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        setParameters(renameAddonFields(data.doc))
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        setIsError(true)
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getTariffInfo =
+  ({ service, id, period, ...params }, setParameters, setPeriods, setIsError) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        sessionId ? '/' : process.env.REACT_APP_API_URL_DEV,
+        qs.stringify({
+          func: `${service}.order`,
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const periods = data.doc.slist.find(el => el.$name === 'period')?.val
+        setPeriods(periods)
+
+        dispatch(getTariffParameters({ service, id, period, ...params }, setParameters, setIsError))
+      })
+      .catch(error => {
+        setIsError(true)
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const setOrderData =
+  ({ service, id, period, ...params }, func) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `${service}.order.param`,
+          auth: sessionId,
+          out: 'json',
+          sok: 'ok',
+          lang: 'en',
+          licence_agreement: 'on',
+          period: period,
+          pricelist: id,
+          ...params,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        func()
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getBasket,
   setBasketPromocode,
@@ -490,4 +596,7 @@ export default {
   setPaymentMethods,
   getSalesList,
   getPayMethodItem,
+  getTariffParameters,
+  getTariffInfo,
+  setOrderData,
 }

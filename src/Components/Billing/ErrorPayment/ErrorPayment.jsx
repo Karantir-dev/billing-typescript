@@ -7,7 +7,7 @@ import s from './ErrorPayment.module.scss'
 import * as routes from '@src/routes'
 import { parseLang } from '@utils'
 
-export default function Component() {
+export default function Component({ title, text, isSupport = true }) {
   const { t, i18n } = useTranslation(['billing', 'other', 'payers'])
   const navigate = useNavigate()
 
@@ -17,18 +17,22 @@ export default function Component() {
     })
   }
 
+  const errorTitle = title || t('Payment error')
+  const errorText = text || t('payment_error_text')
+
   return (
     <div className={s.modalBg}>
       <AuthPageHeader onLogoClick={backHandler} />
       <div className={s.modalBlock}>
         <div className={s.modalTopBlock}>
           <Icon name="ErrorPay" />
-          <div className={s.error}>{t('Payment error')}</div>
-          <div className={s.errorText}>{t('payment_error_text')}</div>
-
-          <Link className={s.linkSupport} to={routes.SUPPORT}>
-            {t('Support service')}
-          </Link>
+          <div className={s.error}>{errorTitle}</div>
+          <div className={s.errorText}>{errorText}</div>
+          {isSupport && (
+            <Link className={s.linkSupport} to={routes.SUPPORT}>
+              {t('Support service')}
+            </Link>
+          )}
         </div>
 
         <div className={s.linksBlock}>

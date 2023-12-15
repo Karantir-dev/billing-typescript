@@ -15,7 +15,13 @@ import {
   Loader,
 } from '@components'
 import { userOperations, vdsOperations } from '@redux'
-import { DOMAIN_REGEX, useCancelRequest, useScrollToElement } from '@utils'
+import {
+  DOMAIN_REGEX,
+  translatePeriodName,
+  translatePeriodText,
+  useCancelRequest,
+  useScrollToElement,
+} from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
@@ -112,17 +118,6 @@ export default function VDSOrder() {
       }))
   }
 
-  const translatePeriodText = sentence => {
-    const labelArr = sentence.split('EUR ')
-
-    return (
-      labelArr[0] +
-      'EUR ' +
-      t(labelArr[1]?.replace(')', '')) +
-      (sentence.includes(')') ? ')' : '')
-    )
-  }
-
   const getOptionsListExtended = fieldName => {
     if (parametersInfo && parametersInfo.slist) {
       const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
@@ -168,7 +163,7 @@ export default function VDSOrder() {
               ns: 'other',
             })})`
           } else if ($.includes('EUR ')) {
-            label = translatePeriodText($.trim())
+            label = translatePeriodText($.trim(), t)
           } else {
             label = t($.trim())
           }
@@ -188,7 +183,7 @@ export default function VDSOrder() {
     const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
 
     return optionsList?.map(({ $key, $ }) => {
-      let label = translatePeriodText($.trim())
+      let label = translatePeriodText($.trim(), t)
 
       label = t(label?.split(' (')[0]) + ' (' + label?.split(' (')[1]
       return { value: $key, label: label }
@@ -343,35 +338,6 @@ export default function VDSOrder() {
   // const openTermsHandler = () => {
   //   dispatch(dnsOperations?.getPrintLicense(parametersInfo?.pricelist?.$))
   // }
-
-  const translatePeriod = (periodName, t) => {
-    let period = ''
-
-    switch (periodName) {
-      case '1':
-        period = t('per month')
-        break
-      case '3':
-        period = t('for three months')
-        break
-      case '6':
-        period = t('half a year')
-        break
-      case '12':
-        period = t('per year')
-        break
-      case '24':
-        period = t('for two years')
-        break
-      case '36':
-        period = t('for three years')
-        break
-      default:
-        period = ''
-    }
-
-    return period
-  }
 
   const handleDomainChange = e => setDomainName(e.target.value)
 
@@ -819,7 +785,7 @@ export default function VDSOrder() {
                         <span className={s.tablet_price}>
                           {(values.finalTotalPrice - checkSaleMemory()).toFixed(2)} EUR
                         </span>
-                        {` ${translatePeriod(period, t)}`}
+                        {` ${translatePeriodName(period, t)}`}
                       </span>
                     </p>
                   ) : (
@@ -827,7 +793,7 @@ export default function VDSOrder() {
                       <span className={s.price}>
                         €{(values.finalTotalPrice - checkSaleMemory()).toFixed(2)}
                       </span>
-                      {` ${translatePeriod(period, t)}`}
+                      {` ${translatePeriodName(period, t)}`}
                       {/* {t(parametersInfo?.orderinfo?.$?.match(/EUR (.+?)(?= <br\/>)/)[1])} */}
                     </p>
                   )}

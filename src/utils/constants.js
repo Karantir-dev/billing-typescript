@@ -41,7 +41,7 @@ export const SOFTWARE_ICONS_LIST = [
   'zabbix',
   'chrome',
   'astralinux',
-  'proxmox'
+  'proxmox',
 ]
 
 // phone countries for yookassa payment method (QIWI)
@@ -115,3 +115,21 @@ export const USERS_WITH_G8 = [
 ]
 
 export const PRODUCTION_DOMAIN = 'cp.zomro.com'
+
+export const GOOGLE_LOGIN_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google'
+
+export const GOOGLE_REGISTRATION_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google&project=4&currency=153&rparams='
+
+export const FACEBOOK_LOGIN_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook'
+
+export const FACEBOOK_REGISTRATION_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='
+
+export const VK_LOGIN_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte'
+
+export const VK_REGISTRATION_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte&project=4&currency=153&rparams='

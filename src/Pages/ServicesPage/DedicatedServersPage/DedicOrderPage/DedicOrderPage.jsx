@@ -31,6 +31,7 @@ import {
   useScrollToElement,
   translatePeriod,
   useCancelRequest,
+  translatePeriodText,
 } from '@utils'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
@@ -456,7 +457,7 @@ export default function DedicOrderPage() {
               ns: 'other',
             })})`
           } else if ($.includes('EUR ')) {
-            label = translatePeriodText($.trim())
+            label = translatePeriodText($.trim(), t)
           } else {
             label = t($.trim())
           }
@@ -472,22 +473,11 @@ export default function DedicOrderPage() {
     return []
   }
 
-  const translatePeriodText = sentence => {
-    const labelArr = sentence.split('EUR ')
-
-    return (
-      labelArr[0] +
-      'EUR ' +
-      t(labelArr[1]?.replace(')', ''), { ns: 'vds' }) +
-      (sentence.includes(')') ? ')' : '')
-    )
-  }
-
   const getControlPanelList = fieldName => {
     const optionsList = vdsParameters.slist.find(elem => elem.$name === fieldName)?.val
 
     return optionsList?.map(({ $key, $ }) => {
-      let label = translatePeriodText($.trim())
+      let label = translatePeriodText($.trim(), t)
 
       label = t(label?.split(' (')[0]) + ' (' + label?.split(' (')[1]
       return { value: $key, label: label }

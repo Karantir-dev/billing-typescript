@@ -65,6 +65,8 @@
   "payment_error_text": "Please try again or use another payment system. If you have any questions, please contact support.",
   "Support service": "Support service",
   "Payment error": "Payment error",
+  "url_error": "URL error",
+  "url_error_text": "The link you entered is invalid. Check the URL and try again.",
   "Telematic services": "Telematic services",
   "DNS-hosting for domains": "DNS-hosting '{{value}}' domains",
   "Domain names": "Domain names",
