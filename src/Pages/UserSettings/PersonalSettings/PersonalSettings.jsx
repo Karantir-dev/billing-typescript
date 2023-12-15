@@ -42,6 +42,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
   const userEdit = useSelector(settingsSelectors.getUserEdit)
   const userParams = useSelector(settingsSelectors.getUserParams)
   const userInfo = useSelector(userSelectors.getUserInfo)
+  const { $email_verified } = useSelector(userSelectors.getUserInfo)
 
   const saveProfileHandler = values => {
     dispatch(
@@ -321,37 +322,41 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                 <h2 className={s.settingsTitle}>{t('Security notification settings')}</h2>
 
                 <div className={cn(s.formRow, s.rowMessages)}>
-                  <div className={s.emailBlock}>
-                    <InputField
-                      name="email_notif"
-                      label={`${t('Email')}:`}
-                      placeholder={t('security_email_placeholder', {
-                        ns: 'user_settings',
-                      })}
-                      isShadow
-                      className={cn(s.emailInput, s.notifEmail)}
-                      error={!!errors.email_notif}
-                      touched={!!touched.email_notif}
-                      inputWrapperClass={s.field}
-                      inputClassName={s.field_bg}
-                    />
+                  {$email_verified !== 'off' && (
+                    <>
+                      <div className={s.emailBlock}>
+                        <InputField
+                          name="email_notif"
+                          label={`${t('Email')}:`}
+                          placeholder={t('security_email_placeholder', {
+                            ns: 'user_settings',
+                          })}
+                          isShadow
+                          className={cn(s.emailInput, s.notifEmail)}
+                          error={!!errors.email_notif}
+                          touched={!!touched.email_notif}
+                          inputWrapperClass={s.field}
+                          inputClassName={s.field_bg}
+                        />
 
-                    {isConfirmEmailBtnRender &&
-                      values?.email_notif?.length > 0 &&
-                      !errors.email_notif && (
-                        <button
-                          className={s.confirmBtn}
-                          onClick={() => confirmEmailHandler(values)}
-                          type="button"
-                        >
-                          {t('Send confirmation', { ns: 'other' })}
-                        </button>
-                      )}
-                  </div>
+                        {isConfirmEmailBtnRender &&
+                          values?.email_notif?.length > 0 &&
+                          !errors.email_notif && (
+                            <button
+                              className={s.confirmBtn}
+                              onClick={() => confirmEmailHandler(values)}
+                              type="button"
+                            >
+                              {t('Send confirmation', { ns: 'other' })}
+                            </button>
+                          )}
+                      </div>
 
-                  <div className={s.emailStatus}>
-                    {emailStatusRender(userParams?.email_confirmed_status)}
-                  </div>
+                      <div className={s.emailStatus}>
+                        {emailStatusRender(userParams?.email_confirmed_status)}
+                      </div>
+                    </>
+                  )}
 
                   <div className={s.securNotification}>
                     <div className={s.securNotifnEmailBlock}>
