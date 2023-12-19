@@ -49,7 +49,7 @@
     "finance": {
       "finance": "Фінанси",
       "finance_list": {
-        "automatic_payment": "Автоплатіж",
+        "automatic_payment": "Автопоповнення балансу",
         "payments": "Платежі",
         "expenses": "Витрати",
         "auto_renewal": "Автопродовження послуг",

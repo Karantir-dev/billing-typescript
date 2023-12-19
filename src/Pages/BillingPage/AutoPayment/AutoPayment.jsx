@@ -46,7 +46,19 @@ export default function AutoPayment() {
   const renderInstruction = () => {
     return (
       <>
-        <div className={s.autoPayTitle}>{t('AutoPaymentText')}</div>
+        <div className={s.autoPayTitle}>
+          {t('AutoPaymentText')}{' '}
+          <a
+            href="https://zomro.com/blog/faq/134-autopayment"
+            target="_blank"
+            rel="noreferrer nofollow noindex"
+            className={s.textlink}
+          >
+            {t('Auto-replenishment of the balance')}
+          </a>
+          {'.'} <br />
+          <br /> {t('AutoPaymentText2')}
+        </div>
         {autoPaymentsList?.map(el => {
           const { id, image, name, status, maxamount } = el
 

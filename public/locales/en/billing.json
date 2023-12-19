@@ -1,9 +1,11 @@
 {
   "Payments": "Payments",
   "Expenses": "Expenses",
-  "Auto payment": "Auto payment",
+  "Auto payment": "Auto-replenishment of the balance",
   "Finance": "Finance",
-  "AutoPaymentText": "You can configure automatic payments for your account. You don't need to make payments yourself, funds will be added automatically. You will have enough funds to pay for services during one month. Payment limits can be configured in the Auto payment configuration form.\n\nAutomatic payment may be added in to a list only after a while, only when all required operations are completed",
+  "AutoPaymentText": "You can configure automatic payments for your account. You don't need to make payments yourself, funds will be added automatically. You will have enough funds to pay for services during one month. You can set up payment limits when you ",
+  "Auto-replenishment of the balance": "set up auto-replenishment of your balance",
+  "AutoPaymentText2": "Automatic payment may be added in to a list only after a while, only when all required operations are completed",
   "Configure": "Configure",
   "Create": "Create",
   "Payment in progress": "Payment in progress",
@@ -54,7 +56,7 @@
   "The amount must be less than": "The amount must be less than",
   "Maximum payment amount per month": "Maximum payment amount per month",
   "Amount left for the month": "Amount left for the month",
-  "Auto payment deleted successfully": "Auto payment deleted successfully",
+  "Auto payment deleted successfully": "Automatic balance replenishment has been successfully removed",
   "Auto payment form instruction": "Enter the maximum payment amount per month. We cannot create automatic payments with larger amounts. Recommended maximum payment amount is {{max_pay_amount}} EUR. It is calculated based on expected expenses + 10%. According to existing services and auto-renewal settings, the minimum amount that will be charged from a client's account per month is {{min_amount}} EUR. The maximum amount - {{max_amount}} EUR.\n\nNote: if you haven't specified the maximum, amount the total number and amount of automatic payment per month will be unlimited.",
   "Amount of payment": "Maximum payment amount",
   "Not limited": "Not limited",
@@ -81,10 +83,8 @@
   "Add-on CPU count": "Add-on CPU count",
   "Payment system commission": "Payment system commission",
   "Add-on DDoS Protected Port Speed (Incoming)": "Add-on DDoS Protected Port Speed (Incoming)",
-
   "YOU DO NOT HAVE PAYMENTS YET": "YOU DO NOT HAVE PAYMENTS YET",
   "no services description": "In this section you can find details about payments",
-
   "YOU DO NOT HAVE EXPENSES YET": "YOU DO NOT HAVE EXPENSES YET",
   "no services description expenses": "In this section you can find details about your expenses",
   "Name is copied!": "Name is copied!",
@@ -92,11 +92,8 @@
   "FINISH": "FINISH",
   "click_finish_btn": "By clicking on the “Proceed” button, you will be redirected to the payment system page for further setting up the saved payment method",
   "Re-configure": "Re-configure",
-
   "Back to site": "Go to website",
-
   "VERIFY PHONE NUMBER": "VERIFY PHONE NUMBER",
-
   "verification_required_purchase": "Phone number verification is required to purchase this service",
   "promotion_vhost_title_1": "Get 30 days of shared hosting at 100% off.",
   "promotion_vhost_description_1": "Add 1 € to your account or make any purchase on the site and get the discount.",
