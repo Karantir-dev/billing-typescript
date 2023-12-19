@@ -126,7 +126,7 @@ export default function VDSOrder() {
 
       return optionsList
         ?.filter(el => el?.$)
-        ?.map(({ $key, $ }, index) => {
+        ?.map(({ $key, $, $cost }, index) => {
           let label = ''
           let withSale = false
           let words = []
@@ -150,16 +150,16 @@ export default function VDSOrder() {
                 <span className={s.saleSpan}>
                   {`${words[0]} Gb (`}
                   <span className={s.memorySale}>
-                    {Number(words[1] / 0.45).toFixed(2)}
+                    {Number($cost / 0.45).toFixed(2)}
                   </span>
-                  {` ${Number(words[1]).toFixed(2)} EUR/${t('short_month', {
+                  {` ${Number($cost).toFixed(2)} EUR/${t('short_month', {
                     ns: 'other',
                   })})`}
                 </span>
               </span>
             )
           } else if (fieldName === 'Memory') {
-            label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', {
+            label = `${words[0]} Gb (${$cost} EUR/${t('short_month', {
               ns: 'other',
             })})`
           } else if ($.includes('EUR ')) {
@@ -171,8 +171,8 @@ export default function VDSOrder() {
             value: $key,
             label: label,
             sale: withSale,
-            newPrice: Number(words[1]).toFixed(2),
-            oldPrice: (Number(words[1]) + words[1] * 0.55).toFixed(2),
+            newPrice: Number($cost).toFixed(2),
+            oldPrice: (Number($cost) + $cost * 0.55).toFixed(2),
           }
         })
     }
