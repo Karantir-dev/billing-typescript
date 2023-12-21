@@ -67,44 +67,44 @@
   color: var(--main-text);
 }
 
-.processors_block {
+.filter {
   display: flex;
   flex-direction: column;
   gap: 30px;
   margin-bottom: 30px;
 }
 
-.processors_block__label {
+.filter__label {
   margin-bottom: 10px;
   font-size: 14px;
 }
 
-.processors_block__row {
+.filte__row {
   display: flex;
   flex-wrap: wrap;
   gap: 25px;
 }
 
-.processor_card {
+.filter__option {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 10px;
 }
 
-.processor,
-.processor_name {
+.filter__btn {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1400px;
+}
+
+.filter__option_name {
   font-size: 15px;
   line-height: 130.5%;
   color: var(--main-text);
 }
 
-.processor {
-  margin-right: 10px;
-}
-
-.processor_name {
-  margin-left: 15px;
-}
 .period_select {
   margin-bottom: 20px;
   width: 242px;
@@ -462,10 +462,6 @@
     margin-left: 5px;
   }
 
-  .processor_card {
-    margin-bottom: 0;
-  }
-
   .tariff_title {
     margin-bottom: 30px;
   }
@@ -502,12 +498,13 @@
     display: block;
   }
 
-  .processors_block {
+  .filter {
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 50px;
   }
 
-  .processor_name {
+  .filter__option_name {
     font-size: 18px;
   }
 

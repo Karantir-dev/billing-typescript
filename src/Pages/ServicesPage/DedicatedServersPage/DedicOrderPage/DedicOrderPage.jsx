@@ -9,7 +9,6 @@ import {
   InputField,
   Icon,
   Loader,
-  CheckBox,
 } from '@components'
 import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -41,8 +40,25 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { VDS_IDS_TO_ORDER } from '@src/utils/constants'
+import DedicFilter from './DedicFilter'
 
 SwiperCore.use([EffectCoverflow, Pagination])
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'add':
+      return { ...state, [action.key]: [...state[action.key], action.value] }
+    case 'remove':
+      return {
+        ...state,
+        [action.key]: state[action.key].filter(el => el !== action.value),
+      }
+    case 'update_filter':
+      return action.value
+    default:
+      return state
+  }
+}
 
 export default function DedicOrderPage() {
   const dispatch = useDispatch()
@@ -64,12 +80,25 @@ export default function DedicOrderPage() {
   const [selectedTariffId, setSelectedTariffId] = useState()
 
   const [price, setPrice] = useState('')
-  const [filters, setFilters] = useReducer(
-    (state, action) => {
-      return { ...state, ...action }
-    },
-    { port: [], server_model: [] },
-  )
+
+  const [filters, setFilters] = useReducer(reducer, {})
+
+  useEffect(() => {
+    const set = new Set()
+    tarifsList.fpricelist
+      ?.filter(el => el.$.includes(':'))
+      ?.forEach(el => {
+        set.add(el.$.split(':')[0])
+      })
+
+    const filterGroups = [...set].reduce((obj, el) => {
+      obj[el] = []
+      return obj
+    }, {})
+
+    setFilters({ type: 'update_filter', value: filterGroups })
+  }, [tarifsList])
+
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   const [dataFromSite, setDataFromSite] = useState(null)
@@ -262,8 +291,11 @@ export default function DedicOrderPage() {
   }, [])
 
   useEffect(() => {
-    const newArrTarifList = tarifsList?.tarifList?.map(e => {
-      const tag = tarifsList?.fpricelist.filter(plist => e.desc.$.includes(plist.$))
+    const dedicList = tarifsList?.tarifList || []
+    const newArrTarifList = [...vdsList, ...dedicList]?.map(e => {
+      const tag = tarifsList?.fpricelist.filter(plist =>
+        e.desc.$.includes(plist.$.split(':')[1]),
+      )
 
       return { ...e, filter: { tag } }
     })
@@ -272,28 +304,22 @@ export default function DedicOrderPage() {
   }, [tarifsList])
 
   useEffect(() => {
-    let filteredTariffList = tarifList?.tarifList?.filter(el => {
-      let filterList = el.filter.tag
+    const filteredTariffList = tarifList?.tarifList?.filter(el => {
+      const filterList = el.filter.tag
+      let hasFilter = true
 
-      const hasPortFilter = filters.port.length
-        ? filterList.some(filter => filters.port.includes(filter.$key))
-        : true
-      const hasServerFilter = filters.server_model.length
-        ? filterList.some(filter => filters.server_model.includes(filter.$key))
-        : true
+      for (const key in filters) {
+        hasFilter = filters[key].length
+          ? filterList.some(filterItem => filters[key].includes(filterItem.$key))
+          : true
 
-      return hasPortFilter && hasServerFilter
+        if (!hasFilter) break
+      }
+
+      return hasFilter
     })
 
-    let tariffsListToRender = []
-
-    if (filters.port.length === 0 && filters.server_model.length === 0) {
-      tariffsListToRender = tarifList?.tarifList || []
-    } else {
-      tariffsListToRender = filteredTariffList || []
-    }
-
-    setFilteredTariffsList(tariffsListToRender)
+    setFilteredTariffsList(filteredTariffList || [])
   }, [tarifList, filters])
 
   const validationSchema = Yup.object().shape({
@@ -713,83 +739,17 @@ export default function DedicOrderPage() {
                     )
                   })}
                 </div>
-                <div
-                  className={classNames({
-                    [s.processors_block]: true,
-                  })}
-                >
-                  <div className={s.first_processors_block}>
-                    <p className={s.processors_block__label}>{t('port')}:</p>
-                    <div className={s.processors_block__row}>
-                      {tarifList?.fpricelist
-                        ?.filter(el => el.$.toLowerCase().includes('port'))
-                        .map(item => {
-                          return (
-                            <div
-                              className={classNames(s.processor_card, {
-                                [s.selected]: true,
-                              })}
-                              key={item?.$key}
-                            >
-                              <CheckBox
-                                value={filters.port.includes(item?.$key)}
-                                onClick={() => {
-                                  if (filters.port.includes(item?.$key)) {
-                                    const port = filters.port.filter(
-                                      el => el !== item?.$key,
-                                    )
-                                    setFilters({ port })
-                                  } else {
-                                    setFilters({ port: [...filters.port, item?.$key] })
-                                  }
-                                  setParameters(null)
-                                  setVdsParameters(null)
-                                }}
-                              />
-                              <span className={s.processor_name}>{item?.$}</span>
-                            </div>
-                          )
-                        })}
-                    </div>
-                  </div>
-                  <div className={s.second_processors_block}>
-                    <p className={s.processors_block__label}>{t('server_model')}:</p>
-                    <div className={s.processors_block__row}>
-                      {tarifList?.fpricelist
-                        ?.filter(el => !el.$.toLowerCase().includes('port'))
-                        .map(item => {
-                          return (
-                            <div
-                              className={classNames(s.processor_card, {
-                                [s.selected]: true,
-                              })}
-                              key={item?.$key}
-                            >
-                              <CheckBox
-                                value={filters.server_model.includes(item?.$key)}
-                                onClick={() => {
-                                  if (filters.server_model.includes(item?.$key)) {
-                                    const server_model = filters.server_model.filter(
-                                      el => el !== item?.$key,
-                                    )
-                                    setFilters({ server_model })
-                                  } else {
-                                    setFilters({
-                                      server_model: [...filters.server_model, item?.$key],
-                                    })
-                                  }
-                                  setParameters(null)
-                                  setVdsParameters(null)
-                                }}
-                              />
-                              <span className={s.processor_name}>{item?.$}</span>
-                            </div>
-                          )
-                        })}
-                    </div>
-                  </div>
-                </div>
-
+                <DedicFilter
+                  filtersItems={tarifList?.fpricelist}
+                  filters={filters}
+                  setFilters={setFilters}
+                  resetChosenTariff={() => {
+                    setParameters(null)
+                    setVdsParameters(null)
+                    setFieldValue('tarif', 0)
+                    setTarifChosen(false)
+                  }}
+                />
                 <Select
                   height={50}
                   value={values.period}
@@ -822,7 +782,7 @@ export default function DedicOrderPage() {
 
                 {deskOrHigher ? (
                   <div className={s.tarifs_block}>
-                    {[...vdsList, ...filteredTariffsList]
+                    {filteredTariffsList
                       ?.filter(item => item.order_available.$ === 'on')
                       ?.map(item => {
                         return (
@@ -880,7 +840,7 @@ export default function DedicOrderPage() {
                         }}
                         onSwiper={setSwiperRef}
                       >
-                        {[...vdsList, ...filteredTariffsList]
+                        {filteredTariffsList
                           ?.filter(item => item.order_available.$ === 'on')
                           ?.map(item => {
                             return (

@@ -132,6 +132,13 @@
 
   "server_name": "Server name",
   "server_placeholder": "My Server",
-  "port": "Port",
-  "server_model": "Server Model"
+  "port": "Port speed",
+  "gen": "Server generation",
+  "cpu": "Processor",
+  "ram": "RAM",
+  "ramtype": "RAM Standard",
+  "drive": "Disk",
+  "drivetype": "Disk Type",
+  "gpu": "GPU Type",
+  "raid": "RAID Type"
 }
