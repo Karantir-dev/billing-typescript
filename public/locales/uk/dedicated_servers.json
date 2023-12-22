@@ -141,5 +141,11 @@
   "drive": "Об'єм диска",
   "drivetype": "Тип диска",
   "gpu": "Тип GPU",
-  "raid": "Тип RAID"
+  "raid": "Тип RAID",
+  "dedic_activation_time": "Активація: до 3 годин",
+  "dedic_available_count": "В наявності: {{count}}шт.",
+  "dedic_ready_time": "Очікування: до 3-5 робочих днів",
+  "dedic_activation_info": "Після оплати рахунку ви отримаєте повідомлення, щойно сервер буде готовий до використання.",
+  "clear_filter": "Очистити фільтр"
+
 }
