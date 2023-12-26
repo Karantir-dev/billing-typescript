@@ -31,4 +31,4 @@ export { default as getParameterByName } from './getParameterByName'
 export { default as isDisabledDedicTariff } from './isDisabledDedicTariff'
 export { default as translatePeriodName } from './translatePeriodName'
 export { default as translatePeriodText } from './translatePeriodText'
-
+export { default as getPortSpeed } from './getPortSpeed'

@@ -31,6 +31,7 @@ import {
   translatePeriod,
   useCancelRequest,
   translatePeriodText,
+  getPortSpeed,
 } from '@utils'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
@@ -510,12 +511,6 @@ export default function DedicOrderPage() {
     })
   }
 
-  const getPortSpeed = () => {
-    const temp = vdsParameters?.slist?.find(el => el.$name === 'Port_speed')?.val
-    const value = Array.isArray(temp) ? temp?.[0].$ : temp?.$
-    return value ? value : ''
-  }
-
   const onFormSubmitVds = values => {
     const saleMemory = getOptionsListExtended('Memory')?.find(
       e => e?.value === values.Memory,
@@ -680,7 +675,7 @@ export default function DedicOrderPage() {
                 setFieldValue('CPU_count', vdsParameters?.CPU_count)
                 setFieldValue('Memory', vdsParameters?.Memory)
                 setFieldValue('Disk_space', vdsParameters?.Disk_space)
-                setFieldValue('Port_speed', getPortSpeed())
+                setFieldValue('Port_speed', getPortSpeed(vdsParameters))
                 setFieldValue('Control_panel', vdsParameters?.Control_panel)
                 setFieldValue('IP_addresses_count', vdsParameters?.IP_addresses_count)
                 setFieldValue('server_name', vdsParameters?.server_name?.$)

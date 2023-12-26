@@ -23,6 +23,7 @@ export default function VDSItem({
   goToPanelFn,
   handleEditSubmit,
   isDedic,
+  orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -56,6 +57,11 @@ export default function VDSItem({
   }
 
   const options = [
+    {
+      label: 'Order same',
+      icon: 'Copy',
+      onClick: orderSameTariff,
+    },
     {
       label: t('instruction'),
       icon: 'Info',

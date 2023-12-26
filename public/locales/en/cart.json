@@ -64,5 +64,8 @@
   "forexbox": "Forex server",
   "tariff_configuration": "Tariff configuration",
   "registration": "Registration",
-  "next": "Next"
+  "next": "Next",
+  "form_invalid": "The form is invalid",
+  "edit": "Edit",
+  "off": "Off"
 }

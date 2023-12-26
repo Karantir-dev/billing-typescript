@@ -16,59 +16,68 @@ import {
   fraudCheckSender,
   renameAddonFields,
 } from '@utils'
+import * as routes from '@src/routes'
 
-const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getBasket =
+  (setCartData, setPaymentsMethodList, isGetPayersList = true) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-    billing: { periodValue },
-  } = getState()
+    const {
+      auth: { sessionId },
+      billing: { periodValue },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'basket',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'basket',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const cartData = {
-        total_sum: data.doc?.total_sum?.$,
-        tax: data.doc?.tax?.$,
-        full_discount: data.doc?.full_discount?.$,
-        billorder: data?.doc?.billorder?.$,
-      }
-
-      data.doc?.list?.forEach(el => {
-        if (el.$name === 'itemlist') {
-          cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
-
-          cartData.elemList.forEach(el => {
-            if (el['item.type']?.$ === 'vds') {
-              el['item.period'].$ = periodValue ?? el['item.period']?.$
-              el['item.autoprolong'].$ = periodValue ?? el['item.autoprolong']?.$
-            }
-          })
-
-          dispatch(billingActions.setPeriodValue(null))
+        const cartData = {
+          total_sum: data.doc?.total_sum?.$,
+          tax: data.doc?.tax?.$,
+          full_discount: data.doc?.full_discount?.$,
+          billorder: data?.doc?.billorder?.$,
         }
-      })
 
-      setCartData && setCartData(cartData)
-      setPaymentsMethodList &&
-        dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        data.doc?.list?.forEach(el => {
+          if (el.$name === 'itemlist') {
+            cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
+
+            cartData.elemList.forEach(el => {
+              if (el['item.type']?.$ === 'vds') {
+                el['item.period'].$ = periodValue ?? el['item.period']?.$
+                el['item.autoprolong'].$ = periodValue ?? el['item.autoprolong']?.$
+              }
+            })
+
+            dispatch(billingActions.setPeriodValue(null))
+          }
+        })
+
+        setCartData && setCartData(cartData)
+        setPaymentsMethodList &&
+          dispatch(
+            getPaymentMethods(
+              data?.doc?.billorder?.$,
+              setPaymentsMethodList,
+              isGetPayersList,
+            ),
+          )
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const setBasketPromocode =
   (promocode, setCartData, setPaymentsMethodList) => (dispatch, getState) => {
@@ -182,40 +191,41 @@ const clearBasket = id => (dispatch, getState) => {
     })
 }
 
-const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getPaymentMethods =
+  (billorder, setPaymentsMethodList, isGetPayersList) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'payment.add',
-        out: 'json',
-        lang: 'en',
-        auth: sessionId,
-        billorder,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.add',
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+          billorder,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      data.doc?.list?.forEach(el => {
-        if (el.$name === 'methodlist') {
-          setPaymentsMethodList && setPaymentsMethodList(el?.elem)
-        }
+        data.doc?.list?.forEach(el => {
+          if (el.$name === 'methodlist') {
+            setPaymentsMethodList && setPaymentsMethodList(el?.elem)
+          }
+        })
+
+        isGetPayersList && dispatch(billingOperations.getPayers())
       })
-
-      dispatch(billingOperations.getPayers())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const setPaymentMethods =
   (body = {}, navigate, cartData = null, fraudData) =>
@@ -547,7 +557,13 @@ const getTariffInfo =
         const periods = data.doc.slist.find(el => el.$name === 'period')?.val
         setPeriods(periods)
 
-        dispatch(getTariffParameters({ service, id, period, ...params }, setParameters, setIsError))
+        dispatch(
+          getTariffParameters(
+            { service, id, period, ...params },
+            setParameters,
+            setIsError,
+          ),
+        )
       })
       .catch(error => {
         setIsError(true)
@@ -588,6 +604,60 @@ const setOrderData =
       })
   }
 
+const orderSameTariff = (service, elid, navigate) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: `${service}.edit`,
+        auth: sessionId,
+        elid,
+        out: 'json',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      const tariff = renameAddonFields(data.doc)
+      const {
+        register,
+        ostempl,
+        recipe,
+        period,
+        pricelist,
+        domain,
+        server_name,
+        autoprolong,
+      } = tariff
+
+      const domainParam = domain.$ ? `&domain=${domain?.$}` : ''
+      const serverParam = server_name.$ ? `&server_name=${server_name?.$}` : ''
+      const ostemplParam = ostempl.$ ? `&ostempl=${ostempl.$}` : ''
+      const recipeParam = recipe.$ ? `&recipe=${recipe.$}` : ''
+      const autoprolongParam = autoprolong?.$
+        ? `&autoprolong=${autoprolong?.$ === 'null' ? 'null' : period.$}`
+        : ''
+      const addons = Object.values(register).map(el => `${el}=${tariff[el].$}`)
+
+      const params = `service=${service}&id=${pricelist.$}&period=${
+        period.$
+      }${ostemplParam}${recipeParam}${domainParam}${serverParam}&${addons.join(
+        '&',
+      )}${autoprolongParam}`
+
+      navigate(`${routes.ORDER}?${params}`, { state: { backLink: service } })
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      checkIfTokenAlive(err.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getBasket,
   setBasketPromocode,
@@ -599,4 +669,5 @@ export default {
   getTariffParameters,
   getTariffInfo,
   setOrderData,
+  orderSameTariff,
 }

@@ -3,7 +3,13 @@ import s from './TariffConfig.module.scss'
 import { Form, Formik } from 'formik'
 import { Icon, Select, SoftwareOSBtn, SoftwareOSSelect, InputField } from '@components'
 import * as Yup from 'yup'
-import { DOMAIN_REGEX, translatePeriodName, translatePeriodText } from '@utils'
+import {
+  DOMAIN_REGEX,
+  getPortSpeed,
+  translatePeriodName,
+  translatePeriodText,
+} from '@utils'
+import { useEffect } from 'react'
 
 export default function TariffConfig({
   parameters,
@@ -11,6 +17,7 @@ export default function TariffConfig({
   service,
   changeFieldHandler,
   onSubmit,
+  setIsFormError,
 }) {
   const { t } = useTranslation(['vds', 'dedicated_servers'])
 
@@ -73,12 +80,6 @@ export default function TariffConfig({
         )
       }
     })
-  }
-
-  const getPortSpeed = () => {
-    const temp = parameters?.slist?.find(el => el.$name === 'Port_speed')?.val
-    const value = Array.isArray(temp) ? temp?.[0].$ : temp?.$
-    return value ? value : ''
   }
 
   const getOptionsListExtended = fieldName => {
@@ -167,7 +168,7 @@ export default function TariffConfig({
         CPU_count: parameters?.CPU_count,
         Memory: parameters?.Memory,
         Disk_space: parameters?.Disk_space,
-        Port_speed: getPortSpeed(),
+        Port_speed: getPortSpeed(parameters),
         Control_panel: parameters?.Control_panel,
         IP_addresses_count: parameters?.IP_addresses_count,
         agreement: 'on',
@@ -176,7 +177,10 @@ export default function TariffConfig({
       }}
       onSubmit={onSubmit}
     >
-      {({ values, errors, touched }) => {
+      {({ values, errors, touched, setFieldTouched }) => {
+        useEffect(() => {
+          setIsFormError(!!Object.keys(errors).length)
+        }, [errors])
         return (
           <Form id="tariff-config">
             {(service === 'vds' || service === 'dedic') && (
@@ -247,7 +251,7 @@ export default function TariffConfig({
                   isShadow
                 />
               )}
-              {'Port_speed' in parameters && (
+              {values.Port_speed && (
                 <InputField
                   name="Port_speed"
                   label={`${t('port_speed')}:`}
@@ -276,6 +280,7 @@ export default function TariffConfig({
                   isShadow
                   value={values.domain}
                   onChange={e => changeFieldHandler('domain', { $: e.target.value })}
+                  onBlur={() => setFieldTouched('domain', true)}
                 />
               )}
               {'server_name' in parameters && (

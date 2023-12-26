@@ -219,4 +219,5 @@ export { default as Steps } from './Steps/Steps'
 export { default as TariffConfig } from './TariffConfig/TariffConfig'
 export { default as Header } from './Container/Header/Header'
 export { default as Options } from './Options/Options'
+export { default as OrderTariff } from './OrderTariff/OrderTariff'
 

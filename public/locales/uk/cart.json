@@ -70,7 +70,8 @@
   "forexbox": "Forex сервер",
   "tariff_configuration": "Налаштування тарифу",
   "registration": "Реєстрація",
-  "next": "Далі"
-
-
+  "next": "Далі",
+  "form_invalid": "Форма має невірні значення",
+  "edit": "Редагувати",
+  "off": "Вимк."
 }

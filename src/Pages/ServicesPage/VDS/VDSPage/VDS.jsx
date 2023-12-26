@@ -24,7 +24,13 @@ import {
   CheckBox,
   Loader,
 } from '@components'
-import { actions, dedicOperations, dedicSelectors, vdsOperations } from '@redux'
+import {
+  actions,
+  cartOperations,
+  dedicOperations,
+  dedicSelectors,
+  vdsOperations,
+} from '@redux'
 import no_vds from '@images/services/no_vds.png'
 import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 
@@ -234,6 +240,9 @@ export default function VDS({ isDedic }) {
     isAllActive ? setActiveServices([]) : setActiveServices(servers)
   }
 
+  const orderSameTariff = id => {
+    dispatch(cartOperations.orderSameTariff('vds' ,id, navigate))
+  }
   return (
     <div>
       {!isDedic && (
@@ -322,6 +331,7 @@ export default function VDS({ isDedic }) {
         isDedic={isDedic}
         signal={signal}
         setIsLoading={setIsLoading}
+        orderSameTariff={orderSameTariff}
       />
 
       {elemsTotal > 5 && (

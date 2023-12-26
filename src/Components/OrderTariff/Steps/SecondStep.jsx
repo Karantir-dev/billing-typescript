@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Icon, InputField, LoaderDots, VerificationModal } from '@components'
 import { useTranslation } from 'react-i18next'
-import s from '../CartPage.module.scss'
+import s from '../OrderTariff.module.scss'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
 import ReCAPTCHA from 'react-google-recaptcha'

@@ -60,6 +60,7 @@ import {
   BillingPageLazy,
   PaymentProcessingPageLazy,
   DedicatedPageLazy,
+  CloneOrderPageLazy,
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
@@ -264,6 +265,8 @@ const Component = ({ fromPromotionLink }) => {
             path={route.PAYMENT_PROCESSING}
             element={<PaymentProcessingPageLazy />}
           />
+
+          <Route path={route.ORDER} element={<CloneOrderPageLazy />} />
 
           <Route path="*" element={<ErrorPageLazy />} />
         </Routes>

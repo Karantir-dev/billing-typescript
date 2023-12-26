@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import s from '../CartPage.module.scss'
+import s from '../OrderTariff.module.scss'
 import cn from 'classnames'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 import {
@@ -54,7 +55,7 @@ export default function FourthStep({ state, setState, parameters, service, id, c
   const setCartData = value => setState({ cartData: value })
 
   const openPayStepHandler = () => {
-    const { register, ostempl, recipe } = parameters
+    const { register, ostempl, recipe, domain, server_name } = parameters
 
     const params = {
       service,
@@ -62,8 +63,10 @@ export default function FourthStep({ state, setState, parameters, service, id, c
       id,
       ostempl: ostempl?.$,
       recipe: recipe?.$,
-      autoprolong: parameters.autoprolong.$,
+      autoprolong: parameters.autoprolong?.$,
       order_count: count,
+      domain: domain?.$,
+      server_name: server_name?.$,
     }
 
     for (const key in register) {
@@ -78,7 +81,7 @@ export default function FourthStep({ state, setState, parameters, service, id, c
   }
 
   const getBasketInfo = () => {
-    dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
+    dispatch(cartOperations.getBasket(setCartData, paymentListhandler, false))
     dispatch(cartOperations.getSalesList(setSalesList))
     dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }
@@ -222,7 +225,7 @@ export default function FourthStep({ state, setState, parameters, service, id, c
 
     const cart = { ...state.cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
 
-    dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
+    dispatch(cartOperations.setPaymentMethods(data, false, cart, fraudData))
   }
 
   const renderActiveDiscounts = () => {

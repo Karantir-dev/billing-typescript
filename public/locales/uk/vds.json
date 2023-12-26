@@ -102,5 +102,6 @@
   "daily charges": "щоденні\nсписання",
 
   "server_name": "Ім'я сервера",
-  "server_placeholder": "Мій сервер"
+  "server_placeholder": "Мій сервер",
+  "not_set": "Не встановлено"
 }

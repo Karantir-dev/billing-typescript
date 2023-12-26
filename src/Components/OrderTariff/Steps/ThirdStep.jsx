@@ -5,7 +5,7 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, payersOperations, payersSelectors } from '@redux'
 import { OFFER_FIELD } from '@utils/constants'
-import s from '../CartPage.module.scss'
+import s from '../OrderTariff.module.scss'
 
 export default function ThirdtStep({ passStep }) {
   const { t } = useTranslation(['other'])

@@ -23,6 +23,7 @@ export default function VDSmobileItem({
   setIdForInstruction,
   goToPanelFn,
   handleEditSubmit,
+  orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -56,6 +57,11 @@ export default function VDSmobileItem({
   }
 
   const options = [
+    {
+      label: 'Order same',
+      icon: 'Copy',
+      onClick: orderSameTariff,
+    },
     {
       label: t('instruction'),
       icon: 'Info',

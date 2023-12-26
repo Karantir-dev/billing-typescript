@@ -6,3 +6,4 @@ export { default as AffiliateProgramIncome } from './AffiliateProgram/AffiliateP
 export { default as AffiliateProgramStatistics } from './AffiliateProgram/AffiliateProgramStatistics/AffiliateProgramStatistics'
 
 export { default as CartPage } from './CartPage/CartPage'
+export { default as CloneOrderPage } from './CloneOrderPage/CloneOrderPage'

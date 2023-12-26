@@ -17,6 +17,7 @@ import {
 import { userOperations, vdsOperations } from '@redux'
 import {
   DOMAIN_REGEX,
+  getPortSpeed,
   translatePeriodName,
   translatePeriodText,
   useCancelRequest,
@@ -329,12 +330,6 @@ export default function VDSOrder() {
     /Total amount: (.+?)(?= EUR)/,
   )[1]
 
-  const getPortSpeed = () => {
-    const temp = parametersInfo?.slist?.find(el => el.$name === 'Port_speed')?.val
-    const value = Array.isArray(temp) ? temp?.[0].$ : temp?.$
-    return value ? value : ''
-  }
-
   // const openTermsHandler = () => {
   //   dispatch(dnsOperations?.getPrintLicense(parametersInfo?.pricelist?.$))
   // }
@@ -378,7 +373,7 @@ export default function VDSOrder() {
             CPU_count: dataFromSite?.CPU_count || parametersInfo?.CPU_count || '',
             Memory: dataFromSite?.Memory || parametersInfo?.Memory || '',
             Disk_space: dataFromSite?.Disk_space || parametersInfo?.Disk_space || '',
-            Port_speed: getPortSpeed(),
+            Port_speed: getPortSpeed(parametersInfo),
             Control_panel:
               dataFromSite?.Control_panel || parametersInfo?.Control_panel || '',
             IP_addresses_count: parametersInfo?.IP_addresses_count || '',
