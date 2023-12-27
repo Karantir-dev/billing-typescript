@@ -144,7 +144,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
           realname: userEdit?.realname?.realname || '',
           phone: userEdit?.phone?.phone || '',
 
-          email_notif: userParams?.email || '',
+          email_notif: userParams?.email || userInfo?.$email || '',
           telegram_id: userParams?.telegram_id || '',
           timezone: userParams?.timezone || '',
           sendemail: userParams?.sendemail === 'on',
