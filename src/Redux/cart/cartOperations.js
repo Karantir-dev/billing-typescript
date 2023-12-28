@@ -498,7 +498,7 @@ const getPayMethodItem = (body, setAdditionalPayMethodts) => (dispatch, getState
 }
 
 const getTariffParameters =
-  ({ service, id, period, ...params }, setParameters, setIsError) =>
+  ({ service, id, period = 1, ...params }, setParameters, setIsError) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
