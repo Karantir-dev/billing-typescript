@@ -70,8 +70,8 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
       recipe: recipe?.$,
       period,
       autoprolong: autoprolong,
-      domain: domain.$,
-      server_name: server_name.$,
+      domain: domain?.$,
+      server_name: server_name?.$,
     }
 
     for (const key in register) {
