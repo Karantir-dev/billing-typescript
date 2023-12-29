@@ -114,7 +114,7 @@ const getTarifs =
         const fpricelist = [
           ...transformToArray(firstFpricelist),
           ...transformToArray(secondFpricelist),
-        ]
+        ].filter((obj, index, self) => index === self.findIndex(o => o.$key === obj.$key))
 
         const { elem: firstTarifList } =
           firstDatacenterData.doc.list.find(el => el?.$name === 'tariflist') || {}
