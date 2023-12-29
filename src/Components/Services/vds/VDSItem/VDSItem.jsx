@@ -58,7 +58,7 @@ export default function VDSItem({
 
   const options = [
     {
-      label: 'Order same',
+      label: t('clone_tariff'),
       icon: 'Copy',
       onClick: orderSameTariff,
     },

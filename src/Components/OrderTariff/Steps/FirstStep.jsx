@@ -25,6 +25,7 @@ export default function FirstStep({
 
   useEffect(() => {
     if (service === 'vds' && isShowTariffInfo) {
+      console.log(parameters, ' apara')
       const orderInfo = parameters.orderinfo.$.split('<br/>')
 
       const domain_name = parameters.domain?.$ || t('not_set', { ns: 'vds' })
@@ -40,10 +41,14 @@ export default function FirstStep({
         .find(info => info.includes('Disk space'))
         .split(' - ')[0]
         .replace('Disk space', '')
-      const disk_space = parameters.ostempl?.$
+      const os = parameters.slist
+        .find(el => el.$name === 'ostempl')
+        ?.val.find(el => el.$key === parameters.ostempl?.$)?.$
       const software =
         parameters.recipe?.$ !== 'null'
-          ? parameters.recipe?.$
+          ? parameters.slist
+              .find(el => el.$name === 'recipe')
+              ?.val.find(el => el.$key === parameters.recipe?.$)?.$
           : t('not_set', { ns: 'vds' })
       const license = orderInfo
         .find(info => info.includes('Control panel'))
@@ -57,7 +62,7 @@ export default function FirstStep({
         .replace('Unit', t('Unit'))
       const autoprolong =
         parameters.autoprolong?.$ === 'null'
-          ? t('off', {ns: 'cart'})
+          ? t('off', { ns: 'cart' })
           : `${parameters.autoprolong?.$} ${t('short_month', { ns: 'other' })}`
 
       setTariffInfo({
@@ -66,7 +71,7 @@ export default function FirstStep({
         cpu_count,
         ram,
         drive,
-        disk_space,
+        os,
         software,
         license,
         port_speed,
@@ -127,21 +132,21 @@ export default function FirstStep({
                         event.target.value.length > 1
                           ? event.target.value.replace(/^0/, '')
                           : event.target.value
-                      setCount(+event.target.value > 50 ? 50 : value)
+                      setCount(+event.target.value > 35 ? 35 : +value)
                     }}
                     onBlur={event => {
                       if (event.target.value < 1) setCount(1)
                     }}
                     type="number"
                     min={1}
-                    max={50}
+                    max={35}
                   />
                   <button
                     className={cn(s.count_btn, s.count_btn_increment)}
                     onClick={() => {
                       setCount(prev => +prev + 1)
                     }}
-                    disabled={+count >= 50}
+                    disabled={+count >= 35}
                   ></button>
                 </div>
               </div>
@@ -150,63 +155,63 @@ export default function FirstStep({
         </div>
         <div className={s.tariff_info}>
           {isShowTariffInfo && service === 'vds' && (
-            <div className={s.confifg_desc}>
-              <ul className={s.confifg_desc_list}>
-                <li className={cn(s.confifg_desc_item, s.confifg_desc_item_bold)}>
+            <div className={s.config_desc}>
+              <ul className={s.config_desc_list}>
+                <li className={cn(s.config_desc_item, s.config_desc_item_bold)}>
                   {t('server_name')}: {tariffInfo.server_name}
                 </li>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>vCPU:</span>{' '}
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>vCPU:</span>{' '}
                   {tariffInfo.cpu_count}
                 </li>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>
                     {t('memory', { ns: 'vds' })}:
                   </span>{' '}
                   {tariffInfo.ram}
                 </li>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>
                     {t('disk_space', { ns: 'vds' })}:
                   </span>{' '}
                   {tariffInfo.drive}
                 </li>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>{t('os')}:</span>{' '}
-                  {tariffInfo.disk_space}
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>{t('os')}:</span>{' '}
+                  {tariffInfo.os}
                 </li>
               </ul>
-              <ul className={s.confifg_desc_list}>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>
+              <ul className={s.config_desc_list}>
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>
                     {t('Preinstalled software')}:
                   </span>{' '}
                   {tariffInfo.software}
                 </li>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>
                     {t('license', { ns: 'vds' })}:
                   </span>{' '}
                   {tariffInfo.license}
                 </li>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>{t('port_speed')}:</span>{' '}
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>{t('port_speed')}:</span>{' '}
                   {tariffInfo.port_speed}{' '}
                 </li>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>
                     {t('IP-addresses count')}:
                   </span>{' '}
                   {tariffInfo.ip_count}{' '}
                 </li>
-                <li className={s.confifg_desc_item}>
-                  <span className={s.confifg_desc_item_bold}>{t('Domain name')}:</span>{' '}
+                <li className={s.config_desc_item}>
+                  <span className={s.config_desc_item_bold}>{t('Domain name')}:</span>{' '}
                   {tariffInfo.domain_name}
                 </li>
               </ul>
               {parameters.autoprolong?.$ && (
-                <p className={cn(s.confifg_desc_item, s.confifg_desc_item_autoprolong)}>
-                  <span className={s.confifg_desc_item_bold}>{t('autoprolong')}:</span>{' '}
+                <p className={cn(s.config_desc_item, s.config_desc_item_autoprolong)}>
+                  <span className={s.config_desc_item_bold}>{t('autoprolong')}:</span>{' '}
                   {tariffInfo.autoprolong}
                 </p>
               )}

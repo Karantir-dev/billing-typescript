@@ -149,27 +149,34 @@
   }
 }
 
-.confifg_desc {
+.config_desc {
   margin-top: 20px;
-  display: grid;
-  grid-template-columns: 1fr;
+
   @media (min-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    .config_desc_list {
+      width: 50%;
+      padding-right: 15px;
+    }
   }
 }
 
-.confifg_desc_item {
+.config_desc_item {
   font-size: 14px;
   margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  white-space: nowrap;
 }
-.confifg_desc_item_bold {
+.config_desc_item_bold {
   font-weight: 600;
 }
-.confifg_desc_item_autoprolong {
+.config_desc_item_autoprolong {
   margin: 0;
   @media (min-width: 1024px) {
-    grid-column: span 2;
+    width: 100%;
   }
 }
 

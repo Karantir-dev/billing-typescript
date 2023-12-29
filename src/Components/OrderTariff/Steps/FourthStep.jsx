@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ErrorMessage, Form, Formik } from 'formik'
@@ -24,13 +23,10 @@ import {
 } from '@components'
 import { replaceAllFn, useFormFraudCheckData } from '@utils'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
-import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 
 export default function FourthStep({ state, setState, parameters, service, id, count }) {
   const dispatch = useDispatch()
-
-  const navigate = useNavigate()
 
   const dropdownSale = useRef(null)
 
@@ -65,8 +61,8 @@ export default function FourthStep({ state, setState, parameters, service, id, c
       recipe: recipe?.$,
       autoprolong: parameters.autoprolong?.$,
       order_count: count,
-      domain: domain?.$,
-      server_name: server_name?.$,
+      domain: domain?.$ || '',
+      server_name: server_name?.$ || '',
     }
 
     for (const key in register) {

@@ -102,6 +102,6 @@
 
   "server_name": "Имя сервера",
   "server_placeholder": "Мой сервер",
-  "not_set": "Не задано"
-
+  "not_set": "Не задано",
+  "clone_tariff": "Клонировать тариф"
 }

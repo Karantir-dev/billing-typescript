@@ -494,14 +494,14 @@ export default function VDSOrder() {
                                             ? event.target.value.replace(/^0/, '')
                                             : event.target.value
 
-                                        setCount(+event.target.value > 50 ? 50 : value)
+                                        setCount(+event.target.value > 35 ? 35 : value)
                                       }}
                                       onBlur={event => {
                                         if (event.target.value < 1) setCount(1)
                                       }}
                                       type="number"
                                       min={1}
-                                      max={50}
+                                      max={35}
                                     />
                                   </div>
                                 </div>
@@ -516,7 +516,7 @@ export default function VDSOrder() {
                                     +(values.totalPrice * (+count + 1)).toFixed(4),
                                   )
                                 }}
-                                disabled={+count >= 50}
+                                disabled={+count >= 35}
                               ></button>
                             </div>
                           )}
@@ -745,14 +745,14 @@ export default function VDSOrder() {
                                       ? event.target.value?.replace(/^0/, '')
                                       : event.target.value
 
-                                  setCount(+event.target.value > 50 ? 50 : value)
+                                  setCount(+event.target.value > 35 ? 35 : value)
                                 }}
                                 onBlur={event => {
                                   if (event.target.value < 1) setCount(1)
                                 }}
                                 type="number"
                                 min={1}
-                                max={50}
+                                max={35}
                               />
                             </div>
                           </div>
@@ -767,7 +767,7 @@ export default function VDSOrder() {
                               +(values.totalPrice * (+count + 1))?.toFixed(4),
                             )
                           }}
-                          disabled={+count >= 50}
+                          disabled={+count >= 35}
                         ></button>
                       </div>
                     </div>
