@@ -78,3 +78,6 @@ export const PAYMENT_PROCESSING = '/payment_processing'
 
 export const WORDPRESS = '/services/wordpress'
 export const WORDPRESS_ORDER = '/services/wordpress/wordpress_order'
+
+export const CART = '/cart'
+export const ORDER = '/order'

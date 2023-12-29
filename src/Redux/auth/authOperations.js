@@ -2,7 +2,7 @@ import qs from 'qs'
 import axios from 'axios'
 import { actions, authActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, cookies, throwServerError } from '@utils'
+import { checkIfTokenAlive, cookies, getParameterByName, throwServerError } from '@utils'
 import { SITE_URL } from '@config/config'
 import { exists as isTranslationExists } from 'i18next'
 
@@ -322,8 +322,53 @@ const getCountriesForRegister = (setCountries, setStates) => dispatch => {
     })
 }
 
+const autoLogin = (email, key, successRegistration) => dispatch => {
+  dispatch(actions.showLoader())
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'auth',
+        username: email,
+        key,
+        out: 'json',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) {
+        throwServerError(data.doc.error.$object)
+      }
+
+      const sessionId = data?.doc?.auth?.$id
+      cookies.setCookie('sessionId', sessionId, 1)
+
+      dispatch(authActions.loginSuccess(sessionId))
+      dispatch(authActions.isLogined(true))
+
+      successRegistration()
+      dispatch(actions.hideLoader())
+    })
+    .catch(error => {
+      dispatch(actions.hideLoader())
+
+      // billing response errors handling
+      if (error.serverResponse) {
+        if (isTranslationExists(`warnings.${error.message}`, { ns: 'auth' })) {
+          dispatch(authActions.setAuthErrorMsg(`warnings.${error.message}`))
+        } else {
+          dispatch(authActions.setAuthErrorMsg('warnings.unknown_error'))
+        }
+
+        // access errors handling
+      } else {
+        checkIfTokenAlive(error, dispatch)
+      }
+    })
+}
+
 const register =
-  (values, partner, sesid, setErrMsg, successRegistration, resetRecaptcha) =>
+  (values, partner, sesid, setErrMsg, successRegistration, resetRecaptcha, isAutologin) =>
   dispatch => {
     dispatch(actions.showLoader())
     cookies.eraseCookie('sessionId')
@@ -357,6 +402,17 @@ const register =
         if (window.fbq) window.fbq('track', 'CompleteRegistration')
         if (window.qp) window.qp('track', 'CompleteRegistration')
         /** ---- /Analytics ----  */
+
+        if (isAutologin) {
+          dispatch(
+            autoLogin(
+              values.email,
+              getParameterByName('key', data?.doc?.ok?.$),
+              successRegistration,
+            ),
+          )
+          return
+        }
 
         successRegistration()
 

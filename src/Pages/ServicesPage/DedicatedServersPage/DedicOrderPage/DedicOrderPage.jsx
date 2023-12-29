@@ -9,7 +9,6 @@ import {
   InputField,
   Icon,
   Loader,
-  CheckBox,
 } from '@components'
 import DedicTarifCard from './DedicTarifCard'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -31,6 +30,8 @@ import {
   useScrollToElement,
   translatePeriod,
   useCancelRequest,
+  translatePeriodText,
+  getPortSpeed,
 } from '@utils'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
@@ -40,8 +41,30 @@ import 'swiper/swiper.min.css'
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import { VDS_IDS_TO_ORDER } from '@src/utils/constants'
+import DedicFilter from './DedicFilter'
 
 SwiperCore.use([EffectCoverflow, Pagination])
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'add':
+      return { ...state, [action.key]: [...state[action.key], action.value] }
+    case 'remove':
+      return {
+        ...state,
+        [action.key]: state[action.key].filter(el => el !== action.value),
+      }
+    case 'update_filter':
+      return action.value
+    case 'clear_filter':
+      return Object.keys(state).reduce((obj, el) => {
+        obj[el] = []
+        return obj
+      }, {})
+    default:
+      return state
+  }
+}
 
 export default function DedicOrderPage() {
   const dispatch = useDispatch()
@@ -61,14 +84,27 @@ export default function DedicOrderPage() {
   const [parameters, setParameters] = useState(null)
   const [vdsParameters, setVdsParameters] = useState(null)
   const [selectedTariffId, setSelectedTariffId] = useState()
-
   const [price, setPrice] = useState('')
-  const [filters, setFilters] = useReducer(
-    (state, action) => {
-      return { ...state, ...action }
-    },
-    { port: [], server_model: [] },
-  )
+  const [dedicInfoList, setDedicInfoList] = useState([])
+
+  const [filters, setFilters] = useReducer(reducer, {})
+
+  useEffect(() => {
+    const set = new Set()
+    tarifsList.fpricelist
+      ?.filter(el => el.$.includes(':'))
+      ?.forEach(el => {
+        set.add(el.$.split(':')[0])
+      })
+
+    const filterGroups = [...set].reduce((obj, el) => {
+      obj[el] = []
+      return obj
+    }, {})
+
+    setFilters({ type: 'update_filter', value: filterGroups })
+  }, [tarifsList])
+
   const [periodName, setPeriodName] = useState('')
   const [isTarifChosen, setTarifChosen] = useState(false)
   const [dataFromSite, setDataFromSite] = useState(null)
@@ -113,14 +149,14 @@ export default function DedicOrderPage() {
       return
     }
 
-    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2)
+    let amount = Number(amounts[amounts.length - 1]).toFixed(2)
     let percent = Number(amounts[0]) + '%'
     let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
 
     setPeriodName(period)
 
     return {
-      amoumt,
+      amount,
       percent,
       sale,
       length: amounts.length,
@@ -254,16 +290,24 @@ export default function DedicOrderPage() {
 
   useEffect(() => {
     if (isDedicOrderAllowed) {
-      dispatch(dedicOperations.getTarifs(setNewVds, signal, setIsLoading))
+      dispatch(
+        dedicOperations.getTarifs(1, setNewVds, setDedicInfoList, signal, setIsLoading),
+      )
     } else {
       navigate(route.DEDICATED_SERVERS, { replace: true })
     }
   }, [])
 
   useEffect(() => {
-    const newArrTarifList = tarifsList?.tarifList?.map(e => {
-      const tag = tarifsList?.fpricelist.filter(plist => e.desc.$.includes(plist.$))
+    const dedicList = tarifsList?.tarifList || []
+    const sortedDedic = [...dedicList]
+      .sort((a, b) => parsePrice(a.price.$).amount - parsePrice(b.price.$).amount)
+      .sort((a, b) => parsePrice(b.price.$).length - parsePrice(a.price.$).length)
 
+    const newArrTarifList = [...vdsList, ...sortedDedic]?.map(e => {
+      const tag = tarifsList?.fpricelist.filter(plist =>
+        e.desc.$.includes(plist.$.split(':')[1]),
+      )
       return { ...e, filter: { tag } }
     })
 
@@ -271,28 +315,22 @@ export default function DedicOrderPage() {
   }, [tarifsList])
 
   useEffect(() => {
-    let filteredTariffList = tarifList?.tarifList?.filter(el => {
-      let filterList = el.filter.tag
+    const filteredTariffList = tarifList?.tarifList?.filter(el => {
+      const filterList = el.filter.tag
+      let hasFilter = true
 
-      const hasPortFilter = filters.port.length
-        ? filterList.some(filter => filters.port.includes(filter.$key))
-        : true
-      const hasServerFilter = filters.server_model.length
-        ? filterList.some(filter => filters.server_model.includes(filter.$key))
-        : true
+      for (const key in filters) {
+        hasFilter = filters[key].length
+          ? filterList.some(filterItem => filters[key].includes(filterItem.$key))
+          : true
 
-      return hasPortFilter && hasServerFilter
+        if (!hasFilter) break
+      }
+
+      return hasFilter
     })
 
-    let tariffsListToRender = []
-
-    if (filters.port.length === 0 && filters.server_model.length === 0) {
-      tariffsListToRender = tarifList?.tarifList || []
-    } else {
-      tariffsListToRender = filteredTariffList || []
-    }
-
-    setFilteredTariffsList(tariffsListToRender)
+    setFilteredTariffsList(filteredTariffList || [])
   }, [tarifList, filters])
 
   const validationSchema = Yup.object().shape({
@@ -456,7 +494,7 @@ export default function DedicOrderPage() {
               ns: 'other',
             })})`
           } else if ($.includes('EUR ')) {
-            label = translatePeriodText($.trim())
+            label = translatePeriodText($.trim(), t)
           } else {
             label = t($.trim())
           }
@@ -472,32 +510,15 @@ export default function DedicOrderPage() {
     return []
   }
 
-  const translatePeriodText = sentence => {
-    const labelArr = sentence.split('EUR ')
-
-    return (
-      labelArr[0] +
-      'EUR ' +
-      t(labelArr[1]?.replace(')', ''), { ns: 'vds' }) +
-      (sentence.includes(')') ? ')' : '')
-    )
-  }
-
   const getControlPanelList = fieldName => {
     const optionsList = vdsParameters.slist.find(elem => elem.$name === fieldName)?.val
 
     return optionsList?.map(({ $key, $ }) => {
-      let label = translatePeriodText($.trim())
+      let label = translatePeriodText($.trim(), t)
 
       label = t(label?.split(' (')[0]) + ' (' + label?.split(' (')[1]
       return { value: $key, label: label }
     })
-  }
-
-  const getPortSpeed = () => {
-    const temp = vdsParameters?.slist?.find(el => el.$name === 'Port_speed')?.val
-    const value = Array.isArray(temp) ? temp?.[0].$ : temp?.$
-    return value ? value : ''
   }
 
   const onFormSubmitVds = values => {
@@ -527,7 +548,6 @@ export default function DedicOrderPage() {
 
   const handleSubmit = values => {
     const {
-      datacenter,
       tarif,
       period,
       managePanelName,
@@ -550,7 +570,6 @@ export default function DedicOrderPage() {
             dispatch(
               dedicOperations.orderServer(
                 autoprolong,
-                datacenter,
                 period,
                 tarif,
                 domain,
@@ -581,7 +600,6 @@ export default function DedicOrderPage() {
           enableReinitialize
           validationSchema={validationSchema}
           initialValues={{
-            datacenter: tarifList?.currentDatacenter,
             tarif: dataFromSite?.pricelist || null,
             period: period,
             processor: null,
@@ -621,13 +639,12 @@ export default function DedicOrderPage() {
                   }
 
                   if (tariff) {
-                    setPrice(parsePrice(tariff?.price?.$)?.amoumt)
+                    setPrice(parsePrice(tariff?.price?.$)?.amount)
                     setTarifChosen(true)
 
                     dispatch(
                       dedicOperations.getParameters(
                         '1',
-                        tarifList?.currentDatacenter,
                         cartData?.pricelist,
                         setParameters,
                         setFieldValue,
@@ -664,7 +681,7 @@ export default function DedicOrderPage() {
                 setFieldValue('CPU_count', vdsParameters?.CPU_count)
                 setFieldValue('Memory', vdsParameters?.Memory)
                 setFieldValue('Disk_space', vdsParameters?.Disk_space)
-                setFieldValue('Port_speed', getPortSpeed())
+                setFieldValue('Port_speed', getPortSpeed(vdsParameters))
                 setFieldValue('Control_panel', vdsParameters?.Control_panel)
                 setFieldValue('IP_addresses_count', vdsParameters?.IP_addresses_count)
                 setFieldValue('server_name', vdsParameters?.server_name?.$)
@@ -674,132 +691,17 @@ export default function DedicOrderPage() {
 
             return (
               <Form className={s.form}>
-                <div className={s.datacenter_block}>
-                  {tarifList?.datacenter?.map(item => {
-                    let countryName = item?.$?.split(',')[0]
-                    let datacenterName = item?.$?.split(',')[1]
-
-                    return (
-                      <div
-                        className={classNames(s.datacenter_card, {
-                          [s.selected]: item?.$key === values?.datacenter,
-                        })}
-                        key={item?.$key}
-                      >
-                        <button
-                          onClick={() => {
-                            setPrice('-')
-                            // setPaymentPeriod(item)
-                            setFieldValue('datacenter', item?.$key)
-                            setParameters(null)
-                            setVdsParameters(null)
-                            setTarifChosen(false)
-                            dispatch(
-                              dedicOperations.getUpdatedTarrifs(
-                                item?.$key,
-                                values.period,
-                                signal,
-                                setIsLoading,
-                              ),
-                            )
-                          }}
-                          type="button"
-                          className={s.datacenter_card_btn}
-                        >
-                          <img
-                            className={classNames({
-                              [s.flag_icon]: true,
-                              [s.selected]: item?.$key === values?.datacenter,
-                            })}
-                            src={require('@images/countryFlags/netherlands_flag.webp')}
-                            alt="nth_flag"
-                          />
-                          <div className={s.datacenter__info}>
-                            <p className={s.country_name}>{countryName}</p>
-                            <span className={s.datacenter}>{datacenterName}</span>
-                          </div>
-                        </button>
-                      </div>
-                    )
-                  })}
-                </div>
-                <div
-                  className={classNames({
-                    [s.processors_block]: true,
-                  })}
-                >
-                  <div className={s.first_processors_block}>
-                    <p className={s.processors_block__label}>{t('port')}:</p>
-                    <div className={s.processors_block__row}>
-                      {tarifList?.fpricelist
-                        ?.filter(el => el.$.toLowerCase().includes('port'))
-                        .map(item => {
-                          return (
-                            <div
-                              className={classNames(s.processor_card, {
-                                [s.selected]: true,
-                              })}
-                              key={item?.$key}
-                            >
-                              <CheckBox
-                                value={filters.port.includes(item?.$key)}
-                                onClick={() => {
-                                  if (filters.port.includes(item?.$key)) {
-                                    const port = filters.port.filter(
-                                      el => el !== item?.$key,
-                                    )
-                                    setFilters({ port })
-                                  } else {
-                                    setFilters({ port: [...filters.port, item?.$key] })
-                                  }
-                                  setParameters(null)
-                                  setVdsParameters(null)
-                                }}
-                              />
-                              <span className={s.processor_name}>{item?.$}</span>
-                            </div>
-                          )
-                        })}
-                    </div>
-                  </div>
-                  <div className={s.second_processors_block}>
-                    <p className={s.processors_block__label}>{t('server_model')}:</p>
-                    <div className={s.processors_block__row}>
-                      {tarifList?.fpricelist
-                        ?.filter(el => !el.$.toLowerCase().includes('port'))
-                        .map(item => {
-                          return (
-                            <div
-                              className={classNames(s.processor_card, {
-                                [s.selected]: true,
-                              })}
-                              key={item?.$key}
-                            >
-                              <CheckBox
-                                value={filters.server_model.includes(item?.$key)}
-                                onClick={() => {
-                                  if (filters.server_model.includes(item?.$key)) {
-                                    const server_model = filters.server_model.filter(
-                                      el => el !== item?.$key,
-                                    )
-                                    setFilters({ server_model })
-                                  } else {
-                                    setFilters({
-                                      server_model: [...filters.server_model, item?.$key],
-                                    })
-                                  }
-                                  setParameters(null)
-                                  setVdsParameters(null)
-                                }}
-                              />
-                              <span className={s.processor_name}>{item?.$}</span>
-                            </div>
-                          )
-                        })}
-                    </div>
-                  </div>
-                </div>
-
+                <DedicFilter
+                  filtersItems={tarifList?.fpricelist}
+                  filters={filters}
+                  setFilters={setFilters}
+                  resetChosenTariff={() => {
+                    setParameters(null)
+                    setVdsParameters(null)
+                    setFieldValue('tarif', 0)
+                    setTarifChosen(false)
+                  }}
+                />
                 <Select
                   height={50}
                   value={values.period}
@@ -811,12 +713,11 @@ export default function DedicOrderPage() {
                     setParameters(null)
                     setVdsParameters(null)
                     setTarifChosen(false)
-
                     dispatch(
-                      dedicOperations.getUpdatedPeriod(
+                      dedicOperations.getTarifs(
                         item,
-                        values.datacenter,
                         setNewVds,
+                        setDedicInfoList,
                         signal,
                         setIsLoading,
                       ),
@@ -832,7 +733,7 @@ export default function DedicOrderPage() {
 
                 {deskOrHigher ? (
                   <div className={s.tarifs_block}>
-                    {[...vdsList, ...filteredTariffsList]
+                    {filteredTariffsList
                       ?.filter(item => item.order_available.$ === 'on')
                       ?.map(item => {
                         return (
@@ -853,6 +754,7 @@ export default function DedicOrderPage() {
                             setSelectedTariffId={setSelectedTariffId}
                             signal={signal}
                             setIsLoading={setIsLoading}
+                            dedicInfoList={dedicInfoList}
                           />
                         )
                       })}
@@ -890,7 +792,7 @@ export default function DedicOrderPage() {
                         }}
                         onSwiper={setSwiperRef}
                       >
-                        {[...vdsList, ...filteredTariffsList]
+                        {filteredTariffsList
                           ?.filter(item => item.order_available.$ === 'on')
                           ?.map(item => {
                             return (
@@ -915,6 +817,7 @@ export default function DedicOrderPage() {
                                   setSelectedTariffId={setSelectedTariffId}
                                   signal={signal}
                                   setIsLoading={setIsLoading}
+                                  dedicInfoList={dedicInfoList}
                                 />
                               </SwiperSlide>
                             )
@@ -1144,40 +1047,39 @@ export default function DedicOrderPage() {
                         />
                       )}
 
-                      {values.datacenter === '8' &&
-                        values?.portSpeedlList?.length > 0 && (
-                          <Select
-                            height={50}
-                            getElement={item => {
-                              setFieldValue('portSpeed', item)
-                              updatePrice(
-                                { ...values, portSpeed: item },
-                                dispatch,
-                                setPrice,
-                                signal,
-                                setIsLoading,
+                      {values?.portSpeedlList?.length > 0 && (
+                        <Select
+                          height={50}
+                          getElement={item => {
+                            setFieldValue('portSpeed', item)
+                            updatePrice(
+                              { ...values, portSpeed: item },
+                              dispatch,
+                              setPrice,
+                              signal,
+                              setIsLoading,
+                            )
+                          }}
+                          isShadow
+                          label={`${t('port_speed')}:`}
+                          itemsList={values?.portSpeedlList?.map(el => {
+                            let labelText = el.$
+                            if (labelText.includes('per month')) {
+                              labelText = labelText.replace('per month', t('per month'))
+                            }
+
+                            if (labelText.includes('unlimited traffic')) {
+                              labelText = labelText.replace(
+                                'unlimited traffic',
+                                t('unlimited traffic'),
                               )
-                            }}
-                            isShadow
-                            label={`${t('port_speed')}:`}
-                            itemsList={values?.portSpeedlList?.map(el => {
-                              let labelText = el.$
-                              if (labelText.includes('per month')) {
-                                labelText = labelText.replace('per month', t('per month'))
-                              }
+                            }
 
-                              if (labelText.includes('unlimited traffic')) {
-                                labelText = labelText.replace(
-                                  'unlimited traffic',
-                                  t('unlimited traffic'),
-                                )
-                              }
-
-                              return { label: labelText, value: el.$key }
-                            })}
-                            className={s.select}
-                          />
-                        )}
+                            return { label: labelText, value: el.$key }
+                          })}
+                          className={s.select}
+                        />
+                      )}
 
                       {values?.ipList?.length > 0 && isTarifChosen === 'dedic' && (
                         <Select
@@ -1278,7 +1180,6 @@ export default function DedicOrderPage() {
 function updatePrice(formValues, dispatch, setNewPrice, signal, setIsLoading) {
   dispatch(
     dedicOperations.updatePrice(
-      formValues.datacenter,
       formValues.period,
       formValues.tarif,
       formValues.domain,

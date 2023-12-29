@@ -49,7 +49,7 @@
     "finance": {
       "finance": "Finance",
       "finance_list": {
-        "automatic_payment": "Automatic payment",
+        "automatic_payment": "Auto-replenishment of the balance",
         "payments": "Payments",
         "expenses": "Outcomes",
         "auto_renewal": "Auto-renewal",

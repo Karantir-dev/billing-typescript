@@ -52,65 +52,98 @@ const getServersList = (data, signal, setIsLoading) => (dispatch, getState) => {
 }
 
 //ORDER NEW SERVER OPERATIONS
-const getTarifs = (setNewVds, signal, setIsLoading) => (dispatch, getState) => {
-  setIsLoading(true)
+const getTarifs =
+  (period, setNewVds, setDedicInfoList, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading(true)
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  Promise.all([
-    axiosInstance.post(
-      '/',
-      qs.stringify({
-        func: 'dedic.order',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-      }),
-      { signal },
-    ),
-    axiosInstance.post(
-      '/',
-      qs.stringify({
-        func: 'vds.order',
-        auth: sessionId,
-        out: 'json',
-        lang: 'en',
-      }),
-      { signal },
-    ),
-  ])
-    .then(([dedicResp, vdsResp]) => {
-      const { data } = dedicResp
+    Promise.all([
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'dedic.order',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          datacenter: 7,
+          period,
+        }),
+        { signal },
+      ),
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'dedic.order',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          datacenter: 8,
+          period,
+        }),
+        { signal },
+      ),
+      axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/service/dedic/`),
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'vds.order',
+          auth: sessionId,
+          out: 'json',
+          lang: 'en',
+          period,
+        }),
+        { signal },
+      ),
+    ])
+      .then(([firstDatacenterResp, secondDatacenterResp, dedicInfoResp, vdsResp]) => {
+        const { data: firstDatacenterData } = firstDatacenterResp
+        const { data: secondDatacenterData } = secondDatacenterResp
+        const { data: dedicInfoData } = dedicInfoResp
 
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        if (firstDatacenterData.doc.error)
+          throw new Error(firstDatacenterData.doc.error.msg.$)
 
-      const { val: fpricelist } = data.doc.flist
-      const { elem: tarifList } =
-        data.doc.list.find(el => el?.$name === 'tariflist') || {}
-      const { val: datacenter } =
-        data.doc.slist.find(el => el?.$name === 'datacenter') || {}
-      const { val: period } = data.doc.slist.find(el => el.$name === 'period') || {}
+        const { val: firstFpricelist } = firstDatacenterData.doc.flist
+        const { val: secondFpricelist } = secondDatacenterData.doc.flist
 
-      const { $: currentDatacenter } = data.doc.datacenter
+        const transformToArray = data => (Array.isArray(data) ? data : [data])
 
-      const orderData = {
-        fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
-        tarifList,
-        datacenter,
-        period,
-        currentDatacenter,
-      }
-      setNewVds(vdsResp.data?.doc?.list[0]?.elem)
-      dispatch(dedicActions.setTarifList(orderData))
-      setIsLoading(false)
-    })
-    .catch(error => {
-      handleLoadersClosing(error?.message, dispatch, setIsLoading)
-      checkIfTokenAlive(error.message, dispatch, true)
-    })
-}
+        const fpricelist = [
+          ...transformToArray(firstFpricelist),
+          ...transformToArray(secondFpricelist),
+        ]
+
+        const { elem: firstTarifList } =
+          firstDatacenterData.doc.list.find(el => el?.$name === 'tariflist') || {}
+
+        const { elem: secondTarifList } =
+          secondDatacenterData.doc.list.find(el => el?.$name === 'tariflist') || {}
+
+        const tarifList = [...firstTarifList, ...secondTarifList].filter(
+          (obj, index, self) => index === self.findIndex(o => o.desc.$ === obj.desc.$),
+        )
+
+        const { val: period } =
+          firstDatacenterData.doc.slist.find(el => el.$name === 'period') || {}
+
+        const orderData = {
+          fpricelist,
+          tarifList,
+          period,
+        }
+        setDedicInfoList(dedicInfoData.services)
+        setNewVds(vdsResp.data?.doc?.list[0]?.elem)
+        dispatch(dedicActions.setTarifList(orderData))
+        setIsLoading(false)
+      })
+      .catch(error => {
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        checkIfTokenAlive(error.message, dispatch, true)
+      })
+  }
 
 const getUpdatedTarrifs =
   (datacenterId, period, signal, setIsLoading) => (dispatch, getState) => {
@@ -161,7 +194,7 @@ const getUpdatedTarrifs =
   }
 
 const getUpdatedPeriod =
-  (period, datacenter, setNewVds, signal, setIsLoading) => (dispatch, getState) => {
+  (period, setNewVds, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading(true)
 
     const {
@@ -176,7 +209,6 @@ const getUpdatedPeriod =
           out: 'json',
           auth: sessionId,
           period,
-          datacenter,
           lang: 'en',
         }),
         { signal },
@@ -223,7 +255,7 @@ const getUpdatedPeriod =
   }
 
 const getParameters =
-  (period, datacenter, pricelist, setParameters, setFieldValue, signal, setIsLoading) =>
+  (period, pricelist, setParameters, setFieldValue, signal, setIsLoading) =>
   (dispatch, getState) => {
     setIsLoading(true)
 
@@ -239,7 +271,6 @@ const getParameters =
           out: 'json',
           auth: sessionId,
           period,
-          datacenter,
           pricelist,
           snext: 'ok',
           sok: 'ok',
@@ -316,7 +347,6 @@ const getParameters =
 
 const updatePrice =
   (
-    datacenter,
     period,
     pricelist,
     domain,
@@ -347,7 +377,6 @@ const updatePrice =
           out: 'json',
           auth: sessionId,
           period,
-          datacenter,
           pricelist,
           [managePanelName]: managePanel,
           snext: 'ok',
@@ -375,7 +404,6 @@ const updatePrice =
 const orderServer =
   (
     autoprolong,
-    datacenter,
     period,
     pricelist,
     domain,
@@ -406,7 +434,6 @@ const orderServer =
           out: 'json',
           auth: sessionId,
           period,
-          datacenter,
           pricelist,
           autoprolong,
           domain,

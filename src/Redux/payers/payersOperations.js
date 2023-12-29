@@ -8,7 +8,7 @@ import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 const getPayers =
   (body = {}, signal, setIsLoading) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.hideLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },

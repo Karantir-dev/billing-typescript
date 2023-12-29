@@ -101,5 +101,7 @@
   "daily charges": "daily\ncharges",
 
   "server_name": "Server name",
-  "server_placeholder": "My Server"
+  "server_placeholder": "My Server",
+  "not_set": "Not set",
+  "clone_tariff": "Clone tariff"
 }

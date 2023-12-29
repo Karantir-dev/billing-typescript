@@ -7,6 +7,7 @@ import cn from 'classnames'
 
 import s from './EditModal.module.scss'
 import { Select, Button, Icon, InputField, Modal } from '@components'
+import { translatePeriodText } from '@src/utils'
 
 export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
   const { t } = useTranslation(['vds', 'other', 'billing'])
@@ -21,22 +22,11 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
     dispatch(vdsOperations.getEditFieldsVDS(elid, setInitialState))
   }, [])
 
-  const translatePeriodText = sentence => {
-    const labelArr = sentence.split('EUR ')
-
-    return (
-      labelArr[0] +
-      'EUR ' +
-      t(labelArr[1].replace(')', '')) +
-      (sentence.includes(')') ? ')' : '')
-    )
-  }
-
   const getControlPanelList = fieldName => {
     const optionsList = initialState.slist.find(elem => elem.$name === fieldName)?.val
 
     return optionsList?.map(({ $key, $ }) => {
-      let label = translatePeriodText($.trim())
+      let label = translatePeriodText($.trim(), t)
 
       label = t(label.split(' (')[0]) + ' (' + label.split(' (')[1]
       return { value: $key, label: label }
@@ -64,7 +54,7 @@ export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
         let label = ''
 
         if ($.includes('EUR ')) {
-          label = translatePeriodText($.trim())
+          label = translatePeriodText($.trim(), t)
         } else {
           label = t($.trim())
         }

@@ -6,7 +6,9 @@ import { actions, authActions, authSelectors, selectors } from '@redux'
 import i18n, { t } from 'i18next'
 import { toast } from 'react-toastify'
 import { cookies } from '@utils'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
+import * as route from '@src/routes'
+import { CartPage } from '@pages'
 
 // function getFaviconEl() {
 //   return document.getElementById('favicon')
@@ -26,6 +28,7 @@ const Component = () => {
   const [searchParams] = useSearchParams()
 
   const searchParam = useRef(searchParams.get('func'))
+  const location = useLocation()
 
   // Network Error / 403 error handling
   useEffect(() => {
@@ -107,6 +110,10 @@ const Component = () => {
   })
 
   const isAuthenticated = useSelector(authSelectors.getSessionId)
+
+  if (location.pathname === route.CART) {
+    return <CartPage />
+  }
 
   return (
     <>

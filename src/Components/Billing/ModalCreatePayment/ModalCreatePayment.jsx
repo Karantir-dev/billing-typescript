@@ -29,7 +29,13 @@ import {
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
-import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
+import {
+  QIWI_PHONE_COUNTRIES,
+  SBER_PHONE_COUNTRIES,
+  OFFER_FIELD,
+  ADDRESS_REGEX,
+  ADDRESS_SPECIAL_CHARACTERS_REGEX,
+} from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
 
@@ -198,8 +204,8 @@ export default function ModalCreatePayment(props) {
     selectedPayMethod: Yup.object().required(t('Select a Payment Method')),
     city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
-      .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted', { ns: 'other' }))
-      .matches(/(?=\d)/, t('address_error_msg', { ns: 'other' }))
+      .matches(ADDRESS_SPECIAL_CHARACTERS_REGEX, t('symbols_restricted', { ns: 'other' }))
+      .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
       .required(t('Is a required field', { ns: 'other' })),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
@@ -299,7 +305,7 @@ export default function ModalCreatePayment(props) {
           >
             {({ values, setFieldValue, touched, errors, handleBlur }) => {
               const parsePaymentInfo = text => {
-                const splittedText = text?.split('<p>')
+                const splittedText = text?.replace(/&nbsp;/g, '').split('<p>')
                 if (splittedText?.length > 0) {
                   const minAmount = splittedText[0]?.replace('\n', '')
 

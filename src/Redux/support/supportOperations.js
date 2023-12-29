@@ -78,36 +78,38 @@ const getTicketByIdHandler = idTicket => (dispatch, getState) => {
     })
 }
 
-const archiveTicketsHandler = idTicket => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const {
-    auth: { sessionId },
-  } = getState()
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'clientticket.archive',
-        sok: 'ok',
-        out: 'json',
-        auth: sessionId,
-        clickstat: 'yes',
-        lang: 'en',
-        elid: idTicket,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) {
-        throw new Error(data.doc.error.msg.$)
-      }
-      dispatch(supportActions.updateTickets(idTicket))
-      dispatch(actions.hideLoader())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+const archiveTicketsHandler =
+  (idTicket, setCurrentPage, setSelectedTickets, signal, setIsLoading) =>
+  (dispatch, getState) => {
+    setIsLoading(true)
+    const {
+      auth: { sessionId },
+    } = getState()
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket.archive',
+          sok: 'ok',
+          out: 'json',
+          auth: sessionId,
+          clickstat: 'yes',
+          lang: 'en',
+          elid: idTicket,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(data.doc.error.msg.$)
+        }
+        dispatch(getTicketsHandler({}, signal, setIsLoading))
+        setCurrentPage(1)
+        setSelectedTickets([])
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch, true) && setIsLoading(false)
+      })
+  }
 
 const getTicketsArchiveHandler =
   (body = {}, signal, setIsLoading) =>
@@ -587,49 +589,51 @@ const getTicketsArchiveFiltersHandler =
       })
   }
 
-const paySupportTips = (elid, summattips, setSuccessModal) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
-  const {
-    auth: { sessionId },
-  } = getState()
+const paySupportTips =
+  (elid, summattips, message_zomro, setSuccessModal) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'supporttips',
-        sok: 'ok',
-        out: 'json',
-        elid,
-        sessid: sessionId,
-        summattips,
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) {
-        throw new Error(JSON.parse(data.doc.error.msg[0]?.$)?.msg)
-      }
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'supporttips',
+          sok: 'ok',
+          out: 'json',
+          elid,
+          sessid: sessionId,
+          summattips,
+          message_zomro,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) {
+          throw new Error(JSON.parse(data.doc.error.msg[0]?.$)?.msg)
+        }
 
-      setSuccessModal(true)
-      dispatch(actions.hideLoader())
-    })
-    .then(() => dispatch(userOperations.getNotify()))
-    .catch(error => {
-      if (error.message.includes('insufficient funds to complete the operation')) {
-        toast.error(translateSupportPaymentError(error.message))
-      } else if (
-        error.message.trim() ===
-        'You can not make a transfer if the support did not answer'
-      ) {
-        toast.error(i18n.t(error.message.trim(), { ns: 'support' }))
-      } else {
-        checkIfTokenAlive(error.message, dispatch)
-      }
+        setSuccessModal(true)
+        dispatch(actions.hideLoader())
+      })
+      .then(() => dispatch(userOperations.getNotify()))
+      .catch(error => {
+        if (error.message.includes('insufficient funds to complete the operation')) {
+          toast.error(translateSupportPaymentError(error.message))
+        } else if (
+          error.message.trim() ===
+          'You can not make a transfer if the support did not answer'
+        ) {
+          toast.error(i18n.t(error.message.trim(), { ns: 'support' }))
+        } else {
+          checkIfTokenAlive(error.message, dispatch)
+        }
 
-      dispatch(actions.hideLoader())
-    })
-}
+        dispatch(actions.hideLoader())
+      })
+  }
 
 export default {
   getTicketsHandler,

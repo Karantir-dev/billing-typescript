@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { ServerState, CheckBox, Icon } from '@components'
+import { ServerState, CheckBox, Options } from '@components'
 import { useOutsideAlerter } from '@utils'
 import s from './SiteCareTable.module.scss'
 
@@ -40,6 +40,42 @@ export default function Component(props) {
   const isActive = selected?.includes(el)
   const toggleIsActiveHandler = () => setSelctedItem(!isActive, el)
 
+  const options = [
+    {
+      label: t('prolong', { ns: 'vds' }),
+      icon: 'Clock',
+      disabled: !rights?.prolong,
+      onClick: () => prolongSiteCareHandler(id),
+    },
+    {
+      label: t('edit', { ns: 'other' }),
+      icon: 'Edit',
+      disabled: !rights?.edit,
+      onClick: () => editSiteCareHandler(id),
+    },
+
+    {
+      label: t('history', { ns: 'vds' }),
+      icon: 'Refund',
+      disabled: !rights?.history,
+      onClick: () => historySiteCareHandler(id),
+    },
+    {
+      label: t('delete', { ns: 'other' }),
+      icon: 'Delete',
+      disabled:
+        !rights?.delete ||
+        item_status?.$orig === '5_open' ||
+        el?.scheduledclose?.$ === 'on' ||
+        el?.status?.$ === '5',
+      onClick: () => {
+        deleteSiteCareHandler(id)
+        setDeleteIds(id)
+      },
+      isDelete: true,
+    },
+  ]
+
   return (
     <div className={s.item}>
       <div className={s.checkBoxColumn}>
@@ -75,64 +111,7 @@ export default function Component(props) {
           <div className={cn(s.item_text, s.seventh_item)}>{cost}</div>
         </div>
         <div className={s.dots}>
-          <Icon
-            name="Settings"
-            onClick={() => setIsOpened(!isOpened)}
-            className={s.dotIcons}
-          />
-
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyDown={() => null}
-            onClick={e => e.stopPropagation()}
-            className={cn({
-              [s.list]: true,
-              [s.opened]: isOpened,
-            })}
-            ref={dropDownEl}
-          >
-            <button
-              className={s.settings_btn}
-              onClick={() => prolongSiteCareHandler(id)}
-              disabled={!rights?.prolong}
-            >
-              <Icon name="Clock" />
-              <p className={s.setting_text}>{t('prolong', { ns: 'vds' })}</p>
-            </button>
-            <button
-              className={s.settings_btn}
-              onClick={() => editSiteCareHandler(id)}
-              disabled={!rights?.edit}
-            >
-              <Icon name="Edit" />
-              <p className={s.setting_text}>{t('edit', { ns: 'other' })}</p>
-            </button>
-            <button
-              className={s.settings_btn}
-              onClick={() => historySiteCareHandler(id)}
-              disabled={!rights?.history}
-            >
-              <Icon name="Refund" />
-              <p className={s.setting_text}>{t('history', { ns: 'vds' })}</p>
-            </button>
-            <button
-              className={cn(s.settings_btn, s.settings_btn_delete)}
-              onClick={() => {
-                deleteSiteCareHandler(id)
-                setDeleteIds(id)
-              }}
-              disabled={
-                !rights?.delete ||
-                item_status?.$orig === '5_open' ||
-                el?.scheduledclose?.$ === 'on' ||
-                el?.status?.$ === '5'
-              }
-            >
-              <Icon name="Delete" />
-              <p className={s.setting_text}>{t('delete', { ns: 'other' })}</p>
-            </button>
-          </div>
+          <Options options={options} />
         </div>
       </div>
     </div>

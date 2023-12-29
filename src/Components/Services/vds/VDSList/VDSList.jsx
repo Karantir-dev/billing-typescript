@@ -25,6 +25,7 @@ export default function VDSList({
   isDedic,
   signal,
   setIsLoading,
+  orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -136,6 +137,7 @@ export default function VDSList({
               goToPanelFn={() => goToPanelFn(el.id.$)}
               handleEditSubmit={handleEditSubmit}
               isDedic={isDedic}
+              orderSameTariff={() => orderSameTariff(el.id.$)}
             />
           ) : (
             <VDSmobileItem
@@ -154,6 +156,7 @@ export default function VDSList({
               goToPanelFn={() => goToPanelFn(el.id.$)}
               handleEditSubmit={handleEditSubmit}
               isDedic={isDedic}
+              orderSameTariff={() => orderSameTariff(el.id.$)}
             />
           )
         })}

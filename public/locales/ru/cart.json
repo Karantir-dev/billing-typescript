@@ -62,5 +62,16 @@
   "Payment amount from 100.00 RUB to 500000.00 RUB. Commission 3.5%": "Сумма платежа от 100,00 до 500000,00 RUB. Комиссия 3,5%.",
   "Payment amount from 100.00 RUB to 250000.00 RUB. Commission 3.5%": "Сумма платежа от 100,00 до 250000,00 RUB. Комиссия 3,5%.",
   "Payment amount from 100.00 RUB to 600000.00 RUB. Commission 3.5%": "Сумма платежа от 100,00 до 600000,00 RUB. Комиссия 3,5%.",
-  "Payment amount from 1.00 RUB to 250000.00 RUB": "Сумма платежа от 1,00 до 250000,00 RUB"
+  "Payment amount from 1.00 RUB to 250000.00 RUB": "Сумма платежа от 1,00 до 250000,00 RUB",
+  "vds": "Виртуальные серверы",
+  "dedic": "Выделенные серверы",
+  "vhost": "Виртуальный хостинг",
+  "storage": "FTP-хранилище",
+  "forexbox": "Forex сервер",
+  "tariff_configuration": "Кофигурация тарифа",
+  "registration": "Регистрация",
+  "next": "Дальше",
+  "form_invalid": "Форма имеет неправельные значения",
+  "edit": "Редактировать",
+  "off": "Выкл."
 }

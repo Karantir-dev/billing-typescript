@@ -133,6 +133,19 @@
 
   "server_name": "Ім'я сервера",
   "server_placeholder": "Мій сервер",
-  "port": "Порт",
-  "server_model": "Модель сервера"
+  "port": "Швидкість порта",
+  "gen": "Покоління сервера",
+  "cpu": "Процесор",
+  "ram": "Об'єм RAM",
+  "ramtype": "Стандарт RAM",
+  "drive": "Об'єм диска",
+  "drivetype": "Тип диска",
+  "gpu": "Тип GPU",
+  "raid": "Тип RAID",
+  "dedic_activation_time": "Активація: до 3 годин",
+  "dedic_available_count": "В наявності: {{count}}шт.",
+  "dedic_ready_time": "Очікування: до 3-5 робочих днів",
+  "dedic_activation_info": "Після оплати рахунку ви отримаєте повідомлення, щойно сервер буде готовий до використання.",
+  "clear_filter": "Очистити фільтр"
+
 }

@@ -14,7 +14,12 @@ import {
   Icon,
 } from '@components'
 import TipsModal from '../TipsModal/TipsModal'
-import { supportSelectors, supportOperations, supportActions } from '@redux'
+import {
+  supportSelectors,
+  supportOperations,
+  supportActions,
+  userSelectors,
+} from '@redux'
 import * as route from '@src/routes'
 import s from './OpenedTicket.module.scss'
 import { useMediaQuery } from 'react-responsive'
@@ -29,6 +34,7 @@ export default function Component() {
   const [successModal, setSuccessModal] = useState(false)
 
   const ticket = useSelector(supportSelectors.getTicket)
+  const isNewMessage = useSelector(userSelectors.getIsNewMessage)
 
   const closeTipsModal = () => {
     setTipsModa(!tipsModal)
@@ -38,6 +44,10 @@ export default function Component() {
     getTicketHandler()
     return () => dispatch(supportActions.clearTicket())
   }, [params])
+
+  useEffect(() => {
+    getTicketHandler()
+  }, [isNewMessage])
 
   const getTicketHandler = () => {
     dispatch(supportOperations.getTicketByIdHandler(params?.id))
@@ -146,11 +156,7 @@ export default function Component() {
         <Modal.Header />
         <Modal.Body>
           <Icon name="Smile" className={s.smileIcon} />
-          <p className={s.thanksText}>
-            {t(
-              'Thank you on behalf of our staff. They will receive this bonus to their salary!',
-            )}
-          </p>
+          <p className={s.thanksText}>{t('Thank you for donation')}</p>
         </Modal.Body>
       </Modal>
     </div>

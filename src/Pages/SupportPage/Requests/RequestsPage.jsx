@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-import { SupportFilter, SupportTable, Pagination, Loader } from '@components'
+import { SupportFilter, SupportTable, Pagination, Loader, Button } from '@components'
 import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsPage.module.scss'
 import { useCancelRequest } from '@src/utils'
@@ -16,7 +16,7 @@ export default function Component() {
   const [p_cnt, setP_cnt] = useState(10)
   const [p_num, setP_num] = useState(1)
 
-  const [selctedTicket, setSelctedTicket] = useState(null)
+  const [selectedTickets, setSelectedTickets] = useState([])
   const [isFiltered, setIsFiltered] = useState(false)
 
   useEffect(() => {
@@ -26,6 +26,7 @@ export default function Component() {
 
   useEffect(() => {
     const data = { p_num, p_cnt }
+    setSelectedTickets([])
     dispatch(supportOperations.getTicketsHandler(data, signal, setIsLoading))
   }, [p_num, p_cnt])
 
@@ -40,7 +41,7 @@ export default function Component() {
         isFiltered={isFiltered}
         setIsFiltered={setIsFiltered}
         isFilterActive={isFiltered || tickerList?.length > 0}
-        selctedTicket={selctedTicket}
+        selectedTickets={selectedTickets}
         p_cnt={p_cnt}
         setCurrentPage={setP_num}
         signal={signal}
@@ -52,8 +53,8 @@ export default function Component() {
       {sortedList?.length > 0 && (
         <SupportTable
           list={sortedList}
-          setSelctedTicket={setSelctedTicket}
-          selctedTicket={selctedTicket}
+          setSelectedTickets={setSelectedTickets}
+          selectedTickets={selectedTickets}
         />
       )}
       {tickerCount > 5 && (
@@ -64,6 +65,31 @@ export default function Component() {
             pageSize={p_cnt}
             onPageChange={page => setP_num(page)}
             onPageItemChange={items => setP_cnt(items)}
+          />
+        </div>
+      )}
+
+      {!!selectedTickets.length && (
+        <div className={s.footer}>
+          <Button
+          className={s.footer_btn}
+            label={t('To the archive')}
+            onClick={() => {
+              dispatch(
+                supportOperations.archiveTicketsHandler(
+                  selectedTickets.map(el => el?.id?.$).join(', '),
+                  setP_num,
+                  setSelectedTickets,
+                  signal,
+                  setIsLoading,
+                ),
+              )
+            }}
+            disabled={
+              selectedTickets.length
+                ? !selectedTickets.every(ticket => ticket?.toarchive?.$ === 'on')
+                : true
+            }
           />
         </div>
       )}

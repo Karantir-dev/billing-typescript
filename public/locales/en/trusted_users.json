@@ -329,13 +329,13 @@
 
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "finance": "Billing",
-      "payment_recurring_settings": "Auto payment",
+      "payment_recurring_settings": "Auto-replenishment of the balance",
       "payment": "Payments",
       "expense": "Expenses",
       "promisepayment_add": "Promised payment",
       "services_autoprolong": "Automatic renewal of services",
-      "payment_recurring_settings#read": "Auto payment (data reading is available)",
-      "payment_recurring_settings#write": "Auto payment (data saving is available)",
+      "payment_recurring_settings#read": "Auto-replenishment of the balance (data reading is available)",
+      "payment_recurring_settings#write": "Auto-replenishment of the balance (data saving is available)",
 
       "payment_add#create": "$t(Add)",
       "payment_edit": "$t(Edit)",

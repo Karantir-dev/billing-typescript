@@ -173,6 +173,10 @@ const PaymentProcessingPage = lazy(() =>
   ),
 )
 
+const CloneOrderPage = lazy(() =>
+  import(/* webpackChunkName: "CloneOrderPage" */ '@pages/CloneOrderPage/CloneOrderPage'),
+)
+
 const ShellСomponent = props => {
   const { children, title } = props
 
@@ -652,6 +656,16 @@ export const BillingPageLazy = () => {
   return (
     <ShellСomponent title={title}>
       <BillingPage />
+    </ShellСomponent>
+  )
+}
+
+export const CloneOrderPageLazy = () => {
+  const title = [{ value: 'to_order', ns: 'other' }]
+
+  return (
+    <ShellСomponent title={title}>
+      <CloneOrderPage />
     </ShellСomponent>
   )
 }

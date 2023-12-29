@@ -13,6 +13,9 @@ export const PASS_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[\x20-\x7E]+$/
 export const URL_REGEX =
   /^(?:https?:\/\/)(?:www\.)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,}(?:\/[^\s]*)?$/
 
+export const ADDRESS_REGEX = /^(?=.*[a-zA-Zа-яА-Я])(?=.*\d).+$/
+export const ADDRESS_SPECIAL_CHARACTERS_REGEX = /^[^!$%^&*()\]~/}[{=?|"<>'+:;]+$/g
+
 export const SOFTWARE_ICONS_LIST = [
   'almalinux',
   'bitrix',
@@ -41,7 +44,7 @@ export const SOFTWARE_ICONS_LIST = [
   'zabbix',
   'chrome',
   'astralinux',
-  'proxmox'
+  'proxmox',
 ]
 
 // phone countries for yookassa payment method (QIWI)
@@ -115,3 +118,21 @@ export const USERS_WITH_G8 = [
 ]
 
 export const PRODUCTION_DOMAIN = 'cp.zomro.com'
+
+export const GOOGLE_LOGIN_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google'
+
+export const GOOGLE_REGISTRATION_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google&project=4&currency=153&rparams='
+
+export const FACEBOOK_LOGIN_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook'
+
+export const FACEBOOK_REGISTRATION_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='
+
+export const VK_LOGIN_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte'
+
+export const VK_REGISTRATION_LINK =
+  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte&project=4&currency=153&rparams='

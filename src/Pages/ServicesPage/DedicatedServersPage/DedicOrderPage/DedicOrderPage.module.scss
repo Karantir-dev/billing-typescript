@@ -67,44 +67,111 @@
   color: var(--main-text);
 }
 
-.processors_block {
+.filter {
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  width: 100%;
+  max-width: 350px;
+  gap: 12px;
+}
+
+.filter__wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
   margin-bottom: 30px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 50px;
+  }
 }
 
-.processors_block__label {
-  margin-bottom: 10px;
-  font-size: 14px;
+.filter__clear {
+  color: var(--link-color);
+  text-decoration: dotted underline;
 }
 
-.processors_block__row {
+.filter__label {
+  font-size: 16px;
+}
+
+.filte__row {
   display: flex;
   flex-wrap: wrap;
   gap: 25px;
 }
 
-.processor_card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.filter__option_wrapper {
+  display: none;
+  padding: 10px;
+  .opened & {
+    display: block;
+  }
 }
 
-.processor,
-.processor_name {
+.filter__option {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+
+  &.disabled {
+    pointer-events: none;
+  }
+}
+
+.filter__btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  max-width: 1400px;
+  &:hover {
+    .filter__label {
+      background: var(--accent-text-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    svg {
+      stroke: url(#gradient);
+    }
+  }
+  .opened & {
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.filter__btn_icon {
+  margin-left: auto;
+}
+
+.filter_amount {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-gradient);
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 1;
+  color: #fff;
+}
+
+.filter__option_name {
   font-size: 15px;
   line-height: 130.5%;
   color: var(--main-text);
+  .disabled & {
+    color: red;
+  }
 }
 
-.processor {
-  margin-right: 10px;
-}
-
-.processor_name {
-  margin-left: 15px;
-}
 .period_select {
   margin-bottom: 20px;
   width: 242px;
@@ -206,6 +273,15 @@
   padding: 3px 15px 0 3px;
 }
 
+.card_header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 85px;
+}
+
 .card_title {
   display: flex;
   align-items: center;
@@ -215,11 +291,27 @@
   color: var(--servers_tariff_color);
   // margin-bottom: 20px;
   max-width: 60%;
-  height: 51px;
-
+  margin: 12px 0;
   &.vds {
     font-weight: 700;
   }
+}
+
+.activation_info {
+  display: flex;
+  flex-direction: column;
+  margin: -7px 0 12px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.activation_info_hint_wrapper {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.activation_info_hint {
+  width: 250px;
 }
 
 .price {
@@ -462,10 +554,6 @@
     margin-left: 5px;
   }
 
-  .processor_card {
-    margin-bottom: 0;
-  }
-
   .tariff_title {
     margin-bottom: 30px;
   }
@@ -502,12 +590,7 @@
     display: block;
   }
 
-  .processors_block {
-    flex-direction: row;
-    gap: 50px;
-  }
-
-  .processor_name {
+  .filter__option_name {
     font-size: 18px;
   }
 

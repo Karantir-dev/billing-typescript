@@ -72,6 +72,7 @@ jobs:
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+          REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
         run: npm run lint
 
       - name: Send fail start in Slack
@@ -108,6 +109,7 @@ jobs:
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
+          REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
         run: |
           npm run build
 

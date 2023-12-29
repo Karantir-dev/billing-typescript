@@ -30,5 +30,33 @@ export default function renameAddonFields(data) {
     return desiredElIs
   })
 
+  let ipAddon = ''
+
+  for (let key in data?.messages?.msg) {
+    if (
+      data?.messages?.msg[key]?.toLowerCase()?.includes('ip') &&
+      data?.messages?.msg[key]?.toLowerCase()?.includes('count')
+    ) {
+      ipAddon = key
+    }
+  }
+
+  const ipSliderData = data?.metadata?.form?.field?.find(item => item?.$name === ipAddon)
+    ?.slider[0]
+
+  const ipListData = []
+  if (ipSliderData) {
+    for (let i = 1; i <= ipSliderData.$max; i += Number(ipSliderData.$step)) {
+      if (i === 1) {
+        const item = { value: i, cost: '0.00' }
+        ipListData.push(item)
+      } else {
+        const item = { value: i, cost: ipSliderData.$cost }
+        ipListData.push(item)
+      }
+    }
+    data.ipList = ipListData
+  }
+
   return data
 }

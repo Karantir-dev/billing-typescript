@@ -1,11 +1,8 @@
 import cn from 'classnames'
-import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
-
 import s from './ForexItem.module.scss'
-import { CheckBox, ServerState, Icon } from '@components'
-import { useOutsideAlerter } from '@utils'
+import { CheckBox, ServerState, Options } from '@components'
 
 export default function ForexItem({
   server,
@@ -19,11 +16,6 @@ export default function ForexItem({
   pageRights,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
-
-  const [toolsOpened, setToolsOpened] = useState(false)
-  const dropdownEl = useRef()
-
-  useOutsideAlerter(dropdownEl, toolsOpened, () => setToolsOpened(false))
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
@@ -39,8 +31,41 @@ export default function ForexItem({
 
   const handleToolBtnClick = fn => {
     fn()
-    setToolsOpened(false)
   }
+
+  const options = [
+    {
+      label: t('instruction'),
+      icon: 'Info',
+      disabled: server?.status?.$ === '1' || !pageRights?.instruction,
+      onClick: () => handleToolBtnClick(setElidForInstructionModal),
+    },
+    {
+      label: t('prolong'),
+      icon: 'Clock',
+      disabled: server?.status?.$ === '1' || !pageRights?.prolong,
+      onClick: () => handleToolBtnClick(setElidForProlongModal),
+    },
+    {
+      label: t('edit', { ns: 'other' }),
+      icon: 'Edit',
+      disabled: !pageRights?.edit || server?.status?.$ === '1',
+      onClick: () => handleToolBtnClick(setElidForEditModal),
+    },
+    {
+      label: t('history'),
+      icon: 'Refund',
+      disabled: !pageRights?.history || server?.status?.$ === '1',
+      onClick: () => handleToolBtnClick(setElidForHistoryModal),
+    },
+    {
+      label: t('delete', { ns: 'other' }),
+      icon: 'Delete',
+      disabled: !server.id.$ || !pageRights?.delete || server?.status?.$ === '5',
+      onClick: () => handleToolBtnClick(setElidForDeletionModal),
+      isDelete: true,
+    },
+  ]
 
   return (
     <div className={s.item_wrapper}>
@@ -70,95 +95,7 @@ export default function ForexItem({
           {server?.cost?.$.replace('Month', t('short_month', { ns: 'other' }))}
         </span>
 
-        {isToolsBtnVisible && (
-          <div
-            className={cn(s.dots_wrapper, s.value, {
-              [s.disabled]: false,
-            })}
-          >
-            <button
-              className={s.dots_btn}
-              type="button"
-              onClick={() => setToolsOpened(true)}
-            >
-              <Icon name="Settings" />
-            </button>
-
-            {toolsOpened && (
-              <div className={s.dropdown} ref={dropdownEl}>
-                <div className={s.pointer_wrapper}>
-                  <div className={s.pointer}></div>
-                </div>
-                <ul>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={server?.status?.$ === '1' || !pageRights?.instruction}
-                      onClick={() => handleToolBtnClick(setElidForInstructionModal)}
-                    >
-                      <Icon name="Info" className={s.tool_icon} />
-                      {t('instruction')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={server?.status?.$ === '1' || !pageRights?.prolong}
-                      onClick={() => handleToolBtnClick(setElidForProlongModal)}
-                    >
-                      <Icon name="Clock" className={s.tool_icon} />
-                      {t('prolong')}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      disabled={!pageRights?.edit || server?.status?.$ === '1'}
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => handleToolBtnClick(setElidForEditModal)}
-                    >
-                      <Icon name="Edit" className={s.tool_icon} />
-                      {t('edit', { ns: 'other' })}
-                    </button>
-                  </li>
-                  <li className={s.tool_item}>
-                    <button
-                      disabled={!pageRights?.history || server?.status?.$ === '1'}
-                      className={s.tool_btn}
-                      type="button"
-                      onClick={() => {
-                        handleToolBtnClick(setElidForHistoryModal)
-                      }}
-                    >
-                      <Icon name="Refund" className={s.tool_icon} />
-                      {t('history')}
-                    </button>
-                  </li>
-                  <li className={cn(s.tool_item, s.tool_item_delete)}>
-                    <button
-                      className={s.tool_btn}
-                      type="button"
-                      disabled={
-                        !server.id.$ || !pageRights?.delete || server?.status?.$ === '5'
-                      }
-                      onClick={() => {
-                        handleToolBtnClick(setElidForDeletionModal)
-                      }}
-                    >
-                      <Icon
-                        name="Delete"
-                        className={cn(s.tool_icon, s.tool_icon_delete)}
-                      />
-                      {t('delete', { ns: 'other' })}
-                    </button>
-                  </li>
-                </ul>{' '}
-              </div>
-            )}
-          </div>
-        )}
+        {isToolsBtnVisible && <Options options={options} />}
       </div>
     </div>
   )

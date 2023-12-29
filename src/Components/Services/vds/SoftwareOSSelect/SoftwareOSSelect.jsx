@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import cn from 'classnames'
 import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -13,7 +14,10 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
   const dropdown = useRef(null)
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const [isOpened, setIsOpened] = useState(false)
-  const [selectedItem, setSelectedItem] = useState(itemsList[0])
+
+  const initialState = itemsList?.find(item => item.value === state) || itemsList[0]
+
+  const [selectedItem, setSelectedItem] = useState(initialState)
 
   useOutsideAlerter(dropdown, isOpened, () => setIsOpened(false))
 
@@ -38,11 +42,7 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
   return (
     <div className={cn(s.bg, { [s.selected]: selectedItem.value === state })}>
       <button className={s.btn} type="button" onClick={() => setIsOpened(true)}>
-        <img
-          className={cn(s.img)}
-          src={renderImg()}
-          alt="icon"
-        />
+        <img className={cn(s.img)} src={renderImg()} alt="icon" />
         <p>{selectedItem?.label}</p>
 
         <Icon name="Shevron" className={cn(ss.right_icon, { [ss.opened]: isOpened })} />

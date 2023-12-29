@@ -15,7 +15,14 @@ import {
   Loader,
 } from '@components'
 import { userOperations, vdsOperations } from '@redux'
-import { DOMAIN_REGEX, useCancelRequest, useScrollToElement } from '@utils'
+import {
+  DOMAIN_REGEX,
+  getPortSpeed,
+  translatePeriodName,
+  translatePeriodText,
+  useCancelRequest,
+  useScrollToElement,
+} from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
 
@@ -112,17 +119,6 @@ export default function VDSOrder() {
       }))
   }
 
-  const translatePeriodText = sentence => {
-    const labelArr = sentence.split('EUR ')
-
-    return (
-      labelArr[0] +
-      'EUR ' +
-      t(labelArr[1]?.replace(')', '')) +
-      (sentence.includes(')') ? ')' : '')
-    )
-  }
-
   const getOptionsListExtended = fieldName => {
     if (parametersInfo && parametersInfo.slist) {
       const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
@@ -168,7 +164,7 @@ export default function VDSOrder() {
               ns: 'other',
             })})`
           } else if ($.includes('EUR ')) {
-            label = translatePeriodText($.trim())
+            label = translatePeriodText($.trim(), t)
           } else {
             label = t($.trim())
           }
@@ -188,7 +184,7 @@ export default function VDSOrder() {
     const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
 
     return optionsList?.map(({ $key, $ }) => {
-      let label = translatePeriodText($.trim())
+      let label = translatePeriodText($.trim(), t)
 
       label = t(label?.split(' (')[0]) + ' (' + label?.split(' (')[1]
       return { value: $key, label: label }
@@ -211,14 +207,14 @@ export default function VDSOrder() {
   }
 
   const renderSoftwareOSFields = (fieldName, values, setFieldValue, state, ostempl) => {
-    let dataArr = parametersInfo.slist.find(el => el.$name === fieldName).val
+    let dataArr = parametersInfo.slist.find(el => el.$name === fieldName)?.val
     const elemsData = {}
     if (fieldName === 'recipe') {
-      dataArr = dataArr.filter(el => el.$depend === ostempl && el.$key !== 'null')
+      dataArr = dataArr?.filter(el => el.$depend === ostempl && el.$key !== 'null')
       elemsData.null = [{ $key: 'null', $: t('without_software') }]
     }
 
-    dataArr.forEach(element => {
+    dataArr?.forEach(element => {
       const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
 
       if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
@@ -334,44 +330,9 @@ export default function VDSOrder() {
     /Total amount: (.+?)(?= EUR)/,
   )[1]
 
-  const getPortSpeed = () => {
-    const temp = parametersInfo?.slist?.find(el => el.$name === 'Port_speed')?.val
-    const value = Array.isArray(temp) ? temp?.[0].$ : temp?.$
-    return value ? value : ''
-  }
-
   // const openTermsHandler = () => {
   //   dispatch(dnsOperations?.getPrintLicense(parametersInfo?.pricelist?.$))
   // }
-
-  const translatePeriod = (periodName, t) => {
-    let period = ''
-
-    switch (periodName) {
-      case '1':
-        period = t('per month')
-        break
-      case '3':
-        period = t('for three months')
-        break
-      case '6':
-        period = t('half a year')
-        break
-      case '12':
-        period = t('per year')
-        break
-      case '24':
-        period = t('for two years')
-        break
-      case '36':
-        period = t('for three years')
-        break
-      default:
-        period = ''
-    }
-
-    return period
-  }
 
   const handleDomainChange = e => setDomainName(e.target.value)
 
@@ -412,7 +373,7 @@ export default function VDSOrder() {
             CPU_count: dataFromSite?.CPU_count || parametersInfo?.CPU_count || '',
             Memory: dataFromSite?.Memory || parametersInfo?.Memory || '',
             Disk_space: dataFromSite?.Disk_space || parametersInfo?.Disk_space || '',
-            Port_speed: getPortSpeed(),
+            Port_speed: getPortSpeed(parametersInfo),
             Control_panel:
               dataFromSite?.Control_panel || parametersInfo?.Control_panel || '',
             IP_addresses_count: parametersInfo?.IP_addresses_count || '',
@@ -533,14 +494,14 @@ export default function VDSOrder() {
                                             ? event.target.value.replace(/^0/, '')
                                             : event.target.value
 
-                                        setCount(+event.target.value > 50 ? 50 : value)
+                                        setCount(+event.target.value > 35 ? 35 : value)
                                       }}
                                       onBlur={event => {
                                         if (event.target.value < 1) setCount(1)
                                       }}
                                       type="number"
                                       min={1}
-                                      max={50}
+                                      max={35}
                                     />
                                   </div>
                                 </div>
@@ -555,7 +516,7 @@ export default function VDSOrder() {
                                     +(values.totalPrice * (+count + 1)).toFixed(4),
                                   )
                                 }}
-                                disabled={+count >= 50}
+                                disabled={+count >= 35}
                               ></button>
                             </div>
                           )}
@@ -784,14 +745,14 @@ export default function VDSOrder() {
                                       ? event.target.value?.replace(/^0/, '')
                                       : event.target.value
 
-                                  setCount(+event.target.value > 50 ? 50 : value)
+                                  setCount(+event.target.value > 35 ? 35 : value)
                                 }}
                                 onBlur={event => {
                                   if (event.target.value < 1) setCount(1)
                                 }}
                                 type="number"
                                 min={1}
-                                max={50}
+                                max={35}
                               />
                             </div>
                           </div>
@@ -806,7 +767,7 @@ export default function VDSOrder() {
                               +(values.totalPrice * (+count + 1))?.toFixed(4),
                             )
                           }}
-                          disabled={+count >= 50}
+                          disabled={+count >= 35}
                         ></button>
                       </div>
                     </div>
@@ -819,7 +780,7 @@ export default function VDSOrder() {
                         <span className={s.tablet_price}>
                           {(values.finalTotalPrice - checkSaleMemory()).toFixed(2)} EUR
                         </span>
-                        {` ${translatePeriod(period, t)}`}
+                        {` ${translatePeriodName(period, t)}`}
                       </span>
                     </p>
                   ) : (
@@ -827,7 +788,7 @@ export default function VDSOrder() {
                       <span className={s.price}>
                         €{(values.finalTotalPrice - checkSaleMemory()).toFixed(2)}
                       </span>
-                      {` ${translatePeriod(period, t)}`}
+                      {` ${translatePeriodName(period, t)}`}
                       {/* {t(parametersInfo?.orderinfo?.$?.match(/EUR (.+?)(?= <br\/>)/)[1])} */}
                     </p>
                   )}

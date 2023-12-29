@@ -6,7 +6,15 @@ import { Field, ErrorMessage } from 'formik'
 import s from './MessageInput.module.scss'
 
 export default function Component(props) {
-  const { files, message, onChangeFiles, filesError } = props
+  const {
+    files,
+    message,
+    onChangeFiles,
+    onKeyDown,
+    filesError,
+    enableFiles = true,
+    fieldId = 'message'
+  } = props
   const { t } = useTranslation(['support', 'other'])
 
   const textarea = useRef(null)
@@ -26,33 +34,37 @@ export default function Component(props) {
             className={s.textarea}
             type="text"
             name="message"
+            id={fieldId}
             placeholder={t('Enter your message...')}
             as="textarea"
+            onKeyDown={onKeyDown}
           />
-          <label htmlFor="files">
-            <div
-              className={cn(s.filesBlock, {
-                [s.notEmpty]: files?.length > 0,
-              })}
-            >
-              <Icon name="Clip" />
-            </div>
-            <input
-              hidden
-              accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, .pptx, .docx,
+          {enableFiles && (
+            <label htmlFor="files">
+              <div
+                className={cn(s.filesBlock, {
+                  [s.notEmpty]: files?.length > 0,
+                })}
+              >
+                <Icon name="Clip" />
+              </div>
+              <input
+                hidden
+                accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, .pptx, .docx,
              application/pdf, image/*, audio/*, video/*, .zip, .rar, .html, .csv"
-              disabled={files?.length === 5}
-              id="files"
-              name="files"
-              type="file"
-              onChange={e =>
-                e?.target?.files?.length !== 0 &&
-                onChangeFiles(files.concat(e.target.files[0]))
-              }
-            />
-          </label>
+                disabled={files?.length === 5}
+                id="files"
+                name="files"
+                type="file"
+                onChange={e =>
+                  e?.target?.files?.length !== 0 &&
+                  onChangeFiles(files.concat(e.target.files[0]))
+                }
+              />
+            </label>
+          )}
         </div>
-        {files.length > 0 && (
+        {enableFiles && files?.length > 0 && (
           <div className={s.filesContainer}>
             {files?.map((el, index) => {
               return (
@@ -66,7 +78,7 @@ export default function Component(props) {
                     onClick={() => {
                       let newArr = files
                         .slice(0, index)
-                        .concat(files.slice(index + 1, files.length))
+                        .concat(files.slice(index + 1, files?.length))
                       onChangeFiles(newArr)
                     }}
                     className={s.fileDeleteItem}

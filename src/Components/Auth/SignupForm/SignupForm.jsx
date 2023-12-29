@@ -23,18 +23,11 @@ import {
   EMAIL_SPECIAL_CHARACTERS_REGEX,
   CYRILLIC_ALPHABET_PROHIBITED,
   PASS_REGEX,
+  GOOGLE_REGISTRATION_LINK,
+  VK_REGISTRATION_LINK,
 } from '@utils/constants'
 import s from './SignupForm.module.scss'
 import classNames from 'classnames'
-
-// const FACEBOOK_LINK =
-//   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=facebook&project=4&currency=153&rparams='
-
-const GOOGLE_LINK =
-  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google&project=4&currency=153&rparams='
-
-const VK_LINK =
-  'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte&project=4&currency=153&rparams='
 
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
@@ -298,18 +291,18 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
         <p className={s.social_title}>{t('register_with')}</p>
         <ul className={s.social_list}>
           {/* <li>
-            <a href={FACEBOOK_LINK}>
+            <a href={FACEBOOK_REGISTRATION_LINK}>
               <Icon name="Facebook" />
             </a>
           </li> */}
           <li>
-            <a href={GOOGLE_LINK}>
+            <a href={GOOGLE_REGISTRATION_LINK}>
               <Icon name="Google" />
             </a>
           </li>
           {isVKAllowed && (
             <li>
-              <a href={VK_LINK}>
+              <a href={VK_REGISTRATION_LINK}>
                 <Icon name="Vk" />
               </a>
             </li>

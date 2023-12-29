@@ -328,13 +328,13 @@
 
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "finance": "Финансы",
-      "payment_recurring_settings": "Автоплатеж",
+      "payment_recurring_settings": "Автоматическое пополнение баланса",
       "payment": "Платежи",
       "expense": "Расходы",
       "promisepayment_add": "Обещанный платеж",
       "services_autoprolong": "Автопродление услуг",
-      "payment_recurring_settings#read": "Автоплатеж (доступно чтение данных форм)",
-      "payment_recurring_settings#write": "Автоплатеж (доступно сохранение данных)",
+      "payment_recurring_settings#read": "Автоматическое пополнение баланса (доступно чтение данных форм)",
+      "payment_recurring_settings#write": "Автоматическое пополнение баланса (доступно сохранение данных)",
 
       "payment_add#create": "$t(Добавить)",
       "payment_edit": "$t(Редактировать)",

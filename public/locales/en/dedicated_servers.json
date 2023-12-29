@@ -132,6 +132,18 @@
 
   "server_name": "Server name",
   "server_placeholder": "My Server",
-  "port": "Port",
-  "server_model": "Server Model"
+  "port": "Port speed",
+  "gen": "Server generation",
+  "cpu": "Processor",
+  "ram": "RAM",
+  "ramtype": "RAM Standard",
+  "drive": "Disk",
+  "drivetype": "Disk Type",
+  "gpu": "GPU Type",
+  "raid": "RAID Type",
+  "dedic_activation_time": "Activation: up to 3 hours",
+  "dedic_available_count": "Available: {{count}}pcs.",
+  "dedic_ready_time": "Waiting: up to 3-5 business days",
+  "dedic_activation_info": "Once the invoice is paid, you will be notified as soon as the server is ready for use.",
+  "clear_filter": "Clear filter"
 }

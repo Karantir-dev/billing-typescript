@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import i18n from '@src/i18n'
 import {
@@ -7,63 +6,78 @@ import {
   billingOperations,
   userOperations,
   billingActions,
+  authSelectors,
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, analyticsSaver, fraudCheckSender } from '@utils'
+import {
+  checkIfTokenAlive,
+  analyticsSaver,
+  fraudCheckSender,
+  renameAddonFields,
+} from '@utils'
+import * as routes from '@src/routes'
 
-const getBasket = (setCartData, setPaymentsMethodList) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getBasket =
+  (setCartData, setPaymentsMethodList, isGetPayersList = true) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-    billing: { periodValue },
-  } = getState()
+    const {
+      auth: { sessionId },
+      billing: { periodValue },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'basket',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'basket',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const cartData = {
-        total_sum: data.doc?.total_sum?.$,
-        tax: data.doc?.tax?.$,
-        full_discount: data.doc?.full_discount?.$,
-        billorder: data?.doc?.billorder?.$,
-      }
-
-      data.doc?.list?.forEach(el => {
-        if (el.$name === 'itemlist') {
-          cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
-
-          cartData.elemList.forEach(el => {
-            if (el['item.type']?.$ === 'vds') {
-              el['item.period'].$ = periodValue ?? el['item.period']?.$
-              el['item.autoprolong'].$ = periodValue ?? el['item.autoprolong']?.$
-            }
-          })
-
-          dispatch(billingActions.setPeriodValue(null))
+        const cartData = {
+          total_sum: data.doc?.total_sum?.$,
+          tax: data.doc?.tax?.$,
+          full_discount: data.doc?.full_discount?.$,
+          billorder: data?.doc?.billorder?.$,
         }
-      })
 
-      setCartData && setCartData(cartData)
-      setPaymentsMethodList &&
-        dispatch(getPaymentMethods(data?.doc?.billorder?.$, setPaymentsMethodList))
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+        data.doc?.list?.forEach(el => {
+          if (el.$name === 'itemlist') {
+            cartData['elemList'] = el?.elem?.filter(e => !e?.rolled_back)
+
+            cartData.elemList.forEach(el => {
+              if (el['item.type']?.$ === 'vds') {
+                el['item.period'].$ = periodValue ?? el['item.period']?.$
+                el['item.autoprolong'].$ = periodValue ?? el['item.autoprolong']?.$
+              }
+            })
+
+            dispatch(billingActions.setPeriodValue(null))
+          }
+        })
+
+        setCartData && setCartData(cartData)
+        setPaymentsMethodList &&
+          dispatch(
+            getPaymentMethods(
+              data?.doc?.billorder?.$,
+              setPaymentsMethodList,
+              isGetPayersList,
+            ),
+          )
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const setBasketPromocode =
   (promocode, setCartData, setPaymentsMethodList) => (dispatch, getState) => {
@@ -177,40 +191,41 @@ const clearBasket = id => (dispatch, getState) => {
     })
 }
 
-const getPaymentMethods = (billorder, setPaymentsMethodList) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const getPaymentMethods =
+  (billorder, setPaymentsMethodList, isGetPayersList) => (dispatch, getState) => {
+    dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'payment.add',
-        out: 'json',
-        lang: 'en',
-        auth: sessionId,
-        billorder,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'payment.add',
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+          billorder,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      data.doc?.list?.forEach(el => {
-        if (el.$name === 'methodlist') {
-          setPaymentsMethodList && setPaymentsMethodList(el?.elem)
-        }
+        data.doc?.list?.forEach(el => {
+          if (el.$name === 'methodlist') {
+            setPaymentsMethodList && setPaymentsMethodList(el?.elem)
+          }
+        })
+
+        isGetPayersList && dispatch(billingOperations.getPayers())
       })
-
-      dispatch(billingOperations.getPayers())
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
 
 const setPaymentMethods =
   (body = {}, navigate, cartData = null, fraudData) =>
@@ -482,6 +497,167 @@ const getPayMethodItem = (body, setAdditionalPayMethodts) => (dispatch, getState
     })
 }
 
+const getTariffParameters =
+  ({ service, id, period = 1, ...params }, setParameters, setIsError) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        sessionId ? '/' : process.env.REACT_APP_PROXY_API_URL,
+        qs.stringify({
+          func: `${service}.order.pricelist`,
+          out: 'json',
+          snext: 'ok',
+          sok: 'ok',
+          lang: 'en',
+          period: period,
+          pricelist: id,
+          auth: sessionId,
+          ...params,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        setParameters(renameAddonFields(data.doc))
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        setIsError(true)
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getTariffInfo =
+  ({ service, id, period, ...params }, setParameters, setPeriods, setIsError) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        sessionId ? '/' : process.env.REACT_APP_PROXY_API_URL,
+        qs.stringify({
+          func: `${service}.order`,
+          out: 'json',
+          lang: 'en',
+          auth: sessionId,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+        const periods = data.doc.slist.find(el => el.$name === 'period')?.val
+        setPeriods(periods)
+
+        dispatch(
+          getTariffParameters(
+            { service, id, period, ...params },
+            setParameters,
+            setIsError,
+          ),
+        )
+      })
+      .catch(error => {
+        setIsError(true)
+        checkIfTokenAlive(error.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const setOrderData =
+  ({ service, id, period, ...params }, func) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `${service}.order.param`,
+          auth: sessionId,
+          out: 'json',
+          sok: 'ok',
+          lang: 'en',
+          licence_agreement: 'on',
+          period: period,
+          pricelist: id,
+          ...params,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        func()
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const orderSameTariff = (service, elid, navigate) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: `${service}.edit`,
+        auth: sessionId,
+        elid,
+        out: 'json',
+        lang: 'en',
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+      const tariff = renameAddonFields(data.doc)
+      const {
+        register,
+        ostempl,
+        recipe,
+        period,
+        pricelist,
+        domain,
+        server_name,
+        autoprolong,
+      } = tariff
+
+      const domainParam = domain.$ ? `&domain=${domain?.$}` : ''
+      const serverParam = server_name.$ ? `&server_name=${server_name?.$}` : ''
+      const ostemplParam = ostempl.$ ? `&ostempl=${ostempl.$}` : ''
+      const recipeParam = recipe.$ ? `&recipe=${recipe.$}` : ''
+      const autoprolongParam = autoprolong?.$
+        ? `&autoprolong=${autoprolong?.$ === 'null' ? 'null' : period.$}`
+        : ''
+      const addons = Object.values(register).map(el => `${el}=${tariff[el].$}`)
+
+      const params = `service=${service}&id=${pricelist.$}&period=${
+        period.$
+      }${ostemplParam}${recipeParam}${domainParam}${serverParam}&${addons.join(
+        '&',
+      )}${autoprolongParam}`
+
+      navigate(`${routes.ORDER}?${params}`, { state: { backLink: service } })
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      checkIfTokenAlive(err.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 export default {
   getBasket,
   setBasketPromocode,
@@ -490,4 +666,8 @@ export default {
   setPaymentMethods,
   getSalesList,
   getPayMethodItem,
+  getTariffParameters,
+  getTariffInfo,
+  setOrderData,
+  orderSameTariff,
 }

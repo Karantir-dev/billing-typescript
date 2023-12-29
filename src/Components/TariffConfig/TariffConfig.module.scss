@@ -1,0 +1,64 @@
+.software_OS_List {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
+  gap: 12px;
+  @media (min-width: 768px) {
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+.section_title {
+  margin-bottom: 25px;
+  margin-top: 25px;
+  font-size: 18px;
+  font-weight: 600;
+  @media screen and (min-width: 1550px) {
+    font-size: 20px;
+  }
+}
+
+.parameters_list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  @media screen and (min-width: 768px) {
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+.selectWithSale {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 15px;
+
+  .sale55Icon {
+    background: linear-gradient(180.08deg, #ff6f66 12.11%, #fa487d 98.37%);
+    margin-right: 5px;
+    padding: 3px;
+
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+
+    color: #ffffff;
+  }
+}
+
+.saleSpan {
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+.memorySale {
+  text-decoration: line-through;
+  color: var(--red-text);
+  margin-right: 5px;
+  overflow: initial !important;
+}
+

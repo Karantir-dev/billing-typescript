@@ -41,7 +41,6 @@
   "Thank support": "Рахмет қолдау",
   "The transfer amount will be debited from your balance": "Аударым сомасы сіздің балансыңыздан есептен шығарылады",
   "THANK YOU": "РАҚМЕТ СІЗГЕ",
-  "Thank you on behalf of our staff. They will receive this bonus to their salary!": "Қызметкерлеріміздің атынан алғысымызды білдіреміз. Олар бұл бонусты жалақыларына алады!",
   "payment_insufficient_money": "Oперацияны аяқтау үшін қаражаттың жеткіліксіздігі. Міндетті сома {{value1}}. Ағымдағы баланс: {{value2}}, несие лимиті {{value3}} EUR",
   "You can not make a transfer if the support did not answer": "Аудару мүмкін емес, қолдау әлі жауап берген жоқ",
   "Ticket was automatically moved to Archive after a certain time of inactivity has passed": "Билет автоматты түрде қолданылма жоқтау уақыты аяқталған кейін архивке жылжытылды",
