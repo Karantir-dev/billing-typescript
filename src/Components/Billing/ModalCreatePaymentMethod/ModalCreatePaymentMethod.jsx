@@ -16,7 +16,7 @@ import * as Yup from 'yup'
 import s from './ModalCreatePaymentMethod.module.scss'
 import { checkIfTokenAlive } from '@utils'
 import {
-  ADDRESS_REGEX,
+  // ADDRESS_REGEX,
   ADDRESS_SPECIAL_CHARACTERS_REGEX,
   OFFER_FIELD,
 } from '@utils/constants'
@@ -101,7 +101,7 @@ export default function Component(props) {
     city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
       .matches(ADDRESS_SPECIAL_CHARACTERS_REGEX, t('symbols_restricted', { ns: 'other' }))
-      .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
+      // .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
       .required(t('Is a required field', { ns: 'other' })),
     person: Yup.string().required(t('Is a required field', { ns: 'other' })),
     name:
