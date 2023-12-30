@@ -105,6 +105,7 @@
 
   "Name can only contain Latin letters": "Name can only contain Latin letters",
   "Lastname can only contain Latin letters": "Lastname can only contain Latin letters",
+  "Index can contain only": "An index can contain only Latin letters, numbers, and the - symbol",
 
   "Apply to all": "Apply to all",
   "Provide for each domain name": "Provide for each domain name",

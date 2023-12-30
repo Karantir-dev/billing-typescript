@@ -7,6 +7,7 @@ import {
   EMAIL_SPECIAL_CHARACTERS_REGEX,
   CYRILLIC_ALPHABET_PROHIBITED,
   LATIN_NUMBER_REGEX,
+  INDEX_REGEX,
   LATIN_REGEX,
 } from '@utils/constants'
 import { useDispatch } from 'react-redux'
@@ -131,7 +132,7 @@ export default function Component(props) {
       .notOneOf(['null'], t('Is a required field', { ns: 'other' }))
       .required(t('Is a required field', { ns: 'other' })),
     location_postcode: Yup.string()
-      .matches(LATIN_NUMBER_REGEX, t('Lastname can only contain Latin letters'))
+      .matches(INDEX_REGEX, t('Index can contain only'))
       .required(t('Is a required field', { ns: 'other' })),
     location_state: Yup.string().required(t('Is a required field', { ns: 'other' })),
     location_city: Yup.string().required(t('Is a required field', { ns: 'other' })),

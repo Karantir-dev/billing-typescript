@@ -16,7 +16,7 @@ import { payersOperations, payersSelectors, authSelectors } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
-import { ADDRESS_REGEX, ADDRESS_SPECIAL_CHARACTERS_REGEX } from '@src/utils/constants'
+import { ADDRESS_SPECIAL_CHARACTERS_REGEX } from '@src/utils/constants'
 
 export default function ModalAddPayer(props) {
   const dispatch = useDispatch()
@@ -55,7 +55,7 @@ export default function ModalAddPayer(props) {
     city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
     address_physical: Yup.string()
       .matches(ADDRESS_SPECIAL_CHARACTERS_REGEX, t('symbols_restricted', { ns: 'other' }))
-      .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
+      // .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
       .required(t('Is a required field', { ns: 'other' })),
     name:
       payersSelectedFields?.profiletype === '2' ||

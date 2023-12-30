@@ -39,7 +39,7 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn, useFormFraudCheckData } from '@utils'
-import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD, ADDRESS_REGEX, ADDRESS_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD, ADDRESS_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -149,7 +149,7 @@ export default function Component() {
       is: 'off',
       then: Yup.string()
         .matches(ADDRESS_SPECIAL_CHARACTERS_REGEX, t('symbols_restricted', { ns: 'other' }))
-        .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
+        // .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
         .required(t('Is a required field', { ns: 'other' })),
     }),
 

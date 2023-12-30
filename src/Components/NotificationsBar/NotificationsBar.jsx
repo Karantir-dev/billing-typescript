@@ -14,7 +14,6 @@ export default function NotificationsBar({ handler, isBarOpened }) {
 
   const getNotifBarEl = useRef()
 
-  console.log('userItems: ', userItems)
   return (
     <>
       <div
