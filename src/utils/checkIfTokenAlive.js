@@ -44,14 +44,14 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   } else if (errorText.includes('Network Error')) {
     dispatch(authActions.setAuthErrorMsg('warnings.403_error_code'))
   } else {
-    console.error(err)
-
     const isExceptedError =
       errorText.match(bankCardsMirRegex) ||
       errorText.match(userRightsRegex) ||
       errorText.match(purseCurrencyRegex)
 
     if (!isExceptedError) {
+      console.error(err)
+
       // need to check whether it has sense (look for error translation)
       if (isTranslationExists(errorText)) {
         toast.error(t(errorText, { ns: ['auth', 'other'] }))
@@ -61,6 +61,8 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
           updateId: 'unknown_error',
         })
       }
+    } else {
+      console.log(err)
     }
   }
 
