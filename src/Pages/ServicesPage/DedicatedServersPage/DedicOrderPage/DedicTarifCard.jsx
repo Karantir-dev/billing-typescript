@@ -43,6 +43,7 @@ export default function DedicTarifCard({
     >
       <button
         onClick={() => {
+          if (item?.pricelist?.$ === values.tarif) return
           setParameters(null)
           setVdsParameters(null)
           setFieldValue('tarif', item?.pricelist?.$)
