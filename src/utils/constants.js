@@ -8,6 +8,8 @@ export const CYRILLIC_ALPHABET_PROHIBITED = /^[^Ѐ-ӏ]+$/g
 export const LATIN_REGEX = /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi
 export const LATIN_NUMBER_REGEX = /^([A-Za-z0-9\s]*)$/g
 
+export const INDEX_REGEX = /^(?:[A-Za-z]{2,3}-?\d+|\d+)$/
+
 export const PASS_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[\x20-\x7E]+$/
 
 export const URL_REGEX =
