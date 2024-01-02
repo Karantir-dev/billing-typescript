@@ -226,7 +226,7 @@
   &.selected {
     box-shadow: var(--forms2_pink_shadow);
     background-image: linear-gradient(180deg, #924ee8 0%, #c630bb 100%);
-    pointer-events: none;
+    // pointer-events: none;
 
     & .tarif_card_btn {
       width: calc(100% - 2px);
@@ -235,14 +235,21 @@
   }
 
   &:hover {
-    .price_wrapper {
-      background: var(--dedic_tariffs_gradient_hover);
-      &.vds {
-        background: linear-gradient(
-          270deg,
-          rgba(250, 75, 180, 0.2) 0%,
-          rgba(237, 50, 207, 0.2) 100%
-        );
+    &.selected {
+      .tarif_card_btn {
+        cursor: default;
+      }
+    }
+    &:not(.selected) {
+      .price_wrapper {
+        background: var(--dedic_tariffs_gradient_hover);
+        &.vds {
+          background: linear-gradient(
+            270deg,
+            rgba(250, 75, 180, 0.2) 0%,
+            rgba(237, 50, 207, 0.2) 100%
+          );
+        }
       }
     }
   }
