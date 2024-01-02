@@ -487,7 +487,7 @@ export default function ModalCreatePayment() {
                             {paymethod?.$ === '71' && (
                               <HintWrapper
                                 popupClassName={s.cardHintWrapper}
-                                label={t('Paypalich description', { ns: 'other' })}
+                                label={t(method?.name.$, { ns: 'other' })}
                                 wrapperClassName={cn(s.infoBtnCard)}
                                 bottom
                               >
