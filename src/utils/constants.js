@@ -83,7 +83,7 @@ export const VDS_IDS_TO_ORDER = ['6322', '6370']
 
 export const WORDPRESS_VHOST = ['6346', '6349', '6352', '6361']
 
-export const OFFER_FIELD = 'offer_3'
+export const OFFER_FIELD = 'offer_4'
 
 export const PROFILE_TYPES = {
   1: 'Individual',
