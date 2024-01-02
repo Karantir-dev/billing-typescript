@@ -4,7 +4,7 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { ServerState, CheckBox, Options } from '@components'
-import { useOutsideAlerter } from '@utils'
+import { isUnpaidOrder, useOutsideAlerter } from '@utils'
 import s from './VpnTable.module.scss'
 
 export default function Component(props) {
@@ -25,6 +25,7 @@ export default function Component(props) {
     item_status,
     rights,
     setDeleteIds,
+    unpaidItems,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 1549px)' })
@@ -41,7 +42,10 @@ export default function Component(props) {
   const isActive = selected?.includes(el)
   const toggleIsActiveHandler = () => setSelctedItem(!isActive, el)
 
+  const deleteOption = isUnpaidOrder(el, unpaidItems)
+
   const options = [
+    deleteOption,
     {
       label: t('instruction', { ns: 'vds' }),
       icon: 'Info',

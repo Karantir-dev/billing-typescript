@@ -7,6 +7,7 @@ import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { SITE_URL } from '@config/config'
 import s from './VDSItem.module.scss'
+import { isUnpaidOrder } from '@utils'
 
 export default function VDSItem({
   server,
@@ -23,12 +24,15 @@ export default function VDSItem({
   goToPanelFn,
   handleEditSubmit,
   isDedic,
+  unpaidItems,
   orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
 
   const [originName, setOriginName] = useState('')
+
+  const deleteOption = isUnpaidOrder(server, unpaidItems)
 
   useEffect(() => {
     if (server?.server_name?.$) {
@@ -57,6 +61,7 @@ export default function VDSItem({
   }
 
   const options = [
+    deleteOption,
     {
       label: t('clone_tariff'),
       icon: 'Copy',

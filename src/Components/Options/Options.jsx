@@ -22,28 +22,32 @@ export default function Options({ options }) {
             <div className={s.pointer}></div>
           </div>
           <ul>
-            {options.map(option => (
-              <li
-                key={option.label}
-                className={cn(s.tool_item, { [s.tool_item_delete]: option.isDelete })}
-              >
-                <button
-                  className={s.tool_btn}
-                  type="button"
-                  onClick={() => {
-                    option.onClick()
-                    setIsOptionsOpen(false)
-                  }}
-                  disabled={option.disabled}
+            {options
+              .filter(option => !option.hidden)
+              .map(option => (
+                <li
+                  key={option.label}
+                  className={cn(s.tool_item, { [s.tool_item_delete]: option.isDelete })}
                 >
-                  <Icon
-                    name={option.icon}
-                    className={cn(s.tool_icon, { [s.tool_icon_delete]: option.isDelete })}
-                  />
-                  {option.label}
-                </button>
-              </li>
-            ))}
+                  <button
+                    className={s.tool_btn}
+                    type="button"
+                    onClick={() => {
+                      option.onClick()
+                      setIsOptionsOpen(false)
+                    }}
+                    disabled={option.disabled}
+                  >
+                    <Icon
+                      name={option.icon}
+                      className={cn(s.tool_icon, {
+                        [s.tool_icon_delete]: option.isDelete,
+                      })}
+                    />
+                    {option.label}
+                  </button>
+                </li>
+              ))}
           </ul>
         </div>
       )}

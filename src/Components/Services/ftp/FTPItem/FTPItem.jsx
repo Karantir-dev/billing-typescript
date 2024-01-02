@@ -6,6 +6,7 @@ import s from './FTPItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
+import { isUnpaidOrder } from '@utils'
 
 export default function FTPItem({
   storage,
@@ -17,6 +18,7 @@ export default function FTPItem({
   setElidForHistoryModal,
   setElidForInstructionModal,
   setIdForDeleteModal,
+  unpaidItems,
 }) {
   const { t } = useTranslation(['vds', 'other'])
 
@@ -37,7 +39,10 @@ export default function FTPItem({
     fn()
   }
 
+  const deleteOption = isUnpaidOrder(storage, unpaidItems)
+
   const options = [
+    deleteOption,
     {
       label: t('instruction'),
       icon: 'Info',

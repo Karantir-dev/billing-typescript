@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './DomainsPage.module.scss'
-import { domainsOperations, domainsSelectors } from '@redux'
+import { billingOperations, domainsOperations, domainsSelectors } from '@redux'
 import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 
@@ -58,6 +58,8 @@ export default function Component() {
   const [prolongData, setProlongData] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
+
+  const [unpaidItems, setUnpaidItems] = useState([])
 
   useEffect(() => {
     const data = { p_num, p_cnt }
@@ -242,6 +244,8 @@ export default function Component() {
     if (!isAllowedToRender) {
       navigate(route.SERVICES, { replace: true })
     }
+
+    dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
   }, [])
 
   const setSelectedAll = val => {
@@ -327,6 +331,7 @@ export default function Component() {
           NSDomainHandler={NSDomainHandler}
           whoisDomainHandler={whoisDomainHandler}
           rights={rights}
+          unpaidItems={unpaidItems}
         />
       )}
 

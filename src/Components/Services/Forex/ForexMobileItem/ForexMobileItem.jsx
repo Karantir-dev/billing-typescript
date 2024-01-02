@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import s from './ForexMobileItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
+import { isUnpaidOrder } from '@src/utils'
 
 export default function ForexMobileItem({
   server,
@@ -14,12 +15,15 @@ export default function ForexMobileItem({
   activeServices,
   setActiveServices,
   pageRights,
+  unpaidItems,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
 
   const handleToolBtnClick = fn => {
     fn()
   }
+
+  const deleteOption = isUnpaidOrder(server, unpaidItems)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
@@ -34,6 +38,7 @@ export default function ForexMobileItem({
   }
 
   const options = [
+    deleteOption,
     {
       label: t('instruction'),
       icon: 'Info',

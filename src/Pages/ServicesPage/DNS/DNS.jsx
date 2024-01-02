@@ -327,6 +327,7 @@ export default function DNS() {
         pageRights={rights}
         activeServices={activeServices}
         setActiveServices={setActiveServices}
+        signal={signal}
       />
 
       {dnsCount > 5 && (

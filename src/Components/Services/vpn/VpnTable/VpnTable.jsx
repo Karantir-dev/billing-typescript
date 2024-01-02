@@ -18,6 +18,7 @@ export default function Component(props) {
     rights,
     setDeleteIds,
     instructionVhostHandler,
+    unpaidItems,
   } = props
 
   const setSelectedAll = val => {
@@ -82,6 +83,7 @@ export default function Component(props) {
             rights={rights}
             setDeleteIds={setDeleteIds}
             instructionVhostHandler={instructionVhostHandler}
+            unpaidItems={unpaidItems}
           />
         )
       })}

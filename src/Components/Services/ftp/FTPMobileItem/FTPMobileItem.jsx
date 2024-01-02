@@ -4,6 +4,7 @@ import s from './FTPMobileItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
+import { isUnpaidOrder } from '@utils'
 
 export default function FTPMobileItem({
   storage,
@@ -15,6 +16,7 @@ export default function FTPMobileItem({
   setActiveServices,
   rights,
   setIdForDeleteModal,
+  unpaidItems,
 }) {
   const { t } = useTranslation(['vds', 'other'])
 
@@ -35,7 +37,10 @@ export default function FTPMobileItem({
       : setActiveServices([...activeServices, storage])
   }
 
+  const deleteOption = isUnpaidOrder(storage, unpaidItems)
+
   const options = [
+    deleteOption,
     {
       label: t('instruction'),
       icon: 'Info',

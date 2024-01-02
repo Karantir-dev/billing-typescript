@@ -18,6 +18,7 @@ export default function Component(props) {
     whoisDomainHandler,
     NSDomainHandler,
     rights,
+    unpaidItems
   } = props
 
   const setSelectedAll = val => {
@@ -80,6 +81,7 @@ export default function Component(props) {
             NSDomainHandler={NSDomainHandler}
             whoisDomainHandler={whoisDomainHandler}
             rights={rights}
+            unpaidItems={unpaidItems}
           />
         )
       })}

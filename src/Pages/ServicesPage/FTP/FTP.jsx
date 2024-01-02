@@ -314,6 +314,7 @@ export default function FTP() {
         activeServices={activeServices}
         rights={rights}
         setIdForDeleteModal={setIdForDeleteModal}
+        signal={signal}
       />
 
       {ftpCount > 5 && (

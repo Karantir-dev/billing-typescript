@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SiteCare.module.scss'
-import { siteCareOperations, siteCareSelectors } from '@redux'
+import { billingOperations, siteCareOperations, siteCareSelectors } from '@redux'
 import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 
@@ -53,6 +53,7 @@ export default function Component() {
   const [deleteIds, setDeleteIds] = useState(null)
 
   const [isFiltered, setIsFiltered] = useState(false)
+  const [unpaidItems, setUnpaidItems] = useState([])
 
   const parseSelectedItemName = () => {
     let names = []
@@ -188,6 +189,7 @@ export default function Component() {
     if (!isAllowedToRender) {
       navigate(route.SERVICES, { replace: true })
     }
+    dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
   }, [])
 
   const isAllActive = sitecareRenderData?.siteCareList?.length === selctedItem?.length
@@ -281,6 +283,7 @@ export default function Component() {
             list={sitecareRenderData?.siteCareList}
             rights={rights}
             setDeleteIds={setDeleteIds}
+            unpaidItems={unpaidItems}
           />
         )}
 

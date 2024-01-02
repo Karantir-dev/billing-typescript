@@ -17,6 +17,7 @@ export default function Component(props) {
     deleteSiteCareHandler,
     rights,
     setDeleteIds,
+    unpaidItems,
   } = props
 
   const setSelectedAll = val => {
@@ -80,6 +81,7 @@ export default function Component(props) {
             deleteSiteCareHandler={deleteSiteCareHandler}
             rights={rights}
             setDeleteIds={setDeleteIds}
+            unpaidItems={unpaidItems}
           />
         )
       })}

@@ -7,7 +7,8 @@ import DedicItem from '../DedicItem/DedicItem'
 import DedicMobileItem from '../DedicMobileItem/DedicMobileItem'
 import { CheckBox } from '@components'
 import { useDispatch } from 'react-redux'
-import { dedicOperations } from '@redux'
+import { billingOperations, dedicOperations } from '@redux'
+import { useEffect, useState } from 'react'
 
 export default function DedicList({
   emptyFilter,
@@ -27,6 +28,12 @@ export default function DedicList({
   const { t } = useTranslation(['vds', 'other', 'access_log', 'dedicated_servers'])
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
+
+  const [unpaidItems, setUnpaidItems] = useState([])
+
+  useEffect(() => {
+    dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
+  }, [])
 
   const handleEditSubmit = (elid, server_name) => {
     dispatch(
@@ -124,6 +131,7 @@ export default function DedicList({
               rights={rights}
               handleEditSubmit={handleEditSubmit}
               setIdForDeleteModal={setIdForDeleteModal}
+              unpaidItems={unpaidItems}
             />
           ) : (
             <DedicMobileItem
@@ -139,6 +147,7 @@ export default function DedicList({
               rights={rights}
               handleEditSubmit={handleEditSubmit}
               setIdForDeleteModal={setIdForDeleteModal}
+              unpaidItems={unpaidItems}
             />
           )
         })}

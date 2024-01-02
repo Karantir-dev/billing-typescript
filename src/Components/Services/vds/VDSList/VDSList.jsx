@@ -5,8 +5,9 @@ import PropTypes from 'prop-types'
 
 import s from './VDSList.module.scss'
 import { useDispatch } from 'react-redux'
-import { vdsOperations } from '@redux'
+import { billingOperations, vdsOperations } from '@redux'
 import cn from 'classnames'
+import { useEffect, useState } from 'react'
 
 export default function VDSList({
   servers,
@@ -30,6 +31,12 @@ export default function VDSList({
   const { t } = useTranslation(['vds', 'other'])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
+
+  const [unpaidItems, setUnpaidItems] = useState([])
+
+  useEffect(() => {
+    dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
+  }, [])
 
   const handleEditSubmit = (elid, values) => {
     const mutatedValues = { ...values, clicked_button: 'ok' }
@@ -137,6 +144,7 @@ export default function VDSList({
               goToPanelFn={() => goToPanelFn(el.id.$)}
               handleEditSubmit={handleEditSubmit}
               isDedic={isDedic}
+              unpaidItems={unpaidItems}
               orderSameTariff={() => orderSameTariff(el.id.$)}
             />
           ) : (
@@ -156,6 +164,7 @@ export default function VDSList({
               goToPanelFn={() => goToPanelFn(el.id.$)}
               handleEditSubmit={handleEditSubmit}
               isDedic={isDedic}
+              unpaidItems={unpaidItems}
               orderSameTariff={() => orderSameTariff(el.id.$)}
             />
           )

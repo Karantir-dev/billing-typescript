@@ -312,6 +312,7 @@ export default function ForexPage() {
         activeServices={activeServices}
         setActiveServices={setActiveServices}
         pageRights={rights}
+        signal={signal}
       />
 
       {forexCount > 5 && (

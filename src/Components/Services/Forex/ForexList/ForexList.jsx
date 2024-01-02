@@ -6,6 +6,9 @@ import s from './ForexList.module.scss'
 import ForexItem from '../ForexItem/ForexItem'
 import ForexMobileItem from '../ForexMobileItem/ForexMobileItem'
 import { CheckBox } from '@components'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { billingOperations } from '@src/Redux'
 
 export default function ForexList({
   emptyFilter,
@@ -18,7 +21,10 @@ export default function ForexList({
   activeServices,
   setActiveServices,
   pageRights,
+  signal,
 }) {
+  const dispatch = useDispatch()
+
   const { t } = useTranslation([
     'vds',
     'other',
@@ -27,6 +33,12 @@ export default function ForexList({
     'access_log',
   ])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
+
+  const [unpaidItems, setUnpaidItems] = useState([])
+
+  useEffect(() => {
+    dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
+  }, [])
 
   if (forexList) {
     if (forexList.length === 0 && emptyFilter) {
@@ -99,6 +111,7 @@ export default function ForexList({
               activeServices={activeServices}
               setActiveServices={setActiveServices}
               pageRights={pageRights}
+              unpaidItems={unpaidItems}
             />
           ) : (
             <ForexMobileItem
@@ -112,6 +125,7 @@ export default function ForexList({
               activeServices={activeServices}
               setActiveServices={setActiveServices}
               pageRights={pageRights}
+              unpaidItems={unpaidItems}
             />
           )
         })}

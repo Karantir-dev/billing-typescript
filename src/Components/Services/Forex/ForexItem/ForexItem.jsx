@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 import s from './ForexItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
+import { isUnpaidOrder } from '@utils'
 
 export default function ForexItem({
   server,
@@ -14,6 +15,7 @@ export default function ForexItem({
   activeServices,
   setActiveServices,
   pageRights,
+  unpaidItems,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
 
@@ -32,8 +34,10 @@ export default function ForexItem({
   const handleToolBtnClick = fn => {
     fn()
   }
+  const deleteOption = isUnpaidOrder(server, unpaidItems)
 
   const options = [
+    deleteOption,
     {
       label: t('instruction'),
       icon: 'Info',

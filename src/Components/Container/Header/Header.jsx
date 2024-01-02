@@ -5,15 +5,8 @@ import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
-import { userSelectors, authOperations, selectors } from '@redux'
-import {
-  NotificationsBar,
-  ThemeBtn,
-  LangBtn,
-  ModalCreatePayment,
-  Icon,
-  CertificateModal,
-} from '@components'
+import { userSelectors, authOperations, selectors, billingActions } from '@redux'
+import { NotificationsBar, ThemeBtn, LangBtn, Icon, CertificateModal } from '@components'
 import * as routes from '@src/routes'
 import { useOutsideAlerter, usePageRender } from '@utils'
 
@@ -89,7 +82,6 @@ export default function Header() {
   const { $balance, $realname, $email } = useSelector(userSelectors.getUserInfo)
 
   const [isMenuOpened, setIsMenuOpened] = useState(false)
-  const [createPaymentModal, setCreatePaymentModal] = useState(false)
 
   const [isNotificationBarOpened, setIsNotificationBarOpened] = useState(false)
   const [isProfileOpened, setIsProfileOpened] = useState(false)
@@ -140,7 +132,9 @@ export default function Header() {
                   })}
                 >
                   <button
-                    onClick={() => setCreatePaymentModal(!createPaymentModal)}
+                    onClick={() =>
+                      dispatch(billingActions.setIsModalCreatePaymentOpened(true))
+                    }
                     className={s.balance_wrapper}
                   >
                     <div className={s.balance_text}>
@@ -342,9 +336,7 @@ export default function Header() {
         isBarOpened={isNotificationBarOpened}
         handler={handleBellClick}
       />
-      {createPaymentModal && (
-        <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-      )}
+
       {isUseCertificate && <CertificateModal closeModal={closeCertificateModal} />}
     </>
   )

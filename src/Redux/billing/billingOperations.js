@@ -12,8 +12,37 @@ import { toast } from 'react-toastify'
 import { analyticsSaver, checkIfTokenAlive, cookies, handleLoadersClosing } from '@utils'
 import { userNotifications } from '@redux/userInfo/userOperations'
 
+const payPayment = (id, openModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+
+  const {
+    auth: { sessionId },
+  } = getState()
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'payment.add',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+        payment_id: id,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+      dispatch(billingActions.setPaymentData(data.doc))
+      dispatch(actions.hideLoader())
+      openModal && openModal()
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
+
 const getPayments =
-  (body = {}, readOnly, signal, setIsLoading) =>
+  (body = {}, readOnly, signal, setIsLoading, isPayNow) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
@@ -38,6 +67,37 @@ const getPayments =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        if (isPayNow) {
+          const paymentInfo = data?.doc?.elem[0]
+          if (
+            paymentInfo.status.$.trim() === 'New' &&
+            paymentInfo.paymethod_name.$.trim().toLowerCase() !== 'select'
+          ) {
+            return dispatch(
+              getPaymentRedirect(
+                paymentInfo.id.$,
+                paymentInfo.number.$,
+                paymentInfo.paymethod_name.$,
+              ),
+            )
+          }
+          if (paymentInfo.allowrefund.$ === 'off') {
+            return dispatch(
+              payPayment(paymentInfo.id.$, () =>
+                dispatch(billingActions.setIsModalCreatePaymentOpened(true)),
+              ),
+            )
+          } else {
+            return dispatch(
+              getPaymentRedirect(
+                paymentInfo.id.$,
+                paymentInfo.number.$,
+                paymentInfo.paymethod_name.$,
+              ),
+            )
+          }
+        }
         const elem = data?.doc?.elem || []
         const count = data?.doc?.p_elems?.$ || 0
         if (readOnly) {
@@ -108,7 +168,7 @@ const getPaymentsFilters = (signal, setIsLoading) => (dispatch, getState) => {
 }
 
 const setPaymentsFilters =
-  (body = {}, readOnly, signal, setIsLoading) =>
+  (body = {}, readOnly, signal, setIsLoading, isPayNow) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
@@ -131,7 +191,7 @@ const setPaymentsFilters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        dispatch(getPayments(body, readOnly, signal, setIsLoading))
+        dispatch(getPayments(body, readOnly, signal, setIsLoading, isPayNow))
       })
       .catch(error => {
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
@@ -688,7 +748,7 @@ const createPaymentMethod =
               analyticsSaver(body, data.doc?.payment_id?.$)
 
               dispatch(getPaymentMethodPage(data.doc.ok.$))
-              setCreatePaymentModal(false)
+              setCreatePaymentModal()
             }
           })
           .catch(error => {
@@ -1279,6 +1339,31 @@ const useCertificate =
       })
   }
 
+const getUnpaidOrders = (setUnpaidItems, signal) => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'order',
+        clickstat: 'yes',
+        out: 'json',
+        auth: sessionId,
+      }),
+      { signal },
+    )
+    .then(({ data }) => {
+      const unPaid = data.doc.list.find(el => el.$name === 'inpaylist')?.elem
+      setUnpaidItems(unPaid)
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch, true)
+    })
+}
+
 export default {
   getPayments,
   getPaymentPdf,
@@ -1307,4 +1392,6 @@ export default {
   // getExchangeRate,
   useCertificate,
   checkIsStripeAvailable,
+  getUnpaidOrders,
+  payPayment,
 }

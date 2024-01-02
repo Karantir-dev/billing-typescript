@@ -25,6 +25,7 @@ const getPaymentMethodCount = state => state.billing.paymentMethodCount
 const getPeriodValue = state => state.billing.periodValue
 const getIsStripeAvailable = state => state.billing.isStripeAvailable
 const getIsModalCreatePaymentOpened = state => state.billing.isModalCreatePaymentOpened
+const getPaymentData = state => state.billing.paymentData
 
 export default {
   getPaymentsList,
@@ -53,5 +54,6 @@ export default {
 
   getPeriodValue,
   getIsStripeAvailable,
-  getIsModalCreatePaymentOpened
+  getIsModalCreatePaymentOpened,
+  getPaymentData,
 }
