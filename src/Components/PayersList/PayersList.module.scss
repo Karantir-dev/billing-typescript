@@ -23,7 +23,7 @@
 
 // hide scrollbar from payerSelect List
 .additionalSelectPayer {
-  & div {
+  & > div {
     overflow-x: hidden;
   }
 }
