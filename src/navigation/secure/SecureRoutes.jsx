@@ -13,6 +13,7 @@ import {
   PromotionBanner,
   SuccessPayment,
   ErrorPayment,
+  ModalCreatePayment,
 } from '@components'
 import {
   cartSelectors,
@@ -75,6 +76,9 @@ const Component = ({ fromPromotionLink }) => {
   const [isUserClosedBanner, setIsUserClosedBanner] = useState(false)
 
   const paymentsList = useSelector(billingSelectors.getPaymentsReadOnlyList)
+  const isModalCreatePaymentOpened = useSelector(
+    billingSelectors.getIsModalCreatePaymentOpened,
+  )
 
   useEffect(() => {
     dispatch(cartOperations.getSalesList(setSalesList))
@@ -271,6 +275,8 @@ const Component = ({ fromPromotionLink }) => {
           <Route path="*" element={<ErrorPageLazy />} />
         </Routes>
       </div>
+
+      {isModalCreatePaymentOpened && <ModalCreatePayment />}
 
       {cartState?.isOpened && (
         <Portal>

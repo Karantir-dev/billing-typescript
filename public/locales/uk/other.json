@@ -67,7 +67,7 @@
   "Payer": "Платник",
   "Sum": "Сума",
   "Payment method": "Метод оплати",
-  "Paypalich description": "Оплата банківською картою MasterCard, QIWI, USDT",
+  "Bank Cards MIR/Visa/MasterCard (Russia) Paypalych": "Банківські картки МИР/Visa/MasterCard (Росія) Paypalych",
   "Insufficient privileges to access": "Недостатньо прав для доступу",
   "-- without payment method --": "Без способу оплати",
   "Create": "Створити",
@@ -269,5 +269,6 @@
   "Update your server": "Сервер, який ви використовуєте, застарів і підлягає заміні. Будь ласка, ознайомтеся з варіантами заміни",
   "here": "тут",
   "eu_vat_info_text": "Якщо у вас є дійсний європейський номер платника ПДВ, введіть його з префіксом країни, наприклад, NL123456, DE123456.",
-  "new_ticket_message": "Нове повідомлення в тікеті #{{id}}"
+  "new_ticket_message": "Нове повідомлення в тікеті #{{id}}",
+  "long_request": "Обробка запиту не вдалась, спробуйте ще раз"
 }

@@ -121,6 +121,12 @@
   }
 }
 
+.priceBlock {
+  margin-top: 9px;
+  display: flex;
+  gap: 5px;
+}
+
 .paymentMethodBtn {
   cursor: pointer;
   display: flex;

@@ -134,9 +134,7 @@ const getDomainsOrderName =
       )
       .then(async ({ data }) => {
         if (typeof data === 'string') {
-          toast.error(`${i18n.t('Something went wrong. Try again.', { ns: 'other' })}`, {
-            position: 'bottom-right',
-          })
+          throw new Error(data)
         }
         if (data.doc.error) {
           throw new Error(data.doc.error.msg.$)

@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '@utils'
 import { HintWrapper, Icon } from '@components'
+import { useDispatch } from 'react-redux'
+import { billingActions, billingOperations } from '@src/Redux'
 
 export default function Component(props) {
   const {
@@ -21,10 +23,10 @@ export default function Component(props) {
     deletePayment,
     payHandler,
     allowrefund,
-    setCreatePaymentModal,
   } = props
   const { t } = useTranslation(['billing', 'other'])
   const mobile = useMediaQuery({ query: '(max-width: 1023px)' })
+  const dispatch = useDispatch()
 
   const dropDownEl = useRef()
   const [isOpened, setIsOpened] = useState(false)
@@ -95,6 +97,7 @@ export default function Component(props) {
             <button
               className={s.settings_btn}
               onClick={() => {
+                setIsOpened(false)
                 if (
                   status.trim() === 'New' &&
                   paymethod?.trim().toLowerCase() !== 'select'
@@ -102,7 +105,11 @@ export default function Component(props) {
                   return payRedirectHandler()
                 }
                 if (allowrefund === 'off') {
-                  return setCreatePaymentModal(true)
+                  return dispatch(
+                    billingOperations.payPayment(id, () =>
+                      dispatch(billingActions.setIsModalCreatePaymentOpened(true)),
+                    ),
+                  )
                 } else {
                   return payRedirectHandler()
                 }
@@ -140,7 +147,11 @@ export default function Component(props) {
                 return payRedirectHandler()
               }
               if (allowrefund === 'off') {
-                return setCreatePaymentModal(true)
+                return dispatch(
+                  billingOperations.payPayment(id, () =>
+                    dispatch(billingActions.setIsModalCreatePaymentOpened(true)),
+                  ),
+                )
               } else {
                 return payRedirectHandler()
               }

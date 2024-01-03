@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 
 import s from './VDSmobileItem.module.scss'
+import { isUnpaidOrder } from '@utils'
 
 export default function VDSmobileItem({
   server,
@@ -23,12 +24,15 @@ export default function VDSmobileItem({
   setIdForInstruction,
   goToPanelFn,
   handleEditSubmit,
+  unpaidItems,
   orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
 
   const [originName, setOriginName] = useState('')
+
+  const deleteOption = isUnpaidOrder(server, unpaidItems)
 
   useEffect(() => {
     if (server?.server_name?.$) {
@@ -57,6 +61,7 @@ export default function VDSmobileItem({
   }
 
   const options = [
+    deleteOption,
     {
       label: t('clone_tariff'),
       icon: 'Copy',

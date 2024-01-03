@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { dedicOperations } from '@redux'
-import { isDisabledDedicTariff } from '@utils'
+import { isDisabledDedicTariff, isUnpaidOrder } from '@utils'
 
 export default function DedicItem({
   server,
@@ -22,6 +22,7 @@ export default function DedicItem({
   rights,
   handleEditSubmit,
   setIdForDeleteModal,
+  unpaidItems,
 }) {
   const { t } = useTranslation(['vds', 'other'])
 
@@ -29,6 +30,8 @@ export default function DedicItem({
   const navigate = useNavigate()
 
   const [originName, setOriginName] = useState('')
+
+  const deleteOption = isUnpaidOrder(server, unpaidItems)
 
   useEffect(() => {
     if (server?.server_name?.$) {
@@ -58,6 +61,7 @@ export default function DedicItem({
   }
 
   const options = [
+    deleteOption,
     {
       label: t('instruction'),
       icon: 'Info',
@@ -75,7 +79,9 @@ export default function DedicItem({
       label: t('prolong'),
       icon: 'Clock',
       disabled:
-        server?.status?.$ === '1' || !rights?.prolong || isDisabledDedicTariff(server?.name?.$),
+        server?.status?.$ === '1' ||
+        !rights?.prolong ||
+        isDisabledDedicTariff(server?.name?.$),
       onClick: () => handleToolBtnClick(setElidForProlongModal),
     },
     {

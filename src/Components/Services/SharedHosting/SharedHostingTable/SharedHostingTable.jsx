@@ -22,7 +22,8 @@ export default function Component(props) {
     activeServices,
     setActiveServices,
     setElidForProlongModal,
-    setIdForDeleteModal
+    setIdForDeleteModal,
+    unpaidItems
   } = props
 
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -95,6 +96,7 @@ export default function Component(props) {
             activeServices={activeServices}
             setActiveServices={setActiveServices}
             setIdForDeleteModal={setIdForDeleteModal}
+            unpaidItems={unpaidItems}
           />
         )
       })}

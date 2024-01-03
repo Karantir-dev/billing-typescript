@@ -6,6 +6,7 @@ import { CheckBox, ServerState, Options } from '@components'
 
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
+import { isUnpaidOrder } from '@utils'
 
 export default function DNSMobileItem({
   storage,
@@ -16,6 +17,7 @@ export default function DNSMobileItem({
   pageRights,
   activeServices,
   setActiveServices,
+  unpaidItems,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
 
@@ -24,6 +26,8 @@ export default function DNSMobileItem({
   const handleToolBtnClick = fn => {
     fn()
   }
+
+  const deleteOption = isUnpaidOrder(storage, unpaidItems)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
@@ -39,6 +43,7 @@ export default function DNSMobileItem({
   }
 
   const options = [
+    deleteOption,
     {
       label: t('instruction'),
       icon: 'Info',

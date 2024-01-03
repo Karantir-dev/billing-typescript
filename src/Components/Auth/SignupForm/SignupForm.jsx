@@ -27,7 +27,6 @@ import {
   VK_REGISTRATION_LINK,
 } from '@utils/constants'
 import s from './SignupForm.module.scss'
-import classNames from 'classnames'
 
 const COUNTRIES_WITH_REGIONS = [233, 108, 14]
 
@@ -37,8 +36,6 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
   const navigate = useNavigate()
   const location = useLocation()
   const recaptchaEl = useRef()
-
-  const [seconds, setSeconds] = useState(20)
 
   const globalErrMsg = useSelector(authSelectors.getAuthErrorMsg)
 
@@ -108,49 +105,8 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
     )
   }
 
-  const timer = s => {
-    if (s - 1 <= 0) {
-      window.location.href = 'https://cp.omro.host/'
-    } else {
-      setSeconds(s => s - 1)
-    }
-  }
-
-  useEffect(() => {
-    if (geoCountryId === '182') {
-      setInterval(() => timer(seconds), 1000)
-    }
-  }, [geoCountryId])
-
-  useEffect(() => {
-    if (seconds <= 0) {
-      window.location.href = 'https://cp.omro.host/signup'
-    }
-  }, [seconds])
-
-  const isVKAllowed = geoCountryId === '80' || geoCountryId === '113'
-
-  if (geoCountryId === '182') {
-    return (
-      <div className={s.form_wrapper}>
-        <LoginBtnBlock />
-        <div className={classNames(s.form, s.rusForm)}>
-          <span className={s.rusText}>
-            {t('rus_hello_1')} <a href="https://cp.omro.host/signup">{'cp.omro.host'}</a>.{' '}
-            {t('rus_hello_2')}
-          </span>
-
-          <div className={s.redirectBlock}>
-            <span>
-              {t('20_sec_omro', {
-                sec: seconds <= 0 ? '0' : seconds,
-              })}
-            </span>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  const isVKAllowed =
+    geoCountryId === '182' || geoCountryId === '80' || geoCountryId === '113'
 
   return (
     <div className={s.form_wrapper}>

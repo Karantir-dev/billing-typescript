@@ -4,6 +4,7 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { ServerState, CheckBox, Options } from '@components'
+import { isUnpaidOrder } from '@utils'
 
 export default function Component(props) {
   const {
@@ -21,6 +22,7 @@ export default function Component(props) {
     whoisDomainHandler,
     NSDomainHandler,
     rights,
+    unpaidItems,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 1549px)' })
@@ -28,7 +30,10 @@ export default function Component(props) {
   const isActive = selected?.includes(el)
   const toggleIsActiveHandler = () => setSelctedItem(!isActive, el)
 
+  const deleteOption = isUnpaidOrder(el, unpaidItems)
+
   const options = [
+    deleteOption,
     {
       label: t('prolong', { ns: 'vds' }),
       icon: 'Clock',

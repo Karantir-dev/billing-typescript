@@ -6,7 +6,7 @@ import FilterExpensesModal from './FilterExpensesModal'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { Button, IconButton, Portal, ModalCreatePayment } from '@components'
+import { Button, IconButton, Portal } from '@components'
 import { useMediaQuery } from 'react-responsive'
 import { actions, billingActions, billingOperations, billingSelectors } from '@redux'
 import s from './BillingFilter.module.scss'
@@ -18,8 +18,6 @@ export default function Component(props) {
     isFilterActive,
     isFiltered,
     p_cnt,
-    setCreatePaymentModal,
-    createPaymentModal,
     signal,
     setIsLoading,
   } = props
@@ -195,11 +193,8 @@ export default function Component(props) {
             size="medium"
             label={t('Create')}
             type="button"
-            onClick={() => setCreatePaymentModal(!createPaymentModal)}
+            onClick={() => dispatch(billingActions.setIsModalCreatePaymentOpened(true))}
           />
-          {createPaymentModal && (
-            <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-          )}
         </>
       )}
     </div>

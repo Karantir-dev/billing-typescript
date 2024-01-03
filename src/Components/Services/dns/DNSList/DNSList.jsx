@@ -7,6 +7,9 @@ import DNSMobileItem from '../DNSMobileItem/DNSMobileItem'
 import { CheckBox } from '@components'
 
 import s from './DNSList.module.scss'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { billingOperations } from '@src/Redux'
 
 export default function DNSList({
   emptyFilter,
@@ -18,7 +21,10 @@ export default function DNSList({
   pageRights,
   setActiveServices,
   activeServices,
+  signal
 }) {
+  const dispatch = useDispatch()
+
   const { t } = useTranslation([
     'vds',
     'other',
@@ -28,6 +34,12 @@ export default function DNSList({
     'dns',
   ])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
+
+  const [unpaidItems, setUnpaidItems] = useState([])
+
+  useEffect(() => {
+    dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
+  }, [])
 
   if (dnsList) {
     if (dnsList.length === 0 && emptyFilter) {
@@ -100,6 +112,7 @@ export default function DNSList({
               setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}
               setElidForInstructionModal={() => setElidForInstructionModal(el.id.$)}
               pageRights={pageRights}
+              unpaidItems={unpaidItems}
             />
           ) : (
             <DNSMobileItem
@@ -112,6 +125,7 @@ export default function DNSList({
               activeServices={activeServices}
               setActiveServices={setActiveServices}
               pageRights={pageRights}
+              unpaidItems={unpaidItems}
             />
           )
         })}

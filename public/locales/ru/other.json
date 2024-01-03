@@ -67,7 +67,7 @@
   "Payer": "Плательщик",
   "Sum": "Сумма",
   "Payment method": "Метод оплаты",
-  "Paypalich description": "Оплата банковской картой MasterCard, QIWI, USDT",
+  "Bank Cards MIR/Visa/MasterCard (Russia) Paypalych": "Банковские карты МИР/Visa/MasterCard (Россия) Paypalych",
   "Insufficient privileges to access": "Недостаточно прав для доступа",
   "-- without payment method --": "Без способа оплаты",
   "Create": "Создать",
@@ -266,5 +266,6 @@
   "Update your server": "Сервер, который вы используете устарел и подлежит замене. Пожалуйста, ознакомьтесь с вариантами замены",
   "here": "тут",
   "eu_vat_info_text": "Если у вас есть действительный европейский номер плательщика НДС, укажите его с префиксом страны, например, NL123456, DE123456.",
-  "new_ticket_message": "Новое сообщение в тикете #{{id}}"
+  "new_ticket_message": "Новое сообщение в тикете #{{id}}",
+  "long_request": "Обработка запроса не удалась, попробуйте еще раз"
 }

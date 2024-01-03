@@ -6,6 +6,9 @@ import s from './FTPList.module.scss'
 import FTPItem from '../FTPItem/FTPItem'
 import FTPMobileItem from '../FTPMobileItem/FTPMobileItem'
 import { CheckBox } from '@components'
+import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { billingOperations } from '@src/Redux'
 
 export default function FTPList({
   emptyFilter,
@@ -18,7 +21,10 @@ export default function FTPList({
   setActiveServices,
   activeServices,
   setIdForDeleteModal,
+  signal
 }) {
+  const dispatch = useDispatch()
+
   const { t } = useTranslation([
     'vds',
     'other',
@@ -28,6 +34,13 @@ export default function FTPList({
     'ftp',
   ])
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
+
+  const [unpaidItems, setUnpaidItems] = useState([])
+
+  useEffect(() => {
+    dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
+  }, [])
+
 
   if (storageList) {
     if (storageList.length === 0 && emptyFilter) {
@@ -100,6 +113,7 @@ export default function FTPList({
               activeServices={activeServices}
               rights={rights}
               setIdForDeleteModal={setIdForDeleteModal}
+              unpaidItems={unpaidItems}
             />
           ) : (
             <FTPMobileItem
@@ -113,6 +127,7 @@ export default function FTPList({
               activeServices={activeServices}
               rights={rights}
               setIdForDeleteModal={setIdForDeleteModal}
+              unpaidItems={unpaidItems}
             />
           )
         })}

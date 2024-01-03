@@ -22,7 +22,9 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
     return
   }
 
-  if (
+  if (err.includes('Request in process, please wait')) {
+    toast.error(`${t('long_request', { ns: 'other' })}`)
+  } else if (
     errorText.includes('У вас недостаточно прав на выполнение функции') ||
     errorText.includes('Insufficient privileges to perform')
   ) {

@@ -67,7 +67,7 @@
   "Payer": "Payer",
   "Sum": "Sum",
   "Payment method": "Payment method",
-  "Paypalich description": "Payment by bank card MasterCard, QIWI, USDT",
+  "Bank Cards MIR/Visa/MasterCard (Russia) Paypalych": "Bank Cards MIR/Visa/MasterCard (Russia) Paypalych",
   "Insufficient privileges to access": "Insufficient privileges to access",
   "-- without payment method --": "Without payment method",
   "Create": "Create",
@@ -268,5 +268,6 @@
   "Update your server": "The server you are using needs to be replaced. Please take a look at the Replacement Options",
   "here": "here",
   "eu_vat_info_text": "If you have a valid European VAT ID, fill it in with the country prefix, e.g. NL123456, DE123456.",  
-  "new_ticket_message": "New message in ticket #{{id}}"
+  "new_ticket_message": "New message in ticket #{{id}}",
+  "long_request": "Request processing failed, please try again"
 }

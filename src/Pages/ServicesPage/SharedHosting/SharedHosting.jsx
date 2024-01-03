@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SharedHosting.module.scss'
-import { vhostSelectors, vhostOperations, vhostActions } from '@redux'
+import { vhostSelectors, vhostOperations, vhostActions, billingOperations } from '@redux'
 import * as route from '@src/routes'
 import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import cn from 'classnames'
@@ -67,6 +67,7 @@ export default function Component({ type }) {
   const [isFiltered, setIsFiltered] = useState(false)
 
   const [idForDeleteModal, setIdForDeleteModal] = useState([])
+  const [unpaidItems, setUnpaidItems] = useState([])
 
   const conditionalRendering =
     type === 'vhost'
@@ -91,7 +92,9 @@ export default function Component({ type }) {
     } else {
       resetFilterHandler()
       setFirstRender(false)
+      dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
     }
+
 
     return () => {
       dispatch(vhostActions.setVhostCount(0))
@@ -405,6 +408,7 @@ export default function Component({ type }) {
             elidForProlongModal={elidForProlongModal}
             setElidForProlongModal={setElidForProlongModal}
             setIdForDeleteModal={setIdForDeleteModal}
+            unpaidItems={unpaidItems}
           />
         )}
 

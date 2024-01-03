@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import { ThemeBtn, LangBtn, ModalCreatePayment, Icon } from '@components'
+import { ThemeBtn, LangBtn, Icon } from '@components'
 import ListItems from './ListItems/ListItems'
-import { userSelectors, authOperations, selectors } from '@redux'
+import { userSelectors, authOperations, selectors, billingActions } from '@redux'
 import { useOutsideAlerter, usePageRender } from '@utils'
 import * as routes from '@src/routes'
 
@@ -14,8 +14,6 @@ import s from './BurgerMenu.module.scss'
 
 export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenuList }) {
   const { t } = useTranslation('container')
-
-  const [createPaymentModal, setCreatePaymentModal] = useState(false)
 
   const areServicesAllowedToRender = usePageRender('mainmenuservice', null, false)
   const isFinanceAllowedToRender = usePageRender('finance', null, false)
@@ -217,7 +215,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
               <button
                 onClick={() => {
                   controlMenu()
-                  setCreatePaymentModal(!createPaymentModal)
+                  dispatch(billingActions.setIsModalCreatePaymentOpened(true))
                 }}
                 className={s.balance_wrapper_btn}
               >
@@ -294,10 +292,6 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
           </ul>
         </div>
       </div>
-
-      {createPaymentModal && (
-        <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
-      )}
     </>
   )
 }

@@ -43,6 +43,8 @@ const setIsStripeAvailable = createAction('SET_IS_STRIPE_AVAILABLE')
 
 const setIsModalCreatePaymentOpened = createAction('SET_IS_MODAL_CREATE_PAYMENT_OPENED')
 
+const setPaymentData = createAction('SET_PAYMENT_DATA')
+
 export default {
   setPaymentMethodList,
   deletePaymentMethod,
@@ -81,4 +83,5 @@ export default {
   setPeriodValue,
   setIsStripeAvailable,
   setIsModalCreatePaymentOpened,
+  setPaymentData,
 }

@@ -39,7 +39,7 @@ import {
 
 import s from './ModalCreatePayment.module.scss'
 
-export default function ModalCreatePayment(props) {
+export default function ModalCreatePayment() {
   const dispatch = useDispatch()
 
   const { t } = useTranslation([
@@ -51,12 +51,11 @@ export default function ModalCreatePayment(props) {
     'user_settings',
   ])
 
-  const { setCreatePaymentModal } = props
-
   const [state, setState] = useReducer((state, action) => {
     return { ...state, ...action }
   }, {})
 
+  const paymentData = useSelector(billingSelectors.getPaymentData)
   const payersList = useSelector(payersSelectors.getPayersList)
 
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
@@ -77,7 +76,10 @@ export default function ModalCreatePayment(props) {
   useLayoutEffect(() => {
     dispatch(billingActions.setIsModalCreatePaymentOpened(true))
 
-    return () => dispatch(billingActions.setIsModalCreatePaymentOpened(false))
+    return () => {
+      dispatch(billingActions.setPaymentData(null))
+      closeModalHandler()
+    }
   }, [])
 
   useEffect(() => {
@@ -100,6 +102,9 @@ export default function ModalCreatePayment(props) {
       setState({ userCountryCode: code })
     }
   }, [userEdit])
+
+  const closeModalHandler = () =>
+    dispatch(billingActions.setIsModalCreatePaymentOpened(false))
 
   const createPaymentMethodHandler = values => {
     const data = {
@@ -166,6 +171,11 @@ export default function ModalCreatePayment(props) {
       data.name = values?.name || ''
     }
 
+    if (paymentData) {
+      data.billorder = paymentData.billorder.$
+      data.payment_id = paymentData.payment_id.$
+    }
+
     /** ------- Analytics ------- */
     if (!values?.profile) {
       // Facebook pixel event
@@ -179,7 +189,7 @@ export default function ModalCreatePayment(props) {
     if (window.qp) window.qp('track', 'InitiateCheckout')
     /** ------- /Analytics ------- */
 
-    dispatch(billingOperations.createPaymentMethod(data, setCreatePaymentModal))
+    dispatch(billingOperations.createPaymentMethod(data, closeModalHandler))
   }
 
   const validationSchema = Yup.object().shape({
@@ -245,14 +255,18 @@ export default function ModalCreatePayment(props) {
   return (
     <div className={s.modalBg}>
       <Modal
-        closeModal={() => setCreatePaymentModal(false)}
+        closeModal={closeModalHandler}
         isOpen
         className={cn(s.modal, {
           [s.visible]: payersSelectedFields && !!payersData.selectedPayerFields,
         })}
       >
         <Modal.Header>
-          <span className={s.headerText}>{t('Replenishment')}</span>
+          <span className={s.headerText}>
+            {paymentData
+              ? `${t('Payment', { ns: 'cart' })} #${paymentData.payment_id.$}`
+              : t('Replenishment')}
+          </span>
         </Modal.Header>
         <Modal.Body>
           <Formik
@@ -266,7 +280,7 @@ export default function ModalCreatePayment(props) {
                 payersData.selectedPayerFields?.profile ||
                 payersList?.[payersList?.length - 1]?.id?.$ ||
                 '',
-              amount: state.amount || '',
+              amount: paymentData?.amount.$ || state.amount || '',
               selectedPayMethod: state.selectedPayMethod || undefined,
               name: payersData.state?.name || payersData.selectedPayerFields?.name || '',
               address_physical:
@@ -473,7 +487,7 @@ export default function ModalCreatePayment(props) {
                             {paymethod?.$ === '71' && (
                               <HintWrapper
                                 popupClassName={s.cardHintWrapper}
-                                label={t('Paypalich description', { ns: 'other' })}
+                                label={t(method?.name.$, { ns: 'other' })}
                                 wrapperClassName={cn(s.infoBtnCard)}
                                 bottom
                               >
@@ -570,37 +584,47 @@ export default function ModalCreatePayment(props) {
                     <div className={s.formBlockTitle}>3. {t('Top-up amount')}</div>
                     <div className={s.formFieldsBlock}>
                       <div className={s.inputAmountBlock}>
-                        <InputField
-                          inputWrapperClass={s.inputHeight}
-                          name="amount"
-                          placeholder={'0.00'}
-                          isShadow
-                          value={values.amount}
-                          onChange={e => {
-                            const amount = e?.target?.value.replace(/[^0-9.]/g, '')
-                            setFieldValue('amount', amount)
-                            setState({
-                              amount,
-                            })
-                          }}
-                          className={s.input}
-                          error={!!errors.amount}
-                          touched={!!touched.amount}
-                          isRequired
-                        />
-                        {paymentsCurrency && paymentsCurrency?.payment_currency_list && (
-                          <PaymentCurrencyBtn
-                            list={paymentsCurrency?.payment_currency_list}
-                            currentValue={values?.payment_currency?.title}
-                            setValue={item => {
-                              setFieldValue('payment_currency', item)
-                              dispatch(
-                                billingOperations.getPaymentMethod({
-                                  payment_currency: item?.value,
-                                }),
-                              )
-                            }}
-                          />
+                        {paymentData ? (
+                          <div className={s.priceBlock}>
+                            {t('Total', {ns: 'cart'})} : <b>{paymentData.amount.$} EUR</b>
+                          </div>
+                        ) : (
+                          <>
+                            <InputField
+                              inputWrapperClass={s.inputHeight}
+                              name="amount"
+                              placeholder={'0.00'}
+                              isShadow
+                              value={values.amount}
+                              onChange={e => {
+                                const amount = e?.target?.value.replace(/[^0-9.]/g, '')
+                                setFieldValue('amount', amount)
+                                setState({
+                                  amount,
+                                })
+                              }}
+                              className={s.input}
+                              error={!!errors.amount}
+                              touched={!!touched.amount}
+                              isRequired
+                              disabled={!!paymentData}
+                            />
+                            {paymentsCurrency &&
+                              paymentsCurrency?.payment_currency_list && (
+                                <PaymentCurrencyBtn
+                                  list={paymentsCurrency?.payment_currency_list}
+                                  currentValue={values?.payment_currency?.title}
+                                  setValue={item => {
+                                    setFieldValue('payment_currency', item)
+                                    dispatch(
+                                      billingOperations.getPaymentMethod({
+                                        payment_currency: item?.value,
+                                      }),
+                                    )
+                                  }}
+                                />
+                              )}
+                          </>
                         )}
                       </div>
                     </div>

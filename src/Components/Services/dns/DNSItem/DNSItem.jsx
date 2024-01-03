@@ -6,6 +6,7 @@ import s from './DNSItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
+import { isUnpaidOrder } from '@utils'
 
 export default function DNSItem({
   storage,
@@ -16,10 +17,13 @@ export default function DNSItem({
   setElidForEditModal,
   setElidForHistoryModal,
   setElidForInstructionModal,
+  unpaidItems,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
 
   const dispatch = useDispatch()
+
+  const deleteOption = isUnpaidOrder(storage, unpaidItems)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
@@ -39,6 +43,7 @@ export default function DNSItem({
   }
 
   const options = [
+    deleteOption,
     {
       label: t('instruction'),
       icon: 'Info',

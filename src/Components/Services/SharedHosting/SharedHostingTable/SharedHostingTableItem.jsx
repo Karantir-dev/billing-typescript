@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { CheckBox, ServerState, Options } from '@components'
 import s from './SharedHostingTable.module.scss'
+import { isUnpaidOrder } from '@src/utils'
 
 export default function Component(props) {
   const {
@@ -28,6 +29,7 @@ export default function Component(props) {
     activeServices,
     setActiveServices,
     setIdForDeleteModal,
+    unpaidItems,
   } = props
   const { t } = useTranslation(['domains', 'other', 'vds', 'dedicated_servers'])
   const mobile = useMediaQuery({ query: '(max-width: 1599px)' })
@@ -39,7 +41,10 @@ export default function Component(props) {
       : setActiveServices([...activeServices, el])
   }
 
+  const deleteOption = isUnpaidOrder(el, unpaidItems)
+
   const options = [
+    deleteOption,
     {
       label: t('instruction', { ns: 'vds' }),
       icon: 'Info',
@@ -85,7 +90,7 @@ export default function Component(props) {
       disabled:
         el?.status?.$ === '5' || el?.scheduledclose?.$ === 'on' || !rights?.delete,
       onClick: () => setIdForDeleteModal([id]),
-      isDelete: true
+      isDelete: true,
     },
   ]
 

@@ -1,20 +1,20 @@
-import { useState } from 'react'
-import { Button, Icon, ModalCreatePayment } from '@components'
+import { Button, Icon } from '@components'
 import s from './PromotionBanner.module.scss'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, Link } from 'react-router-dom'
 import * as route from '@src/routes'
+import { useDispatch } from 'react-redux'
+import { billingActions } from '@redux'
 
 export default function PromotionBanner({ closeBanner, type }) {
   const { t } = useTranslation('billing')
   const navigate = useNavigate()
-
-  const [createPaymentModal, setCreatePaymentModal] = useState(false)
+  const dispatch = useDispatch()
 
   const btnClickHandler = () => {
     if (type === 'first') {
-      setCreatePaymentModal(true)
+      dispatch(billingActions.setIsModalCreatePaymentOpened(true))
     } else {
       navigate(route.SHARED_HOSTING_ORDER, { state: { isVhostOrderAllowed: true } })
     }
@@ -22,7 +22,7 @@ export default function PromotionBanner({ closeBanner, type }) {
 
   const closeBannerHandler = () => {
     if (type === 'second') {
-        localStorage.setItem('isBannerClosed', 'true')
+      localStorage.setItem('isBannerClosed', 'true')
     }
     closeBanner()
   }
@@ -81,10 +81,6 @@ export default function PromotionBanner({ closeBanner, type }) {
             <Icon name="Cross" />
           </button>
         </div>
-      )}
-
-      {createPaymentModal && (
-        <ModalCreatePayment setCreatePaymentModal={setCreatePaymentModal} />
       )}
     </>
   )

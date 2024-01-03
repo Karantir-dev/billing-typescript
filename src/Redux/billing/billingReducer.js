@@ -27,6 +27,7 @@ const initialState = {
   periodValue: null,
   isStripeAvailable: false,
   isModalCreatePaymentOpened: false,
+  paymentData: null,
 }
 
 const paymentsList = createReducer(initialState.paymentsList, {
@@ -121,6 +122,10 @@ const isModalCreatePaymentOpened = createReducer(
   },
 )
 
+const paymentData = createReducer(initialState.paymentData, {
+  [billingActions.setPaymentData]: (_, { payload }) => payload,
+})
+
 const billingReducer = combineReducers({
   paymentsList,
   paymentsCount,
@@ -147,6 +152,7 @@ const billingReducer = combineReducers({
   periodValue,
   isStripeAvailable,
   isModalCreatePaymentOpened,
+  paymentData,
 })
 
 export default billingReducer

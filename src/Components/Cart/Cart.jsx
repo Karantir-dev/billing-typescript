@@ -1126,7 +1126,7 @@ export default function Component() {
                                   {paymethod?.$ === '71' && (
                                     <HintWrapper
                                       popupClassName={s.cardHintWrapper}
-                                      label={t('Paypalich description', {
+                                      label={t(method?.name.$, {
                                         ns: 'other',
                                       })}
                                       wrapperClassName={cn(s.infoBtnCard)}
