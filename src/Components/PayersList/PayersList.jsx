@@ -185,6 +185,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             getElement={item => setPayerHandler(item)}
             isShadow
             className={s.select}
+            dropdownClass={s.additionalSelectPayer}
             itemsList={[...payersList]?.map(({ name, id }) => ({
               label: t(`${name?.$?.trim()}`),
               value: id?.$,

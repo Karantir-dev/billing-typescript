@@ -9,12 +9,15 @@
 
 .input_field_wrapper {
   margin-bottom: 10px;
+  padding: unset !important;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   width: 260px;
+  gap: 5px;
+
   height: fit-content;
   padding: 18px;
   margin-bottom: 25px;
@@ -118,6 +121,7 @@
   .form {
     width: 431px;
     padding: 36px 64px;
+    gap: unset;
   }
 
   .input_field_wrapper {
