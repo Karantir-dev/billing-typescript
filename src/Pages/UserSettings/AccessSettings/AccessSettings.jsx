@@ -321,7 +321,9 @@ export default function Component({ isComponentAllowedToEdit }) {
                     <Icon name="FacebookSmall" />
                   </SocialButton> */}
 
-                  {clientCountryId === '182' && (
+                  {(clientCountryId === '182' ||
+                    clientCountryId === '80' ||
+                    clientCountryId === '113') && (
                     <SocialButton
                       onClick={
                         values?.vkontakte_status === 'off'

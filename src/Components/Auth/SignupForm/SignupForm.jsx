@@ -105,8 +105,8 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
     )
   }
 
-  const isVKAllowed = geoCountryId === '80' || geoCountryId === '113'
-
+  const isVKAllowed =
+    geoCountryId === '182' || geoCountryId === '80' || geoCountryId === '113'
 
   return (
     <div className={s.form_wrapper}>
