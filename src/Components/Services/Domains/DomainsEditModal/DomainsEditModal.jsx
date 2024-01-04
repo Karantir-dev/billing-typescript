@@ -17,6 +17,7 @@ import * as Yup from 'yup'
 import {
   CYRILLIC_ALPHABET_PROHIBITED,
   EMAIL_SPECIAL_CHARACTERS_REGEX,
+  INDEX_REGEX,
 } from '@utils/constants'
 
 export default function Component(props) {
@@ -92,6 +93,9 @@ export default function Component(props) {
         t('warnings.cyrillic_prohibited', { ns: 'auth' }),
       )
       .required(t('warnings.email_required', { ns: 'auth' })),
+    location_postcode: Yup.string()
+      .matches(INDEX_REGEX, t('Index can contain only'))
+      .required(t('Is a required field', { ns: 'other' })),
   })
 
   return (

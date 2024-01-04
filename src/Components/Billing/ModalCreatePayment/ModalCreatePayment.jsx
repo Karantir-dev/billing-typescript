@@ -487,7 +487,7 @@ export default function ModalCreatePayment() {
                             {paymethod?.$ === '71' && (
                               <HintWrapper
                                 popupClassName={s.cardHintWrapper}
-                                label={t('Paypalich description', { ns: 'other' })}
+                                label={t(method?.name.$, { ns: 'other' })}
                                 wrapperClassName={cn(s.infoBtnCard)}
                                 bottom
                               >
@@ -586,7 +586,8 @@ export default function ModalCreatePayment() {
                       <div className={s.inputAmountBlock}>
                         {paymentData ? (
                           <div className={s.priceBlock}>
-                            {t('Total', {ns: 'cart'})} : <b>{paymentData.amount.$} EUR</b>
+                            {t('Total', { ns: 'cart' })} :{' '}
+                            <b>{paymentData.amount.$} EUR</b>
                           </div>
                         ) : (
                           <>
