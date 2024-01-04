@@ -15,7 +15,7 @@ const purseCurrencyRegex =
 export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
   const uglyErrorText = err.message || err
   const errorText = uglyErrorText.trim()
-
+  console.log(errorText)
   if (errorText === 'canceled' && isLocalLoader) return false
   if (errorText === 'canceled') {
     console.log('request canceled')

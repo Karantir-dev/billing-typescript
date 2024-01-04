@@ -10,35 +10,29 @@ export default function SocialNetAdd() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const userAccess = route.USER_SETTINGS + '/access'
+  const userSettingsRoute = route.USER_SETTINGS + '/access'
 
-  const redirectToSettings = isExist => {
-    navigate(userAccess, {
-      state: { isCurrentSocialExist: isExist },
+  const redirectToSettings = () => {
+    navigate(userSettingsRoute, {
       replace: true,
     })
   }
 
-  const redirectToServices = () => {
-    navigate(route.SERVICES, {
-      replace: true,
-    })
-  }
+  // const redirectToServices = () => {
+  //   navigate(route.SERVICES, {
+  //     replace: true,
+  //   })
+  // }
 
   useEffect(() => {
     const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
 
     if (!state) {
-      navigate(userAccess, { replace: true })
+      navigate(userSettingsRoute, { replace: true })
     } else {
-      const isRequestFromSettings = localStorage.getItem('connect_social_in_settings')
+      // const isRequestFromSettings = localStorage.getItem('connect_social_in_settings')
 
-      const redirectLink = isRequestFromSettings ? redirectToSettings : redirectToServices
-      localStorage.removeItem('connect_social_in_settings')
-
-      dispatch(
-        authOperations.addLoginWithSocial(state, redirectLink, isRequestFromSettings),
-      )
+      dispatch(authOperations.addLoginWithSocial(state, redirectToSettings))
     }
   }, [])
 

@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import ErrorPage from '../ErrorPage/ErrorPage'
 import cn from 'classnames'
 
-export default function Component() {
+export default function UserSettingsPage() {
   const { t } = useTranslation(['user_settings', 'other', 'trusted_users'])
   const dispatch = useDispatch()
   const params = useParams()
@@ -53,7 +53,7 @@ export default function Component() {
           isComponentAllowedToRender,
           setAvailableEditRights,
           signal,
-          setIsLoading
+          setIsLoading,
         ),
       )
     }

@@ -1,13 +1,10 @@
 import qs from 'qs'
 import axios from 'axios'
-import { actions, authActions } from '@redux'
+import { actions, authActions, settingsActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, cookies, getParameterByName, throwServerError } from '@utils'
-import { SITE_URL } from '@config/config'
 import { exists as isTranslationExists } from 'i18next'
-
-// import * as route from '@src/routes'
-// import { toast } from 'react-toastify'
+import * as route from '@src/routes'
 
 const login =
   (email, password, reCaptcha, resetRecaptcha, navigateAfterLogin) => dispatch => {
@@ -231,7 +228,7 @@ const changePassword =
           qs.stringify({
             func: 'logon',
             auth: data?.doc?.auth?.$id,
-            sok: 'ok',
+            // sok: 'ok',
             out: 'json',
           }),
         )
@@ -258,7 +255,7 @@ const logout = () => (dispatch, getState) => {
       qs.stringify({
         func: 'logon',
         auth: sessionId,
-        sok: 'ok',
+        // sok: 'ok',
         out: 'json',
       }),
     )
@@ -437,180 +434,149 @@ const register =
       })
   }
 
-const checkGoogleState = (state, redirectToRegistration, redirectToLogin) => dispatch => {
-  dispatch(actions.showLoader())
+const checkGoogleState =
+  (state, redirectToRegistration, redirectToLogin, navigate) => dispatch => {
+    dispatch(actions.showLoader())
 
-  const fromsite = cookies.getCookie('loginFromSite')
-
-  const sendInfoToSite = data => {
-    if (fromsite === 'true') {
-      cookies.setCookie('socialLoginData', JSON.stringify(data), 1)
-      cookies.eraseCookie('loginFromSite')
-      location.href = SITE_URL
-    }
-  }
-
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'oauth',
-        state: state,
-        out: 'json',
-        sok: 'ok',
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc?.error?.$object === 'socialrequest') {
-        // this key "soc_net_not_integrated" need to be replaced
-        // to "soc_net_auth_failed" after it is created on website
-        sendInfoToSite({ error: 'soc_net_not_integrated' })
-
-        redirectToLogin('warnings.soc_net_auth_failed')
-      } else if (data.doc?.error?.$object === 'nolink') {
-        sendInfoToSite({ error: 'soc_net_not_integrated' })
-
-        redirectToLogin(
-          'warnings.soc_net_not_integrated',
-          data.doc?.error?.param?.find(el => el.$name === 'network')?.$,
-        )
-
-        // LOGIN
-      } else if (data.doc?.auth?.$id) {
-        const sessionId = data.doc?.auth?.$id
-        cookies.setCookie('sessionId', sessionId, 1)
-        sendInfoToSite({ sessionId })
-
-        axiosInstance
-          .post(
-            '/',
-            qs.stringify({
-              func: 'whoami',
-              out: 'json',
-              lang: 'en',
-              auth: sessionId,
-            }),
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'oauth',
+          state: state,
+          out: 'json',
+          sok: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        /** Errors handling */
+        if (data.doc?.error?.$object === 'socialrequest') {
+          redirectToLogin('warnings.soc_net_auth_failed')
+        } else if (data.doc?.error?.$object === 'nolink') {
+          redirectToLogin(
+            'warnings.soc_net_not_integrated',
+            data.doc?.error?.param?.find(el => el.$name === 'network')?.$,
           )
-          .then(({ data }) => {
-            if (data.doc.error) throw new Error(`whoami - ${data.doc.error.msg.$}`)
+        } else if (data.doc?.error?.$object === 'nouser') {
+          redirectToLogin(
+            'warnings.soc_net_acc_info_missing',
+            data.doc?.error?.param?.find(el => el.$name === 'network')?.$,
+          )
 
-            if (data.doc?.ok?.$ === 'func=totp.confirm') {
-              dispatch(authActions.setTemporaryId(sessionId))
+          /** LOGIN */
+        } else if (data.doc?.auth?.$id) {
+          const sessionId = data.doc?.auth?.$id
+          cookies.setCookie('sessionId', sessionId, 1)
 
-              dispatch(actions.hideLoader())
-
-              dispatch(authActions.openTotpForm())
-              return
-            }
-
-            dispatch(authActions.loginSuccess(sessionId))
-            // is it necessary request?
-            // dispatch(userOperations.getUserInfo(sessionId))
-          })
-
-        //REGISTER
-      } else if (data.doc?.ok?.$) {
-        axiosInstance
-          .get(
-            '?' +
+          axiosInstance
+            .post(
+              '/',
               qs.stringify({
-                func: 'register',
-                state: state,
-                type: 'bill',
-                newwindow: 'yes',
-                code: '',
-                sok: 'ok',
+                func: 'whoami',
                 out: 'json',
                 lang: 'en',
+                auth: sessionId,
               }),
-          )
-          .then(({ data }) => {
-            if (data.doc?.error?.$object === 'account_exist') {
-              sendInfoToSite({ error: 'social_akk_registered' })
-              redirectToLogin(
-                'warnings.social_akk_registered',
-                data.doc.error.param.find(el => el.$name === 'email')?.$,
-              )
-            } else if (data.doc?.error?.$type === 'email_exist') {
-              // need to handle this error
-              sendInfoToSite({ error: 'soc_email_exist' })
-              const email = data.doc.error.param.find(el => el.$name === 'value')?.$
+            )
+            .then(({ data }) => {
+              if (data.doc.error) throw new Error(`whoami - ${data.doc.error.msg.$}`)
 
-              redirectToLogin('warnings.soc_email_exist', email)
-            } else if (data.doc?.error?.$object === 'email') {
-              sendInfoToSite({ error: 'no_email_from_social' })
-              // need to handle this error
-              // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
-              redirectToRegistration('warnings.no_email_from_social', '', '')
-            } else if (data.doc?.ok?.$) {
-              axiosInstance
-                .post(
-                  '/',
+              if (data.doc?.ok?.$ === 'func=totp.confirm') {
+                dispatch(authActions.setTemporaryId(sessionId))
+
+                dispatch(actions.hideLoader())
+
+                dispatch(authActions.openTotpForm())
+                return
+              }
+
+              dispatch(authActions.loginSuccess(sessionId))
+            })
+
+          navigate(route.SERVICES, { replace: true })
+
+          /** REGISTRATION */
+        } else if (data.doc?.ok?.$) {
+          /** Errors handling */
+          /** if there is registered account with same email as soc network account has */
+          if (data.doc?.ok?.$.includes('email_exists')) {
+            // const email = data.doc.error.param.find(el => el.$name === 'value')?.$
+            redirectToLogin('warnings.soc_email_exist')
+
+            /** if there is registered account linked with this soc network account */
+          } else if (data.doc?.ok?.$.includes('socnetwork_account_exist')) {
+            const url = new URLSearchParams(data.doc?.ok?.$)
+            redirectToLogin('warnings.social_akk_registered', url.get('realname'))
+
+            /** if there is missing data (email) in the soc net account */
+          } else if (data.doc?.ok?.$.includes('need_manual_action')) {
+            redirectToRegistration('warnings.no_email_from_social', '', '')
+          } else {
+            axiosInstance
+              .get(
+                '?' +
+                  data.doc?.ok?.$ +
                   qs.stringify({
-                    func: 'auth',
-                    email: data.doc.doc.email.$,
-                    key: data.doc.ok.$.match(/key=(.+?)(?=&)/)[1],
                     out: 'json',
-                    sok: 'ok',
+                    lang: 'en',
                   }),
-                )
-                .then(({ data }) => {
-                  const sessionId = data?.doc?.auth?.$
-                  cookies.setCookie('sessionId', sessionId, 1)
-                  sendInfoToSite({ sessionId })
+              )
+              .then(({ data }) => {
+                const sessionId = data?.doc?.auth?.$
+                cookies.setCookie('sessionId', sessionId, 1)
+                // sendInfoToSite({ sessionId })
 
-                  /** ---- Analytics ----  */
-                  window.dataLayer?.push({ event: 'signup-success' })
-                  if (window.fbq) window.fbq('track', 'CompleteRegistration')
-                  if (window.qp) window.qp('track', 'CompleteRegistration')
-                  /** ---- /Analytics ----  */
+                /** ---- Analytics ----  */
+                window.dataLayer?.push({ event: 'signup-success' })
+                if (window.fbq) window.fbq('track', 'CompleteRegistration')
+                if (window.qp) window.qp('track', 'CompleteRegistration')
+                /** ---- /Analytics ----  */
 
-                  dispatch(authActions.loginSuccess(sessionId))
-                })
-            }
-          })
-      }
+                dispatch(authActions.loginSuccess(sessionId))
+              })
+          }
+        }
 
-      dispatch(actions.hideLoader())
-    })
-    .catch(err => {
-      dispatch(actions.hideLoader())
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        dispatch(actions.hideLoader())
 
-      checkIfTokenAlive(err.message, dispatch)
-    })
-}
+        checkIfTokenAlive(err.message, dispatch)
+      })
+  }
 
-const getRedirectLink = network => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+// const getRedirectLink = network => (dispatch, getState) => {
+//   const {
+//     auth: { sessionId },
+//   } = getState()
 
-  dispatch(actions.showLoader())
+//   dispatch(actions.showLoader())
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'oauth.redirect',
-        network,
-        auth: sessionId,
-        sok: 'ok',
-      }),
-    )
-    .then(({ data }) => {
-      // const url = window.URL.createObjectURL(new Blob([data.location]))
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'oauth.redirect',
+//         network,
+//         auth: sessionId,
+//         sok: 'ok',
+//       }),
+//     )
+//     .then(({ data }) => {
+//       // const url = window.URL.createObjectURL(new Blob([data.location]))
 
-      const link = document.createElement('a')
-      link.href = data.location
-      document.body.appendChild(link)
-      link.click()
-      link.parentNode.removeChild(link)
-    })
-    .catch(err => {
-      dispatch(actions.hideLoader())
-      checkIfTokenAlive('redirect link - ' + err.message, dispatch)
-    })
-}
+//       const link = document.createElement('a')
+//       link.href = data.location
+//       document.body.appendChild(link)
+//       link.click()
+//       link.parentNode.removeChild(link)
+//     })
+//     .catch(err => {
+//       dispatch(actions.hideLoader())
+//       checkIfTokenAlive('redirect link - ' + err.message, dispatch)
+//     })
+// }
 
 const geoConfirm = (redirect, redirectToLogin) => () => {
   redirect = decodeURIComponent(redirect)
@@ -638,21 +604,29 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
       }),
     )
     .then(({ data }) => {
-      if (
-        data?.doc?.ok?.$?.includes('linkexists') ||
-        data?.doc?.ok?.$?.includes('nouser') ||
-        data?.doc?.error
-      ) {
-        redirectToSettings('denied')
-      } else {
-        redirectToSettings('success')
+      const SocNetIntegrationResult = {
+        status: 'success',
+        msg: '',
       }
+
+      if (data?.doc?.error) {
+        // data.doc.error?.$object === 'account_not_found'
+
+        SocNetIntegrationResult.status = 'fail'
+        SocNetIntegrationResult.msg = data.doc.error?.msg?.$
+      } else if (data?.doc?.ok?.$?.includes('nouser')) {
+        SocNetIntegrationResult.status = 'fail'
+        SocNetIntegrationResult.msg = 'linkexists or nouser'
+      }
+
+      dispatch(settingsActions.setSocNetIntegration(SocNetIntegrationResult))
+      redirectToSettings()
 
       dispatch(actions.hideLoader())
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-      checkIfTokenAlive('checkLoginWithSocial - ' + err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
     })
 }
 
@@ -734,7 +708,7 @@ export default {
   checkGoogleState,
   // getLoginSocLinks,
   addLoginWithSocial,
-  getRedirectLink,
+  // getRedirectLink,
   getLocation,
   geoConfirm,
 }

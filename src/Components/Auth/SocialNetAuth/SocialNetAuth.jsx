@@ -33,7 +33,12 @@ export default function SocialNetAuth() {
       navigate(route.LOGIN, { replace: true })
     } else {
       dispatch(
-        authOperations.checkGoogleState(state, redirectToRegistration, redirectToLogin),
+        authOperations.checkGoogleState(
+          state,
+          redirectToRegistration,
+          redirectToLogin,
+          navigate,
+        ),
       )
     }
   }, [])
