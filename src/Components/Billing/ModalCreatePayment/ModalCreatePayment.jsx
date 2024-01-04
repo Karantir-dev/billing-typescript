@@ -586,7 +586,8 @@ export default function ModalCreatePayment() {
                       <div className={s.inputAmountBlock}>
                         {paymentData ? (
                           <div className={s.priceBlock}>
-                            {t('Total', {ns: 'cart'})} : <b>{paymentData.amount.$} EUR</b>
+                            {t('Total', { ns: 'cart' })} :{' '}
+                            <b>{paymentData.amount.$} EUR</b>
                           </div>
                         ) : (
                           <>

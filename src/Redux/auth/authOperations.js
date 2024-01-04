@@ -231,7 +231,6 @@ const changePassword =
           qs.stringify({
             func: 'logon',
             auth: data?.doc?.auth?.$id,
-            sok: 'ok',
             out: 'json',
           }),
         )
@@ -258,7 +257,6 @@ const logout = () => (dispatch, getState) => {
       qs.stringify({
         func: 'logon',
         auth: sessionId,
-        sok: 'ok',
         out: 'json',
       }),
     )

@@ -11,7 +11,7 @@ import Cookies from 'js-cookie'
 import { authOperations, authSelectors } from '@redux'
 import * as Yup from 'yup'
 import {
-  EMAIL_SPECIAL_CHARACTERS_REGEX,
+  SPECIAL_CHARACTERS_REGEX,
   CYRILLIC_ALPHABET_PROHIBITED,
   PASS_REGEX,
   GOOGLE_LOGIN_LINK,
@@ -72,7 +72,7 @@ export default function SecondStep({ toLogin, setToLogin, passStep }) {
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
-      .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
+      .matches(SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
       .matches(CYRILLIC_ALPHABET_PROHIBITED, t('warnings.cyrillic_prohibited'))
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
