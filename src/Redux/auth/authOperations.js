@@ -468,7 +468,8 @@ const checkGoogleState =
           const sessionId = data.doc?.auth?.$id
           cookies.setCookie('sessionId', sessionId, 1)
 
-          axiosInstance
+          /** Check if two-factor authentication is enabled */
+          return axiosInstance
             .post(
               '/',
               qs.stringify({
@@ -491,9 +492,8 @@ const checkGoogleState =
               }
 
               dispatch(authActions.loginSuccess(sessionId))
+              navigate(route.SERVICES, { replace: true })
             })
-
-          navigate(route.SERVICES, { replace: true })
 
           /** REGISTRATION */
         } else if (data.doc?.ok?.$) {
@@ -512,10 +512,11 @@ const checkGoogleState =
           } else if (data.doc?.ok?.$.includes('need_manual_action')) {
             redirectToRegistration('warnings.no_email_from_social', '', '')
           } else {
-            axiosInstance
+            return axiosInstance
               .get(
                 '?' +
                   data.doc?.ok?.$ +
+                  '&' +
                   qs.stringify({
                     out: 'json',
                     lang: 'en',
@@ -524,7 +525,6 @@ const checkGoogleState =
               .then(({ data }) => {
                 const sessionId = data?.doc?.auth?.$
                 cookies.setCookie('sessionId', sessionId, 1)
-                // sendInfoToSite({ sessionId })
 
                 /** ---- Analytics ----  */
                 window.dataLayer?.push({ event: 'signup-success' })
@@ -599,6 +599,7 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
         func: 'oauth',
         state: state,
         auth: sessionId,
+        lang: 'en',
         out: 'json',
         sok: 'ok',
       }),
