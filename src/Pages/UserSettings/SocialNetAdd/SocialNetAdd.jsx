@@ -18,20 +18,12 @@ export default function SocialNetAdd() {
     })
   }
 
-  // const redirectToServices = () => {
-  //   navigate(route.SERVICES, {
-  //     replace: true,
-  //   })
-  // }
-
   useEffect(() => {
     const state = location.search.match(/state=(.+?)(?=&|$)/)?.[1]
 
     if (!state) {
       navigate(userSettingsRoute, { replace: true })
     } else {
-      // const isRequestFromSettings = localStorage.getItem('connect_social_in_settings')
-
       dispatch(authOperations.addLoginWithSocial(state, redirectToSettings))
     }
   }, [])

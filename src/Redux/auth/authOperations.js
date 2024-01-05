@@ -604,6 +604,7 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
       }),
     )
     .then(({ data }) => {
+      console.log(data)
       const SocNetIntegrationResult = {
         status: 'success',
         msg: '',
@@ -616,7 +617,7 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
         SocNetIntegrationResult.msg = data.doc.error?.msg?.$
       } else if (data?.doc?.ok?.$?.includes('nouser')) {
         SocNetIntegrationResult.status = 'fail'
-        SocNetIntegrationResult.msg = 'linkexists or nouser'
+        SocNetIntegrationResult.msg = 'nouser'
       }
 
       dispatch(settingsActions.setSocNetIntegration(SocNetIntegrationResult))
