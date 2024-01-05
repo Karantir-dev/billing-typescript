@@ -9,6 +9,7 @@
 
 .input_field_wrapper {
   margin-bottom: 10px;
+  padding-bottom: unset !important;
 }
 
 .form {
@@ -16,6 +17,7 @@
   flex-direction: column;
   width: 270px;
 
+  gap: 5px;
   height: fit-content;
   padding: 18px;
   margin-bottom: 25px;
@@ -130,6 +132,7 @@
   .form {
     width: 313px;
     padding: 25px 40px;
+    gap: unset;
 
     &.rusForm {
       padding: 24px 40px;

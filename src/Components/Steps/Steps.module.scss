@@ -59,7 +59,7 @@
   &_body {
     display: none;
     flex-direction: column;
-    margin: 20px 0;
+    margin-top: 20px;
     .opened & {
       display: flex;
     }
@@ -75,6 +75,7 @@
     align-self: flex-end;
     max-width: 250px;
     height: 55px;
+    margin-bottom: 20px;
   }
   &_loader {
     margin: 0;

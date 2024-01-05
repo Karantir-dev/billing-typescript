@@ -255,6 +255,7 @@ export default function TariffConfig({
                 <InputField
                   name="Port_speed"
                   label={`${t('port_speed')}:`}
+                  className={s.input_field_wrapper}
                   isShadow
                   disabled
                 />
@@ -275,6 +276,7 @@ export default function TariffConfig({
                   name="domain"
                   label={`${t('domain_name', { ns: 'dedicated_servers' })}:`}
                   placeholder={t('domain_placeholder', { ns: 'dedicated_servers' })}
+                  className={s.input_field_wrapper}
                   error={!!errors.domain}
                   touched={!!touched.domain}
                   isShadow
@@ -304,6 +306,7 @@ export default function TariffConfig({
                   <InputField
                     name="IP_addresses_count"
                     label={`${t('count_ip', { ns: 'dedicated_servers' })}:`}
+                    className={s.input_field_wrapper}
                     isShadow
                     disabled
                   />

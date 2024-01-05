@@ -20,7 +20,6 @@ import {
 import * as routes from '@src/routes'
 import {
   SPECIAL_CHARACTERS_REGEX,
-  EMAIL_SPECIAL_CHARACTERS_REGEX,
   CYRILLIC_ALPHABET_PROHIBITED,
   PASS_REGEX,
   GOOGLE_REGISTRATION_LINK,
@@ -57,7 +56,7 @@ export default function SignupForm({ geoCountryId, geoStateId }) {
       .matches(SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
       .required(t('warnings.name_required')),
     email: Yup.string()
-      .matches(EMAIL_SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
+      .matches(SPECIAL_CHARACTERS_REGEX, t('warnings.special_characters'))
       .matches(CYRILLIC_ALPHABET_PROHIBITED, t('warnings.cyrillic_prohibited'))
       .email(t('warnings.invalid_email'))
       .required(t('warnings.email_required')),
