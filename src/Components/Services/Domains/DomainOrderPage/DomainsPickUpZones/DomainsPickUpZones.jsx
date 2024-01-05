@@ -147,7 +147,7 @@ export default function ServicesPage(props) {
           <div className={s.sale}>-{parsePrice(price?.$)?.percent}</div>
         )}
         <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
-          <div>{domain?.$}</div>
+          <div className={s.domainNameValue}>{domain?.$}</div>
           <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
           {parsePrice(price?.$)?.length > 1 && (
             <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>

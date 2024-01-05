@@ -6,7 +6,7 @@ import { translatePeriodToMonths } from '@utils'
 export default function Component(props) {
   const { t } = useTranslation(['cart', 'other'])
 
-  const { desc, deleteItemHandler, period } = props
+  const { desc, cost, discount_percent, fullcost, deleteItemHandler, period } = props
 
   const renderDesc = () => {
     const beforeWord = 'Domain registration'
@@ -44,6 +44,17 @@ export default function Component(props) {
               {t('Period', { ns: 'other' })}: {period} {translatePeriodToMonths(period)}
             </span>
           </div>
+        </div>
+        <div className={s.costBlock}>
+          <div className={s.cost}>
+            {cost} EUR/{t('year', { ns: 'other' }).toLowerCase()}
+          </div>
+          {discount_percent && (
+            <div className={s.discountBlock}>
+              <span className={s.discountPerCent}>-{discount_percent}</span>
+              <span className={s.fullcost}>{fullcost} EUR</span>
+            </div>
+          )}
         </div>
       </div>
       {deleteItemHandler && (
