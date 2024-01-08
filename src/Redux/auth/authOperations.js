@@ -603,14 +603,15 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
       }),
     )
     .then(({ data }) => {
-      console.log(data)
       const SocNetIntegrationResult = {
         status: 'success',
         msg: '',
       }
 
       if (data?.doc?.error) {
-        // data.doc.error?.$object === 'account_not_found'
+        /** I got this error almost always trying to connect google to billmngr account
+         * data.doc.error?.$object === 'account_not_found'
+         */
 
         SocNetIntegrationResult.status = 'fail'
         SocNetIntegrationResult.msg = data.doc.error?.msg?.$
