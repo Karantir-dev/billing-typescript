@@ -1,4 +1,4 @@
-import { Select, InputField, InputWithAutocomplete, SelectGeo, Icon } from '@components'
+import { Select, InputField, InputWithAutocomplete, SelectGeo } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, payersOperations, payersActions, payersSelectors } from '@redux'
@@ -6,12 +6,13 @@ import { useEffect, useReducer, useState } from 'react'
 import { useFormikContext } from 'formik'
 import s from './PayersList.module.scss'
 import cn from 'classnames'
+import { ADDRESS_REGEX, ADDRESS_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
 
 export default function PayersList({ signal, setIsLoading, renderTitle = () => {} }) {
   const { t } = useTranslation(['billing', 'other', 'payers'])
   const [errorFields, setErrorFields] = useState({})
 
-  const { values, setFieldValue, errors, touched, setFieldTouched } = useFormikContext()
+  const { values, setFieldValue, errors, touched } = useFormikContext()
 
   const dispatch = useDispatch()
   const payersList = useSelector(payersSelectors.getPayersList)
@@ -47,7 +48,9 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
   useEffect(() => {
     if (payersList) {
       if (payersList.length !== 0) {
-        const requestFields = { elid: payersList[payersList.length - 1]?.id?.$ }
+        const requestFields = {
+          elid: payersSelectedFields?.profile || payersList[payersList.length - 1]?.id?.$,
+        }
 
         dispatch(
           payersOperations.getPayerEditInfo(
@@ -83,16 +86,40 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
     dispatch(payersOperations.getPayerModalInfo(data))
   }
 
+  const addressValidation = value => {
+    let error
+    if (!value) {
+      error = t('Is a required field', { ns: 'other' })
+    } else if (!value.match(ADDRESS_REGEX)) {
+      error = t('address_error_msg', { ns: 'other' })
+    } else if (!value.match(ADDRESS_SPECIAL_CHARACTERS_REGEX)) {
+      error = t('symbols_restricted', { ns: 'other' })
+    }
+    return error
+  }
+
+  const requiredValidation = value => {
+    let error
+    if (!value) {
+      error = t('Is a required field', { ns: 'other' })
+    }
+    return error
+  }
+
   useEffect(() => {
     if (
       selectedPayerFields?.address_physical &&
-      (!/(?=\d)/.test(selectedPayerFields?.address_physical) ||
-        !/^[^@#$%^&*!~<>]+$/.test(selectedPayerFields?.address_physical))
+      addressValidation(selectedPayerFields?.address_physical)
     ) {
-      setErrorFields(prev => ({ ...prev, address_physical: true }))
-      setFieldTouched('address_physical', true, true)
+      setErrorFields(prev => ({
+        ...prev,
+        address_physical: {
+          isError: true,
+          message: t('set_valid_address', { ns: 'payers' }),
+        },
+      }))
     } else {
-      setErrorFields(prev => ({ ...prev, address_physical: false }))
+      setErrorFields(prev => ({ ...prev, address_physical: {} }))
     }
   }, [selectedPayerFields])
 
@@ -174,6 +201,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             value={values.name}
             onChange={e => setState({ name: e.target.value })}
             onBlur={e => setState({ name: e.target.value.trim() })}
+            validate={requiredValidation}
           />
         ) : null}
 
@@ -213,6 +241,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             value={values.person}
             onChange={e => setState({ person: e.target.value })}
             onBlur={e => setState({ person: e.target.value.trim() })}
+            validate={requiredValidation}
           />
         )}
 
@@ -240,28 +269,40 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
               value={values.city_physical}
               onChange={e => setState({ cityPhysical: e.target.value })}
               onBlur={e => setState({ cityPhysical: e.target.value.trim() })}
+              validate={requiredValidation}
             />
           )}
 
-          {(!selectedPayerFields?.address_physical || errorFields?.address_physical) && (
-            <div className={cn(s.inputBig, s.nsInputBlock)}>
-              <InputWithAutocomplete
-                fieldName="address_physical"
-                error={!!errors.address_physical}
-                touched={!!touched.address_physical}
-                externalValue={values.address_physical}
-                setFieldValue={val => {
-                  setState({ addressPhysical: val })
-                }}
-              />
-
-              <button type="button" className={s.infoBtn}>
-                <Icon name="Info" />
-                <div className={s.descriptionBlock}>
-                  {t('address_format', { ns: 'other' })}
-                </div>
-              </button>
-            </div>
+          {(!selectedPayerFields?.address_physical ||
+            errorFields?.address_physical.isError) && (
+            <>
+              <div className={cn(s.inputBig, s.nsInputBlock)}>
+                <InputWithAutocomplete
+                  fieldName="address_physical"
+                  error={
+                    !!errors.address_physical || errorFields.address_physical?.isError
+                  }
+                  touched={
+                    !!touched.address_physical || errorFields.address_physical?.isError
+                  }
+                  externalValue={values.address_physical}
+                  setFieldValue={val => {
+                    setErrorFields(prev => ({
+                      ...prev,
+                      address_physical: { ...prev.address_physical, message: '' },
+                    }))
+                    setState({ addressPhysical: val })
+                  }}
+                  validate={addressValidation}
+                  infoText={t('address_format', { ns: 'other' })}
+                />
+                {errorFields.address_physical?.message && !errors.address_physical && (
+                  <span className={s.error_message}>
+                    {errorFields.address_physical.message}
+                  </span>
+                )}
+              </div>
+            </>
           )}
         </div>
 

@@ -8,7 +8,8 @@ import s from '../InputField/InputField.module.scss'
 import ss from './InputWithAutocomplete.module.scss'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '@redux'
-import { ErrorMessage } from 'formik'
+import { ErrorMessage, Field } from 'formik'
+import { Icon } from '@components'
 
 let cachedVal = ''
 const acceptedKeys = ['ArrowUp', 'ArrowDown', 'Escape', 'Enter']
@@ -20,6 +21,8 @@ export default function InputWithAutocomplete({
   touched,
   setFieldValue,
   inputClassName,
+  infoText,
+  ...props
 }) {
   const { t, i18n } = useTranslation(['other'])
   const [isFocused, setIsFocused] = useState(false)
@@ -169,7 +172,7 @@ export default function InputWithAutocomplete({
             [s.focused]: isFocused,
           })}
         >
-          <input
+          <Field
             className={cn(
               {
                 [s.input]: true,
@@ -192,7 +195,16 @@ export default function InputWithAutocomplete({
             onKeyDown={handleKeyDown}
             autoComplete="off"
             spellCheck="false"
+            {...props}
           />
+          {infoText && (
+            <>
+              <button type="button" className={s.infoBtn}>
+                <Icon name="Info" />
+              </button>
+              <div className={s.infoText}>{infoText}</div>
+            </>
+          )}
         </div>
 
         <ErrorMessage className={s.error_message} name={fieldName} component="span" />

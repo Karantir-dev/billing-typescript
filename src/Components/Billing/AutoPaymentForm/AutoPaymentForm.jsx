@@ -15,11 +15,7 @@ import { OFERTA_URL } from '@config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'
-import {
-  ADDRESS_SPECIAL_CHARACTERS_REGEX,
-  OFFER_FIELD,
-  ADDRESS_REGEX,
-} from '@utils/constants'
+import { OFFER_FIELD } from '@utils/constants'
 
 export default function AutoPaymentForm(props) {
   const dispatch = useDispatch()
@@ -77,11 +73,6 @@ export default function AutoPaymentForm(props) {
 
   const validationSchema = Yup.object().shape({
     profile: payersList?.length !== 0 ? Yup.string().required(t('Choose payer')) : null,
-    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    address_physical: Yup.string()
-      .matches(ADDRESS_SPECIAL_CHARACTERS_REGEX, t('symbols_restricted', { ns: 'other' }))
-      .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
-      .required(t('Is a required field', { ns: 'other' })),
     maxamount: Yup.number()
       .positive(
         `${t('The amount must be greater than')} ${
@@ -101,13 +92,6 @@ export default function AutoPaymentForm(props) {
       )
       .required(t('Enter amount')),
     paymethod: Yup.string().required(t('Select a Payment Method')),
-    name:
-      payersSelectedFields?.profiletype === '2' ||
-      payersSelectedFields?.profiletype === '3'
-        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
-        : null,
-    person: Yup.string().required(t('Is a required field', { ns: 'other' })),
-
     [OFFER_FIELD]: payersData.selectedPayerFields?.offer_field
       ? Yup.bool().oneOf([true])
       : null,
