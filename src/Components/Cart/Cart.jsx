@@ -44,6 +44,7 @@ import {
   SBER_PHONE_COUNTRIES,
   OFFER_FIELD,
   ADDRESS_SPECIAL_CHARACTERS_REGEX,
+  ADDRESS_REGEX,
 } from '@utils/constants'
 
 export default function Component() {
@@ -157,7 +158,7 @@ export default function Component() {
           ADDRESS_SPECIAL_CHARACTERS_REGEX,
           t('symbols_restricted', { ns: 'other' }),
         )
-        // .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
+        .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
         .required(t('Is a required field', { ns: 'other' })),
     }),
 
