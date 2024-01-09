@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 
-export default function Component(props) {
+export default function SocialButton(props) {
   const { onClick, disabled, children, className, dataTestid, isNotConnected, platform } =
     props
 
@@ -36,7 +36,7 @@ export default function Component(props) {
   )
 }
 
-Component.propTypes = {
+SocialButton.propTypes = {
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
   className: PropTypes.string,
@@ -45,7 +45,7 @@ Component.propTypes = {
   notConnected: PropTypes.bool,
 }
 
-Component.defaultProps = {
+SocialButton.defaultProps = {
   onClick: () => null,
   disabled: false,
   notConnected: true,

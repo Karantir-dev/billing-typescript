@@ -6,6 +6,7 @@ const initialState = {
   userEditInfo: null,
   userParamsInfo: null,
   twoStepVerif: null,
+  socNetIntegration: null,
 }
 
 const userEditInfo = createReducer(initialState.userEditInfo, {
@@ -29,10 +30,16 @@ const twoStepVerif = createReducer(initialState.twoStepVerif, {
   [settingsActions.clearTwoStepVerif]: () => null,
 })
 
+const socNetIntegration = createReducer(initialState.socNetIntegration, {
+  [settingsActions.setSocNetIntegration]: (_, { payload }) => payload,
+  [settingsActions.clearSocNetIntegration]: () => null,
+})
+
 const settingsReducer = combineReducers({
   userEditInfo,
   userParamsInfo,
   twoStepVerif,
+  socNetIntegration,
 })
 
 export default settingsReducer

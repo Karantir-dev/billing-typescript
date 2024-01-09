@@ -16,7 +16,7 @@ export const URL_REGEX =
   /^(?:https?:\/\/)(?:www\.)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,}(?:\/[^\s]*)?$/
 
 export const ADDRESS_REGEX = /^(?=.*\p{L})(?=.*[0-9]).*$/u
-export const ADDRESS_SPECIAL_CHARACTERS_REGEX = /^[^!$%^&\]~}[{=?|"<>+]+$/u
+export const ADDRESS_SPECIAL_CHARACTERS_REGEX = /^[^!$%^&\]~}[{=?<>+]+$/g
 
 export const SOFTWARE_ICONS_LIST = [
   'almalinux',

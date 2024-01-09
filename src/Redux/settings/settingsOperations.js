@@ -554,10 +554,9 @@ const changeSocialLinkStatus = (elid, data) => (dispatch, getState) => {
         ...data,
       }),
     )
-    .then(() => {
-      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
-        position: 'bottom-right',
-      })
+    .then(({ data }) => {
+      if (data?.doc?.error) throw new Error(data?.doc?.error?.msg?.$)
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }))
 
       dispatch(getUserEdit(elid))
     })

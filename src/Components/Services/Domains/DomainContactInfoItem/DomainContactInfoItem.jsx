@@ -110,7 +110,6 @@ export default function Component(props) {
         CYRILLIC_ALPHABET_PROHIBITED,
         t('warnings.cyrillic_prohibited', { ns: 'auth' }),
       )
-
       .email(t('warnings.invalid_email', { ns: 'auth' }))
       .required(t('warnings.email_required', { ns: 'auth' })),
     company: Yup.string().required(t('Is a required field', { ns: 'other' })),
