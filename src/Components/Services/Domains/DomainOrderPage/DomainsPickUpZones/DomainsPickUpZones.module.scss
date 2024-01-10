@@ -377,14 +377,15 @@
   margin-left: 10px;
 }
 
+.domainNameValue {
+  word-break: break-word;
+}
+
 @media screen and (max-width: 767px) {
   .domainItem {
     grid-template-columns: repeat(2, 1fr);
     flex-wrap: wrap;
     justify-content: space-between;
-  }
-  .domainNameValue {
-    word-break: break-word;
   }
   .domainPriceMobile,
   .saleEurMobile {
@@ -515,6 +516,10 @@
     flex-direction: column-reverse;
     align-items: flex-start;
     flex-basis: 33%;
+  }
+
+  .domainNameValue {
+    word-break: unset;
   }
 }
 

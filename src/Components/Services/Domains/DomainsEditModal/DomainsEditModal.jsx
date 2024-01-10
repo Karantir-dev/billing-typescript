@@ -358,6 +358,7 @@ export default function Component(props) {
                         className={s.input}
                         error={!!errors.middlename}
                         touched={!!touched.middlename}
+                        disabled={true}
                       />
                       <InputField
                         inputWrapperClass={s.inputHeight}
