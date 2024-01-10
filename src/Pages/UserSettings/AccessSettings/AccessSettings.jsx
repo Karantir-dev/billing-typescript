@@ -19,13 +19,14 @@ import {
   userSelectors,
   authSelectors,
   settingsActions,
+  authOperations,
 } from '@redux'
 import { ipRegex } from '@utils'
 import * as Yup from 'yup'
 import * as routes from '@src/routes'
 import s from './AccessSettings.module.scss'
 import { toast } from 'react-toastify'
-import { GOOGLE_LOGIN_LINK, VK_LOGIN_LINK } from '@src/utils/constants'
+import { SOC_NET } from '@src/utils/constants'
 
 export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
@@ -282,7 +283,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     onClick={
                       values?.google_status === 'off'
                         ? () => {
-                            document.location.href = GOOGLE_LOGIN_LINK
+                            dispatch(authOperations.redirectToSocNetApi(SOC_NET.google))
                           }
                         : () => {
                             setFieldValue('google_status', 'off')
@@ -302,8 +303,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     onClick={
                       values?.facebook_status === 'off'
                         ? () => {
-                            document.location.href =
-                              FACEBOOK_LOGIN_LINK
+                            dispatch(authOperations.redirectToSocNetApi(SOC_NET.facebook))
                           }
                         : () => {
                             setFieldValue('facebook_status', 'off')
@@ -326,7 +326,9 @@ export default function Component({ isComponentAllowedToEdit }) {
                       onClick={
                         values?.vkontakte_status === 'off'
                           ? () => {
-                              document.location.href = VK_LOGIN_LINK
+                              dispatch(
+                                authOperations.redirectToSocNetApi(SOC_NET.vkontakte),
+                              )
                             }
                           : () => {
                               setFieldValue('vkontakte_status', 'off')
