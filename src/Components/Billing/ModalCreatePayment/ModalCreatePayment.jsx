@@ -33,8 +33,6 @@ import {
   QIWI_PHONE_COUNTRIES,
   SBER_PHONE_COUNTRIES,
   OFFER_FIELD,
-  // ADDRESS_REGEX,
-  ADDRESS_SPECIAL_CHARACTERS_REGEX,
 } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
@@ -212,17 +210,6 @@ export default function ModalCreatePayment() {
     }),
 
     selectedPayMethod: Yup.object().required(t('Select a Payment Method')),
-    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    address_physical: Yup.string()
-      .matches(ADDRESS_SPECIAL_CHARACTERS_REGEX, t('symbols_restricted', { ns: 'other' }))
-      // .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
-      .required(t('Is a required field', { ns: 'other' })),
-    person: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    name:
-      payersSelectedFields?.profiletype === '2' ||
-      payersSelectedFields?.profiletype === '3'
-        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
-        : null,
     payment_method:
       state.additionalPayMethodts && state.additionalPayMethodts?.length > 0
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))

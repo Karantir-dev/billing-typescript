@@ -39,12 +39,7 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn, useFormFraudCheckData } from '@utils'
-import {
-  QIWI_PHONE_COUNTRIES,
-  SBER_PHONE_COUNTRIES,
-  OFFER_FIELD,
-  ADDRESS_SPECIAL_CHARACTERS_REGEX,
-} from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -145,31 +140,6 @@ export default function Component() {
             then: Yup.string().required(t('Choose payer')),
           })
         : null,
-    person: Yup.string().when('isPersonalBalance', {
-      is: 'off',
-      then: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    }),
-    city_physical: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    address_physical: Yup.string().when('isPersonalBalance', {
-      is: 'off',
-      then: Yup.string()
-        .matches(
-          ADDRESS_SPECIAL_CHARACTERS_REGEX,
-          t('symbols_restricted', { ns: 'other' }),
-        )
-        // .matches(ADDRESS_REGEX, t('address_error_msg', { ns: 'other' }))
-        .required(t('Is a required field', { ns: 'other' })),
-    }),
-
-    name:
-      payersSelectedFields?.profiletype === '2' ||
-      payersSelectedFields?.profiletype === '3'
-        ? Yup.string().when('isPersonalBalance', {
-            is: 'off',
-            then: Yup.string().required(t('Is a required field', { ns: 'other' })),
-          })
-        : null,
-
     payment_method:
       state.additionalPayMethodts && state.additionalPayMethodts?.length > 0
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))

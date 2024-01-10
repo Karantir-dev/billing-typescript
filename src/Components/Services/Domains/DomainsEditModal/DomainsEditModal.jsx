@@ -18,6 +18,7 @@ import {
   CYRILLIC_ALPHABET_PROHIBITED,
   EMAIL_SPECIAL_CHARACTERS_REGEX,
   INDEX_REGEX,
+  LATIN_REGEX,
 } from '@utils/constants'
 
 export default function Component(props) {
@@ -93,6 +94,20 @@ export default function Component(props) {
         t('warnings.cyrillic_prohibited', { ns: 'auth' }),
       )
       .required(t('warnings.email_required', { ns: 'auth' })),
+    firstname: Yup.string()
+      .matches(LATIN_REGEX, t('Name can only contain Latin letters'))
+      .required(t('Is a required field', { ns: 'other' })),
+    firstname_locale: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    lastname: Yup.string()
+      .matches(LATIN_REGEX, t('Lastname can only contain Latin letters'))
+      .required(t('Is a required field', { ns: 'other' })),
+    lastname_locale: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    phone: Yup.string().required(t('Is a required field', { ns: 'other' })),
+
+    location_country: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    location_city: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    location_state: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    location_address: Yup.string().required(t('Is a required field', { ns: 'other' })),
     location_postcode: Yup.string()
       .matches(INDEX_REGEX, t('Index can contain only'))
       .required(t('Is a required field', { ns: 'other' })),

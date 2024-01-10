@@ -25,7 +25,6 @@ export default function FirstStep({
 
   useEffect(() => {
     if (service === 'vds' && isShowTariffInfo) {
-      console.log(parameters, ' apara')
       const orderInfo = parameters.orderinfo.$.split('<br/>')
 
       const domain_name = parameters.domain?.$ || t('not_set', { ns: 'vds' })
