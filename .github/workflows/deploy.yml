@@ -202,7 +202,7 @@ jobs:
 
       - name: Verify deployment
         working-directory: deployment
-        run: kubectl rollout status bill-deployment -n ${{ env.NAMESPACE }}
+        run: kubectl rollout status deployment/bill-deployment -n ${{ env.NAMESPACE }}
 
       - name: Clean CloudFlare cache
         run: |
