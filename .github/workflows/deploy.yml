@@ -137,11 +137,14 @@ jobs:
         with:
           role-to-assume: ${{ env.ROLE_TO_ASSUME }}
           role-session-name: github-actions-${{ env.APP_NAME }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
+        env:
+          AWS_REGION: ${{ vars.AWS_REGION }}
+          ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
@@ -191,15 +194,15 @@ jobs:
 
       - name: Check
         working-directory: deployment
-        run: |
-          cat deployment.yml
+        run: cat deployment.yml
 
       - name: Deploy to DigitalOcean Kubernetes
         working-directory: deployment
         run: kubectl apply -f deployment.yml
 
       - name: Verify deployment
-        run: kubectl rollout status deployment/bill-deployment -n ${{ env.NAMESPACE }}
+        working-directory: deployment
+        run: kubectl rollout status bill-deployment -n ${{ env.NAMESPACE }}
 
       - name: Clean CloudFlare cache
         run: |
