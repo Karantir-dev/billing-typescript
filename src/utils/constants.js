@@ -121,6 +121,12 @@ export const USERS_WITH_G8 = [
 
 export const PRODUCTION_DOMAIN = 'cp.zomro.com'
 
+export const SOC_NET = {
+  google: 'google',
+  vkontakte: 'vkontakte',
+  facebook: 'facebook',
+}
+
 export const GOOGLE_LOGIN_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=google'
 

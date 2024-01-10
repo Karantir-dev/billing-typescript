@@ -5,6 +5,12 @@ import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, cookies, getParameterByName, throwServerError } from '@utils'
 import { exists as isTranslationExists } from 'i18next'
 import * as route from '@src/routes'
+import {
+  FACEBOOK_LOGIN_LINK,
+  GOOGLE_LOGIN_LINK,
+  SOC_NET,
+  VK_LOGIN_LINK,
+} from '@src/utils/constants'
 
 const login =
   (email, password, reCaptcha, resetRecaptcha, navigateAfterLogin) => dispatch => {
@@ -544,37 +550,43 @@ const checkGoogleState =
       })
   }
 
-// const getRedirectLink = network => (dispatch, getState) => {
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+/**
+ * This request inserts sessionId into DB table before social network connecting
+ */
 
-//   dispatch(actions.showLoader())
+const redirectToSocNetApi = network => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'oauth.redirect',
-//         network,
-//         auth: sessionId,
-//         sok: 'ok',
-//       }),
-//     )
-//     .then(({ data }) => {
-//       // const url = window.URL.createObjectURL(new Blob([data.location]))
+  dispatch(actions.showLoader())
 
-//       const link = document.createElement('a')
-//       link.href = data.location
-//       document.body.appendChild(link)
-//       link.click()
-//       link.parentNode.removeChild(link)
-//     })
-//     .catch(err => {
-//       dispatch(actions.hideLoader())
-//       checkIfTokenAlive('redirect link - ' + err.message, dispatch)
-//     })
-// }
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'oauth.redirect',
+        network,
+        auth: sessionId,
+        sok: 'ok',
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.ok) {
+        if (network === SOC_NET.google) {
+          document.location.href = GOOGLE_LOGIN_LINK
+        } else if (network === SOC_NET.vkontakte) {
+          document.location.href = VK_LOGIN_LINK
+        } else if (network === SOC_NET.facebook) {
+          document.location.href = FACEBOOK_LOGIN_LINK
+        }
+      }
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      checkIfTokenAlive(err.message, dispatch)
+    })
+}
 
 const geoConfirm = (redirect, redirectToLogin) => () => {
   redirect = decodeURIComponent(redirect)
@@ -709,7 +721,7 @@ export default {
   checkGoogleState,
   // getLoginSocLinks,
   addLoginWithSocial,
-  // getRedirectLink,
+  redirectToSocNetApi,
   getLocation,
   geoConfirm,
 }
