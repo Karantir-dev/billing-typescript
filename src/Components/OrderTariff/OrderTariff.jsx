@@ -18,7 +18,6 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
   const dispatch = useDispatch()
   const sessionId = useSelector(authSelectors.getSessionId)
   const payersData = useSelector(payersSelectors.getPayersData)
-  const payersList = useSelector(payersSelectors.getPayersList)
 
   const [isAuth, _setIsAuth] = useState(sessionId)
   const [count, setCount] = useState(1)
@@ -136,7 +135,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
       ),
       isLoading: !payersData.selectedPayerFields,
       nextButton: {
-        form: payersList?.length ? null : 'payer',
+        form: 'payer',
       },
     },
     {
