@@ -11,6 +11,9 @@ const setTwoStepVerif = createAction('SET_TWO_STEP_VERIF')
 const updateTwoStepVerif = createAction('UPDATE_TWO_STEP_VERIF')
 const clearTwoStepVerif = createAction('CLEAR_TWO_STEP_VERIF')
 
+const setSocNetIntegration = createAction('SET_SOC_NET_INTEGRATION')
+const clearSocNetIntegration = createAction('CLEAR_SOC_NET_INTEGRATION')
+
 export default {
   setUsersEdit,
   setUsersParams,
@@ -20,4 +23,6 @@ export default {
   setTwoStepVerif,
   clearTwoStepVerif,
   updateTwoStepVerif,
+  setSocNetIntegration,
+  clearSocNetIntegration,
 }

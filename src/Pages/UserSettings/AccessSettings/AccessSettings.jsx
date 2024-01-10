@@ -11,27 +11,28 @@ import {
 } from '@components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   settingsSelectors,
   settingsOperations,
   userSelectors,
-  authOperations,
   authSelectors,
+  settingsActions,
 } from '@redux'
 import { ipRegex } from '@utils'
 import * as Yup from 'yup'
 import * as routes from '@src/routes'
 import s from './AccessSettings.module.scss'
 import { toast } from 'react-toastify'
+import { GOOGLE_LOGIN_LINK, VK_LOGIN_LINK } from '@src/utils/constants'
 
 export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other', 'auth'])
-  const location = useLocation()
-  const existingSocial = location?.state?.isCurrentSocialExist
+
+  const socNetIntegration = useSelector(settingsSelectors.getSocNetIntegration)
 
   const userParams = useSelector(settingsSelectors.getUserParams)
   const twoStepVerif = useSelector(settingsSelectors.getTwoStepVerif)
@@ -80,20 +81,18 @@ export default function Component({ isComponentAllowedToEdit }) {
   }
 
   useEffect(() => {
-    if (existingSocial === 'denied') {
-      toast.error(t('existing social network'), {
-        position: 'bottom-right',
+    if (socNetIntegration?.status === 'fail') {
+      toast.error(t(socNetIntegration.msg), {
         toastId: 'customId',
       })
-    } else if (existingSocial === 'success') {
+    } else if (socNetIntegration?.status === 'success') {
       toast.success(t('Changes saved successfully', { ns: 'other' }), {
-        position: 'bottom-right',
         toastId: 'customId',
       })
     }
 
-    navigate(routes?.USER_SETTINGS + '/access', { replace: true })
-  }, [])
+    return () => dispatch(settingsActions.clearSocNetIntegration())
+  }, [socNetIntegration])
 
   return (
     <>
@@ -283,8 +282,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     onClick={
                       values?.google_status === 'off'
                         ? () => {
-                            localStorage.setItem('connect_social_in_settings', 'true')
-                            dispatch(authOperations.getRedirectLink('google'))
+                            document.location.href = GOOGLE_LOGIN_LINK
                           }
                         : () => {
                             setFieldValue('google_status', 'off')
@@ -304,8 +302,8 @@ export default function Component({ isComponentAllowedToEdit }) {
                     onClick={
                       values?.facebook_status === 'off'
                         ? () => {
-                            localStorage.setItem('connect_social_in_settings', 'true')
-                            dispatch(authOperations.getRedirectLink('facebook'))
+                            document.location.href =
+                              FACEBOOK_LOGIN_LINK
                           }
                         : () => {
                             setFieldValue('facebook_status', 'off')
@@ -328,11 +326,10 @@ export default function Component({ isComponentAllowedToEdit }) {
                       onClick={
                         values?.vkontakte_status === 'off'
                           ? () => {
-                              localStorage.setItem('connect_social_in_settings', 'true')
-                              dispatch(authOperations.getRedirectLink('vkontakte'))
+                              document.location.href = VK_LOGIN_LINK
                             }
                           : () => {
-                              setFieldValue('facebook_status', 'off')
+                              setFieldValue('vkontakte_status', 'off')
                               handleSocialLinkClick({
                                 ...socialState,
                                 vkontakte_status: 'off',

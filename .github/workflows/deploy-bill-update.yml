@@ -68,11 +68,15 @@ jobs:
           cache: 'npm'
       - run: npm install -g npm@${{ matrix.npm-version }}
       - run: npm install
+      - name: Get Static version
+        id: static_version
+        run: echo "value=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
       - name: Run List
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
           REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
+          REACT_APP_TRANSLATION_VERSION: ${{ steps.static_version.outputs.value }}
         run: npm run lint
 
       - name: Send fail start in Slack
@@ -104,12 +108,15 @@ jobs:
           cache: 'npm'
       - run: npm install -g npm@8.1.2
       - run: npm install
-
+      - name: Get Static version
+        id: static_version
+        run: echo "value=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
       - name: Build js
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
           REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
+          REACT_APP_TRANSLATION_VERSION: ${{ steps.static_version.outputs.value }}
         run: |
           npm run build
 

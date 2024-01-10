@@ -247,7 +247,7 @@ export default function Component({ transfer = false }) {
 
                           const sums =
                             paymentData[`domain_${select}_details`]?.$?.match(
-                              /[\d|.|\\+]+/g,
+                              /[\d]+[.]?[\d]*/g,
                             )
 
                           return (
@@ -317,9 +317,9 @@ export default function Component({ transfer = false }) {
                                 <h1 className={s.page_title}>{t('Order Details')}</h1>
                                 <div className={cn(s.formFieldsBlock, s.flexStart)}>
                                   <div className={s.details}>
-                                    {sums?.length > 2 && (
+                                    {sums?.length && (
                                       <div>
-                                        {domenName} - {sums[2]} EUR {t('per year')}
+                                        {domenName} - {sums[0]} EUR {t('per year')}
                                       </div>
                                     )}
                                     {checkBoxName && (
@@ -328,9 +328,9 @@ export default function Component({ transfer = false }) {
                                         {`(${t(values[checkBoxName])})`}
                                       </div>
                                     )}
-                                    {sums?.length > 3 && (
+                                    {sums?.length && (
                                       <div className={s.totalAmount}>
-                                        {t('Total payable')}: {sums[3]} EUR
+                                        {t('Total payable')}: {sums[1]} EUR
                                       </div>
                                     )}
                                   </div>

@@ -1,14 +1,11 @@
 import { PayersList } from '@components'
-import { useTranslation } from 'react-i18next'
 import { Form, Formik } from 'formik'
-import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, payersOperations, payersSelectors } from '@redux'
 import { OFFER_FIELD } from '@utils/constants'
 import s from '../OrderTariff.module.scss'
 
 export default function ThirdtStep({ passStep }) {
-  const { t } = useTranslation(['other'])
   const dispatch = useDispatch()
 
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
@@ -16,19 +13,15 @@ export default function ThirdtStep({ passStep }) {
   const payersList = useSelector(payersSelectors.getPayersList)
   const geoData = useSelector(authSelectors.getGeoData)
 
-  const validationSchema = Yup.object().shape({
-    person: Yup.string().required(t('Is a required field')),
-    city_physical: Yup.string().required(t('Is a required field')),
-    address_physical: Yup.string()
-      .matches(/^[^@#$%^&*!~<>]+$/, t('symbols_restricted'))
-      .matches(/(?=\d)/, t('address_error_msg'))
-      .required(t('Is a required field')),
-    name:
-      payersSelectedFields?.profiletype === '2' ||
-      payersSelectedFields?.profiletype === '3'
-        ? Yup.string().required(t('Is a required field'))
-        : null,
-  })
+  const editPayerHandler = ({ profile, ...values }) => {
+    let data = {
+      country_physical: values?.country,
+      sok: 'ok',
+      elid: profile,
+      ...values,
+    }
+    dispatch(payersOperations.getPayerEditInfo(data, true, passStep))
+  }
 
   const createPayerHandler = values => {
     let data = {
@@ -53,10 +46,12 @@ export default function ThirdtStep({ passStep }) {
     dispatch(payersOperations.getPayerModalInfo(data, true, passStep))
   }
 
+  const submitFormHandler = values =>
+    payersList?.length ? editPayerHandler(values) : createPayerHandler(values)
+
   return (
     <Formik
       enableReinitialize
-      validationSchema={validationSchema}
       initialValues={{
         profile:
           payersData.selectedPayerFields?.profile ||
@@ -79,7 +74,7 @@ export default function ThirdtStep({ passStep }) {
           payersSelectedFields?.profiletype,
         eu_vat: payersData.state?.euVat || payersData.selectedPayerFields?.eu_vat || '',
       }}
-      onSubmit={createPayerHandler}
+      onSubmit={submitFormHandler}
     >
       {() => (
         <Form id="payer" className={s.payer}>
