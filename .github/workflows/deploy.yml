@@ -5,14 +5,23 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  IMAGE_NAME: zomro-bill
+  DOCKER_REPOSITORY: ${{ vars.DOCKER_REPOSITORY }}
+  APP_NAME: zomro-bill
   PREFIX: version-${{ github.run_number }}-${{ github.ref_name }}
   NAMESPACE: bill-zomro-com-${{ github.ref_name }}
+  # auth data for get access to aws
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
 
 jobs:
 #  jest:
@@ -90,7 +99,7 @@ jobs:
           channel: 'github-actions'
           if_mention: always
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: failure()
 
   build_and_push:
@@ -122,11 +131,17 @@ jobs:
         run: |
           npm run build
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
+      # new auth to aws
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
+          role-session-name: github-actions-${{ env.APP_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
@@ -135,8 +150,9 @@ jobs:
           platforms: linux/amd64
           file: Dockerfile
           push: true
+          provenance: false
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.PREFIX }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ env.APP_NAME }}:${{ env.PREFIX }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -159,24 +175,28 @@ jobs:
     environment:
       name: ${{ github.ref_name }}
     steps:
-      -  uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Import kubeconfig
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ secrets.KUBECONFIG }}
 
       - name: Update Version
+        env:
+          TMP_IMAGE_PREFIX: ${{ env.DOCKER_REPOSITORY }}/${{ env.APP_NAME }}:${{ env.PREFIX }}
+        working-directory: deployment
         run: |
-          sed -i "s|${{ env.IMAGE_NAME }}|${{ env.IMAGE_NAME }}:${{ env.PREFIX }}|" $GITHUB_WORKSPACE/deployment/deployment.yml
-          sed -i "s|{NAMESPACE}|${{ env.NAMESPACE }}|g" $GITHUB_WORKSPACE/deployment/deployment.yml
+          sed -i "s|{{ IMAGE }}|${{ env.TMP_IMAGE_PREFIX }}|g" deployment.yml
+          sed -i "s|{{ NAMESPACE }}|${{ env.NAMESPACE }}|g" deployment.yml
 
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      - name: Save DigitalOcean kubeconfig with short-lived credentials
-        run:
-          doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.K8S_CL_NAME }}
+      - name: Check
+        working-directory: deployment
+        run: |
+          cat deployment.yml
 
       - name: Deploy to DigitalOcean Kubernetes
-        run: kubectl apply -f $GITHUB_WORKSPACE/deployment/deployment.yml
+        working-directory: deployment
+        run: kubectl apply -f deployment.yml
 
       - name: Verify deployment
         run: kubectl rollout status deployment/bill-deployment -n ${{ env.NAMESPACE }}
