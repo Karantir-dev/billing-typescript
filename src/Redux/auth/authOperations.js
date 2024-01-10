@@ -563,12 +563,12 @@ const checkGoogleState =
 //     )
 //     .then(({ data }) => {
 //       // const url = window.URL.createObjectURL(new Blob([data.location]))
-
-//       const link = document.createElement('a')
-//       link.href = data.location
-//       document.body.appendChild(link)
-//       link.click()
-//       link.parentNode.removeChild(link)
+//       console.log(data)
+//       // const link = document.createElement('a')
+//       // link.href = data.location
+//       // document.body.appendChild(link)
+//       // link.click()
+//       // link.parentNode.removeChild(link)
 //     })
 //     .catch(err => {
 //       dispatch(actions.hideLoader())
@@ -589,6 +589,30 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
   } = getState()
 
   dispatch(actions.showLoader())
+
+  // axiosInstance
+  //   .post(
+  //     '/',
+  //     qs.stringify({
+  //       func: 'oauth.redirect',
+  //       network,
+  //       auth: sessionId,
+  //       sok: 'ok',
+  //     }),
+  //   )
+  //   .then(({ data }) => {
+  //     // const url = window.URL.createObjectURL(new Blob([data.location]))
+  //     console.log(data)
+  //     // const link = document.createElement('a')
+  //     // link.href = data.location
+  //     // document.body.appendChild(link)
+  //     // link.click()
+  //     // link.parentNode.removeChild(link)
+  //   })
+  //   .catch(err => {
+  //     dispatch(actions.hideLoader())
+  //     checkIfTokenAlive(err.message, dispatch)
+  //   })
 
   axiosInstance
     .post(
