@@ -30,7 +30,14 @@ export default function FourthStep({ state, setState, parameters, service, id, c
 
   const dropdownSale = useRef(null)
 
-  const { t } = useTranslation(['cart', 'other', 'payers', 'billing', 'user_settings'])
+  const { t } = useTranslation([
+    'cart',
+    'other',
+    'payers',
+    'billing',
+    'user_settings',
+    'domains',
+  ])
 
   const [salesList, setSalesList] = useState([])
 
