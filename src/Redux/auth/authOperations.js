@@ -5,12 +5,12 @@ import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, cookies, getParameterByName, throwServerError } from '@utils'
 import { exists as isTranslationExists } from 'i18next'
 import * as route from '@src/routes'
-import {
-  FACEBOOK_LOGIN_LINK,
-  GOOGLE_LOGIN_LINK,
-  SOC_NET,
-  VK_LOGIN_LINK,
-} from '@src/utils/constants'
+// import {
+//   FACEBOOK_LOGIN_LINK,
+//   GOOGLE_LOGIN_LINK,
+//   SOC_NET,
+//   VK_LOGIN_LINK,
+// } from '@src/utils/constants'
 
 const login =
   (email, password, reCaptcha, resetRecaptcha, navigateAfterLogin) => dispatch => {
@@ -569,18 +569,12 @@ const redirectToSocNetApi = network => (dispatch, getState) => {
         network,
         auth: sessionId,
         sok: 'ok',
+        out: 'json',
       }),
     )
     .then(({ data }) => {
-      if (data?.ok) {
-        if (network === SOC_NET.google) {
-          document.location.href = GOOGLE_LOGIN_LINK
-        } else if (network === SOC_NET.vkontakte) {
-          document.location.href = VK_LOGIN_LINK
-        } else if (network === SOC_NET.facebook) {
-          document.location.href = FACEBOOK_LOGIN_LINK
-        }
-      }
+      if (data?.doc?.error) throw new Error(data?.doc?.error?.msg?.$)
+      document.location.href = data?.doc?.ok?.$
     })
     .catch(err => {
       dispatch(actions.hideLoader())
