@@ -291,14 +291,19 @@ export default function Component(props) {
     if (payersInfo) {
       for (const [key, value] of Object.entries(payersInfo)) {
         if (key !== contact_select && contact_select !== contact_use_first) {
-          body[key] = value
+          if (key.includes('contact_select') && owner) {
+            const form = key.split('_')[0]
+            body[key] = payersInfo[`${form}_contact_use_first`] === 'on' ? item : value
+          } else {
+            body[key] = value
+          }
         }
       }
     }
 
     dispatch(
       domainsOperations.getDomainsContacts({
-        setDomainsContacts,
+        setDomains: setDomainsContacts,
         body,
         signal,
         setIsLoading,

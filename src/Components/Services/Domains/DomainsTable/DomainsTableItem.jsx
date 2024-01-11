@@ -99,7 +99,7 @@ export default function Component(props) {
         <div className={s.tableBlockSixth}>
           {mobile && <div className={s.item_title}>{t('Price')}:</div>}
           <div className={cn(s.item_text, s.seventh_item)}>
-            {cost.replace('Year', t('Year', { ns: 'other' }))}
+            {cost?.replace('Year', t('Year', { ns: 'other' }))}
           </div>
         </div>
         <div className={s.dots}>
