@@ -9,6 +9,8 @@
   margin-bottom: 30px;
   align-items: center;
   gap: 5px;
+  width: fit-content;
+
   svg {
     stroke: var(--main-text);
     transform: rotate(90deg);
@@ -679,6 +681,7 @@
     .descriptionBlock {
       top: auto;
       bottom: 130%;
+      // left: 0;
     }
   }
 }
@@ -800,10 +803,10 @@
   }
 }
 
-@media (max-width: 499px) {
+@media (max-width: 767px) {
   .infoBtn .descriptionBlock {
     top: auto;
     bottom: 130%;
-    left: -1000%;
+    left: -700%;
   }
 }
