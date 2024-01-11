@@ -5,12 +5,6 @@ import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, cookies, getParameterByName, throwServerError } from '@utils'
 import { exists as isTranslationExists } from 'i18next'
 import * as route from '@src/routes'
-// import {
-//   FACEBOOK_LOGIN_LINK,
-//   GOOGLE_LOGIN_LINK,
-//   SOC_NET,
-//   VK_LOGIN_LINK,
-// } from '@src/utils/constants'
 
 const login =
   (email, password, reCaptcha, resetRecaptcha, navigateAfterLogin) => dispatch => {
