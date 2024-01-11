@@ -544,37 +544,37 @@ const checkGoogleState =
       })
   }
 
-// const getRedirectLink = network => (dispatch, getState) => {
-//   const {
-//     auth: { sessionId },
-//   } = getState()
+/**
+ * This request inserts sessionId into DB table before social network connecting
+ */
 
-//   dispatch(actions.showLoader())
+const redirectToSocNetApi = network => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
 
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'oauth.redirect',
-//         network,
-//         auth: sessionId,
-//         sok: 'ok',
-//       }),
-//     )
-//     .then(({ data }) => {
-//       // const url = window.URL.createObjectURL(new Blob([data.location]))
+  dispatch(actions.showLoader())
 
-//       const link = document.createElement('a')
-//       link.href = data.location
-//       document.body.appendChild(link)
-//       link.click()
-//       link.parentNode.removeChild(link)
-//     })
-//     .catch(err => {
-//       dispatch(actions.hideLoader())
-//       checkIfTokenAlive('redirect link - ' + err.message, dispatch)
-//     })
-// }
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'oauth.redirect',
+        network,
+        auth: sessionId,
+        sok: 'ok',
+        out: 'json',
+      }),
+    )
+    .then(({ data }) => {
+      if (data?.doc?.error) throw new Error(data?.doc?.error?.msg?.$)
+      document.location.href = data?.doc?.ok?.$
+    })
+    .catch(err => {
+      dispatch(actions.hideLoader())
+      checkIfTokenAlive(err.message, dispatch)
+    })
+}
 
 const geoConfirm = (redirect, redirectToLogin) => () => {
   redirect = decodeURIComponent(redirect)
@@ -709,7 +709,7 @@ export default {
   checkGoogleState,
   // getLoginSocLinks,
   addLoginWithSocial,
-  // getRedirectLink,
+  redirectToSocNetApi,
   getLocation,
   geoConfirm,
 }

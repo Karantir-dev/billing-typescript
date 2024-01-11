@@ -4,7 +4,7 @@ metadata:
   name: bill-deployment
   labels:
     app: bill
-  namespace: {NAMESPACE}
+  namespace: {{ NAMESPACE }}
 spec:
   replicas: 1
   selector:
@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: bill
-          image: zomrocom/zomro-bill
+          image: {{ IMAGE }}
           resources:
             requests:
               memory: '10Mi'
