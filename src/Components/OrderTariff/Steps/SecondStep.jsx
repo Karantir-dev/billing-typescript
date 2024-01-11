@@ -14,6 +14,7 @@ import {
   SPECIAL_CHARACTERS_REGEX,
   CYRILLIC_ALPHABET_PROHIBITED,
   PASS_REGEX,
+  PASS_REGEX_ASCII,
   GOOGLE_LOGIN_LINK,
   GOOGLE_REGISTRATION_LINK,
   VK_LOGIN_LINK,
@@ -79,6 +80,7 @@ export default function SecondStep({ toLogin, setToLogin, passStep }) {
     password: Yup.string()
       .min(12, t('warnings.invalid_pass', { min: 12, max: 48 }))
       .max(48, t('warnings.invalid_pass', { min: 12, max: 48 }))
+      .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii'))
       .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 12, max: 48 }))
       .required(t('warnings.password_required')),
     reCaptcha: Yup.string()
