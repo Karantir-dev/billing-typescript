@@ -25,7 +25,12 @@ import * as Yup from 'yup'
 import * as routes from '@src/routes'
 import s from './AccessSettings.module.scss'
 import { toast } from 'react-toastify'
-import { GOOGLE_LOGIN_LINK, VK_LOGIN_LINK } from '@src/utils/constants'
+import {
+  GOOGLE_LOGIN_LINK,
+  VK_LOGIN_LINK,
+  PASS_REGEX,
+  PASS_REGEX_ASCII,
+} from '@src/utils/constants'
 
 export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
@@ -53,12 +58,8 @@ export default function Component({ isComponentAllowedToEdit }) {
     passwd: Yup.string()
       .min(12, t('warnings.invalid_pass', { ns: 'auth', min: 12, max: 48 }))
       .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 12, max: 48 }))
-      .matches(
-        /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
-        t('Password must contain at least one uppercase and lowercase letter', {
-          ns: 'other',
-        }),
-      ),
+      .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
+      .matches(PASS_REGEX, t('warnings.invalid_pass', { ns: 'auth', min: 12, max: 48 })),
     confirm: Yup.string().oneOf(
       [Yup.ref('passwd')],
       t('Passwords do not match', { ns: 'other' }),
