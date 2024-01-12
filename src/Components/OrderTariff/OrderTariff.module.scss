@@ -389,10 +389,19 @@
 .auth_field_wrapper {
   margin-bottom: 25px;
 
+  &:nth-child(2) {
+    margin-bottom: 25px;
+  }
+
   & > span {
     position: absolute;
     margin-top: 5px;
   }
+}
+
+.auth_captcha {
+  transform: scale(0.8);
+  transform-origin: 0;
 }
 
 .error_message {
@@ -811,6 +820,10 @@
     max-width: 30%;
     margin-right: 20px;
   }
+
+  .auth_captcha {
+    transform: unset;
+  }
 }
 
 @media (max-width: 767px) {
@@ -818,5 +831,13 @@
     top: auto;
     bottom: 130%;
     left: -700%;
+  }
+
+  .auth_field_wrapper {
+    margin-bottom: 25px;
+
+    &:nth-child(2) {
+      margin-bottom: 35px;
+    }
   }
 }
