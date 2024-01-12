@@ -287,7 +287,7 @@
   }
   &_captcha {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
   }
   &_divider {
     display: flex;
@@ -375,7 +375,7 @@
       margin-bottom: -70px;
     }
     &_captcha {
-      margin-top: 40px;
+      margin-top: 55px;
     }
   }
 }
@@ -386,7 +386,17 @@
   }
 }
 
+.auth_field_wrapper {
+  margin-bottom: 25px;
+
+  & > span {
+    position: absolute;
+    margin-top: 5px;
+  }
+}
+
 .error_message {
+  // position: absolute;
   margin-left: 2px;
   color: var(--error-color);
   font-size: 13px;
