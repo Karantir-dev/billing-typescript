@@ -127,5 +127,8 @@
   "base price": "базовая цена",
   "Total amount": "Общая сумма",
   "ns_format": "Формат записи \"ns.example.com\"",
-  "choose_min_one_domain": "Выберите хотя бы один домен"
+  "choose_min_one_domain": "Выберите хотя бы один домен",
+
+  "Domain name must be at least 2 characters long": "Доменное имя должно состоять не менее чем из 2 символов",
+  "Domain name must be at most 63 characters long": "Доменное имя должно состоять не более чем из 63 символов"
 }
