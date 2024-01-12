@@ -12,7 +12,13 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { siteCareOperations, userOperations } from '@redux'
-import { useScrollToElement, translatePeriod, ipRegex, useCancelRequest } from '@utils'
+import {
+  useScrollToElement,
+  translatePeriod,
+  ipRegex,
+  useCancelRequest,
+  roundToDecimal,
+} from '@utils'
 import { URL_REGEX, PASS_REGEX } from '@utils/constants'
 
 import s from './SiteCareOrder.module.scss'
@@ -76,7 +82,7 @@ export default function Component() {
     }
 
     return {
-      amount: amounts[0],
+      amount: roundToDecimal(amounts[0]),
     }
   }
 

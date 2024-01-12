@@ -1,5 +1,19 @@
+import roundToDecimal from './roundToDecimal'
+
 export default function orderDetailTranslate(str, t) {
-  return str
+  const priceRegex = /\d+\.\d+ EUR/g
+  const priceMatch = str.match(priceRegex)
+
+  let withFormatedPrice = str
+
+  priceMatch.forEach(price => {
+    withFormatedPrice = withFormatedPrice.replace(
+      price,
+      `${roundToDecimal(price.split(' EUR')[0])} EUR`,
+    )
+  })
+
+  return withFormatedPrice
     .replace('Order details', t('Order Details', { ns: 'domains' }))
     .replace('base price', t('base price', { ns: 'domains' }))
     .replace('per month', t('per month', { ns: 'autoprolong' }))

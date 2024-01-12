@@ -22,6 +22,7 @@ import {
   translatePeriodText,
   useCancelRequest,
   useScrollToElement,
+  roundToDecimal,
 } from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
@@ -151,19 +152,13 @@ export default function VDSOrder() {
                 <span className={s.saleSpan}>
                   {`${words[0]} Gb (`}
                   <span className={s.memorySale}>
-                    {Number($cost / 0.45).toFixed(2)}
+                    {roundToDecimal(Number($cost / 0.45))}
                   </span>
-                  {` ${Number($cost).toFixed(2)} EUR/${t('short_month', {
-                    ns: 'other',
-                  })})`}
+                  {translatePeriodText($.trim().split('(')[1], t)}
                 </span>
               </span>
             )
-          } else if (fieldName === 'Memory') {
-            label = `${words[0]} Gb (${$cost} EUR/${t('short_month', {
-              ns: 'other',
-            })})`
-          } else if ($.includes('EUR ')) {
+          } else if (fieldName === 'Memory' || $.includes('EUR ')) {
             label = translatePeriodText($.trim(), t)
           } else {
             label = t($.trim())
@@ -172,8 +167,8 @@ export default function VDSOrder() {
             value: $key,
             label: label,
             sale: withSale,
-            newPrice: Number($cost).toFixed(2),
-            oldPrice: (Number($cost) + $cost * 0.55).toFixed(2),
+            newPrice: roundToDecimal(Number($cost)),
+            oldPrice: roundToDecimal(Number($cost) + $cost * 0.55),
           }
         })
     }
@@ -192,7 +187,9 @@ export default function VDSOrder() {
   }
 
   const translate = string => {
-    return string?.split('EUR ')[0] + 'EUR ' + t(string?.split('EUR ')[1])
+    return (
+      roundToDecimal(string?.split('EUR ')[0]) + ' EUR ' + t(string?.split('EUR ')[1])
+    )
   }
 
   const parseTariffPrice = price => {
@@ -379,7 +376,7 @@ export default function VDSOrder() {
             IP_addresses_count: parametersInfo?.IP_addresses_count || '',
             agreement: 'on', //checkboxEl.current?.checked ? 'on' : 'off',
             totalPrice: totalPrice,
-            finalTotalPrice: +(totalPrice * count).toFixed(4),
+            finalTotalPrice: roundToDecimal(+(totalPrice * count)),
             server_name:
               dataFromSite?.server_name || parametersInfo?.server_name?.$ || '',
           }}
@@ -477,7 +474,7 @@ export default function VDSOrder() {
                                   setCount(+count - 1)
                                   setFieldValue(
                                     'finalTotalPrice',
-                                    +(values.totalPrice * (+count - 1)).toFixed(4),
+                                    roundToDecimal(+(values.totalPrice * (+count - 1))),
                                   )
                                 }}
                                 disabled={+count <= 1}
@@ -513,7 +510,7 @@ export default function VDSOrder() {
                                   setCount(+count + 1)
                                   setFieldValue(
                                     'finalTotalPrice',
-                                    +(values.totalPrice * (+count + 1)).toFixed(4),
+                                    roundToDecimal(+(values.totalPrice * (+count + 1))),
                                   )
                                 }}
                                 disabled={+count >= 35}
@@ -728,7 +725,7 @@ export default function VDSOrder() {
                             setCount(+count - 1)
                             setFieldValue(
                               'finalTotalPrice',
-                              +(values.totalPrice * (+count - 1))?.toFixed(4),
+                              roundToDecimal(+(values.totalPrice * (+count - 1))),
                             )
                           }}
                           disabled={+count <= 1}
@@ -764,7 +761,7 @@ export default function VDSOrder() {
                             setCount(+count + 1)
                             setFieldValue(
                               'finalTotalPrice',
-                              +(values.totalPrice * (+count + 1))?.toFixed(4),
+                              roundToDecimal(+(values.totalPrice * (+count + 1))),
                             )
                           }}
                           disabled={+count >= 35}
@@ -778,7 +775,7 @@ export default function VDSOrder() {
                       {t('topay', { ns: 'dedicated_servers' })}:
                       <span className={s.tablet_price_sentence}>
                         <span className={s.tablet_price}>
-                          {(values.finalTotalPrice - checkSaleMemory()).toFixed(2)} EUR
+                          {roundToDecimal(values.finalTotalPrice - checkSaleMemory())} EUR
                         </span>
                         {` ${translatePeriodName(period, t)}`}
                       </span>
@@ -786,7 +783,7 @@ export default function VDSOrder() {
                   ) : (
                     <p className={s.price_wrapper}>
                       <span className={s.price}>
-                        €{(values.finalTotalPrice - checkSaleMemory()).toFixed(2)}
+                        €{roundToDecimal(values.finalTotalPrice - checkSaleMemory())}
                       </span>
                       {` ${translatePeriodName(period, t)}`}
                       {/* {t(parametersInfo?.orderinfo?.$?.match(/EUR (.+?)(?= <br\/>)/)[1])} */}

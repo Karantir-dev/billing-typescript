@@ -5,7 +5,12 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { cartActions, userOperations, vhostOperations } from '@redux'
-import { useScrollToElement, translatePeriod, useCancelRequest } from '@utils'
+import {
+  useScrollToElement,
+  translatePeriod,
+  useCancelRequest,
+  roundToDecimal,
+} from '@utils'
 import * as routes from '@src/routes'
 
 import s from './SharedHostingOrder.module.scss'
@@ -172,7 +177,7 @@ export default function Component({ type }) {
     }
 
     return {
-      amount: amounts[0],
+      amount: roundToDecimal(amounts[0]),
     }
   }
 

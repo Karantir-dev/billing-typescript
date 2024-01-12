@@ -245,7 +245,7 @@ export default function FirstStep({
 
       {Number(totalPrice) > 0 ? (
         <div className={s.service_price}>
-          {t('Total', { ns: 'cart' })}:<b>{totalPrice.toFixed(2)} EUR</b>
+          {t('Total', { ns: 'cart' })}:<b>{totalPrice} EUR</b>
         </div>
       ) : null}
     </>

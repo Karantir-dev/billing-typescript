@@ -7,7 +7,12 @@ import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { translatePeriod, useCancelRequest, useScrollToElement } from '@utils'
+import {
+  roundToDecimal,
+  translatePeriod,
+  useCancelRequest,
+  useScrollToElement,
+} from '@utils'
 import { forexOperations, selectors, userOperations } from '@redux'
 import * as route from '@src/routes'
 
@@ -299,7 +304,7 @@ export default function ForexOrderPage() {
                               const cartFromSiteJson = JSON.parse(cartFromSite)
                               setParameters(null)
                               setFieldValue('pricelist', item?.pricelist?.$)
-                              setPrice(priceAmount)
+                              setPrice(roundToDecimal(priceAmount))
                               setTarifChosen(true)
                               if (!cartFromSiteJson) {
                                 setDataFromSite(null)
@@ -352,7 +357,7 @@ export default function ForexOrderPage() {
                                     [s.selected]: item?.pricelist?.$ === values.pricelist,
                                   })}
                                 >
-                                  {priceAmount + ' €' + '/' + periodName}
+                                  {roundToDecimal(priceAmount) + ' €' + '/' + periodName}
                                 </span>
                               </div>
                             </div>

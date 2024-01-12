@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import s from './DomainsPickUpZones.module.scss'
+import { roundToDecimal } from '@utils'
 
 export default function ServicesPage(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
@@ -57,7 +58,7 @@ export default function ServicesPage(props) {
 
     let amoumt = (
       <span>
-        {amounts[amounts.length - 1] + ' ' + 'EUR'}
+        {roundToDecimal(amounts[amounts.length - 1]) + ' ' + 'EUR'}
         <span className={s.year}>
           {transfer ? ' ' : '/'}
           {t(transfer ? 'for the transfer' : 'year', { ns: 'other' })}
@@ -67,7 +68,7 @@ export default function ServicesPage(props) {
     let percent = amounts[0] + '%'
     let sale = (
       <span>
-        {amounts[1] + ' ' + 'EUR'}
+        {roundToDecimal(amounts[1]) + ' ' + 'EUR'}
         <span className={s.year}>
           {transfer ? ' ' : '/'}
           {t(transfer ? '' : 'year', { ns: 'other' })}
@@ -116,7 +117,7 @@ export default function ServicesPage(props) {
       sum = sum + Number(amounts[amounts.length - 1])
     })
 
-    return sum.toFixed(2)
+    return roundToDecimal(sum)
   }
 
   const getPolongPrice = domain => {
@@ -163,7 +164,7 @@ export default function ServicesPage(props) {
           <div className={s.prolongBlock}>
             <span>{t('prolong', { ns: 'vds' })}:</span>
             <span>
-              {renew} EUR/
+              {roundToDecimal(renew)} EUR/
               <span className={s.prolongPeriod}>{t('year', { ns: 'other' })}</span>
             </span>
           </div>
@@ -197,7 +198,7 @@ export default function ServicesPage(props) {
               d?.desc?.$.includes('Not registered') ||
               d?.desc?.$?.includes('Error') ||
               d.premium
-              
+
             const available = !notAvailable && d?.desc?.$.includes('Registered')
 
             return (
@@ -237,7 +238,7 @@ export default function ServicesPage(props) {
                   <div className={cn(s.prolongBlock, s.transferProlongBlock)}>
                     <span>{t('prolong', { ns: 'vds' })}:</span>
                     <span>
-                      {renew} EUR/
+                      {roundToDecimal(renew)} EUR/
                       <span className={s.prolongPeriod}>
                         {t('year', { ns: 'other' })}
                       </span>
