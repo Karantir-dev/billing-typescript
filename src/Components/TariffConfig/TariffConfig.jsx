@@ -3,12 +3,7 @@ import s from './TariffConfig.module.scss'
 import { Form, Formik } from 'formik'
 import { Icon, Select, SoftwareOSBtn, SoftwareOSSelect, InputField } from '@components'
 import * as Yup from 'yup'
-import {
-  DOMAIN_REGEX,
-  getPortSpeed,
-  translatePeriodName,
-  translatePeriodText,
-} from '@utils'
+import { DOMAIN_REGEX, getPortSpeed, translatePeriodText, roundToDecimal } from '@utils'
 import { useEffect } from 'react'
 
 export default function TariffConfig({
@@ -89,7 +84,7 @@ export default function TariffConfig({
 
       return optionsList
         ?.filter(el => el?.$)
-        ?.map(({ $key, $, $period }, index) => {
+        ?.map(({ $key, $, $cost }, index) => {
           let label = ''
           let withSale = false
           let words = []
@@ -113,18 +108,13 @@ export default function TariffConfig({
                 <span className={s.saleSpan}>
                   {`${words[0]} Gb (`}
                   <span className={s.memorySale}>
-                    {Number(words[1] / 0.45).toFixed(2)}
+                    {roundToDecimal(Number($cost / 0.45))}
                   </span>
-                  {` ${Number(words[1]).toFixed(2)} EUR/${translatePeriodName(
-                    $period,
-                    t,
-                  )})`}
+                  {translatePeriodText($.trim().split('(')[1], t)}
                 </span>
               </span>
             )
-          } else if (fieldName === 'Memory') {
-            label = `${words[0]} Gb (${words[1]} EUR/${translatePeriodName($period, t)})`
-          } else if ($.includes('EUR ')) {
+          } else if (fieldName === 'Memory' || $.includes('EUR ')) {
             label = translatePeriodText($.trim(), t)
           } else {
             label = t($.trim())
@@ -134,8 +124,8 @@ export default function TariffConfig({
             value: $key,
             label: label,
             sale: withSale,
-            newPrice: Number(words[1]).toFixed(2),
-            oldPrice: (Number(words[1]) + words[1] * 0.55).toFixed(2),
+            newPrice: roundToDecimal(Number($cost)),
+            oldPrice: roundToDecimal(Number($cost) + $cost * 0.55),
           }
         })
     }
@@ -325,7 +315,7 @@ export default function TariffConfig({
                 ${t('pcs.', {
                   ns: 'vds',
                 })}
-                (${el?.cost} EUR)`,
+                (${roundToDecimal(el?.cost)} EUR)`,
                         value: el?.value?.toString(),
                       }
                     })}

@@ -3,6 +3,7 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './TarifCard.module.scss'
 import { Icon } from '@components'
+import { roundToDecimal } from '@utils'
 
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other'])
@@ -73,8 +74,8 @@ export default function Component(props) {
 
     return {
       percent: amounts[0],
-      old_amount: amounts[1],
-      amount: amounts[2],
+      old_amount: roundToDecimal(amounts[1]),
+      amount: roundToDecimal(amounts[2]),
     }
   }
 

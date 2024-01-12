@@ -8,7 +8,7 @@ import BurgerMenu from './BurgerMenu/BurgerMenu'
 import { userSelectors, authOperations, selectors, billingActions } from '@redux'
 import { NotificationsBar, ThemeBtn, LangBtn, Icon, CertificateModal } from '@components'
 import * as routes from '@src/routes'
-import { useOutsideAlerter, usePageRender } from '@utils'
+import { roundToDecimal, useOutsideAlerter, usePageRender } from '@utils'
 
 import { CSSTransition } from 'react-transition-group'
 import animations from './animations.module.scss'
@@ -106,11 +106,6 @@ export default function Header() {
     dispatch(authOperations.logout())
   }
 
-  function truncateToDecimals(num, dec = 2) {
-    const calcDec = Math.pow(10, dec)
-    return Math.trunc(num * calcDec) / calcDec
-  }
-
   const userBalance = userItems?.$balance?.replace(' €', '')?.replace(' EUR', '')
   const closeCertificateModal = () => setIsUseCertificate(false)
 
@@ -142,8 +137,8 @@ export default function Header() {
                       <Icon name="WalletBalance" />
                       <span className={s.balance_sum}>
                         {userItems?.$balance
-                          ? truncateToDecimals(userBalance, 2)?.toFixed(2)
-                          : $balance && truncateToDecimals($balance, 2)?.toFixed(2)}
+                          ? roundToDecimal(userBalance, 'floor')
+                          : $balance && roundToDecimal($balance, 'floor')}
                         EUR
                       </span>
                     </div>
