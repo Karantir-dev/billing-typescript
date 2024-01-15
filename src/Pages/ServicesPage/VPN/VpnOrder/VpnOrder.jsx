@@ -5,7 +5,12 @@ import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Formik, Form } from 'formik'
 import { userOperations, vpnOperations } from '@redux'
-import { useScrollToElement, translatePeriod, useCancelRequest } from '@utils'
+import {
+  useScrollToElement,
+  translatePeriod,
+  useCancelRequest,
+  roundToDecimal,
+} from '@utils'
 
 import s from './VpnOrder.module.scss'
 import * as routes from '@src/routes'
@@ -67,7 +72,7 @@ export default function Component() {
     }
 
     return {
-      amount: amounts[0],
+      amount: roundToDecimal(amounts[0]),
     }
   }
 

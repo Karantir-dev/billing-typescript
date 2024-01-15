@@ -20,7 +20,7 @@ import { DOMAIN_REGEX } from '@utils/constants'
 import * as Yup from 'yup'
 import * as route from '@src/routes'
 import s from './DomainsNsPage.module.scss'
-import { translatePeriod, useCancelRequest } from '@utils'
+import { roundToDecimal, translatePeriod, useCancelRequest } from '@utils'
 
 export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'trusted_users', 'auth', 'autoprolong'])
@@ -319,7 +319,8 @@ export default function Component({ transfer = false }) {
                                   <div className={s.details}>
                                     {sums?.length && (
                                       <div>
-                                        {domenName} - {sums[0]} EUR {t('per year')}
+                                        {domenName} - {roundToDecimal(sums[0])} EUR{' '}
+                                        {t('per year')}
                                       </div>
                                     )}
                                     {checkBoxName && (
@@ -330,7 +331,8 @@ export default function Component({ transfer = false }) {
                                     )}
                                     {sums?.length && (
                                       <div className={s.totalAmount}>
-                                        {t('Total payable')}: {sums[1]} EUR
+                                        {t('Total payable')}: {roundToDecimal(sums[1])}{' '}
+                                        EUR
                                       </div>
                                     )}
                                   </div>

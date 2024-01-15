@@ -129,5 +129,8 @@
   "Total amount": "Загальна сума",
 
   "ns_format": "Формат запису \"ns.example.com\"",
-  "choose_min_one_domain": "Виберіть хоча б один домен"
+  "choose_min_one_domain": "Виберіть хоча б один домен",
+
+  "Domain name must be at least 2 characters long": "Доменне ім'я повинно мати довжину не менше 2 символів",
+  "Domain name must be at most 63 characters long": "Доменне ім'я повинно мати довжину не більше 63 символів"
 }

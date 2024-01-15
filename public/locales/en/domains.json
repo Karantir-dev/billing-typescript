@@ -120,5 +120,8 @@
   "Total amount": "Total amount",
 
   "ns_format": "Record format \"ns.example.com\"",
-  "choose_min_one_domain": "Select at least one domain"
+  "choose_min_one_domain": "Select at least one domain",
+
+  "Domain name must be at least 2 characters long": "Domain name must be at least 2 characters long",
+  "Domain name must be at most 63 characters long": "Domain name must be at most 63 characters long"
 }

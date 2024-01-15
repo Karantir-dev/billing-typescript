@@ -38,7 +38,7 @@ import {
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
-import { replaceAllFn, useFormFraudCheckData } from '@utils'
+import { replaceAllFn, useFormFraudCheckData, roundToDecimal } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 export default function Component() {
@@ -1268,7 +1268,7 @@ export default function Component() {
                     )}
                     {VDS_FEE_AMOUNT && VDS_FEE_AMOUNT > 0 ? (
                       <div className={cn(s.padding, s.penalty_sum)}>
-                        {t('Late fee')}: <b>{VDS_FEE_AMOUNT.toFixed(4)} EUR</b>
+                        {t('Late fee')}: <b>{roundToDecimal(VDS_FEE_AMOUNT)} EUR</b>
                       </div>
                     ) : (
                       ''
@@ -1279,7 +1279,8 @@ export default function Component() {
                           {state.cartData?.full_discount &&
                           Number(state.cartData?.full_discount) !== 0 ? (
                             <>
-                              {t('Saving')}: <b>{state.cartData?.full_discount} EUR</b>
+                              {t('Saving')}:{' '}
+                              <b>{roundToDecimal(state.cartData?.full_discount)} EUR</b>
                               <button type="button" className={s.infoBtn}>
                                 <Icon name="Info" />
                                 <div ref={dropdownSale} className={s.descriptionBlock}>
@@ -1291,14 +1292,14 @@ export default function Component() {
                         </span>
                         {Number(state.cartData?.tax) > 0 ? (
                           <div className={s.priceBlock}>
-                            {t('Tax')}:<b>{state.cartData?.tax} EUR</b>
+                            {t('Tax')}:<b>{roundToDecimal(state.cartData?.tax)} EUR</b>
                           </div>
                         ) : null}
                         <div className={s.priceBlock}>
                           {t('Total')}
                           {Number(state.cartData?.tax) > 0 &&
                             ' (' + t('Tax included').toLocaleLowerCase() + ')'}
-                          : <b>{state.cartData?.total_sum} EUR</b>
+                          : <b>{roundToDecimal(state.cartData?.total_sum)} EUR</b>
                         </div>
                       </div>
 

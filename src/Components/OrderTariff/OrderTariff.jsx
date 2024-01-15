@@ -8,6 +8,7 @@ import { authSelectors, cartOperations, payersSelectors } from '@redux'
 import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
 import { SITE_URL } from '@config/config'
 import * as route from '@src/routes'
+import { roundToDecimal } from '@utils'
 
 export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isClonePage }) {
   const { t } = useTranslation(['cart', 'auth', 'billing', 'other'])
@@ -46,7 +47,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
   useEffect(() => {
     const price = +parameters?.orderinfo?.$?.match(/Total amount: (.+?)(?= EUR)/)[1]
 
-    setTotalPrice(price * count)
+    setTotalPrice(roundToDecimal(price * count))
   }, [parameters, count])
 
   const changeFieldHandler = (field, value, isUpdatePrice) => {
@@ -58,7 +59,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
 
     const period = field === 'period' ? value.$ : parameters.period.$
     const autoprolong =
-      field === 'period' && parameters.autoprolong.$ !== 'null'
+      field === 'period' && parameters.autoprolong?.$ !== 'null'
         ? value.$
         : parameters.autoprolong.$
 

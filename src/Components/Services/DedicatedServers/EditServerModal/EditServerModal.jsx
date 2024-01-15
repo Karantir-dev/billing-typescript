@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import s from './EditServerModal.module.scss'
 
 import { dedicOperations } from '@redux'
-import { translatePeriod, isDisabledDedicTariff } from '@utils'
+import { translatePeriod, isDisabledDedicTariff, translatePeriodText } from '@utils'
 
 export default function EditServerModal({
   elid,
@@ -354,8 +354,8 @@ export default function EditServerModal({
                         )
                       }
 
-                      if (labelText.includes('per month')) {
-                        labelText = labelText.replace('per month', t('per month'))
+                      if (labelText.includes('EUR')) {
+                        labelText = translatePeriodText(labelText, t)
                       }
 
                       if (labelText.includes('Unlimited domains')) {

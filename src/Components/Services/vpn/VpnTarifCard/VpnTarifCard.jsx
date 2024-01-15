@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import s from './VpnTarifCard.module.scss'
+import { roundToDecimal } from '@utils'
 export default function Component(props) {
   const { t } = useTranslation(['virtual_hosting', 'other'])
 
@@ -45,14 +46,14 @@ export default function Component(props) {
 
     if (amounts?.length === 1) {
       return {
-        amount: amounts[0],
+        amount: roundToDecimal(amounts[0]),
       }
     }
 
     return {
       percent: amounts[0],
-      old_amount: amounts[1],
-      amount: amounts[2],
+      old_amount: roundToDecimal(amounts[1]),
+      amount: roundToDecimal(amounts[2]),
     }
   }
 
@@ -70,7 +71,8 @@ export default function Component(props) {
         <img src={require('@images/services/vpn.png')} alt={'vpn'} />
         <div className={s.charBlock}>
           <div className={s.tariffPrice}>
-            {parsePrice(tariff?.price?.$)?.amount} EUR/{t(period, { ns: 'other' })}
+            {parsePrice(tariff?.price?.$)?.amount} EUR/
+            {t(period, { ns: 'other' })}
           </div>
         </div>
       </div>

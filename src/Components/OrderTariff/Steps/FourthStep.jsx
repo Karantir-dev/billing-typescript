@@ -21,7 +21,7 @@ import {
   InputField,
   Select,
 } from '@components'
-import { replaceAllFn, useFormFraudCheckData } from '@utils'
+import { replaceAllFn, roundToDecimal, useFormFraudCheckData } from '@utils'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import * as Yup from 'yup'
 
@@ -30,7 +30,14 @@ export default function FourthStep({ state, setState, parameters, service, id, c
 
   const dropdownSale = useRef(null)
 
-  const { t } = useTranslation(['cart', 'other', 'payers', 'billing', 'user_settings'])
+  const { t } = useTranslation([
+    'cart',
+    'other',
+    'payers',
+    'billing',
+    'user_settings',
+    'domains',
+  ])
 
   const [salesList, setSalesList] = useState([])
 
@@ -452,7 +459,7 @@ export default function FourthStep({ state, setState, parameters, service, id, c
                                   <>
                                     <br />{' '}
                                     <span className={s.balance}>
-                                      {Number(balance).toFixed(2)} EUR
+                                      {roundToDecimal(Number(balance))} EUR
                                     </span>
                                   </>
                                 )}
@@ -609,7 +616,8 @@ export default function FourthStep({ state, setState, parameters, service, id, c
                   {state.cartData?.full_discount &&
                   Number(state.cartData?.full_discount) !== 0 ? (
                     <>
-                      {t('Saving')}: <b>{state.cartData?.full_discount} EUR</b>
+                      {t('Saving')}:{' '}
+                      <b>{roundToDecimal(state.cartData?.full_discount)} EUR</b>
                       <button type="button" className={s.infoBtn}>
                         <Icon name="Info" />
                         <div ref={dropdownSale} className={s.descriptionBlock}>
@@ -621,14 +629,14 @@ export default function FourthStep({ state, setState, parameters, service, id, c
                 </span>
                 {Number(state.cartData?.tax) > 0 ? (
                   <div className={s.priceBlock}>
-                    {t('Tax')}:<b>{state.cartData?.tax} EUR</b>
+                    {t('Tax')}:<b>{roundToDecimal(state.cartData?.tax)} EUR</b>
                   </div>
                 ) : null}
                 <div className={s.priceBlock}>
                   {t('Total')}
                   {Number(state.cartData?.tax) > 0 &&
                     ' (' + t('Tax included').toLocaleLowerCase() + ')'}
-                  : <b>{state.cartData?.total_sum} EUR</b>
+                  : <b>{roundToDecimal(state.cartData?.total_sum)} EUR</b>
                 </div>
               </div>
 

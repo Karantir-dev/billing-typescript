@@ -91,7 +91,10 @@ export default function Component({ transfer = false }) {
   }
 
   const validationSchema = Yup.object().shape({
-    domain_name: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    domain_name: Yup.string()
+    .required(t('Is a required field', { ns: 'other' }))
+    .min(2, t('Domain name must be at least 2 characters long', { ns: 'domains' }))
+    .max(63, t('Domain name must be at most 63 characters long', { ns: 'domains' })),
     selectedDomains: Yup.array().min(1, t('choose_min_one_domain', { ns: 'domains' })),
   })
 

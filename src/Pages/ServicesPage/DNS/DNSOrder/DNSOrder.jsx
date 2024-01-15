@@ -7,7 +7,12 @@ import classNames from 'classnames'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { translatePeriod, useCancelRequest, useScrollToElement } from '@utils'
+import {
+  roundToDecimal,
+  translatePeriod,
+  useCancelRequest,
+  useScrollToElement,
+} from '@utils'
 import { dnsOperations, userOperations } from '@redux'
 import * as routes from '@src/routes'
 
@@ -74,9 +79,9 @@ export default function FTPOrder() {
       return
     }
 
-    let amoumt = Number(amounts[amounts.length - 1]).toFixed(2)
+    let amoumt = roundToDecimal(Number(amounts[amounts.length - 1]))
     let percent = Number(amounts[0]) + '%'
-    let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
+    let sale = roundToDecimal(Number(amounts[1])) + ' ' + 'EUR'
 
     setPeriodName(period)
 

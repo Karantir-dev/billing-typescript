@@ -32,6 +32,7 @@ import {
   useCancelRequest,
   translatePeriodText,
   getPortSpeed,
+  roundToDecimal,
 } from '@utils'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
@@ -149,9 +150,9 @@ export default function DedicOrderPage() {
       return
     }
 
-    let amount = Number(amounts[amounts.length - 1]).toFixed(2)
+    let amount = roundToDecimal(Number(amounts[amounts.length - 1]))
     let percent = Number(amounts[0]) + '%'
-    let sale = Number(amounts[1]).toFixed(2) + ' ' + 'EUR'
+    let sale = roundToDecimal(Number(amounts[1])) + ' ' + 'EUR'
 
     setPeriodName(period)
 
@@ -481,19 +482,13 @@ export default function DedicOrderPage() {
                 <span className={s.saleSpan}>
                   {`${words[0]} Gb (`}
                   <span className={s.memorySale}>
-                    {Number(words[1] / 0.45).toFixed(2)}
+                    {roundToDecimal(Number(words[1] / 0.45))}
                   </span>
-                  {` ${Number(words[1]).toFixed(2)} EUR/${t('short_month', {
-                    ns: 'other',
-                  })})`}
+                  {translatePeriodText($.trim().split('(')[1], t)}
                 </span>
               </span>
             )
-          } else if (fieldName === 'Memory') {
-            label = `${words[0]} Gb (${words[1]} EUR/${t('short_month', {
-              ns: 'other',
-            })})`
-          } else if ($.includes('EUR ')) {
+          } else if (fieldName === 'Memory' || $.includes('EUR ')) {
             label = translatePeriodText($.trim(), t)
           } else {
             label = t($.trim())
@@ -502,8 +497,8 @@ export default function DedicOrderPage() {
             value: $key,
             label: label,
             sale: withSale,
-            newPrice: Number(words[1]).toFixed(2),
-            oldPrice: (Number(words[1]) + words[1] * 0.55).toFixed(2),
+            newPrice: roundToDecimal(Number(words[1])),
+            oldPrice: roundToDecimal(Number(words[1]) + words[1] * 0.55),
           }
         })
     }
@@ -1007,8 +1002,8 @@ export default function DedicOrderPage() {
                               )
                             }
 
-                            if (labelText.includes('per month')) {
-                              labelText = labelText.replace('per month', t('per month'))
+                            if (labelText.includes('EUR')) {
+                              labelText = translatePeriodText(labelText, t)
                             }
 
                             if (labelText.includes('Unlimited domains')) {
@@ -1103,7 +1098,7 @@ export default function DedicOrderPage() {
                           ${t('pcs.', {
                             ns: 'vds',
                           })}
-                          (${el?.cost} EUR)`,
+                          (${roundToDecimal(el?.cost)} EUR)`,
                               value: el?.value?.toString(),
                             }
                           })}
@@ -1135,7 +1130,9 @@ export default function DedicOrderPage() {
                       <div className={s.sum_price_wrapper}>
                         {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                         <span className={s.btn_price}>
-                          {(isTarifChosen === 'vds' ? totalPrice : price) +
+                          {(isTarifChosen === 'vds'
+                            ? roundToDecimal(totalPrice)
+                            : roundToDecimal(price)) +
                             ' €' +
                             '/' +
                             periodName}
@@ -1146,7 +1143,10 @@ export default function DedicOrderPage() {
                         {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
                         <p className={s.btn_price_wrapper}>
                           <span className={s.btn_price}>
-                            {'€' + (isTarifChosen === 'vds' ? totalPrice : price)}
+                            {'€' +
+                              (isTarifChosen === 'vds'
+                                ? roundToDecimal(totalPrice)
+                                : roundToDecimal(price))}
                           </span>
                           {'/' + periodName}
                         </p>
