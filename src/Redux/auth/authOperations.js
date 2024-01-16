@@ -683,18 +683,23 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
 // }
 
 const getLocation = () => dispatch => {
-  axios.get(`${process.env.REACT_APP_API_URL}/api/service/geo/`).then(({ data }) => {
-    dispatch(
-      authActions.geoData({
-        clients_country_code: data?.clients_country_code,
-        clients_country_id: data?.clients_country_id,
-        has_country_state: data?.clients_state?.has_country_state,
-        state_id: data?.clients_state?.state_id,
-        clients_city: data?.clients_city,
-        clients_country_name: data?.clients_country_name,
-      }),
-    )
-  })
+  axios
+    .get(`${process.env.REACT_APP_API_URL}/api/service/geo/`)
+    .then(({ data }) => {
+      dispatch(
+        authActions.geoData({
+          clients_country_code: data?.clients_country_code,
+          clients_country_id: data?.clients_country_id,
+          has_country_state: data?.clients_state?.has_country_state,
+          state_id: data?.clients_state?.state_id,
+          clients_city: data?.clients_city,
+          clients_country_name: data?.clients_country_name,
+        }),
+      )
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 export default {

@@ -123,5 +123,6 @@
   "choose_min_one_domain": "Select at least one domain",
 
   "Domain name must be at least 2 characters long": "Domain name must be at least 2 characters long",
-  "Domain name must be at most 63 characters long": "Domain name must be at most 63 characters long"
+  "Domain name must be at most 63 characters long": "Domain name must be at most 63 characters long",
+  "premium_check_failed": "The domain has not been checked for premium status. But you can continue the purchase, if the selected domain turns out to be premium, you will be refunded for it"
 }
