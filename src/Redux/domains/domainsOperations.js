@@ -145,7 +145,6 @@ const getDomainsOrderName =
          */
         async function handleLongRequest(data) {
           if (typeof data === 'string') {
-            console.log('handleLongRequest', data)
             const longUrl = data.match(/long.+billmgr/)?.[0]
 
             await axiosInstance.get(longUrl).then(({ data }) => {
@@ -156,7 +155,7 @@ const getDomainsOrderName =
           }
         }
         await handleLongRequest(data)
-        console.log(domainData)
+
         const domains = []
 
         setAutoprolongPrices &&
