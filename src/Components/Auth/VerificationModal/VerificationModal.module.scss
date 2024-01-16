@@ -48,8 +48,17 @@
 }
 
 .text {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 15px;
+}
+
+.hint {
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.mail_link {
+  color: var(--link-text);
 }
 
 .label {
@@ -104,7 +113,7 @@
     right: 40px;
   }
 
-  .text {
+  .hint {
     margin-bottom: 25px;
   }
 
