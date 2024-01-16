@@ -32,7 +32,7 @@ import {
   vdsOperations,
 } from '@redux'
 import no_vds from '@images/services/no_vds.png'
-import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
+import { checkServicesRights, roundToDecimal, useCancelRequest, usePageRender } from '@utils'
 
 import s from './VDS.module.scss'
 
@@ -425,7 +425,7 @@ export default function VDS({ isDedic }) {
         <p className={s.total_price}>
           {t('total', { ns: 'other' })}:{' '}
           <span className={s.tools_footer_value}>
-            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+            {roundToDecimal(getTotalPrice())}€/{t('short_month', { ns: 'other' })}
           </span>
         </p>
       </div>

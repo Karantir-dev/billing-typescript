@@ -20,7 +20,12 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import s from './SharedHosting.module.scss'
 import { vhostSelectors, vhostOperations, vhostActions, billingOperations } from '@redux'
 import * as route from '@src/routes'
-import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
+import {
+  checkServicesRights,
+  roundToDecimal,
+  useCancelRequest,
+  usePageRender,
+} from '@utils'
 import cn from 'classnames'
 
 export default function Component({ type }) {
@@ -94,7 +99,6 @@ export default function Component({ type }) {
       setFirstRender(false)
       dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
     }
-
 
     return () => {
       dispatch(vhostActions.setVhostCount(0))
@@ -479,7 +483,7 @@ export default function Component({ type }) {
           <p className={s.total_price}>
             {t('total', { ns: 'other' })}:{' '}
             <span className={s.tools_footer_value}>
-              {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+              {roundToDecimal(getTotalPrice())}€/{t('short_month', { ns: 'other' })}
             </span>
           </p>
         </div>
