@@ -103,5 +103,9 @@
 
   "Main number": "Main number",
   "verification_code_timeout": "The verification code can be sent again in {{time}} seconds",
-  "geo_ip_info": "The GeoIP module defines a country from which a user logs in to BILLmanager. When he logs in from a different country, BILLmanager sends the corresponding notification and asks to confirm the login attempt."
+  "geo_ip_info": "The GeoIP module defines a country from which a user logs in to BILLmanager. When he logs in from a different country, BILLmanager sends the corresponding notification and asks to confirm the login attempt.",
+  "disconnect_google_modal_text": "If you don't know the password to your account, you can set it now before unlinking the social network account. To do this, click \"Create password\".",
+  "disconnect_google_btn": "I have a password. Disconnect Google account",
+  "create_password": "Create password",
+  "create_password_modal_text": "You will receive an email with a link to set a password to your e-mail. After setting the password, you can unlink your Google account while maintaining access to your personal account with the newly set password."
 }
