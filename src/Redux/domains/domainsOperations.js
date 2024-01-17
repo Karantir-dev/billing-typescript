@@ -1,5 +1,6 @@
 import qs from 'qs'
 import i18n from '@src/i18n'
+import { exists as isTranslationExists, t } from 'i18next'
 import axios from 'axios'
 import { actions, domainsActions, cartActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
@@ -133,14 +134,27 @@ const getDomainsOrderName =
         { signal },
       )
       .then(async ({ data }) => {
-        if (typeof data === 'string') {
-          throw new Error(data)
-        }
-        if (data.doc.error) {
+        if (data?.doc?.error) {
           throw new Error(data.doc.error.msg.$)
         }
 
-        const domainData = data?.doc
+        let domainData
+
+        /**
+         * Long request handling if we got html markup as string
+         */
+        async function handleLongRequest(data) {
+          if (typeof data === 'string') {
+            const longUrl = data.match(/long.+billmgr/)?.[0]
+
+            await axiosInstance.get(longUrl).then(({ data }) => {
+              handleLongRequest(data)
+            })
+          } else {
+            domainData = data?.doc
+          }
+        }
+        await handleLongRequest(data)
 
         const domains = []
 
@@ -197,6 +211,10 @@ const getDomainsOrderName =
           }
         }
 
+        /**
+         * This request is to check if there is premium domains
+         * among suggested by billmanager
+         */
         await axios
           .post(
             `${process.env.REACT_APP_API_URL}/api/domain/check/`,
@@ -224,25 +242,34 @@ const getDomainsOrderName =
             }
 
             setDomains && setDomains(domainsData)
-            setIsLoading(false)
+
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
           })
           .catch(err => {
-            if (checkIfTokenAlive(err.message, dispatch, true)) {
-              checkIfTokenAlive(err?.message, dispatch)
-              const domainsData = {
-                list: domains,
-                checked_domain: domainData?.checked_domain,
-                selected: selected,
-                domain_name: domainData?.tparams?.domain_name?.$,
-              }
-              setDomains && setDomains(domainsData)
-              setIsLoading(false)
+            handleLoadersClosing(err?.message, dispatch, setIsLoading)
+            console.log(err)
+
+            if (isTranslationExists(err?.message)) {
+              toast.error(t(err.message, { ns: ['auth', 'other'] }))
+            } else {
+              toast.error(t('premium_check_failed', { ns: 'domains' }), {
+                toastId: 'premium_check_failed',
+                updateId: 'premium_check_failed',
+              })
             }
+
+            const domainsData = {
+              list: domains,
+              checked_domain: domainData?.checked_domain,
+              selected: selected,
+              domain_name: domainData?.tparams?.domain_name?.$,
+            }
+            setDomains && setDomains(domainsData)
           })
       })
       .catch(error => {
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
-        checkIfTokenAlive(error.message, dispatch, true)
+        checkIfTokenAlive(error.message, dispatch)
       })
   }
 

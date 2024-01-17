@@ -57,7 +57,6 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
     if (!isExceptedError) {
       console.error(err)
 
-      // need to check whether it has sense (look for error translation)
       if (isTranslationExists(errorText)) {
         toast.error(t(errorText, { ns: ['auth', 'other'] }))
       } else {
