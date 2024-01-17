@@ -25,7 +25,12 @@ import {
 import { actions, dnsOperations, forexOperations, forexSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './ForexPage.module.scss'
-import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
+import {
+  checkServicesRights,
+  roundToDecimal,
+  useCancelRequest,
+  usePageRender,
+} from '@utils'
 
 export default function ForexPage() {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -381,7 +386,7 @@ export default function ForexPage() {
         <p className={s.total_price}>
           {t('total', { ns: 'other' })}:{' '}
           <span className={s.tools_footer_value}>
-            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+            {roundToDecimal(getTotalPrice())}€/{t('short_month', { ns: 'other' })}
           </span>
         </p>
       </div>

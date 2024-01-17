@@ -24,7 +24,7 @@ import {
 import { dnsOperations, dnsSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import s from './DNS.module.scss'
-import { useCancelRequest, usePageRender } from '@utils'
+import { roundToDecimal, useCancelRequest, usePageRender } from '@utils'
 
 export default function DNS() {
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
@@ -380,7 +380,7 @@ export default function DNS() {
         <p className={s.total_price}>
           {t('total', { ns: 'other' })}:{' '}
           <span className={s.tools_footer_value}>
-            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+            {roundToDecimal(getTotalPrice())}€/{t('short_month', { ns: 'other' })}
           </span>
         </p>
       </div>
