@@ -42,7 +42,12 @@ export default function VerificationModal() {
           <Icon name="Cross" className={s.icon} />
         </button>
         <p className={s.text}>{t('text')}</p>
-
+        <p className={s.hint}>
+          {t('hint')}{' '}
+          <a href="mailto:support@zomro.com" className={s.mail_link}>
+            support@zomro.com
+          </a>
+        </p>
         <form onSubmit={handleSubmit}>
           <label className={s.label} htmlFor="code">
             {t('label')}
