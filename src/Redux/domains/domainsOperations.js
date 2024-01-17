@@ -138,7 +138,7 @@ const getDomainsOrderName =
           throw new Error(data.doc.error.msg.$)
         }
 
-        let domainData = data?.doc
+        let domainData
 
         /**
          * Long request handling if we got html markup as string
@@ -268,7 +268,6 @@ const getDomainsOrderName =
           })
       })
       .catch(error => {
-        console.log(error)
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
         checkIfTokenAlive(error.message, dispatch)
       })
