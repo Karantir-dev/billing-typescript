@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next'
 import { authOperations, authSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import * as route from '@src/routes'
+import { RUS_LANG_COUNTRIES } from '@src/utils/constants'
 
 const Component = () => {
   const { i18n } = useTranslation()
@@ -28,30 +29,14 @@ const Component = () => {
 
   const changeLang = country => {
     let language = 'en'
+
     if (country === 'UA') {
       language = 'uk'
-    } else if (
-      country === 'AZ' ||
-      country === 'AM' ||
-      country === 'BY' ||
-      country === 'KG' ||
-      country === 'LV' ||
-      country === 'LT' ||
-      country === 'MD' ||
-      country === 'RU' ||
-      country === 'TJ' ||
-      country === 'TM' ||
-      country === 'UZ' ||
-      country === 'EE'
-    ) {
+    } else if (RUS_LANG_COUNTRIES.includes(country)) {
       language = 'ru'
-    } else if (country === 'KK' || country === 'KZ') {
-      language = 'kk'
-    } else if (country === 'GE' || country === 'KA') {
-      language = 'ka'
     }
 
-    i18n.changeLanguage(language || 'en').then(() => {
+    i18n.changeLanguage(language).then(() => {
       setIsLangLoading(false)
     })
   }
@@ -107,7 +92,10 @@ const Component = () => {
           path={route.RESET_PASSWORD}
           element={<AuthPage children={<PasswordReset />} />}
         />
-        <Route path={route.CHANGE_PASSWORD} element={<AuthPage children={<PasswordChange />} />} />
+        <Route
+          path={route.CHANGE_PASSWORD}
+          element={<AuthPage children={<PasswordChange />} />}
+        />
         <Route path={route.SOC_NET_AUTH} element={<SocialNetAuth />} />
         <Route
           path={route.GEO_CONFIRM}

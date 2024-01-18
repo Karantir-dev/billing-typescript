@@ -11,7 +11,6 @@ import ukraine_lang from '@images/lang/ukraine_lang.svg'
 import uk_lang from '@images/lang/uk_lang.svg'
 import goblin_lang from '@images/lang/russia_lang.svg'
 
-// const LANGUAGES = ['en', 'kk', 'uk', 'ka', 'ru']
 const LANGUAGES = [
   {
     langCode: 'uk',
@@ -79,10 +78,7 @@ export default function LangBtn({ burgerType, authType, mainType }) {
                   onClick={() => {
                     if (userInfo && userInfo?.$id) {
                       dispatch(
-                        settingsOperations.changeLang(
-                          userInfo?.$id,
-                          lang?.showLangCode === 'kz' ? 'kk' : lang?.showLangCode,
-                        ),
+                        settingsOperations.changeLang(userInfo?.$id, lang?.showLangCode),
                       )
                     } else {
                       dispatch(actions.showLoader())
