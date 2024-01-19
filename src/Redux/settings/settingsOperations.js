@@ -332,12 +332,7 @@ const setPersonalSettings =
         qs.stringify({
           func: 'user.edit',
           sok: 'ok',
-          lang:
-            i18n.language === 'uk'
-              ? 'ua'
-              : i18n?.language === 'kz'
-              ? 'kk'
-              : i18n.language,
+          lang: i18n.language === 'uk' ? 'ua' : i18n.language,
           out: 'json',
           auth: sessionId,
           elid,

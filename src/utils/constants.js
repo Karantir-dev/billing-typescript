@@ -145,3 +145,20 @@ export const VK_LOGIN_LINK =
 
 export const VK_REGISTRATION_LINK =
   'https://api.zomro.com/billmgr?func=oauth.redirect&newwindow=yes&network=vkontakte&project=4&currency=153&rparams='
+
+export const RUS_LANG_COUNTRIES = [
+  'AZ',
+  'AM',
+  'BY',
+  'KG',
+  'LV',
+  'LT',
+  'MD',
+  'RU',
+  'TJ',
+  'TM',
+  'UZ',
+  'EE',
+  'KZ',
+  'GE',
+]
