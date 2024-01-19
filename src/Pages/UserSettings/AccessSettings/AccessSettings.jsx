@@ -301,14 +301,13 @@ export default function Component({ isComponentAllowedToEdit }) {
                   <div className={s.socialRow}>
                     <SocialButton
                       onClick={
-                        // values?.google_status === 'off'
-                        //   ? () => {
-                        //       dispatch(authOperations.redirectToSocNetApi(SOC_NET.google))
-                        //     }
-                        //   :
-                        () => {
-                          setIsDisconnectGoogleModal(true)
-                        }
+                        values?.google_status === 'off'
+                          ? () => {
+                              dispatch(authOperations.redirectToSocNetApi(SOC_NET.google))
+                            }
+                          : () => {
+                              setIsDisconnectGoogleModal(true)
+                            }
                       }
                       isNotConnected={values?.google_status === 'off'}
                       platform="Google"
