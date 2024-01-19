@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import {
@@ -42,7 +41,8 @@ export default function Component({ isComponentAllowedToEdit }) {
   const userInfo = useSelector(userSelectors.getUserInfo)
   const geoData = useSelector(authSelectors.getGeoData)
   const clientCountryId = geoData.clients_country_id
-
+console.log(userParams, ' userParams');
+console.log(userInfo, ' userInfo');
   const [isModal, setIsModal] = useState(false)
   const [isDisconnectGoogleModal, setIsDisconnectGoogleModal] = useState(false)
   const [isCreatePasswordModal, setIsCreatePasswordModal] = useState(false)
@@ -441,6 +441,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                     label={t('create_password')}
                     type="button"
                     className={s.disconnect_btn}
+                    isShadow
                   />
                   <div>
                     <Button
@@ -455,6 +456,7 @@ export default function Component({ isComponentAllowedToEdit }) {
                       label={t('disconnect_google_btn')}
                       type="button"
                       className={s.disconnect_btn}
+                      isShadow
                     />
                     <p className={s.disconnect_btn_caption}>
                       {t('disconnect_google_btn_caprion')}
@@ -469,20 +471,15 @@ export default function Component({ isComponentAllowedToEdit }) {
                 className={s.disconnect_modal_finish}
               >
                 <Modal.Body className={s.disconnect_modal_finish_body}>
-                  <p className={s.disconnect_text}>
-                    {' '}
-                    {t('create_password_modal_text_1')}
-                  </p>
-                  <p className={s.disconnect_text}>
-                    {' '}
-                    {t('create_password_modal_text_2')}
-                  </p>
+                  <p className={s.disconnect_text}>{t('create_password_modal_text_1')}</p>
+                  <p className={s.disconnect_text}>{t('create_password_modal_text_2')}</p>
                 </Modal.Body>
                 <Modal.Footer column className={s.disconnect_modal_finish_footer}>
                   <Button
                     onClick={() => closeCreatePasswordModalHandler()}
                     label={t('ok', { ns: 'other' })}
                     className={s.disconnect_btn}
+                    isShadow
                   />
                 </Modal.Footer>
               </Modal>

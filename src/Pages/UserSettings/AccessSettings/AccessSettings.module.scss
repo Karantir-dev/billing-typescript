@@ -211,8 +211,10 @@
 }
 
 .disconnect_modal_footer {
-  justify-content: space-between;
-  align-items: flex-start;
+  @media (min-width: 768px) {
+    justify-content: space-between;
+    align-items: flex-start;
+  }
 }
 
 .disconnect_modal_finish {
@@ -240,6 +242,7 @@
   height: 55px;
   span {
     text-transform: none;
+    font-weight: 700;
   }
 }
 
@@ -247,6 +250,7 @@
   text-align: center;
   font-size: 16px;
   color: var(--transparent-color);
+  margin-top: 5px;
 }
 
 @media screen and (min-width: 768px) {
