@@ -1195,10 +1195,7 @@ export default function Component() {
                     </div>
                     <div
                       className={cn(s.padding, s.payersList, {
-                        [s.hide]:
-                          (values?.selectedPayMethod?.name?.$?.includes('balance') &&
-                            values?.selectedPayMethod?.paymethod_type?.$ === '0') ||
-                          !values?.selectedPayMethod,
+                        [s.hide]: !values?.selectedPayMethod,
                       })}
                     >
                       <PayersList renderTitle={renderPayersListTitle} />
