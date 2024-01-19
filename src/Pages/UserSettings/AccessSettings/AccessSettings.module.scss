@@ -202,8 +202,51 @@
   align-items: center;
 }
 
+.disconnect_modal {
+  max-width: 682px;
+}
+
+.disconnect_modal_body {
+  background-color: var(--main-bgc);
+}
+
+.disconnect_modal_footer {
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.disconnect_modal_finish {
+  max-width: 595px;
+}
+
+.disconnect_modal_finish_body {
+  padding: 40px;
+  text-align: center;
+}
+
+.disconnect_modal_finish_footer {
+  box-shadow: none;
+}
+
 .disconnect_text {
   font-size: 18px;
+  & + & {
+    margin-top: 10px;
+  }
+}
+
+.disconnect_btn {
+  width: 283px;
+  height: 55px;
+  span {
+    text-transform: none;
+  }
+}
+
+.disconnect_btn_caption {
+  text-align: center;
+  font-size: 16px;
+  color: var(--transparent-color);
 }
 
 @media screen and (min-width: 768px) {

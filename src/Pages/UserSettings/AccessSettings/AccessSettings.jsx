@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import {
@@ -300,13 +301,14 @@ export default function Component({ isComponentAllowedToEdit }) {
                   <div className={s.socialRow}>
                     <SocialButton
                       onClick={
-                        values?.google_status === 'off'
-                          ? () => {
-                              dispatch(authOperations.redirectToSocNetApi(SOC_NET.google))
-                            }
-                          : () => {
-                              setIsDisconnectGoogleModal(true)
-                            }
+                        // values?.google_status === 'off'
+                        //   ? () => {
+                        //       dispatch(authOperations.redirectToSocNetApi(SOC_NET.google))
+                        //     }
+                        //   :
+                        () => {
+                          setIsDisconnectGoogleModal(true)
+                        }
                       }
                       isNotConnected={values?.google_status === 'off'}
                       platform="Google"
@@ -418,84 +420,71 @@ export default function Component({ isComponentAllowedToEdit }) {
                 isOpen={isDisconnectGoogleModal}
                 closeModal={closeDisconnectGoogleModalHandler}
                 isClickOutside
+                className={s.disconnect_modal}
               >
-                <Modal.Header />
-                <Modal.Body>
+                <Modal.Header>{t('disconnect_google_modal_title')}</Modal.Header>
+                <Modal.Body className={s.disconnect_modal_body}>
                   <p className={s.disconnect_text}>{t('disconnect_google_modal_text')}</p>
                 </Modal.Body>
-                <Modal.Footer column>
+                <Modal.Footer className={s.disconnect_modal_footer}>
+                  <Button
+                    onClick={() => {
+                      closeDisconnectGoogleModalHandler()
+                      dispatch(
+                        authOperations.reset(
+                          userInfo.$email,
+                          setIsCreatePasswordModal,
+                          setErrorType,
+                          setErrorTime,
+                        ),
+                      )
+                    }}
+                    label={t('create_password')}
+                    type="button"
+                    className={s.disconnect_btn}
+                  />
                   <div>
                     <Button
                       onClick={() => {
+                        setFieldValue('google_status', 'off')
+                        handleSocialLinkClick({
+                          ...socialState,
+                          google_status: 'off',
+                        })
                         closeDisconnectGoogleModalHandler()
-                        setIsCreatePasswordModal(true)
                       }}
-                      label={t('create_password')}
+                      label={t('disconnect_google_btn')}
+                      type="button"
+                      className={s.disconnect_btn}
                     />
+                    <p className={s.disconnect_btn_caption}>
+                      {t('disconnect_google_btn_caprion')}
+                    </p>
                   </div>
-                  <button
-                    onClick={() => {
-                      setFieldValue('google_status', 'off')
-                      handleSocialLinkClick({
-                        ...socialState,
-                        google_status: 'off',
-                      })
-                      closeDisconnectGoogleModalHandler()
-                    }}
-                    type="button"
-                    className={s.cancel}
-                  >
-                    {t('disconnect_google_btn')}
-                  </button>
-                  <button
-                    onClick={closeDisconnectGoogleModalHandler}
-                    type="button"
-                    className={s.cancel}
-                  >
-                    {t('Cancel', { ns: 'other' })}
-                  </button>
                 </Modal.Footer>
               </Modal>
               <Modal
                 isOpen={isCreatePasswordModal}
                 closeModal={closeCreatePasswordModalHandler}
                 isClickOutside
+                className={s.disconnect_modal_finish}
               >
-                <Modal.Header />
-                <Modal.Body>
-                  <p className={s.disconnect_text}> {t('create_password_modal_text')}</p>
+                <Modal.Body className={s.disconnect_modal_finish_body}>
+                  <p className={s.disconnect_text}>
+                    {' '}
+                    {t('create_password_modal_text_1')}
+                  </p>
+                  <p className={s.disconnect_text}>
+                    {' '}
+                    {t('create_password_modal_text_2')}
+                  </p>
                 </Modal.Body>
-                <Modal.Footer column>
-                  <div>
-                    <Button
-                      onClick={() => {
-                        closeCreatePasswordModalHandler()
-                        dispatch(
-                          authOperations.reset(
-                            userInfo.$email,
-                            () =>
-                              showToastHandler(
-                                t('reset.form_title', { ns: 'auth' }),
-                                'success',
-                              ),
-                            setErrorType,
-                            setErrorTime,
-                          ),
-                        )
-                      }}
-                      label={t('create_password')}
-                    />
-                  </div>
-                  <button
-                    onClick={() => {
-                      closeCreatePasswordModalHandler()
-                      setIsDisconnectGoogleModal(true)
-                    }}
-                    type="button"
-                    className={s.cancel}
-                  >
-                    {t('Back', { ns: 'other' })}
-                  </button>
+                <Modal.Footer column className={s.disconnect_modal_finish_footer}>
+                  <Button
+                    onClick={() => closeCreatePasswordModalHandler()}
+                    label={t('ok', { ns: 'other' })}
+                    className={s.disconnect_btn}
+                  />
                 </Modal.Footer>
               </Modal>
             </>

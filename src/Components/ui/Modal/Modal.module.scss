@@ -19,7 +19,12 @@
     z-index: 2;
     background-color: var(--forms_bgc_2);
     box-shadow: var(--modal_header_shadow);
-
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 113%;
+    color: var(--main-text);
+    
     @media screen and (min-width: 768px) {
       padding: 18px 25px 18px 35px;
     }
@@ -41,7 +46,7 @@
   &__body {
     display: flex;
     flex-direction: column;
-    padding: 20px 10px;
+    padding: 20px;
     height: 100%;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -68,12 +73,11 @@
       display: flex;
       flex-direction: column;
       flex-grow: 1;
-      padding: 0 10px;
       overflow: hidden;
+    }
 
-      @media screen and (min-width: 768px) {
-        padding: 0 25px;
-      }
+    @media screen and (min-width: 768px) {
+      padding: 20px 35px;
     }
   }
 
