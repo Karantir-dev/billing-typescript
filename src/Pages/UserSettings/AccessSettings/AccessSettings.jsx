@@ -41,7 +41,6 @@ export default function Component({ isComponentAllowedToEdit }) {
   const userInfo = useSelector(userSelectors.getUserInfo)
   const geoData = useSelector(authSelectors.getGeoData)
   const clientCountryId = geoData.clients_country_id
-console.log(userParams, ' userParams');
 console.log(userInfo, ' userInfo');
   const [isModal, setIsModal] = useState(false)
   const [isDisconnectGoogleModal, setIsDisconnectGoogleModal] = useState(false)
