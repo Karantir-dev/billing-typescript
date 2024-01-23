@@ -8,6 +8,7 @@ import {
   ModalTwoStepVerification,
   Icon,
   CheckBox,
+  Modal,
 } from '@components'
 import { Form, Formik } from 'formik'
 import { useSelector, useDispatch } from 'react-redux'
@@ -26,11 +27,7 @@ import * as Yup from 'yup'
 import * as routes from '@src/routes'
 import s from './AccessSettings.module.scss'
 import { toast } from 'react-toastify'
-import {
-  PASS_REGEX,
-  PASS_REGEX_ASCII,
-  SOC_NET
-} from '@src/utils/constants'
+import { PASS_REGEX, PASS_REGEX_ASCII, SOC_NET } from '@src/utils/constants'
 
 export default function Component({ isComponentAllowedToEdit }) {
   const dispatch = useDispatch()
@@ -44,8 +41,13 @@ export default function Component({ isComponentAllowedToEdit }) {
   const userInfo = useSelector(userSelectors.getUserInfo)
   const geoData = useSelector(authSelectors.getGeoData)
   const clientCountryId = geoData.clients_country_id
-
   const [isModal, setIsModal] = useState(false)
+  const [isDisconnectGoogleModal, setIsDisconnectGoogleModal] = useState(false)
+  const [isCreatePasswordModal, setIsCreatePasswordModal] = useState(false)
+  const [errorType, setErrorType] = useState('')
+  const [errorTime, setErrorTime] = useState('')
+  const closeDisconnectGoogleModalHandler = () => setIsDisconnectGoogleModal(false)
+  const closeCreatePasswordModalHandler = () => setIsCreatePasswordModal(false)
 
   const setSettingsHandler = (values, { setFieldValue }) => {
     dispatch(settingsOperations?.setPasswordAccess(userInfo?.$id, values, setFieldValue))
@@ -53,6 +55,21 @@ export default function Component({ isComponentAllowedToEdit }) {
   const handleSocialLinkClick = values => {
     dispatch(settingsOperations?.changeSocialLinkStatus(userInfo?.$id, values))
   }
+
+  useEffect(() => {
+    if (errorType === 'min_email_send_timeout') {
+      if (errorTime) {
+        showToastHandler(
+          t(`warnings.${errorType}`, { ns: 'auth', time: errorTime }),
+          'error',
+        )
+      }
+    } else if (errorType) {
+      showToastHandler(t(`warnings.${errorType}`, { ns: 'auth' }), 'error')
+    }
+  }, [errorType, errorTime])
+
+  const showToastHandler = (value, type) => toast[type](value)
 
   const validationSchema = Yup.object().shape({
     passwd: Yup.string()
@@ -179,127 +196,124 @@ export default function Component({ isComponentAllowedToEdit }) {
           }
 
           return (
-            <Form onKeyDown={onKeyDown} className={s.personalBlock}>
-              <div className={s.block}>
-                <h2 className={s.settingsTitle}>{t('Change Password')}</h2>
-                <div className={cn(s.formRow, s.passwordsColumn)}>
-                  <InputField
-                    background
-                    name="old_passwd"
-                    type="password"
-                    label={`${t('Old Password')}:`}
-                    placeholder={t('Enter old password')}
-                    isShadow
-                    className={cn(s.oldpassInput, s.input, s.icon)}
-                    inputClassName={s.inputClass}
-                    error={!!errors.old_passwd}
-                    touched={!!touched.old_passwd}
-                  />
-                  <InputField
-                    background
-                    name="passwd"
-                    type="password"
-                    label={`${t('New Password')}:`}
-                    placeholder={t('Enter a new password')}
-                    isShadow
-                    className={cn(s.input, s.icon)}
-                    inputClassName={s.inputClass}
-                    error={!!errors.passwd}
-                    touched={!!touched.passwd}
-                  />
-                </div>
-                <div className={s.formRow}>
-                  <InputField
-                    background
-                    name="confirm"
-                    type="password"
-                    label={`${t('Password confirmation')}:`}
-                    placeholder={t('Confirm your password')}
-                    isShadow
-                    className={cn(s.input, s.icon)}
-                    inputClassName={s.inputClass}
-                    error={!!errors.confirm}
-                    touched={!!touched.confirm}
-                  />
-                </div>
-              </div>
-              <div className={s.block}>
-                <h2 className={s.settingsTitle}>{t('Access limitation')}</h2>
-                <div className={s.formRow}>
-                  <div className={s.ipsForm}>
-                    <Select
-                      value={values.atype}
-                      getElement={item => setFieldValue('atype', item)}
-                      itemsList={userParams?.ipTypeList?.map(({ $, $key }) => ({
-                        label: t(`${$.trim()}`),
-                        value: $key,
-                      }))}
-                      className={cn(s.select, s.input)}
-                      inputClassName={s.inputClass}
-                      isShadow
+            <>
+              <Form onKeyDown={onKeyDown} className={s.personalBlock}>
+                <div className={s.block}>
+                  <h2 className={s.settingsTitle}>{t('Change Password')}</h2>
+                  <div className={cn(s.formRow, s.passwordsColumn)}>
+                    <InputField
                       background
+                      name="old_passwd"
+                      type="password"
+                      label={`${t('Old Password')}:`}
+                      placeholder={t('Enter old password')}
+                      isShadow
+                      className={cn(s.oldpassInput, s.input, s.icon)}
+                      inputClassName={s.inputClass}
+                      error={!!errors.old_passwd}
+                      touched={!!touched.old_passwd}
                     />
-                    {values.atype === 'atallow' && (
-                      <InputField
-                        background
-                        name="atallowIp"
-                        placeholder={t('Set trusted IPs')}
-                        isShadow
-                        className={s.trustedIp}
-                        error={!!errors.atallowIp}
-                        touched={!!touched.atallowIp}
-                        iconRight="plus"
-                        onKeyDown={addIpHandler}
-                        onPlusClick={addIpHandlerPlus}
-                      />
-                    )}
+                    <InputField
+                      background
+                      name="passwd"
+                      type="password"
+                      label={`${t('New Password')}:`}
+                      placeholder={t('Enter a new password')}
+                      isShadow
+                      className={cn(s.input, s.icon)}
+                      inputClassName={s.inputClass}
+                      error={!!errors.passwd}
+                      touched={!!touched.passwd}
+                    />
                   </div>
-                  <div className={s.bindIp}>
-                    <div className={s.bindIpText}>{t('Bind session to IP')}</div>
-                    <CheckBox
-                      value={values.secureip}
-                      onClick={() => setFieldValue('secureip', !values.secureip)}
-                      type="switcher"
+                  <div className={s.formRow}>
+                    <InputField
+                      background
+                      name="confirm"
+                      type="password"
+                      label={`${t('Password confirmation')}:`}
+                      placeholder={t('Confirm your password')}
+                      isShadow
+                      className={cn(s.input, s.icon)}
+                      inputClassName={s.inputClass}
+                      error={!!errors.confirm}
+                      touched={!!touched.confirm}
                     />
                   </div>
                 </div>
-                {values.atype === 'atallow' && (
-                  <div className={s.selectedIp}>
-                    {values?.allowIpList?.map((el, index) => {
-                      return (
-                        <div className={s.selectedItem} key={index}>
-                          <div>{el}</div>
-                          <Icon name="Cross" onClick={() => deleteIpHandler(index)} />
-                        </div>
-                      )
-                    })}
+                <div className={s.block}>
+                  <h2 className={s.settingsTitle}>{t('Access limitation')}</h2>
+                  <div className={s.formRow}>
+                    <div className={s.ipsForm}>
+                      <Select
+                        value={values.atype}
+                        getElement={item => setFieldValue('atype', item)}
+                        itemsList={userParams?.ipTypeList?.map(({ $, $key }) => ({
+                          label: t(`${$.trim()}`),
+                          value: $key,
+                        }))}
+                        className={cn(s.select, s.input)}
+                        inputClassName={s.inputClass}
+                        isShadow
+                        background
+                      />
+                      {values.atype === 'atallow' && (
+                        <InputField
+                          background
+                          name="atallowIp"
+                          placeholder={t('Set trusted IPs')}
+                          isShadow
+                          className={s.trustedIp}
+                          error={!!errors.atallowIp}
+                          touched={!!touched.atallowIp}
+                          iconRight="plus"
+                          onKeyDown={addIpHandler}
+                          onPlusClick={addIpHandlerPlus}
+                        />
+                      )}
+                    </div>
+                    <div className={s.bindIp}>
+                      <div className={s.bindIpText}>{t('Bind session to IP')}</div>
+                      <CheckBox
+                        value={values.secureip}
+                        onClick={() => setFieldValue('secureip', !values.secureip)}
+                        type="switcher"
+                      />
+                    </div>
                   </div>
-                )}
-              </div>
-              <div className={s.block}>
-                <h2 className={s.settingsTitle}>{t('Login via social networks')}</h2>
-                <div className={s.socialRow}>
-                  <SocialButton
-                    onClick={
-                      values?.google_status === 'off'
-                        ? () => {
-                            dispatch(authOperations.redirectToSocNetApi(SOC_NET.google))
-                          }
-                        : () => {
-                            setFieldValue('google_status', 'off')
-                            handleSocialLinkClick({
-                              ...socialState,
-                              google_status: 'off',
-                            })
-                          }
-                    }
-                    isNotConnected={values?.google_status === 'off'}
-                    platform="Google"
-                  >
-                    <Icon name="Google" className={s.googleIcon} />
-                  </SocialButton>
+                  {values.atype === 'atallow' && (
+                    <div className={s.selectedIp}>
+                      {values?.allowIpList?.map((el, index) => {
+                        return (
+                          <div className={s.selectedItem} key={index}>
+                            <div>{el}</div>
+                            <Icon name="Cross" onClick={() => deleteIpHandler(index)} />
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+                <div className={s.block}>
+                  <h2 className={s.settingsTitle}>{t('Login via social networks')}</h2>
+                  <div className={s.socialRow}>
+                    <SocialButton
+                      onClick={
+                        values?.google_status === 'off'
+                          ? () => {
+                              dispatch(authOperations.redirectToSocNetApi(SOC_NET.google))
+                            }
+                          : () => {
+                              setIsDisconnectGoogleModal(true)
+                            }
+                      }
+                      isNotConnected={values?.google_status === 'off'}
+                      platform="Google"
+                    >
+                      <Icon name="Google" className={s.googleIcon} />
+                    </SocialButton>
 
-                  {/* <SocialButton
+                    {/* <SocialButton
                     onClick={
                       values?.facebook_status === 'off'
                         ? () => {
@@ -319,86 +333,155 @@ export default function Component({ isComponentAllowedToEdit }) {
                     <Icon name="FacebookSmall" />
                   </SocialButton> */}
 
-                  {(clientCountryId === '182' ||
-                    clientCountryId === '80' ||
-                    clientCountryId === '113') && (
-                    <SocialButton
-                      onClick={
-                        values?.vkontakte_status === 'off'
-                          ? () => {
-                              dispatch(
-                                authOperations.redirectToSocNetApi(SOC_NET.vkontakte),
-                              )
-                            }
-                          : () => {
-                              setFieldValue('vkontakte_status', 'off')
-                              handleSocialLinkClick({
-                                ...socialState,
-                                vkontakte_status: 'off',
-                              })
-                            }
-                      }
-                      isNotConnected={values?.vkontakte_status === 'off'}
-                      platform="Вконтакте"
+                    {(clientCountryId === '182' ||
+                      clientCountryId === '80' ||
+                      clientCountryId === '113') && (
+                      <SocialButton
+                        onClick={
+                          values?.vkontakte_status === 'off'
+                            ? () => {
+                                dispatch(
+                                  authOperations.redirectToSocNetApi(SOC_NET.vkontakte),
+                                )
+                              }
+                            : () => {
+                                setFieldValue('vkontakte_status', 'off')
+                                handleSocialLinkClick({
+                                  ...socialState,
+                                  vkontakte_status: 'off',
+                                })
+                              }
+                        }
+                        isNotConnected={values?.vkontakte_status === 'off'}
+                        platform="Вконтакте"
+                      >
+                        <Icon name="VkSmall" />
+                      </SocialButton>
+                    )}
+                  </div>
+                </div>
+                <div className={s.block}>
+                  <h2 className={s.settingsTitle}>{t('2-Step Verification')}</h2>
+                  {userParams?.status_totp === 'on' ? (
+                    <div className={s.twoStepVerif}>
+                      <InputField
+                        background
+                        label={t('Disable 2-Step Verification')}
+                        type="text"
+                        name="disable_totp"
+                        value={values?.disable_totp}
+                        onChange={e => onInputItemsChange(e?.target?.value)}
+                        placeholder={t('Enter password')}
+                        isShadow
+                        className={s.trustedIp}
+                        error={!!errors.disable_totp}
+                        touched={!!touched.disable_totp}
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      onClick={openTwoStepVerifHandler}
+                      type="button"
+                      className={s.verification}
                     >
-                      <Icon name="VkSmall" />
-                    </SocialButton>
+                      {t('Enable 2-Step Verification')}
+                    </button>
                   )}
                 </div>
-              </div>
-              <div className={s.block}>
-                <h2 className={s.settingsTitle}>{t('2-Step Verification')}</h2>
-                {userParams?.status_totp === 'on' ? (
-                  <div className={s.twoStepVerif}>
-                    <InputField
-                      background
-                      label={t('Disable 2-Step Verification')}
-                      type="text"
-                      name="disable_totp"
-                      value={values?.disable_totp}
-                      onChange={e => onInputItemsChange(e?.target?.value)}
-                      placeholder={t('Enter password')}
-                      isShadow
-                      className={s.trustedIp}
-                      error={!!errors.disable_totp}
-                      touched={!!touched.disable_totp}
-                    />
-                  </div>
-                ) : (
+                <div className={s.btnBlock}>
+                  <Button
+                    className={cn({
+                      [s.saveBtn]: true,
+                      [s.shown]: true,
+                    })}
+                    isShadow
+                    size="medium"
+                    label={t('Save', { ns: 'other' })}
+                    type="submit"
+                    disabled={!isComponentAllowedToEdit}
+                  />
                   <button
-                    onClick={openTwoStepVerifHandler}
+                    onClick={() =>
+                      navigate(routes?.HOME, {
+                        replace: true,
+                      })
+                    }
                     type="button"
-                    className={s.verification}
+                    className={s.cancel}
                   >
-                    {t('Enable 2-Step Verification')}
+                    {t('Cancel', { ns: 'other' })}
                   </button>
-                )}
-              </div>
-              <div className={s.btnBlock}>
-                <Button
-                  className={cn({
-                    [s.saveBtn]: true,
-                    [s.shown]: true,
-                  })}
-                  isShadow
-                  size="medium"
-                  label={t('Save', { ns: 'other' })}
-                  type="submit"
-                  disabled={!isComponentAllowedToEdit}
-                />
-                <button
-                  onClick={() =>
-                    navigate(routes?.HOME, {
-                      replace: true,
-                    })
-                  }
-                  type="button"
-                  className={s.cancel}
-                >
-                  {t('Cancel', { ns: 'other' })}
-                </button>
-              </div>
-            </Form>
+                </div>
+              </Form>
+              <Modal
+                isOpen={isDisconnectGoogleModal}
+                closeModal={closeDisconnectGoogleModalHandler}
+                isClickOutside
+                className={s.disconnect_modal}
+              >
+                <Modal.Header>{t('disconnect_google_modal_title')}</Modal.Header>
+                <Modal.Body className={s.disconnect_modal_body}>
+                  <p className={s.disconnect_text}>{t('disconnect_google_modal_text')}</p>
+                </Modal.Body>
+                <Modal.Footer className={s.disconnect_modal_footer}>
+                  <Button
+                    onClick={() => {
+                      closeDisconnectGoogleModalHandler()
+                      dispatch(
+                        authOperations.reset(
+                          userInfo.$email,
+                          setIsCreatePasswordModal,
+                          setErrorType,
+                          setErrorTime,
+                        ),
+                      )
+                    }}
+                    label={t('create_password')}
+                    type="button"
+                    className={s.disconnect_btn}
+                    isShadow
+                  />
+                  <div>
+                    <Button
+                      onClick={() => {
+                        setFieldValue('google_status', 'off')
+                        handleSocialLinkClick({
+                          ...socialState,
+                          google_status: 'off',
+                        })
+                        closeDisconnectGoogleModalHandler()
+                      }}
+                      label={t('disconnect_google_btn')}
+                      type="button"
+                      className={s.disconnect_btn}
+                      isShadow
+                    />
+                    <p className={s.disconnect_btn_caption}>
+                      {t('disconnect_google_btn_caprion')}
+                    </p>
+                  </div>
+                </Modal.Footer>
+              </Modal>
+              <Modal
+                isOpen={isCreatePasswordModal}
+                closeModal={closeCreatePasswordModalHandler}
+                isClickOutside
+                className={s.disconnect_modal_finish}
+              >
+                <Modal.Body className={s.disconnect_modal_finish_body}>
+                  <p className={s.disconnect_text}>{t('create_password_modal_text_1')}</p>
+                  <p className={s.disconnect_text}>{t('create_password_modal_text_2')}</p>
+                </Modal.Body>
+                <Modal.Footer column className={s.disconnect_modal_finish_footer}>
+                  <Button
+                    onClick={() => closeCreatePasswordModalHandler()}
+                    label={t('ok', { ns: 'other' })}
+                    className={s.disconnect_btn}
+                    isShadow
+                  />
+                </Modal.Footer>
+              </Modal>
+            </>
           )
         }}
       </Formik>

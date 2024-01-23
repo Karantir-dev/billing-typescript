@@ -58,7 +58,7 @@
   "Disable 2-Step Verification": "Disable 2-Step Verification",
   "Invalid confirmation code": "Invalid confirmation code",
   "existing social network": "This social network is already in use linked to your other account. If you want to link it here, please unlink it in another account",
-  "disconnect from": "Disconnect from",
+  "disconnect from": "Disconnect account",
   "Setting up Telegram notifications": "Setting up Telegram notifications",
   "Click \"send confirmation\" for resending": "Click \"send confirmation\" for resending",
   "Enter your login in the form below": "Enter your login in the form below",
@@ -103,5 +103,12 @@
 
   "Main number": "Main number",
   "verification_code_timeout": "The verification code can be sent again in {{time}} seconds",
-  "geo_ip_info": "The GeoIP module defines a country from which a user logs in to BILLmanager. When he logs in from a different country, BILLmanager sends the corresponding notification and asks to confirm the login attempt."
+  "geo_ip_info": "The GeoIP module defines a country from which a user logs in to BILLmanager. When he logs in from a different country, BILLmanager sends the corresponding notification and asks to confirm the login attempt.",
+  "disconnect_google_modal_title": "Disconnecting the account",
+  "disconnect_google_modal_text": "If you don't know the password to your account, you can set it now before unlinking the social network account. To do this, click \"Create password\".",
+  "disconnect_google_btn": "Disconnect Google account",
+  "disconnect_google_btn_caprion": "(I have a password)",
+  "create_password": "Create password",
+  "create_password_modal_text_1": "Within 5 minutes, you will receive an email with a password reset link.",
+  "create_password_modal_text_2": "After setting the password, you will need to return to this page and unlink the account."
 }
