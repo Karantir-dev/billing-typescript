@@ -135,7 +135,7 @@ export default function DedicTarifCard({
             {cardParameters.map((el, i) => (
               <li key={i} className={s.card_subtitles}>
                 <Icon name="CheckFat" />
-                {el}
+                {' ' + t(el.trim())}
               </li>
             ))}
           </ul>

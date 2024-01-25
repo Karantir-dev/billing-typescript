@@ -3,7 +3,13 @@ import s from './TariffConfig.module.scss'
 import { Form, Formik } from 'formik'
 import { Icon, Select, SoftwareOSBtn, SoftwareOSSelect, InputField } from '@components'
 import * as Yup from 'yup'
-import { DOMAIN_REGEX, getPortSpeed, translatePeriodText, roundToDecimal } from '@utils'
+import {
+  DOMAIN_REGEX,
+  getPortSpeed,
+  translatePeriodText,
+  roundToDecimal,
+  autoprolongList,
+} from '@utils'
 import { useEffect } from 'react'
 
 export default function TariffConfig({
@@ -14,7 +20,7 @@ export default function TariffConfig({
   onSubmit,
   setIsFormError,
 }) {
-  const { t } = useTranslation(['vds', 'dedicated_servers'])
+  const { t } = useTranslation(['vds', 'dedicated_servers', 'autoprolong', 'domains'])
 
   const renderSoftwareOSFields = (fieldName, state, ostempl) => {
     const changeOSHandler = value =>
@@ -250,10 +256,10 @@ export default function TariffConfig({
                   disabled
                 />
               )}
-              {values.autoprolong && (
+              {!parameters.autoprolong_unavailable?.$ && (
                 <Select
                   value={values.autoprolong}
-                  itemsList={getOptionsListExtended('autoprolong')}
+                  itemsList={autoprolongList()}
                   getElement={value => {
                     changeFieldHandler('autoprolong', { $: value })
                   }}

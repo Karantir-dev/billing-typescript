@@ -62,11 +62,11 @@ export default function FourthStep({ state, setState, parameters, service, id, c
 
     const params = {
       service,
-      period: parameters.period.$,
+      period: parameters.order_period.$,
       id,
       ostempl: ostempl?.$,
       recipe: recipe?.$,
-      autoprolong: parameters.autoprolong?.$,
+      autoprolong: parameters.autoprolong?.$ === 'on' ? parameters.order_period.$ : 'off',
       order_count: count,
       domain: domain?.$ || '',
       server_name: server_name?.$ || '',

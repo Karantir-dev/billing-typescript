@@ -267,14 +267,13 @@ const getParameters =
       .post(
         '/',
         qs.stringify({
-          func: 'dedic.order.pricelist',
+          func: 'v2.dedic.order.param',
           out: 'json',
           auth: sessionId,
           period,
           pricelist,
-          snext: 'ok',
-          sok: 'ok',
           lang: 'en',
+          licence_agreement: 'on',
         }),
         { signal },
       )
@@ -299,9 +298,9 @@ const getParameters =
         const managePanel = paramsList?.filter(item => item.$name.includes('addon'))
         const portSpeed = paramsList?.filter(item => item.$name.includes('addon'))
         const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
-        const ipSliderData = data.doc?.metadata?.form?.field?.find(
-          item => item?.$name === ipAddon,
-        )?.slider[0]
+        const ipSliderData = data.doc?.metadata?.form?.page
+          .find(item => item?.$name === 'page_pricelist_settings')
+          .field?.find(item => item?.$name === ipAddon)?.slider[0]
 
         const ipListData = []
         if (ipSliderData) {
@@ -324,10 +323,10 @@ const getParameters =
         setFieldValue('recipelList', recipe[0].val)
         setFieldValue('managePanellList', managePanel[0].val)
         setFieldValue('portSpeedlList', portSpeed.length > 1 ? portSpeed[1].val : [])
-        setFieldValue('autoprolonglList', autoprolong[0].val)
+        setFieldValue('autoprolonglList', autoprolong[0]?.val)
         setFieldValue('ipName', ipAddon)
 
-        setFieldValue('autoprolong', autoprolong[0]?.val[1]?.$key)
+        setFieldValue('autoprolong', data.doc.autoprolong.$)
         setFieldValue('ostempl', ostempl[0]?.val[0]?.$key)
         setFieldValue('recipe', recipe[0]?.val[0]?.$key)
         setFieldValue('managePanel', managePanel[0]?.val[0]?.$key)
@@ -373,26 +372,26 @@ const updatePrice =
       .post(
         '/',
         qs.stringify({
-          func: 'dedic.order.pricelist',
+          func: 'v2.dedic.order.param',
           out: 'json',
           auth: sessionId,
           period,
           pricelist,
           [managePanelName]: managePanel,
-          snext: 'ok',
-          sok: 'ok',
           lang: 'en',
           [ipName]: ipTotal,
           [portSpeedName]: portSpeed,
+          licence_agreement: 'on',
         }),
         { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        let price = data.doc.orderinfo.$.split('Total amount:')[1].replace(' </b>', '')
+        let price = data.doc.list?.find(item => item.$name === 'pricelist_summary')
+          .elem[0].cost.price.cost.$
 
-        updatePrice(price?.replace('EUR', ''))
+          updatePrice(price)
         setIsLoading(false)
       })
       .catch(error => {

@@ -28,11 +28,11 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import {
   checkIfTokenAlive,
   useScrollToElement,
-  translatePeriod,
   useCancelRequest,
   translatePeriodText,
   getPortSpeed,
   roundToDecimal,
+  autoprolongList,
 } from '@utils'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
@@ -564,7 +564,7 @@ export default function DedicOrderPage() {
           userOperations.cleanBsketHandler(() =>
             dispatch(
               dedicOperations.orderServer(
-                autoprolong,
+                autoprolong === 'on' ? period : autoprolong,
                 period,
                 tarif,
                 domain,
@@ -942,10 +942,7 @@ export default function DedicOrderPage() {
                         itemsList={
                           isTarifChosen === 'vds'
                             ? getOptionsListExtended('autoprolong')
-                            : values?.autoprolonglList?.map(el => ({
-                                label: translatePeriod(el?.$, el.$key, t),
-                                value: el.$key,
-                              }))
+                            : autoprolongList()
                         }
                         className={s.select}
                       />
