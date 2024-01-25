@@ -25,7 +25,7 @@ import { useMediaQuery } from 'react-responsive'
 
 import * as route from '@src/routes'
 import s from './DedicatedServersPage.module.scss'
-import { checkServicesRights, useCancelRequest, usePageRender, isDisabledDedicTariff } from '@utils'
+import { checkServicesRights, useCancelRequest, usePageRender, isDisabledDedicTariff, roundToDecimal } from '@utils'
 
 export default function DedicatedServersPage() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'dedic')
@@ -407,7 +407,7 @@ export default function DedicatedServersPage() {
         <p className={s.total_price}>
           {t('total', { ns: 'other' })}:
           <span className={s.tools_footer_value}>
-            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+            {roundToDecimal(getTotalPrice())}€/{t('short_month', { ns: 'other' })}
           </span>
         </p>
       </div>

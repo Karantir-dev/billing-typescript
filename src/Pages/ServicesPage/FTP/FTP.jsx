@@ -25,7 +25,12 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import * as route from '@src/routes'
 import s from './FTP.module.scss'
-import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
+import {
+  checkServicesRights,
+  roundToDecimal,
+  useCancelRequest,
+  usePageRender,
+} from '@utils'
 
 export default function FTP() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'storage')
@@ -382,7 +387,7 @@ export default function FTP() {
         <p className={s.total_price}>
           {t('total', { ns: 'other' })}:{' '}
           <span className={s.tools_footer_value}>
-            {getTotalPrice()}€/{t('short_month', { ns: 'other' })}
+            {roundToDecimal(getTotalPrice())}€/{t('short_month', { ns: 'other' })}
           </span>
         </p>
       </div>

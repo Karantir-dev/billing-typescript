@@ -202,6 +202,57 @@
   align-items: center;
 }
 
+.disconnect_modal {
+  max-width: 682px;
+}
+
+.disconnect_modal_body {
+  background-color: var(--main-bgc);
+}
+
+.disconnect_modal_footer {
+  @media (min-width: 768px) {
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.disconnect_modal_finish {
+  max-width: 595px;
+}
+
+.disconnect_modal_finish_body {
+  padding: 40px;
+  text-align: center;
+}
+
+.disconnect_modal_finish_footer {
+  box-shadow: none;
+}
+
+.disconnect_text {
+  font-size: 18px;
+  & + & {
+    margin-top: 10px;
+  }
+}
+
+.disconnect_btn {
+  width: 283px;
+  height: 55px;
+  span {
+    text-transform: none;
+    font-weight: 700;
+  }
+}
+
+.disconnect_btn_caption {
+  text-align: center;
+  font-size: 16px;
+  color: var(--transparent-color);
+  margin-top: 5px;
+}
+
 @media screen and (min-width: 768px) {
   .twoStepVerif {
     max-width: 320px;
