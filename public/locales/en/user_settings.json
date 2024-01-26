@@ -109,6 +109,8 @@
   "disconnect_google_btn": "Disconnect Google account",
   "disconnect_google_btn_caprion": "(I have a password)",
   "create_password": "Create password",
-  "create_password_modal_text_1": "Within 5 minutes, you will receive an email with a password recovery link.",
+  "create_password_modal_text_1": "Within 5 minutes, an email will be sent to your email address: {{email}} a link to recover your password.",
+  "create_password_modal_text_1_part_1": "Within 5 minutes, an email will be sent to your email address:",
+  "create_password_modal_text_1_part_2": "a link to recover your password.",
   "create_password_modal_text_2": "After setting the password, you will need to return to this page and unlink the account."
 }

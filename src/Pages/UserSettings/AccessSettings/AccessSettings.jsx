@@ -469,7 +469,11 @@ export default function Component({ isComponentAllowedToEdit }) {
                 className={s.disconnect_modal_finish}
               >
                 <Modal.Body className={s.disconnect_modal_finish_body}>
-                  <p className={s.disconnect_text}>{t('create_password_modal_text_1')}</p>
+                  <p className={s.disconnect_text}>
+                    {t('create_password_modal_text_1_part_1')}{' '}
+                    <span className={s.userEmail}>{userInfo.$email}</span>{' '}
+                    {t('create_password_modal_text_1_part_2')}
+                  </p>
                   <p className={s.disconnect_text}>{t('create_password_modal_text_2')}</p>
                 </Modal.Body>
                 <Modal.Footer column className={s.disconnect_modal_finish_footer}>

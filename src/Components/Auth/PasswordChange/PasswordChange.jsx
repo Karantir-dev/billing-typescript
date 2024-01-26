@@ -19,10 +19,12 @@ export default function PasswordChange() {
   const userId = searchParams.get('user')
   const secret = searchParams.get('secret')
 
+  console.log('secret: ' + secret)
   const [errType, setErrType] = useState('')
 
   // redirects to login if query parasms are missing
   useEffect(() => {
+    console.log('userID and secr: ', userId, secret)
     if (!userId || !secret) {
       navigate(routes.LOGIN, {
         replace: true,
