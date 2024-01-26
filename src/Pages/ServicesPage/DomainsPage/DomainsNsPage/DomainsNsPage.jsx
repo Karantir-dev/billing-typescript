@@ -316,7 +316,6 @@ export default function Component({ transfer = false }) {
                                 <h1 className={s.page_title}>{t('Order Details')}</h1>
                                 <div className={cn(s.formFieldsBlock, s.flexStart)}>
                                   <div className={s.details}>
-                                    {console.log('sums should be: ', sums[0])}
                                     {sums?.length && (
                                       <div>
                                         {domenName} - {roundToDecimal(sums[0])} EUR{' '}
