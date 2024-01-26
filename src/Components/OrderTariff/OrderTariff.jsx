@@ -33,6 +33,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
 
   const service = searchParams.get('service')
   const id = searchParams.get('id')
+  const referrer = searchParams.get('referrer')
 
   useEffect(() => {
     const params = {}
@@ -181,7 +182,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
           {t('Back', { ns: 'other' })}
         </Link>
       ) : (
-        <a href={document.referrer || SITE_URL} className={s.backLink}>
+        <a href={referrer ? `${SITE_URL}${referrer}` : SITE_URL} className={s.backLink}>
           <Icon name="ArrowSign" />
           {t('Back', { ns: 'other' })}
         </a>

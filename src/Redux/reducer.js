@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 
 import { actions, authActions } from '@redux'
+import { cookies } from '@utils'
 
 const initialState = {
   theme: 'light',
@@ -12,7 +13,13 @@ const initialState = {
 }
 
 export const theme = createReducer(initialState.theme, {
-  [actions.changeTheme]: state => (state === 'light' ? 'dark' : 'light'),
+  [actions.changeTheme]: (state, {payload}) => {
+    const theme = payload ? payload : state === 'light' ? 'dark' : 'light'
+    cookies.setCookie('theme', theme)
+    
+    return theme
+  }
+    
 })
 
 export const pinned = createReducer(initialState.pinned, {
