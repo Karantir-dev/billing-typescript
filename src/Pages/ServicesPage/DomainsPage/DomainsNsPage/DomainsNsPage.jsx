@@ -245,10 +245,9 @@ export default function Component({ transfer = false }) {
                           const domenName =
                             state?.contacts?.selected_domain_real_name?.split(', ')[index]
 
-                          const sums =
-                            paymentData[`domain_${select}_details`]?.$?.match(
-                              /[\d]+[.]?[\d]*/g,
-                            )
+                          const sums = paymentData[`domain_${select}_details`]?.$?.match(
+                            /([\d.]+) EUR/g,
+                          ).map(amount => parseFloat(amount))
 
                           return (
                             <div key={select} className={s.formBlock}>
@@ -317,6 +316,7 @@ export default function Component({ transfer = false }) {
                                 <h1 className={s.page_title}>{t('Order Details')}</h1>
                                 <div className={cn(s.formFieldsBlock, s.flexStart)}>
                                   <div className={s.details}>
+                                    {console.log('sums should be: ', sums[0])}
                                     {sums?.length && (
                                       <div>
                                         {domenName} - {roundToDecimal(sums[0])} EUR{' '}
