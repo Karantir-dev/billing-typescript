@@ -412,6 +412,13 @@
   }
 }
 
+@media screen and (max-width: 449px) {
+  .btnBlock {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .pricesBlockTransfer {
     margin-top: 0;
