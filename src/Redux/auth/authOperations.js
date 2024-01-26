@@ -196,7 +196,7 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
 }
 
 const changePassword =
-  (password, userId, secretKey, setErrType, onChangeSuccess) => dispatch => {
+  (password, userId, secretKey, setErrType, onChangeSuccess, sessionId) => dispatch => {
     dispatch(actions.showLoader())
 
     axiosInstance
@@ -223,14 +223,46 @@ const changePassword =
           }
         }
 
-        axiosInstance.post(
-          '/',
-          qs.stringify({
-            func: 'logon',
-            auth: data?.doc?.auth?.$id,
-            out: 'json',
-          }),
-        )
+        if (!sessionId) {
+          axiosInstance.post(
+            '/',
+            qs.stringify({
+              func: 'logon',
+              auth: data?.doc?.auth?.$id,
+              out: 'json',
+            }),
+          )
+        } else {
+          const newSessionId = data?.doc?.auth?.$id
+
+          cookies.setCookie('sessionId', newSessionId, 1)
+
+          axiosInstance
+            .post(
+              '/',
+              qs.stringify({
+                func: 'whoami',
+                out: 'json',
+                lang: 'en',
+                auth: newSessionId,
+              }),
+            )
+            .then(({ data }) => {
+              if (data.doc.error) throw new Error(`whoami - ${data.doc.error.msg.$}`)
+
+              if (data.doc?.ok?.$ === 'func=totp.confirm') {
+                dispatch(authActions.setTemporaryId(newSessionId))
+
+                dispatch(actions.hideLoader())
+
+                dispatch(authActions.openTotpForm())
+                return
+              }
+
+              dispatch(authActions.loginSuccess(newSessionId))
+              dispatch(authActions.isLogined(true))
+            })
+        }
 
         onChangeSuccess()
         dispatch(actions.hideLoader())
