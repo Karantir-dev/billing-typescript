@@ -57,6 +57,8 @@ export default function PasswordChange() {
     }
   }
 
+  const linkToRender = sessionId ? `${routes.USER_SETTINGS}/access` : routes.LOGIN
+
   const handleSubmit = ({ password }) => {
     dispatch(
       authOperations.changePassword(
@@ -122,7 +124,7 @@ export default function PasswordChange() {
                 label={t('change.save_btn')}
                 className={s.submit_btn}
               />
-              <Link className={s.reset_pass_link} to={routes.LOGIN}>
+              <Link className={s.reset_pass_link} to={linkToRender}>
                 {t('change.cancel_link')}
               </Link>
             </Form>
