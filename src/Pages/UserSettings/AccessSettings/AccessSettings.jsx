@@ -100,7 +100,7 @@ export default function Component({ isComponentAllowedToEdit }) {
 
   useEffect(() => {
     if (socNetIntegration?.status === 'fail') {
-      toast.error(t(socNetIntegration.msg), {
+      toast.error(t(socNetIntegration.msg, { ns: 'auth' }), {
         toastId: 'customId',
       })
     } else if (socNetIntegration?.status === 'success') {

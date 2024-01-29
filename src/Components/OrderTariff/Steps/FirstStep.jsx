@@ -86,7 +86,7 @@ export default function FirstStep({
         <div className={s.service}>
           <div>
             <p className={s.service_title}>
-              {parameters?.messages.msg.title.split(' - ')[1].split('/')?.[0]}
+              {parameters?.messages.msg.title.split('/')?.[0]}
             </p>
             <p className={s.service_subtitle}>{t(service, { ns: 'cart' })}</p>
           </div>
@@ -105,7 +105,7 @@ export default function FirstStep({
                       value: el.$key,
                     }
                   })}
-                  value={parameters?.period.$}
+                  value={parameters?.order_period.$}
                   getElement={value => changeFieldHandler('period', { $: value }, true)}
                   isShadow
                 />

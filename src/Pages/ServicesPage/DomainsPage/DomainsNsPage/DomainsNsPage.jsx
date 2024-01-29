@@ -245,10 +245,9 @@ export default function Component({ transfer = false }) {
                           const domenName =
                             state?.contacts?.selected_domain_real_name?.split(', ')[index]
 
-                          const sums =
-                            paymentData[`domain_${select}_details`]?.$?.match(
-                              /[\d]+[.]?[\d]*/g,
-                            )
+                          const sums = paymentData[`domain_${select}_details`]?.$?.match(
+                            /([\d.]+) EUR/g,
+                          ).map(amount => parseFloat(amount))
 
                           return (
                             <div key={select} className={s.formBlock}>
