@@ -510,20 +510,19 @@ const getTariffParameters =
       .post(
         sessionId ? '/' : process.env.REACT_APP_PROXY_API_URL,
         qs.stringify({
-          func: `${service}.order.pricelist`,
+          func: `v2.${service}.order.param`,
           out: 'json',
-          snext: 'ok',
-          sok: 'ok',
           lang: 'en',
           period: period,
           pricelist: id,
           auth: sessionId,
+          licence_agreement: 'on',
           ...params,
         }),
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        setParameters(renameAddonFields(data.doc))
+        setParameters(renameAddonFields(data.doc, true))
         dispatch(actions.hideLoader())
       })
       .catch(error => {

@@ -145,5 +145,8 @@
   "dedic_available_count": "Available: {{count}}pcs.",
   "dedic_ready_time": "Waiting: up to 3-5 business days",
   "dedic_activation_info": "Once the invoice is paid, you will be notified as soon as the server is ready for use.",
-  "clear_filter": "Clear filter"
+  "clear_filter": "Clear filter",
+  "traffic": "Traffic limit",
+  "Unmetered traffic": "Unmetered traffic",
+  "Unmetered": "Unmetered"
 }

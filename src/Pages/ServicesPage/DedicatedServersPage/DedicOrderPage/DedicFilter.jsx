@@ -23,6 +23,7 @@ export default function DedicFilter({
     'raid',
     'gpu',
     'port',
+    'traffic'
   ]
 
   const isFiltered = Object.values(filters).some(filter => filter.length)
@@ -65,7 +66,7 @@ export default function DedicFilter({
                           }}
                         />
                         <span className={s.filter__option_name}>
-                          {item?.$.split(':')[1]}
+                          {t(item?.$.split(':')[1])}
                         </span>
                       </div>
                     )
