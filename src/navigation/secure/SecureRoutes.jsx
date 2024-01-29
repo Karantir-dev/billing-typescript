@@ -162,7 +162,7 @@ const Component = ({ fromPromotionLink }) => {
     return <Navigate to={route.VPS_IP} replace />
   }
 
-  if (location.pathname.includes(route.CHANGE_PASSWORD)) {
+  if (location.pathname === route.CHANGE_PASSWORD) {
     return (
       <Routes>
         <Route
