@@ -413,7 +413,7 @@ const getSalesList = setSalesList => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const { elem: promoList } = data.doc
+      const promoList = data.doc.list.find(el => el.$name === 'promotion').elem
 
       const promoListData = {
         promoList,

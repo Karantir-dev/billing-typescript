@@ -850,23 +850,29 @@ export default function Component() {
     )
   }
 
+  /**
+   * In this useEffect we check for the dedic half year promotion
+   * if this promotion for dedic is enabled and it is dedic ordering -
+   * we disable promocode field
+   */
   useEffect(() => {
-    const cartConfigName = state.cartData?.elemList[0]?.pricelist_name.$?.slice(
-      0,
-      state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
-    )
+    // const cartConfigName = state.cartData?.elemList[0]?.pricelist_name.$?.slice(
+    //   0,
+    //   state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
+    // )
 
+    const isItDedic =
+      state.cartData?.elemList?.[0]?.pricelist_name.$.toLowerCase().includes('config')
+    console.log(salesList)
     const foundSale = salesList.find(
-      sale =>
-        sale.promotion?.$ === 'Большие скидки на выделенные серверы' &&
-        sale.idname.$.includes(cartConfigName),
+      sale => sale.id.$ === '---- PUT HERE ID OF DEDIC HALF YEAR PROMOTION ----',
     )
 
     const cartDiscountPercent =
       state.cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
     const selectedPeriod = state.cartData?.elemList[0]?.['item.period']?.$
 
-    if (foundSale) {
+    if (foundSale && isItDedic) {
       if (
         (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
         (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
