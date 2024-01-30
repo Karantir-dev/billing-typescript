@@ -62,5 +62,9 @@ export default function renameAddonFields(data, isNewFunc) {
     data.ipList = ipListData
   }
 
+  const portSpeedList = data.slist.find(el => el.$name === 'Port_speed')?.val
+
+  data.portSpeedList = portSpeedList
+
   return data
 }

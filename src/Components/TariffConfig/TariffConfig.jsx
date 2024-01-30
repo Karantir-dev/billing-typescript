@@ -5,7 +5,6 @@ import { Icon, Select, SoftwareOSBtn, SoftwareOSSelect, InputField } from '@comp
 import * as Yup from 'yup'
 import {
   DOMAIN_REGEX,
-  getPortSpeed,
   translatePeriodText,
   roundToDecimal,
   autoprolongList,
@@ -123,7 +122,12 @@ export default function TariffConfig({
           } else if (fieldName === 'Memory' || $.includes('EUR ')) {
             label = translatePeriodText($.trim(), t)
           } else {
-            label = t($.trim())
+            label = t(
+              $.trim().replace(
+                'unlimited traffic',
+                t('unlimited traffic', { ns: 'dedicated_servers' }),
+              ),
+            )
           }
 
           return {
@@ -164,7 +168,7 @@ export default function TariffConfig({
         CPU_count: parameters?.CPU_count,
         Memory: parameters?.Memory,
         Disk_space: parameters?.Disk_space,
-        Port_speed: getPortSpeed(parameters),
+        Port_speed: parameters?.Port_speed,
         Control_panel: parameters?.Control_panel,
         IP_addresses_count: parameters?.IP_addresses_count,
         agreement: 'on',
@@ -248,12 +252,14 @@ export default function TariffConfig({
                 />
               )}
               {values.Port_speed && (
-                <InputField
-                  name="Port_speed"
+                <Select
+                  value={values.Port_speed}
+                  itemsList={getOptionsListExtended('Port_speed')}
+                  getElement={value => {
+                    changeFieldHandler('Port_speed', value, true)
+                  }}
                   label={`${t('port_speed')}:`}
-                  className={s.input_field_wrapper}
                   isShadow
-                  disabled
                 />
               )}
               {!parameters.autoprolong_unavailable?.$ && (

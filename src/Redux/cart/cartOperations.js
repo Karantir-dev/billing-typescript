@@ -15,6 +15,7 @@ import {
   analyticsSaver,
   fraudCheckSender,
   renameAddonFields,
+  handleLoadersClosing,
 } from '@utils'
 import * as routes from '@src/routes'
 
@@ -498,9 +499,15 @@ const getPayMethodItem = (body, setAdditionalPayMethodts) => (dispatch, getState
 }
 
 const getTariffParameters =
-  ({ service, id, period = 1, ...params }, setParameters, setIsError) =>
+  (
+    { service, id, period = 1, ...params },
+    setParameters,
+    setIsError = () => {},
+    signal,
+    setIsLoading,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -519,16 +526,17 @@ const getTariffParameters =
           licence_agreement: 'on',
           ...params,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
         setParameters(renameAddonFields(data.doc, true))
-        dispatch(actions.hideLoader())
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
         setIsError(true)
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
       })
   }
 

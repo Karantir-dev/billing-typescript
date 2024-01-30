@@ -2,7 +2,7 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, cartActions, dedicActions, vdsOperations } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, replaceAllFn, handleLoadersClosing } from '@utils'
+import { checkIfTokenAlive, replaceAllFn, handleLoadersClosing, renameAddonFields } from '@utils'
 import i18n from '@src/i18n'
 import * as route from '@src/routes'
 
@@ -279,62 +279,8 @@ const getParameters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
-        let ipAddon = ''
-
-        for (let key in data?.doc?.messages?.msg) {
-          if (
-            data?.doc?.messages?.msg[key]?.toLowerCase()?.includes('ip') &&
-            data?.doc?.messages?.msg[key]?.toLowerCase()?.includes('count')
-          ) {
-            ipAddon = key
-          }
-        }
-
-        const { slist: paramsList } = data.doc
-
-        const ostempl = paramsList?.filter(item => item.$name === 'ostempl')
-        const recipe = paramsList?.filter(item => item.$name === 'recipe')
-        const managePanel = paramsList?.filter(item => item.$name.includes('addon'))
-        const portSpeed = paramsList?.filter(item => item.$name.includes('addon'))
-        const autoprolong = paramsList?.filter(item => item.$name === 'autoprolong')
-        const ipSliderData = data.doc?.metadata?.form?.page
-          .find(item => item?.$name === 'page_pricelist_settings')
-          .field?.find(item => item?.$name === ipAddon)?.slider[0]
-
-        const ipListData = []
-        if (ipSliderData) {
-          for (let i = 1; i <= ipSliderData.$max; i += Number(ipSliderData.$step)) {
-            if (i === 1) {
-              const item = { value: i, cost: '0.00' }
-              ipListData.push(item)
-            } else {
-              const item = { value: i, cost: ipSliderData.$cost }
-              ipListData.push(item)
-            }
-          }
-        }
-
-        // fields
-
-        setFieldValue('ipList', ipListData)
-        setFieldValue('ipTotal', ipListData[0].value)
-        setFieldValue('ostemplList', ostempl[0].val)
-        setFieldValue('recipelList', recipe[0].val)
-        setFieldValue('managePanellList', managePanel[0].val)
-        setFieldValue('portSpeedlList', portSpeed.length > 1 ? portSpeed[1].val : [])
-        setFieldValue('autoprolonglList', autoprolong[0]?.val)
-        setFieldValue('ipName', ipAddon)
-
-        setFieldValue('autoprolong', data.doc.autoprolong.$)
-        setFieldValue('ostempl', ostempl[0]?.val[0]?.$key)
-        setFieldValue('recipe', recipe[0]?.val[0]?.$key)
-        setFieldValue('managePanel', managePanel[0]?.val[0]?.$key)
-        setFieldValue('managePanelName', managePanel?.[0]?.$name)
-        setFieldValue('portSpeedName', portSpeed.length > 1 ? portSpeed?.[1]?.$name : '')
-
-        setParameters(paramsList)
-
+       
+        setParameters(renameAddonFields(data.doc, true))
         setIsLoading(false)
       })
 
