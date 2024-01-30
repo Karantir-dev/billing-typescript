@@ -107,6 +107,7 @@
 
   "Name can only contain Latin letters": "Имя может содержать только латинские буквы",
   "Lastname can only contain Latin letters": "Фамилия может содержать только латинские буквы",
+  "Midlename can only contain Latin letters": "Отчество может содержать только латинские буквы",
   "Index can contain only": "Индекс может содержать только латинские буквы, цифры и символ -",
 
   "Apply to all": "Применить ко всему",

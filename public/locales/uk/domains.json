@@ -109,6 +109,7 @@
 
   "Name can only contain Latin letters": "Імʼя може містити лише латинські літери",
   "Lastname can only contain Latin letters": "Прізвище може містити лише латинські літери",
+  "Midlename can only contain Latin letters": "По батькові може містити лише латинські літери",
   "Index can contain only": "Індекс може містити лише латинські літери, цифри та символ -",
 
   "Apply to all": "Застосувати до всіх",

@@ -103,7 +103,7 @@ export default function Component(props) {
       .required(t('Is a required field', { ns: 'other' })),
     middlename: Yup.string().matches(
       LATIN_REGEX,
-      t('Lastname can only contain Latin letters'),
+      t('Midlename can only contain Latin letters'),
     ),
     lastname_locale: Yup.string().required(t('Is a required field', { ns: 'other' })),
     phone: Yup.string().required(t('Is a required field', { ns: 'other' })),

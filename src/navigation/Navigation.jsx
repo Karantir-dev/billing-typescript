@@ -88,6 +88,10 @@ const Component = () => {
 
   useEffect(() => {
     const sessionId = cookies.getCookie('sessionId')
+    const theme = cookies.getCookie('theme') || 'light'
+
+    dispatch(actions.changeTheme(theme))
+
     if (sessionId) {
       dispatch(authActions.loginSuccess(sessionId))
     } else {

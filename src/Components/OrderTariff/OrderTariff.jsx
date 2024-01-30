@@ -33,6 +33,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
 
   const service = searchParams.get('service')
   const id = searchParams.get('id')
+  const referrer = searchParams.get('referrer')
 
   useEffect(() => {
     const params = {}
@@ -45,7 +46,8 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
   }, [])
 
   useEffect(() => {
-    const price = +parameters?.orderinfo?.$?.match(/Total amount: (.+?)(?= EUR)/)[1]
+    const price = +parameters?.list?.find(item => item.$name === 'pricelist_summary')
+      .elem[0].cost.price.cost.$
 
     setTotalPrice(roundToDecimal(price * count))
   }, [parameters, count])
@@ -57,11 +59,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
     }
     const { register, ostempl, recipe, domain, server_name } = parameters
 
-    const period = field === 'period' ? value.$ : parameters.period.$
-    const autoprolong =
-      field === 'period' && parameters.autoprolong?.$ !== 'null'
-        ? value.$
-        : parameters.autoprolong.$
+    const period = field === 'period' ? value.$ : parameters.order_period.$
 
     const params = {
       service,
@@ -69,7 +67,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
       ostempl: ostempl?.$,
       recipe: recipe?.$,
       period,
-      autoprolong: autoprolong,
+      autoprolong: parameters.autoprolong.$,
       domain: domain?.$,
       server_name: server_name?.$,
     }
@@ -181,7 +179,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
           {t('Back', { ns: 'other' })}
         </Link>
       ) : (
-        <a href={document.referrer || SITE_URL} className={s.backLink}>
+        <a href={referrer ? `${SITE_URL}${referrer}` : SITE_URL} className={s.backLink}>
           <Icon name="ArrowSign" />
           {t('Back', { ns: 'other' })}
         </a>

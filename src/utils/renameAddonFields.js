@@ -1,4 +1,5 @@
-export default function renameAddonFields(data) {
+export default function renameAddonFields(data, isNewFunc) {
+  // isNewFunc is flag for getting params from new api function
   for (const key in data?.messages?.msg) {
     if (key.match(/^(addon_\d+)$/g)) {
       if (!data.register) {
@@ -41,8 +42,11 @@ export default function renameAddonFields(data) {
     }
   }
 
-  const ipSliderData = data?.metadata?.form?.field?.find(item => item?.$name === ipAddon)
-    ?.slider[0]
+  const ipSliderData = isNewFunc
+    ? data.metadata?.form?.page
+        .find(item => item?.$name === 'page_pricelist_settings')
+        .field?.find(item => item?.$name === ipAddon)?.slider[0]
+    : data?.metadata?.form?.field?.find(item => item?.$name === ipAddon)?.slider[0]
 
   const ipListData = []
   if (ipSliderData) {

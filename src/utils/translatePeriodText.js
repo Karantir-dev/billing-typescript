@@ -11,10 +11,11 @@ export default function translatePeriodText(sentence, t) {
 
   const labelArr = withFormatedPrice.split('EUR ')
 
-  return (
+  const label =
     labelArr[0] +
     'EUR ' +
     t(labelArr[1]?.replace(')', '')) +
     (sentence.includes(')') ? ')' : '')
-  )
+    
+  return label.replace('EUR)EUR ', 'EUR')
 }
