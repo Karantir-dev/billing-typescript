@@ -856,32 +856,36 @@ export default function Component() {
    * we disable promocode field
    */
   useEffect(() => {
-    // const cartConfigName = state.cartData?.elemList[0]?.pricelist_name.$?.slice(
-    //   0,
-    //   state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
-    // )
-
     const isItDedic =
       state.cartData?.elemList?.[0]?.pricelist_name.$.toLowerCase().includes('config')
-    console.log(salesList)
-    const foundSale = salesList.find(
-      sale => sale.id.$ === '---- PUT HERE ID OF DEDIC HALF YEAR PROMOTION ----',
-    )
 
-    const cartDiscountPercent =
-      state.cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
-    const selectedPeriod = state.cartData?.elemList[0]?.['item.period']?.$
+    if (isItDedic) {
+      const cartConfigName = state.cartData?.elemList[0]?.pricelist_name.$?.slice(
+        0,
+        state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
+      )
 
-    if (foundSale && isItDedic) {
-      if (
-        (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
-        (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
-        (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
-        cartDiscountPercent === 0
-      ) {
-        setState({ isDedicWithSale: false })
-      } else {
-        setState({ isDedicWithSale: true })
+      const foundSale = salesList.find(
+        sale =>
+          sale.products.$.includes(cartConfigName) &&
+          sale.validity?.value?.$?.trim() === '6 months',
+      )
+
+      const cartDiscountPercent =
+        state.cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
+      const selectedPeriod = state.cartData?.elemList[0]?.['item.period']?.$
+
+      if (foundSale) {
+        if (
+          (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
+          (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
+          (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
+          cartDiscountPercent === 0
+        ) {
+          setState({ isDedicWithSale: false })
+        } else {
+          setState({ isDedicWithSale: true })
+        }
       }
     }
   }, [salesList])
@@ -947,7 +951,7 @@ export default function Component() {
                 [OFFER_FIELD]: state.isPolicyChecked || false,
 
                 selectedPayMethod: state.selectedPayMethod || undefined,
-                promocode: state.promocode,
+                promocode: state.promocode || '',
                 isPersonalBalance:
                   state.selectedPayMethod?.name?.$?.includes('balance') &&
                   state.selectedPayMethod?.paymethod_type?.$ === '0'
@@ -1256,7 +1260,7 @@ export default function Component() {
                           />
                           <button
                             onClick={() => setPromocodeToCart(values?.promocode)}
-                            disabled={values?.promocode?.length === 0}
+                            disabled={Boolean(!values?.promocode?.length)}
                             type="button"
                             className={s.promocodeBtn}
                           >
