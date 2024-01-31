@@ -16,6 +16,11 @@ const temporaryId = createReducer(initialState.temporaryId, {
   [authActions.clearTemporaryId]: () => null,
 })
 
+const previousRoute = createReducer(initialState.temporaryId, {
+  [authActions.setPreviousRoute]: (_, { payload }) => payload,
+  [authActions.clearPreviousRoute]: () => null,
+})
+
 const sessionId = createReducer(initialState.sessionId, {
   [authActions.loginSuccess]: (_, { payload }) => payload,
   [authActions.logoutSuccess]: () => null,
@@ -44,6 +49,7 @@ const authErrorMsg = createReducer(initialState.authErrorMsg, {
 const authReducer = combineReducers({
   sessionId,
   temporaryId,
+  previousRoute,
   totpFormVisibility,
   isLogined,
   geoData,

@@ -51,9 +51,7 @@ export default function PasswordChange() {
       navigate(`${routes.USER_SETTINGS}/access`, {
         replace: true,
       })
-      toast.success(t('setted_pass'), {
-        position: 'bottom-right',
-      })
+      toast.success(t('setted_pass'))
     }
   }
 
@@ -67,7 +65,7 @@ export default function PasswordChange() {
         secret,
         setErrType,
         onChangeSuccess,
-        sessionId,
+        navigate,
       ),
     )
   }
