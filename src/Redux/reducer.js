@@ -9,6 +9,7 @@ const initialState = {
   scrollForbidden: false,
   online: true,
   blockingModalShown: false,
+  promotionsList: [],
 }
 
 export const theme = createReducer(initialState.theme, {
@@ -40,4 +41,8 @@ export const online = createReducer(initialState.online, {
 export const blockingModalShown = createReducer(initialState.blockingModalShown, {
   [actions.hideBlockingModal]: () => false,
   [actions.showBlockingModal]: () => true,
+})
+
+export const promotionsList = createReducer(initialState.promotionsList, {
+  [actions.setPromotionsList]: (_, { payload }) => payload,
 })

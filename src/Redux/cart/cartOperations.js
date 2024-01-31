@@ -394,7 +394,7 @@ const setPaymentMethods =
       })
   }
 
-const getSalesList = setSalesList => (dispatch, getState) => {
+const getSalesList = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -413,16 +413,23 @@ const getSalesList = setSalesList => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const promoList = data.doc.list.find(el => el.$name === 'promotion').elem
-
-      const promoListData = {
-        promoList,
+      /** for new version of API */
+      let promoList = data.doc?.list?.find(el => el.$name === 'promotion')?.elem
+      console.log(promoList)
+      if (!promoList) {
+        /** for old version of API */
+        promoList = data.doc.elem
+        console.log('promoList', promoList)
       }
 
-      setSalesList(promoListData.promoList)
+      // const promoListData = {
+      //   promoList,
+      // }
+
+      dispatch(actions.setPromotionsList(promoList))
 
       dispatch(actions.hideLoader())
-      return promoListData
+      // return promoListData
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)

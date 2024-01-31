@@ -63,8 +63,9 @@ export default function Component() {
     'user_settings',
   ])
 
+  const promotionsList = useSelector(selectors.getPromotionsList)
+
   const [paymentsMethodList, setPaymentsMethodList] = useState([])
-  const [salesList, setSalesList] = useState([])
   const [screenWidth, setScreenWidth] = useState(window.innerWidth)
 
   const geoData = useSelector(authSelectors.getGeoData)
@@ -90,7 +91,6 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
-    dispatch(cartOperations.getSalesList(setSalesList))
     dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }, [])
 
@@ -865,11 +865,29 @@ export default function Component() {
         state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
       )
 
-      const foundSale = salesList.find(
-        sale =>
-          sale.products.$.includes(cartConfigName) &&
-          sale.validity?.value?.$?.trim() === '6 months',
-      )
+      let foundSale
+      /**
+       * This if statement is for two versions of API
+       * This first block is for a new version
+       */
+      if (promotionsList?.[0]?.products) {
+        foundSale = promotionsList.find(
+          sale =>
+            sale.products.$.includes(cartConfigName) &&
+            sale.validity?.value?.$?.trim() === '6 months',
+        )
+
+        /**
+         * and this second block is for an old version,
+         * which should be removed after API updating
+         */
+      } else {
+        foundSale = promotionsList.find(
+          sale =>
+            sale.promotion?.$ === 'Большие скидки на выделенные серверы' &&
+            sale.idname.$.includes(cartConfigName),
+        )
+      }
 
       const cartDiscountPercent =
         state.cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
@@ -888,7 +906,7 @@ export default function Component() {
         }
       }
     }
-  }, [salesList])
+  }, [promotionsList, state.cartData?.elemList])
 
   const renderPayersListTitle = () => (
     <div className={s.formBlockTitle}>{t('Payer')}:</div>
