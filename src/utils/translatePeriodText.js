@@ -14,7 +14,7 @@ export default function translatePeriodText(sentence, t) {
   const label =
     labelArr[0] +
     'EUR ' +
-    t(labelArr[1]?.replace(')', '')) +
+    t(labelArr[1]?.replace(')', ''), {ns: 'autoprolong'}) +
     (sentence.includes(')') ? ')' : '')
     
   return label.replace('EUR)EUR ', 'EUR')

@@ -159,6 +159,7 @@
   .additional_block {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .cancel_btn {

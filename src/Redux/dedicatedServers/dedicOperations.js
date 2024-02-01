@@ -2,7 +2,12 @@ import qs from 'qs'
 import { toast } from 'react-toastify'
 import { actions, cartActions, dedicActions, vdsOperations } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, replaceAllFn, handleLoadersClosing, renameAddonFields } from '@utils'
+import {
+  checkIfTokenAlive,
+  replaceAllFn,
+  handleLoadersClosing,
+  renameAddonFields,
+} from '@utils'
 import i18n from '@src/i18n'
 import * as route from '@src/routes'
 
@@ -279,8 +284,8 @@ const getParameters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-       
-        setParameters(renameAddonFields(data.doc, true))
+
+        setParameters(renameAddonFields(data.doc, { isNewFunc: true }))
         setIsLoading(false)
       })
 
@@ -337,7 +342,7 @@ const updatePrice =
         let price = data.doc.list?.find(item => item.$name === 'pricelist_summary')
           .elem[0].cost.price.cost.$
 
-          updatePrice(price)
+        updatePrice(price)
         setIsLoading(false)
       })
       .catch(error => {
@@ -449,7 +454,7 @@ const getPrintLicense = priceId => (dispatch, getState) => {
 }
 
 //EDIT SERVERS OPERATIONS
-const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => {
+const getCurrentDedicInfo = (elid, params, setParameters) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -464,84 +469,14 @@ const getCurrentDedicInfo = (elid, setInitialParams) => (dispatch, getState) => 
         out: 'json',
         auth: sessionId,
         lang: 'en',
-
         elid,
+        ...params,
       }),
     )
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const IP = Object.keys(data.doc)
-      const currentSumIp = IP.filter(
-        item => item.includes('addon') && item.includes('current_value'),
-      )
-      const ipamount = data.doc[currentSumIp[0]]
-
-      const findPanelName = Object.keys(data.doc)
-      let addonsNames = findPanelName.filter(item => item.includes('addon'))
-      let panelName = addonsNames[1]
-      let currentPanelValue = data.doc[panelName].$
-
-      const { slist: paramsList } = data.doc
-      const {
-        domain,
-        expiredate,
-        cost,
-        createdate,
-        pricelist,
-        recipe,
-        period,
-        status,
-        autoprolong,
-        ostempl,
-        id,
-        ip,
-        username,
-        userpassword,
-        password,
-        server_name,
-        name,
-      } = data.doc
-
-      const amountIPName = currentSumIp.join('').slice(0, 10)
-
-      const ostemplL = paramsList?.filter(item => item.$name === 'ostempl')
-      const recipeL = paramsList?.filter(item => item.$name === 'recipe')
-      const managePanelL = paramsList?.filter(item => item.$name.includes('addon'))
-      const autoprolongL = paramsList?.filter(item => item.$name === 'autoprolong')
-
-      // initial form data
-      const editModalData = {
-        ostemplList: ostemplL[0].val,
-        recipelList: recipeL[0].val,
-        managePanellList: managePanelL[0].val,
-        autoprolonglList: autoprolongL[0].val,
-
-        amountIPName: amountIPName,
-        autoprolong,
-        ostempl,
-        recipe,
-        managePanel: currentPanelValue,
-        managePanelName: panelName,
-
-        ipamount,
-        domain,
-        expiredate,
-        cost,
-        createdate,
-        pricelist,
-        period,
-        status,
-        id,
-        ip,
-        username,
-        userpassword,
-        password,
-        server_name,
-        name,
-      }
-
-      setInitialParams(editModalData)
+      setParameters(renameAddonFields(data.doc, { isEditFunc: true }))
       dispatch(actions.hideLoader())
     })
     .catch(error => {
@@ -566,6 +501,8 @@ const editDedicServer =
     userpassword,
     password,
     server_name,
+    Port_speed,
+    PortSpeedName,
     handleModal,
   ) =>
   (dispatch, getState) => {
@@ -590,6 +527,7 @@ const editDedicServer =
           recipe,
           [managePanelName]: managePanel,
           [ipName]: ipTotal,
+          [PortSpeedName]: Port_speed,
           ip,
           username,
           userpassword,
@@ -650,6 +588,8 @@ const editDedicServerNoExtraPay =
     userpassword,
     password,
     server_name,
+    Port_speed,
+    PortSpeedName,
     handleModal,
     signal,
     setIsLoading,
@@ -675,6 +615,7 @@ const editDedicServerNoExtraPay =
           ostempl: ostempl || undefined,
           recipe: recipe || undefined,
           [managePanelName]: managePanel,
+          [PortSpeedName]: Port_speed,
           [ipName]: ipTotal,
           ip: ip || undefined,
           username: username || undefined,
@@ -721,6 +662,8 @@ const updatePriceEditModal =
     password,
     currentOrder,
     setCurrentAmout,
+    portSpeed,
+    portSpeedName,
   ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
@@ -748,6 +691,7 @@ const updatePriceEditModal =
           username,
           userpassword,
           password,
+          [portSpeedName]: portSpeed,
         }),
       )
       .then(({ data }) => {

@@ -148,5 +148,6 @@
   "clear_filter": "Очистить фильтр",
   "traffic": "Лимит трафика",
   "Unmetered traffic": "Безлимитный трафик",
-  "Unmetered": "Безлимитный"
+  "Unmetered": "Безлимитный",
+  "additional": "дополнительно"
 }

@@ -530,7 +530,7 @@ const getTariffParameters =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        setParameters(renameAddonFields(data.doc, true))
+        setParameters(renameAddonFields(data.doc, { isNewFunc: true }))
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {

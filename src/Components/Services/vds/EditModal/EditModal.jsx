@@ -10,7 +10,7 @@ import { Select, Button, Icon, InputField, Modal } from '@components'
 import { translatePeriodText } from '@src/utils'
 
 export default function EditModal({ elid, closeModal, getVDSHandler, isOpen }) {
-  const { t } = useTranslation(['vds', 'other', 'billing'])
+  const { t } = useTranslation(['vds', 'other', 'billing', 'autoprolong'])
   const dispatch = useDispatch()
   const addOnsEl = useRef(null)
 

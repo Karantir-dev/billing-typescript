@@ -25,38 +25,38 @@ export default function FirstStep({
 
   useEffect(() => {
     if (service === 'vds' && isShowTariffInfo) {
-      const orderInfo = parameters.orderinfo.$.split('<br/>')
+      const orderInfo = parameters.orderinfo?.$.split('<br/>')
 
       const domain_name = parameters.domain?.$ || t('not_set', { ns: 'vds' })
       const server_name = parameters.server_name?.$ || t('not_set', { ns: 'vds' })
       const cpu_count =
-        orderInfo.find(info => info.includes('CPU count')).replace('CPU count', '') +
+        orderInfo?.find(info => info.includes('CPU count')).replace('CPU count', '') +
         ' core Intel Xeon'
       const ram = orderInfo
-        .find(info => info.includes('Memory'))
+        ?.find(info => info.includes('Memory'))
         .split(' - ')[0]
         .replace('Memory', '')
       const drive = orderInfo
-        .find(info => info.includes('Disk space'))
+        ?.find(info => info.includes('Disk space'))
         .split(' - ')[0]
         .replace('Disk space', '')
       const os = parameters.slist
-        .find(el => el.$name === 'ostempl')
+        ?.find(el => el.$name === 'ostempl')
         ?.val.find(el => el.$key === parameters.ostempl?.$)?.$
       const software =
         parameters.recipe?.$ !== 'null'
           ? parameters.slist
-              .find(el => el.$name === 'recipe')
+              ?.find(el => el.$name === 'recipe')
               ?.val.find(el => el.$key === parameters.recipe?.$)?.$
           : t('not_set', { ns: 'vds' })
       const license = orderInfo
-        .find(info => info.includes('Control panel'))
+        ?.find(info => info.includes('Control panel'))
         .split(' - ')[0]
         .replace('Control panel', '')
         .replace('Without a license', t('Without a license'))
       const port_speed = getPortSpeed(parameters).split(' (')[0]
       const ip_count = orderInfo
-        .find(info => info.includes('IP-addresses count'))
+        ?.find(info => info.includes('IP-addresses count'))
         .replace('IP-addresses count', '')
         .replace('Unit', t('Unit'))
       const autoprolong =
