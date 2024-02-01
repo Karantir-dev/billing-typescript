@@ -66,6 +66,7 @@ import {
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
+import { FIRST_MONTH_HOSTING_DISCOUNT_ID } from '@src/utils/constants'
 
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
@@ -90,7 +91,7 @@ const Component = ({ fromPromotionLink }) => {
   }, [])
 
   /**
-   * This useEffect manages hosting promo banner
+   * This useEffect manages hosting promo banner for promotion "1 month of hosting for free"
    */
   useEffect(() => {
     if (isUserClosedBanner) return
@@ -101,13 +102,10 @@ const Component = ({ fromPromotionLink }) => {
      * This is for a new version of API
      */
     if (promotionsList?.[0]?.products) {
-      promotionsList?.some(el => {
-        /** waits for https://billmgr.had.su is working to see the structure of new API answear */
-        // return el?.promotion?.$ === '1month-hosting'
-      })
+      promotionsList?.some(el => el.id?.$ === FIRST_MONTH_HOSTING_DISCOUNT_ID)
 
       /**
-       * This is for an old version of API
+       * This is for an old version of API and should be deleted after API update
        */
     } else {
       promotionsList?.some(el => {
