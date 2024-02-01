@@ -75,7 +75,13 @@ export default function Component({ transfer = false }) {
       const selectedDomain = domains?.find(
         e => e?.tld?.$ === JSON.parse(cartFromSite)?.zone,
       )
-      if (selectedDomain) {
+
+      const { domain_name } = JSON.parse(cartFromSite)
+      if (domain_name && selectedDomain) {
+        setSelectedDomains([selectedDomain?.id?.$])
+        setInputValue(domain_name)
+        setDomainsNameHandler({ domain_name, selectedDomains: [selectedDomain?.id?.$] })
+      } else if (selectedDomain) {
         setSelectedDomains([selectedDomain?.id?.$])
       }
       localStorage.removeItem('site_cart')
@@ -99,7 +105,7 @@ export default function Component({ transfer = false }) {
   })
 
   const setDomainsNameHandler = values => {
-    values['selected_pricelist'] = selectedDomains?.join(', ')
+    values['selected_pricelist'] = values?.selectedDomains.join(', ')
     values['sv_field'] = 'ok_whois'
     selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
     if (transfer) {
@@ -175,7 +181,7 @@ export default function Component({ transfer = false }) {
         <Formik
           validationSchema={validationSchema}
           initialValues={{
-            domain_name: '',
+            domain_name: inputValue,
             selectedDomains: selectedDomains,
           }}
           onSubmit={setDomainsNameHandler}
