@@ -15,6 +15,9 @@ const closeTotpForm = createAction('CLOSE_TOTP_FORM')
 const setTemporaryId = createAction('SET_TEMPORARY_ID')
 const clearTemporaryId = createAction('CLEAR_TEMPORARY_ID')
 
+const setPreviousRoute = createAction('SET_PREVIOUS_ROUTE')
+const clearPreviousRoute = createAction('CLEAR_PREVIOUS_ROUTE')
+
 const getCurrentUserRequest = createAction('GET_CURRENT_USER_REQUEST')
 const getCurrentUserSuccess = createAction('GET_CURRENT_USER_SUCCESS')
 const getCurrentUserError = createAction('GET_CURRENT_USER_ERROR')
@@ -29,6 +32,8 @@ export default {
   closeTotpForm,
   setTemporaryId,
   clearTemporaryId,
+  setPreviousRoute,
+  clearPreviousRoute,
   logoutSuccess,
   getCurrentUserRequest,
   getCurrentUserSuccess,

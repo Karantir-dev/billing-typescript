@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { AuthPage } from '@pages'
 import {
   Cart,
   Container,
   EmailConfirmation,
+  PasswordChange,
   Portal,
   CartFromSite,
   EmailTrigger,
@@ -158,6 +160,17 @@ const Component = ({ fromPromotionLink }) => {
 
   if (location.pathname === route.VDS_IP) {
     return <Navigate to={route.VPS_IP} replace />
+  }
+
+  if (location.pathname === route.CHANGE_PASSWORD) {
+    return (
+      <Routes>
+        <Route
+          path={route.CHANGE_PASSWORD}
+          element={<AuthPage children={<PasswordChange />} />}
+        />
+      </Routes>
+    )
   }
 
   const closePromotionBanner = () => setIsShowPromotion(false)
