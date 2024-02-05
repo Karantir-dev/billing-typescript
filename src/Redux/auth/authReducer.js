@@ -5,6 +5,7 @@ import authActions from './authActions'
 const initialState = {
   sessionId: null,
   temporaryId: null,
+  previousRoute: null,
   isLogined: false,
   totpFormVisibility: 'hidden',
   geoData: null,
@@ -16,7 +17,7 @@ const temporaryId = createReducer(initialState.temporaryId, {
   [authActions.clearTemporaryId]: () => null,
 })
 
-const previousRoute = createReducer(initialState.temporaryId, {
+const previousRoute = createReducer(initialState.previousRoute, {
   [authActions.setPreviousRoute]: (_, { payload }) => payload,
   [authActions.clearPreviousRoute]: () => null,
 })
