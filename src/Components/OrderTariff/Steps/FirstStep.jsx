@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import s from '../OrderTariff.module.scss'
 import cn from 'classnames'
 import { useEffect, useState } from 'react'
-import { getPortSpeed } from '@utils'
+import { getTariffConfigInfo } from '@utils'
 
 export default function FirstStep({
   parameters,
@@ -18,28 +18,19 @@ export default function FirstStep({
   isConfigToggle,
   isShowTariffInfo,
 }) {
-  const { t } = useTranslation(['dedicated_servers', 'cart', 'vds'])
+  const { t } = useTranslation(['dedicated_servers', 'cart', 'vds', 'autoprolong'])
   const [isConfigOpened, setIsConfigOpened] = useState(!isConfigToggle)
   const [isFormError, setIsFormError] = useState(false)
   const [tariffInfo, setTariffInfo] = useState({})
 
   useEffect(() => {
     if (service === 'vds' && isShowTariffInfo) {
-      const orderInfo = parameters.orderinfo?.$.split('<br/>')
-
       const domain_name = parameters.domain?.$ || t('not_set', { ns: 'vds' })
       const server_name = parameters.server_name?.$ || t('not_set', { ns: 'vds' })
-      const cpu_count =
-        orderInfo?.find(info => info.includes('CPU count')).replace('CPU count', '') +
-        ' core Intel Xeon'
-      const ram = orderInfo
-        ?.find(info => info.includes('Memory'))
-        .split(' - ')[0]
-        .replace('Memory', '')
-      const drive = orderInfo
-        ?.find(info => info.includes('Disk space'))
-        .split(' - ')[0]
-        .replace('Disk space', '')
+      const cpu_count = getTariffConfigInfo(parameters, 'CPU_count') + ' core Intel Xeon'
+      const ram = getTariffConfigInfo(parameters, 'Memory')
+      const drive = getTariffConfigInfo(parameters, 'Disk_space')
+
       const os = parameters.slist
         ?.find(el => el.$name === 'ostempl')
         ?.val.find(el => el.$key === parameters.ostempl?.$)?.$
@@ -49,20 +40,19 @@ export default function FirstStep({
               ?.find(el => el.$name === 'recipe')
               ?.val.find(el => el.$key === parameters.recipe?.$)?.$
           : t('not_set', { ns: 'vds' })
-      const license = orderInfo
-        ?.find(info => info.includes('Control panel'))
-        .split(' - ')[0]
-        .replace('Control panel', '')
+
+      const license = getTariffConfigInfo(parameters, 'Control_panel')
         .replace('Without a license', t('Without a license'))
-      const port_speed = getPortSpeed(parameters).split(' (')[0]
-      const ip_count = orderInfo
-        ?.find(info => info.includes('IP-addresses count'))
-        .replace('IP-addresses count', '')
-        .replace('Unit', t('Unit'))
-      const autoprolong =
-        parameters.autoprolong?.$ === 'null'
-          ? t('off', { ns: 'cart' })
-          : `${parameters.autoprolong?.$} ${t('short_month', { ns: 'other' })}`
+        .replace('Unlimited domains', t('Unlimited domains'))
+        .replace('domains', t('domains'))
+
+      const portSpeedKey = 'Port_speed' in parameters ? 'Port_speed' : 'Outgoing_traffic'
+
+      const port_speed = getTariffConfigInfo(parameters, 'Port_speed', portSpeedKey)
+
+      const ip_count = parameters.IP_addresses_count
+
+      const autoprolong = t(parameters.autoprolong?.$, { ns: 'autoprolong' })
 
       setTariffInfo({
         domain_name,
