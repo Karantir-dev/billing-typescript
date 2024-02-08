@@ -94,6 +94,7 @@ export default function TariffConfig({
           let label = ''
           let withSale = false
           let words = []
+          let oldPrice
 
           if (fieldName === 'Memory') {
             words = $?.match(/[\d|.|\\+]+/g)
@@ -104,6 +105,7 @@ export default function TariffConfig({
 
             if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
               withSale = true
+              oldPrice = roundToDecimal(words[1] / 0.45)
             }
           }
 
@@ -113,9 +115,7 @@ export default function TariffConfig({
                 <div className={s.sale55Icon}>-55%</div>
                 <span className={s.saleSpan}>
                   {`${words[0]} Gb (`}
-                  <span className={s.memorySale}>
-                    {roundToDecimal(Number($cost / 0.45))}
-                  </span>
+                  <span className={s.memorySale}>{oldPrice}</span>
                   {translatePeriodText($.trim().split('(')[1], t)}
                 </span>
               </span>
