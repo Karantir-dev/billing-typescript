@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, cartOperations, payersSelectors } from '@redux'
 import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
-import { SITE_URL } from '@config/config'
 import * as route from '@src/routes'
 import { roundToDecimal } from '@utils'
 
@@ -179,7 +178,14 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
           {t('Back', { ns: 'other' })}
         </Link>
       ) : (
-        <a href={referrer ? `${SITE_URL}${referrer}` : SITE_URL} className={s.backLink}>
+        <a
+          href={
+            referrer
+              ? `${process.env.REACT_APP_SITE_URL}${referrer}`
+              : process.env.REACT_APP_SITE_URL
+          }
+          className={s.backLink}
+        >
           <Icon name="ArrowSign" />
           {t('Back', { ns: 'other' })}
         </a>

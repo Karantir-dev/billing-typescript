@@ -3,9 +3,8 @@
 // export const RECAPTCHA_KEY = '6LdIo4QeAAAAAGaR3p4-0xh6dEI75Y4cISXx3FGR'
 
 // ---- production ------
-export const SITE_URL = 'https://zomro.com'
-export const PRIVACY_URL = `${SITE_URL}/privacy-policy`
-export const OFERTA_URL = `${SITE_URL}/oferta`
+export const PRIVACY_URL = `${process.env.REACT_APP_SITE_URL}/privacy-policy`
+export const OFERTA_URL = `${process.env.REACT_APP_SITE_URL}/oferta`
 export const RECAPTCHA_KEY = '6LduamkfAAAAAKOy-2RHeTh6GLCydKT8fhw--KuW'
 
 // export const SALE_55_PROMOCODE = 'RAMx2ZM'

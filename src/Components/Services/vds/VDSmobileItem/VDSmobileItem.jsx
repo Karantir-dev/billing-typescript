@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import * as route from '@src/routes'
-import { SITE_URL } from '@config/config'
 import { useNavigate } from 'react-router-dom'
 import { CheckBox, ServerState, EditCell, Options } from '@components'
 import PropTypes from 'prop-types'
@@ -192,7 +191,11 @@ export default function VDSmobileItem({
         {server?.pricelist?.$?.toLowerCase()?.includes('ddos') ? (
           <div className={s.dailyCharge}>
             <span>{t('daily charges')}</span>
-            <a target="_blank" href={`${SITE_URL}/anti-ddos`} rel="noreferrer">
+            <a
+              target="_blank"
+              href={`${process.env.REACT_APP_SITE_URL}/anti-ddos`}
+              rel="noreferrer"
+            >
               <div />
             </a>
           </div>
