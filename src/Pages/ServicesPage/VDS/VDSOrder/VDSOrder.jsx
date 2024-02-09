@@ -34,7 +34,7 @@ export default function VDSOrder() {
   const location = useLocation()
   const dispatch = useDispatch()
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
-  const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers'])
+  const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers', 'autoprolong'])
   const agreementEl = useRef()
 
   const { signal, isLoading, setIsLoading } = useCancelRequest()
