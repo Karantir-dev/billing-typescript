@@ -102,15 +102,17 @@ const Component = ({ fromPromotionLink }) => {
      * This is for a new version of API
      */
     if (promotionsList?.[0]?.products) {
-      promotionsList?.some(el => el.id?.$ === FIRST_MONTH_HOSTING_DISCOUNT_ID)
+      isPromotionActive = promotionsList?.some(
+        el => el.id?.$ === FIRST_MONTH_HOSTING_DISCOUNT_ID,
+      )
 
       /**
        * This is for an old version of API and should be deleted after API update
        */
     } else {
-      promotionsList?.some(el => {
-        return el?.promotion?.$ === '1month-hosting'
-      })
+      isPromotionActive = promotionsList?.some(
+        el => el?.promotion?.$ === '1month-hosting',
+      )
     }
 
     if (
