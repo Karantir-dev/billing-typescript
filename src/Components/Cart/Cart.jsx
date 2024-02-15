@@ -871,11 +871,7 @@ export default function Component() {
        * This first block is for a new version
        */
       if (promotionsList?.[0]?.products) {
-        foundSale = promotionsList.find(
-          sale =>
-            sale.products.$.includes(cartConfigName) &&
-            sale.validity?.value?.$?.trim() === '6 months',
-        )
+        foundSale = promotionsList.find(sale => sale.products.$.includes(cartConfigName))
 
         /**
          * and this second block is for an old version,
