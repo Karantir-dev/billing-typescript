@@ -15,6 +15,8 @@ const setOffline = createAction('SET_OFFLINE')
 const showBlockingModal = createAction('SHOW_BLOCKING_MODAL')
 const hideBlockingModal = createAction('HIDE_BLOCKING_MODAL')
 
+const setPromotionsList = createAction('SET_PROMOTIONS_LIST')
+
 export default {
   changeTheme,
   showLoader,
@@ -26,4 +28,5 @@ export default {
   setOffline,
   showBlockingModal,
   hideBlockingModal,
+  setPromotionsList,
 }

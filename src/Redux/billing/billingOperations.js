@@ -579,7 +579,7 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
         .find(el => el.$name === 'methodlist')
         ?.elem.find(el => el.name.$.includes('Stripe'))
 
-      dispatch(billingActions.setIsStripeAvailable(isStripeAvailable))
+      dispatch(billingActions.setIsStripeAvailable(Boolean(isStripeAvailable)))
 
       dispatch(actions.hideLoader())
     })

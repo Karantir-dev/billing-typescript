@@ -4,6 +4,7 @@ const getIsLoading = state => state.isLoading
 const isScrollForbidden = state => state.scrollForbidden
 const onlineStatus = state => state.online
 const getBlockingModalStatus = state => state.blockingModalShown
+const getPromotionsList = state => state.promotionsList
 
 export default {
   getTheme,
@@ -12,4 +13,5 @@ export default {
   isScrollForbidden,
   onlineStatus,
   getBlockingModalStatus,
+  getPromotionsList,
 }

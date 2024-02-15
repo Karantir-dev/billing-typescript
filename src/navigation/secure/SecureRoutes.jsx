@@ -22,6 +22,7 @@ import {
   cartOperations,
   billingSelectors,
   billingOperations,
+  selectors,
 } from '@redux'
 import * as route from '@src/routes'
 import {
@@ -67,52 +68,76 @@ import {
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
+import { FIRST_MONTH_HOSTING_DISCOUNT_ID } from '@src/utils/constants'
 
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const cartState = useSelector(cartSelectors?.getCartIsOpened)
-  const [isShowPromotion, setIsShowPromotion] = useState(false)
-  const [salesList, setSalesList] = useState()
-  const [promotionType, setPromotionType] = useState(false)
-  const [isUserClosedBanner, setIsUserClosedBanner] = useState(false)
-
+  const promotionsList = useSelector(selectors.getPromotionsList)
   const paymentsList = useSelector(billingSelectors.getPaymentsReadOnlyList)
   const isModalCreatePaymentOpened = useSelector(
     billingSelectors.getIsModalCreatePaymentOpened,
   )
 
+  const [isShowPromotion, setIsShowPromotion] = useState(false)
+  const [promotionType, setPromotionType] = useState(false)
+  const [isUserClosedBanner, setIsUserClosedBanner] = useState(false)
+
   useEffect(() => {
-    dispatch(cartOperations.getSalesList(setSalesList))
+    dispatch(cartOperations.getSalesList())
     dispatch(billingOperations.setPaymentsFilters({ status: '4' }, true))
     dispatch(billingOperations.checkIsStripeAvailable())
     const isBannerClosed = localStorage.getItem('isBannerClosed')
     setIsUserClosedBanner(!!isBannerClosed)
   }, [])
 
+  /**
+   * This useEffect manages hosting promo banner for promotion "1 month of hosting for free"
+   */
   useEffect(() => {
     if (isUserClosedBanner) return
 
-    const isPromotionActive = salesList?.some(el => {
-      return el?.promotion?.$ === '1month-hosting'
-    })
+    let isPromotionActive
 
-    if (!isPromotionActive && paymentsList?.length && salesList && fromPromotionLink) {
+    /**
+     * This is for a new version of API
+     */
+    if (promotionsList?.[0]?.products) {
+      isPromotionActive = promotionsList?.some(
+        el => el.id?.$ === FIRST_MONTH_HOSTING_DISCOUNT_ID,
+      )
+
+      /**
+       * This is for an old version of API and should be deleted after API update
+       */
+    } else {
+      isPromotionActive = promotionsList?.some(
+        el => el?.promotion?.$ === '1month-hosting',
+      )
+    }
+
+    if (
+      !isPromotionActive &&
+      paymentsList?.length &&
+      promotionsList &&
+      fromPromotionLink
+    ) {
       setPromotionType('third')
       setIsShowPromotion(true)
       return
     }
 
-    if (paymentsList?.length && isPromotionActive && salesList) {
+    if (paymentsList?.length && isPromotionActive) {
       setPromotionType('second')
       setIsShowPromotion(true)
     }
 
-    if (paymentsList && !paymentsList?.length && salesList) {
+    if (paymentsList && !paymentsList?.length && promotionsList) {
       setPromotionType('first')
       setIsShowPromotion(true)
     }
-  }, [salesList, paymentsList])
+  }, [promotionsList, paymentsList])
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
