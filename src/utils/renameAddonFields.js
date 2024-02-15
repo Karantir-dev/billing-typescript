@@ -71,5 +71,12 @@ export default function renameAddonFields(data, { isNewFunc, isEditFunc } = {}) 
 
   data.portSpeedList = portSpeedList
 
+  if (isNewFunc) {
+    const autoprolongVal = data.autoprolong.$
+
+    data.autoprolong.$ =
+      autoprolongVal === 'null' || autoprolongVal === 'off' ? 'off' : 'on'
+  }
+
   return data
 }
