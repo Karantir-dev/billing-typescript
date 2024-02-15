@@ -233,7 +233,7 @@ export default function FirstStep({
         />
       </div>
 
-      {Number(totalPrice) > 0 ? (
+      {totalPrice ? (
         <div className={s.service_price}>
           {t('Total', { ns: 'cart' })}:<b>{totalPrice} EUR</b>
         </div>
