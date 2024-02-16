@@ -25,6 +25,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
   const [periods, setPeriods] = useState([])
   const [parameters, setParameters] = useState()
   const [toLogin, setToLogin] = useState(false)
+  const [isFree, setIsFree] = useState(false)
 
   const [payMethodState, setPayMethodState] = useReducer((state, action) => {
     return { ...state, ...action }
@@ -149,11 +150,14 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
             service={service}
             id={id}
             count={count}
+            isFree={isFree}
+            setIsFree={setIsFree}
           />
         </div>
       ),
       nextButton: {
         form: 'pay',
+        label: isFree ? t('Activate', { ns: 'billing' }) : t('Pay', { ns: 'billing' }),
       },
     },
   ]

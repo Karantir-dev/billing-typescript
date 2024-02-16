@@ -1424,7 +1424,11 @@ export default function Component() {
                               className={s.saveBtn}
                               isShadow
                               size="medium"
-                              label={t('Pay', { ns: 'billing' })}
+                              label={
+                                isFree
+                                  ? t('Activate', { ns: 'billing' })
+                                  : t('Pay', { ns: 'billing' })
+                              }
                               type="submit"
                             />
                           )}

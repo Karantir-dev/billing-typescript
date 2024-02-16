@@ -28,7 +28,16 @@ import * as Yup from 'yup'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 
-export default function FourthStep({ state, setState, parameters, service, id, count }) {
+export default function FourthStep({
+  state,
+  setState,
+  parameters,
+  service,
+  id,
+  count,
+  isFree,
+  setIsFree,
+}) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -44,7 +53,6 @@ export default function FourthStep({ state, setState, parameters, service, id, c
   ])
 
   const [salesList, setSalesList] = useState([])
-  const [isFree, setIsFree] = useState(false)
 
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
   const payersData = useSelector(payersSelectors.getPayersData)
