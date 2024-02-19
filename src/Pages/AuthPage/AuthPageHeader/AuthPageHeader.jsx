@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import { ThemeBtn, LangBtn, Icon } from '@components'
-import { SITE_URL } from '@config/config'
 import s from './AuthPageHeader.module.scss'
 
 export default function AuthPageHeader(props) {
@@ -23,7 +22,7 @@ export default function AuthPageHeader(props) {
 }
 
 AuthPageHeader.defaultProps = {
-  onLogoClick: () => window.open(SITE_URL),
+  onLogoClick: () => window.open(process.env.REACT_APP_SITE_URL),
 }
 
 AuthPageHeader.propTypes = {

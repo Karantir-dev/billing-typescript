@@ -40,6 +40,7 @@ import {
   scrollForbidden,
   online,
   blockingModalShown,
+  promotionsList,
 } from '@redux/reducer'
 
 const rootPersistConfig = {
@@ -79,6 +80,7 @@ const rootReducer = combineReducers({
   scrollForbidden,
   online,
   blockingModalShown,
+  promotionsList,
 })
 
 const store = configureStore({

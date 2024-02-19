@@ -15,6 +15,7 @@ import {
   analyticsSaver,
   fraudCheckSender,
   renameAddonFields,
+  handleLoadersClosing,
 } from '@utils'
 import * as routes from '@src/routes'
 
@@ -394,7 +395,7 @@ const setPaymentMethods =
       })
   }
 
-const getSalesList = setSalesList => (dispatch, getState) => {
+const getSalesList = () => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -413,16 +414,17 @@ const getSalesList = setSalesList => (dispatch, getState) => {
     .then(({ data }) => {
       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      const { elem: promoList } = data.doc
+      /** for new version of API */
+      let promoList = data.doc?.list?.find(el => el.$name === 'promotion')?.elem
 
-      const promoListData = {
-        promoList,
+      if (!promoList) {
+        /** for old version of API */
+        promoList = data.doc.elem
       }
 
-      setSalesList(promoListData.promoList)
+      dispatch(actions.setPromotionsList(promoList))
 
       dispatch(actions.hideLoader())
-      return promoListData
     })
     .catch(error => {
       checkIfTokenAlive(error.message, dispatch)
@@ -498,9 +500,15 @@ const getPayMethodItem = (body, setAdditionalPayMethodts) => (dispatch, getState
 }
 
 const getTariffParameters =
-  ({ service, id, period = 1, ...params }, setParameters, setIsError) =>
+  (
+    { service, id, period = 1, ...params },
+    setParameters,
+    setIsError = () => {},
+    signal,
+    setIsLoading,
+  ) =>
   (dispatch, getState) => {
-    dispatch(actions.showLoader())
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -519,16 +527,17 @@ const getTariffParameters =
           licence_agreement: 'on',
           ...params,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        setParameters(renameAddonFields(data.doc, true))
-        dispatch(actions.hideLoader())
+        setParameters(renameAddonFields(data.doc, { isNewFunc: true }))
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
         setIsError(true)
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
       })
   }
 

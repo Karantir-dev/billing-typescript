@@ -119,7 +119,7 @@ const getCurrentSessionStatus = () => (dispatch, getState) => {
     })
 }
 
-const sendTotp = (totp, setError) => (dispatch, getState) => {
+const sendTotp = (totp, setError, navigate) => (dispatch, getState) => {
   dispatch(actions.showLoader())
 
   const {
@@ -151,6 +151,12 @@ const sendTotp = (totp, setError) => (dispatch, getState) => {
       dispatch(authActions.loginSuccess(sessionId))
       dispatch(authActions.isLogined(true))
       dispatch(authActions.closeTotpForm())
+
+      navigate &&
+        navigate(`${route.USER_SETTINGS}/access`, {
+          replace: true,
+        })
+      dispatch(authActions.clearPreviousRoute())
     })
     .catch(err => {
       dispatch(actions.hideLoader())
@@ -196,7 +202,12 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
 }
 
 const changePassword =
-  (password, userId, secretKey, setErrType, onChangeSuccess) => dispatch => {
+  (password, userId, secretKey, setErrType, onChangeSuccess, navigate) =>
+  (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
+
     dispatch(actions.showLoader())
 
     axiosInstance
@@ -223,14 +234,53 @@ const changePassword =
           }
         }
 
-        axiosInstance.post(
-          '/',
-          qs.stringify({
-            func: 'logon',
-            auth: data?.doc?.auth?.$id,
-            out: 'json',
-          }),
-        )
+        if (!sessionId) {
+          axiosInstance.post(
+            '/',
+            qs.stringify({
+              func: 'logon',
+              auth: data?.doc?.auth?.$id,
+              out: 'json',
+            }),
+          )
+        } else {
+          const newSessionId = data?.doc?.auth?.$id
+
+          cookies.setCookie('sessionId', newSessionId, 1)
+
+          axiosInstance
+            .post(
+              '/',
+              qs.stringify({
+                func: 'whoami',
+                out: 'json',
+                lang: 'en',
+                auth: newSessionId,
+              }),
+            )
+            .then(({ data }) => {
+              if (data.doc.error) throw new Error(`whoami - ${data.doc.error.msg.$}`)
+
+              if (data.doc?.ok?.$ === 'func=totp.confirm') {
+                dispatch(authActions.setTemporaryId(newSessionId))
+
+                dispatch(actions.hideLoader())
+
+                dispatch(authActions.openTotpForm())
+                /* setting route to indicate it when 2-factor Auth is connected */
+                dispatch(authActions.setPreviousRoute(route.CHANGE_PASSWORD))
+                return
+              }
+
+              dispatch(authActions.loginSuccess(newSessionId))
+              dispatch(authActions.isLogined(true))
+
+              /* this route would work when user doesn't have 2-factor Auth */
+              navigate(`${route.USER_SETTINGS}/access`, {
+                replace: true,
+              })
+            })
+        }
 
         onChangeSuccess()
         dispatch(actions.hideLoader())

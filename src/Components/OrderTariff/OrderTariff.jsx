@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, cartOperations, payersSelectors } from '@redux'
 import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
-import { SITE_URL } from '@config/config'
 import * as route from '@src/routes'
 import { roundToDecimal } from '@utils'
 
@@ -26,6 +25,7 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
   const [periods, setPeriods] = useState([])
   const [parameters, setParameters] = useState()
   const [toLogin, setToLogin] = useState(false)
+  const [isFree, setIsFree] = useState(false)
 
   const [payMethodState, setPayMethodState] = useReducer((state, action) => {
     return { ...state, ...action }
@@ -150,11 +150,14 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
             service={service}
             id={id}
             count={count}
+            isFree={isFree}
+            setIsFree={setIsFree}
           />
         </div>
       ),
       nextButton: {
         form: 'pay',
+        label: isFree ? t('Activate', { ns: 'billing' }) : t('Pay', { ns: 'billing' }),
       },
     },
   ]
@@ -179,7 +182,14 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
           {t('Back', { ns: 'other' })}
         </Link>
       ) : (
-        <a href={referrer ? `${SITE_URL}${referrer}` : SITE_URL} className={s.backLink}>
+        <a
+          href={
+            referrer
+              ? `${process.env.REACT_APP_SITE_URL}${referrer}`
+              : process.env.REACT_APP_SITE_URL
+          }
+          className={s.backLink}
+        >
           <Icon name="ArrowSign" />
           {t('Back', { ns: 'other' })}
         </a>

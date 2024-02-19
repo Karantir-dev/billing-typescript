@@ -87,7 +87,7 @@ export default function DedicMobileItem({
     {
       label: t('edit', { ns: 'other' }),
       icon: 'Edit',
-      disabled: !rights?.edit,
+      disabled: (server?.status?.$ !== '3' && server?.status?.$ !== '2') || !rights?.edit,
       onClick: () => handleToolBtnClick(setElidForEditModal),
     },
     {

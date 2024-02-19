@@ -5,7 +5,6 @@ import { CheckBox, HintWrapper, ServerState, EditCell, Options } from '@componen
 import PropTypes from 'prop-types'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { SITE_URL } from '@config/config'
 import s from './VDSItem.module.scss'
 import { isUnpaidOrder } from '@utils'
 
@@ -211,7 +210,11 @@ export default function VDSItem({
           {server?.pricelist?.$?.toLowerCase()?.includes('ddos') ? (
             <div className={s.dailyCharge}>
               <span>{t('daily charges')}</span>
-              <a target="_blank" href={`${SITE_URL}/anti-ddos`} rel="noreferrer">
+              <a
+                target="_blank"
+                href={`${process.env.REACT_APP_SITE_URL}/anti-ddos`}
+                rel="noreferrer"
+              >
                 <div></div>
               </a>
             </div>

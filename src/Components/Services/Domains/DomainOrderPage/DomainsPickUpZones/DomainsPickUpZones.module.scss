@@ -146,6 +146,7 @@
   font-size: 18px;
   line-height: 70.9%;
   color: var(--main-text);
+  margin-right: 10px;
 }
 
 .domainPriceMobile {
@@ -157,10 +158,6 @@
     line-height: 130%;
     color: var(--main-text);
   }
-}
-
-.pricesBlock {
-  display: none;
 }
 
 .pricesBlockTransfer {
@@ -394,6 +391,8 @@
   .domainName {
     margin: 0;
     flex-basis: 65%;
+    word-break: break-word;
+    margin-right: 10px;
   }
   .selectBtn {
     grid-column: 2/2;
@@ -467,6 +466,7 @@
       }
       .domainPrice {
         font-weight: 400;
+        margin-right: 20px;
       }
     }
   }
@@ -480,12 +480,6 @@
     flex-basis: 33%;
     margin-left: 0px;
     margin-top: 0px;
-  }
-
-  .pricesBlock {
-    display: flex;
-    flex-direction: column;
-    flex-basis: 33%;
   }
 
   .pricesBlockTransfer {

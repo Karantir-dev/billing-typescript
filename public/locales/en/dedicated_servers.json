@@ -148,5 +148,6 @@
   "clear_filter": "Clear filter",
   "traffic": "Traffic limit",
   "Unmetered traffic": "Unmetered traffic",
-  "Unmetered": "Unmetered"
+  "Unmetered": "Unmetered",
+  "additional": "additional"
 }

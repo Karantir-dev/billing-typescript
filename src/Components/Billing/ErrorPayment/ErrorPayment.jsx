@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '@components'
-import { SITE_URL } from '@config/config'
 import { AuthPageHeader } from '@pages'
 import s from './ErrorPayment.module.scss'
 import * as routes from '@src/routes'
@@ -38,7 +37,7 @@ export default function Component({ title, text, isSupport = true }) {
         <div className={s.linksBlock}>
           <a
             className={s.link}
-            href={`${SITE_URL}/${parseLang(i18n?.language)}${
+            href={`${process.env.REACT_APP_SITE_URL}/${parseLang(i18n?.language)}${
               i18n?.language !== 'en' ? '/' : ''
             }`}
           >

@@ -9,19 +9,15 @@ permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
 
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-
 env:
-  DOCKER_REPOSITORY: ${{ vars.DOCKER_REPOSITORY }}
   APP_NAME: zomro-bill
   PREFIX: version-${{ github.run_number }}-bill-update
   NAMESPACE: bill-zomro-com-update
-  # auth data for get access to aws
-  AWS_REGION: ${{ vars.AWS_REGION }}
-  ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
 
 jobs:
 #  jest:
@@ -35,7 +31,7 @@ jobs:
 #    steps:
 #      - uses: actions/checkout@v4
 #      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v3
+#        uses: actions/setup-node@v4
 #        with:
 #          node-version: ${{ matrix.node-version }}
 #          cache: 'npm'
@@ -73,7 +69,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -88,6 +84,7 @@ jobs:
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
           REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
           REACT_APP_TRANSLATION_VERSION: ${{ steps.static_version.outputs.value }}
+          REACT_APP_SITE_URL: ${{ vars.SITE_URL }}
         run: npm run lint
 
       - name: Send fail start in Slack
@@ -110,7 +107,7 @@ jobs:
       name: bill-update
     steps:
       - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v2
+      - uses: docker/setup-buildx-action@v3
 
       - name: Using node 16.13.1
         uses: actions/setup-node@v4
@@ -128,6 +125,7 @@ jobs:
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
           REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
           REACT_APP_TRANSLATION_VERSION: ${{ steps.static_version.outputs.value }}
+          REACT_APP_SITE_URL: ${{ vars.SITE_URL }}
         run: |
           npm run build
 
@@ -135,8 +133,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ env.ROLE_TO_ASSUME }}
-          role-session-name: github-actions-${{ env.APP_NAME }}
+          role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
+          role-session-name: github-actions-${{ env.APP_NAME }}-${{ github.ref_name }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -147,7 +145,7 @@ jobs:
           ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
 
       - name: Build and Push Docker Image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
           platforms: linux/amd64
@@ -186,7 +184,7 @@ jobs:
 
       - name: Update Version
         env:
-          TMP_IMAGE_PREFIX: ${{ env.DOCKER_REPOSITORY }}/${{ env.APP_NAME }}:${{ env.PREFIX }}
+          TMP_IMAGE_PREFIX: ${{ vars.DOCKER_REPOSITORY }}/${{ env.APP_NAME }}:${{ env.PREFIX }}
         working-directory: deployment
         run: |
           sed -i "s|{{ IMAGE }}|${{ env.TMP_IMAGE_PREFIX }}|g" deployment.yml

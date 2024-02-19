@@ -105,6 +105,8 @@
   "disconnect_google_btn": "Отвязать аккаунт Google",
   "disconnect_google_btn_caprion": "(У меня есть пароль)",
   "create_password": "Создать пароль",
-  "create_password_modal_text_1": "В течение 5 минут вы получите письмо с ссылкой для восстановления пароля.",
+  "create_password_modal_text_1_part_1": "В течение 5 минут на вашу почту:",
+  "create_password_modal_text_1_part_2": "придет письмо со ссылкой на восстановление пароля.",
   "create_password_modal_text_2": "После установки пароля вам нужно вернуться на эту страницу и отвязать аккаунт."
 }
+

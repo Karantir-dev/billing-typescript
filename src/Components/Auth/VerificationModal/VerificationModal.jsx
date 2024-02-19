@@ -15,6 +15,7 @@ export default function VerificationModal() {
   const navigate = useNavigate()
 
   const formVisibility = useSelector(authSelectors.getTotpFormVisibility)
+  const previousRoute = useSelector(authSelectors.getPreviousRoute)
 
   const { t } = useTranslation('auth', { keyPrefix: 'verification' })
   const dispatch = useDispatch()
@@ -26,7 +27,13 @@ export default function VerificationModal() {
       return
     }
     setTotp('')
-    dispatch(authOperations.sendTotp(totp, setError))
+
+    /* If prev route was CHANGE_PASSWORD sending navigate func to redirect to the settings */
+    if (previousRoute === route.CHANGE_PASSWORD) {
+      dispatch(authOperations.sendTotp(totp, setError, navigate))
+    } else {
+      dispatch(authOperations.sendTotp(totp, setError))
+    }
   }
 
   const handleBtnCloseClick = () => {

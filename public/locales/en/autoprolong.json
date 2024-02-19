@@ -6,5 +6,7 @@
   "per year": "per year",
   "for two years": "for two years",
   "for three years": "for three years",
-  "on": "Enabled"
+  "on": "Enabled",
+  "off": "Disabled"
+
 }

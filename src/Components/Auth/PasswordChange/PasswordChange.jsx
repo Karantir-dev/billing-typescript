@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
-import { authOperations } from '@redux'
+import { authOperations, authSelectors } from '@redux'
 import * as routes from '@src/routes'
 import { PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
 import s from './PasswordChange.module.scss'
 import { InputField, Button } from '@components'
+import { toast } from 'react-toastify'
 
 export default function PasswordChange() {
   const { t } = useTranslation('auth')
@@ -20,6 +21,7 @@ export default function PasswordChange() {
   const secret = searchParams.get('secret')
 
   const [errType, setErrType] = useState('')
+  const sessionId = useSelector(authSelectors.getSessionId)
 
   // redirects to login if query parasms are missing
   useEffect(() => {
@@ -43,8 +45,17 @@ export default function PasswordChange() {
   })
 
   const onChangeSuccess = () => {
-    navigate(routes.LOGIN, { state: { from: location.pathname }, replace: true })
+    if (!sessionId) {
+      navigate(routes.LOGIN, { state: { from: location.pathname }, replace: true })
+    } else {
+      navigate(`${routes.USER_SETTINGS}/access`, {
+        replace: true,
+      })
+      toast.success(t('setted_pass'))
+    }
   }
+
+  const linkToRender = sessionId ? `${routes.USER_SETTINGS}/access` : routes.LOGIN
 
   const handleSubmit = ({ password }) => {
     dispatch(
@@ -54,6 +65,7 @@ export default function PasswordChange() {
         secret,
         setErrType,
         onChangeSuccess,
+        navigate,
       ),
     )
   }
@@ -110,7 +122,7 @@ export default function PasswordChange() {
                 label={t('change.save_btn')}
                 className={s.submit_btn}
               />
-              <Link className={s.reset_pass_link} to={routes.LOGIN}>
+              <Link className={s.reset_pass_link} to={linkToRender}>
                 {t('change.cancel_link')}
               </Link>
             </Form>

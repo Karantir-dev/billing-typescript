@@ -5,7 +5,6 @@ import { Icon, Select, SoftwareOSBtn, SoftwareOSSelect, InputField } from '@comp
 import * as Yup from 'yup'
 import {
   DOMAIN_REGEX,
-  getPortSpeed,
   translatePeriodText,
   roundToDecimal,
   autoprolongList,
@@ -94,6 +93,7 @@ export default function TariffConfig({
           let label = ''
           let withSale = false
           let words = []
+          let oldPrice
 
           if (fieldName === 'Memory') {
             words = $?.match(/[\d|.|\\+]+/g)
@@ -104,6 +104,7 @@ export default function TariffConfig({
 
             if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
               withSale = true
+              oldPrice = roundToDecimal(words[1] / 0.45)
             }
           }
 
@@ -113,9 +114,7 @@ export default function TariffConfig({
                 <div className={s.sale55Icon}>-55%</div>
                 <span className={s.saleSpan}>
                   {`${words[0]} Gb (`}
-                  <span className={s.memorySale}>
-                    {roundToDecimal(Number($cost / 0.45))}
-                  </span>
+                  <span className={s.memorySale}>{oldPrice}</span>
                   {translatePeriodText($.trim().split('(')[1], t)}
                 </span>
               </span>
@@ -123,7 +122,12 @@ export default function TariffConfig({
           } else if (fieldName === 'Memory' || $.includes('EUR ')) {
             label = translatePeriodText($.trim(), t)
           } else {
-            label = t($.trim())
+            label = t(
+              $.trim().replace(
+                'unlimited traffic',
+                t('unlimited traffic', { ns: 'dedicated_servers' }),
+              ),
+            )
           }
 
           return {
@@ -164,7 +168,7 @@ export default function TariffConfig({
         CPU_count: parameters?.CPU_count,
         Memory: parameters?.Memory,
         Disk_space: parameters?.Disk_space,
-        Port_speed: getPortSpeed(parameters),
+        Port_speed: parameters?.Port_speed,
         Control_panel: parameters?.Control_panel,
         IP_addresses_count: parameters?.IP_addresses_count,
         agreement: 'on',
@@ -248,12 +252,14 @@ export default function TariffConfig({
                 />
               )}
               {values.Port_speed && (
-                <InputField
-                  name="Port_speed"
+                <Select
+                  value={values.Port_speed}
+                  itemsList={getOptionsListExtended('Port_speed')}
+                  getElement={value => {
+                    changeFieldHandler('Port_speed', value, true)
+                  }}
                   label={`${t('port_speed')}:`}
-                  className={s.input_field_wrapper}
                   isShadow
-                  disabled
                 />
               )}
               {!parameters.autoprolong_unavailable?.$ && (

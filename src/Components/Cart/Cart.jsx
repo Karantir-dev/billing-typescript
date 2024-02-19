@@ -63,10 +63,11 @@ export default function Component() {
     'user_settings',
   ])
 
-  const [paymentsMethodList, setPaymentsMethodList] = useState([])
-  const [salesList, setSalesList] = useState([])
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+  const promotionsList = useSelector(selectors.getPromotionsList)
 
+  const [paymentsMethodList, setPaymentsMethodList] = useState([])
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth)
+  const [isFree, setIsFree] = useState(false)
   const geoData = useSelector(authSelectors.getGeoData)
 
   const isLoading = useSelector(selectors.getIsLoading)
@@ -90,7 +91,6 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(cartOperations.getBasket(setCartData, paymentListhandler))
-    dispatch(cartOperations.getSalesList(setSalesList))
     dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }, [])
 
@@ -850,35 +850,59 @@ export default function Component() {
     )
   }
 
+  /**
+   * In this useEffect we check for the dedic half year promotion
+   * if this promotion for dedic is enabled and it is dedic ordering -
+   * we disable promocode field
+   */
   useEffect(() => {
-    const cartConfigName = state.cartData?.elemList[0]?.pricelist_name.$?.slice(
-      0,
-      state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
-    )
+    const isItDedic =
+      state.cartData?.elemList?.[0]?.pricelist_name.$.toLowerCase().includes('config')
 
-    const foundSale = salesList.find(
-      sale =>
-        sale.promotion?.$ === 'Большие скидки на выделенные серверы' &&
-        sale.idname.$.includes(cartConfigName),
-    )
+    if (isItDedic) {
+      const cartConfigName = state.cartData?.elemList[0]?.pricelist_name.$?.slice(
+        0,
+        state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
+      )
 
-    const cartDiscountPercent =
-      state.cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
-    const selectedPeriod = state.cartData?.elemList[0]?.['item.period']?.$
+      let foundSale
+      /**
+       * This if statement is for two versions of API
+       * This first block is for a new version
+       */
+      if (promotionsList?.[0]?.products) {
+        foundSale = promotionsList.find(sale => sale.products.$.includes(cartConfigName))
 
-    if (foundSale) {
-      if (
-        (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
-        (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
-        (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
-        cartDiscountPercent === 0
-      ) {
-        setState({ isDedicWithSale: false })
+        /**
+         * and this second block is for an old version,
+         * which should be removed after API updating
+         */
       } else {
-        setState({ isDedicWithSale: true })
+        foundSale = promotionsList.find(
+          sale =>
+            sale.promotion?.$ === 'Большие скидки на выделенные серверы' &&
+            sale.idname.$.includes(cartConfigName),
+        )
+      }
+
+      const cartDiscountPercent =
+        state.cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
+      const selectedPeriod = state.cartData?.elemList[0]?.['item.period']?.$
+
+      if (foundSale) {
+        if (
+          (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
+          (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
+          (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
+          cartDiscountPercent === 0
+        ) {
+          setState({ isDedicWithSale: false })
+        } else {
+          setState({ isDedicWithSale: true })
+        }
       }
     }
-  }, [salesList])
+  }, [promotionsList, state.cartData?.elemList])
 
   const renderPayersListTitle = () => (
     <div className={s.formBlockTitle}>{t('Payer')}:</div>
@@ -941,7 +965,7 @@ export default function Component() {
                 [OFFER_FIELD]: state.isPolicyChecked || false,
 
                 selectedPayMethod: state.selectedPayMethod || undefined,
-                promocode: state.promocode,
+                promocode: state.promocode || '',
                 isPersonalBalance:
                   state.selectedPayMethod?.name?.$?.includes('balance') &&
                   state.selectedPayMethod?.paymethod_type?.$ === '0'
@@ -954,6 +978,22 @@ export default function Component() {
               onSubmit={payBasketHandler}
             >
               {({ values, setFieldValue, touched, errors, handleBlur }) => {
+                useEffect(() => {
+                  if (Number(state.cartData?.total_sum) === 0) {
+                    setIsFree(true)
+                    const balancePaymethod = paymentsMethodList.find(el =>
+                      el.name?.$.includes('Account balance'),
+                    )
+
+                    setFieldValue('selectedPayMethod', balancePaymethod)
+                    setFieldValue('isPersonalBalance', 'on')
+                    setState({
+                      selectedPayMethod: balancePaymethod,
+                      selectedAddPaymentMethod: undefined,
+                    })
+                  }
+                }, [state.cartData?.total_sum, paymentsMethodList])
+
                 const parsePaymentInfo = text => {
                   const splittedText = text?.split('<p>')
                   if (splittedText?.length > 0) {
@@ -1005,194 +1045,200 @@ export default function Component() {
                 return (
                   <Form className={s.form}>
                     <ScrollToFieldError />
-                    <div className={cn(s.formBlock, s.padding)}>
-                      {!isLoading &&
-                        state.paymentListLoaded &&
-                        paymentsMethodList?.length === 0 && (
-                          <div className={s.notAllowPayMethod}>
-                            {t('order_amount_is_less')}
-                          </div>
-                        )}
-                      {paymentsMethodList?.length > 0 && !state.isPhoneVerification && (
-                        <>
-                          <div className={s.formBlockTitle}>{t('Payment method')}:</div>
-                          <div className={s.formFieldsBlock} name="selectedPayMethod´">
-                            {paymentsMethodList?.map(method => {
-                              const { image, name, paymethod_type, paymethod } = method
+                    {!isFree && (
+                      <div className={cn(s.formBlock, s.padding)}>
+                        {!isLoading &&
+                          state.paymentListLoaded &&
+                          paymentsMethodList?.length === 0 && (
+                            <div className={s.notAllowPayMethod}>
+                              {t('order_amount_is_less')}
+                            </div>
+                          )}
+                        {paymentsMethodList?.length > 0 && !state.isPhoneVerification && (
+                          <>
+                            <div className={s.formBlockTitle}>{t('Payment method')}:</div>
+                            <div className={s.formFieldsBlock} name="selectedPayMethod´">
+                              {paymentsMethodList?.map(method => {
+                                const { image, name, paymethod_type, paymethod } = method
 
-                              let paymentName = name?.$
-                              let balance = ''
+                                let paymentName = name?.$
+                                let balance = ''
 
-                              if (paymentName?.includes('Account balance')) {
-                                balance = paymentName?.match(/[-\d|.|\\+]+/g)
-                                paymentName = t('Account balance')
-                              }
+                                if (paymentName?.includes('Account balance')) {
+                                  balance = paymentName?.match(/[-\d|.|\\+]+/g)
+                                  paymentName = t('Account balance')
+                                }
 
-                              return (
-                                <button
-                                  onClick={() => {
-                                    setFieldValue('selectedPayMethod', method)
+                                return (
+                                  <button
+                                    onClick={() => {
+                                      setFieldValue('selectedPayMethod', method)
 
-                                    setState({
-                                      selectedPayMethod: method,
-                                      selectedAddPaymentMethod: undefined,
-                                    })
-
-                                    if (paymethod?.$ === '90') {
-                                      setCode(QIWI_PHONE_COUNTRIES)
-                                    } else if (paymethod?.$ === '86') {
-                                      setCode(SBER_PHONE_COUNTRIES)
-                                    } else if (paymethod?.$ === '87') {
                                       setState({
-                                        phone: '',
-                                        countryCode: state.userCountryCode,
+                                        selectedPayMethod: method,
+                                        selectedAddPaymentMethod: undefined,
                                       })
-                                    }
 
-                                    if (
-                                      method?.name?.$?.includes('balance') &&
-                                      method?.paymethod_type?.$ === '0'
-                                    ) {
-                                      setFieldValue('isPersonalBalance', 'on')
-                                    } else {
-                                      dispatch(
-                                        cartOperations.getPayMethodItem(
-                                          {
-                                            paymethod: method?.paymethod?.$,
-                                          },
-                                          setAdditionalPayMethodts,
-                                        ),
-                                      )
-                                      setFieldValue('isPersonalBalance', 'off')
-                                    }
-                                  }}
-                                  type="button"
-                                  className={cn(
-                                    s.paymentMethodBtn,
-                                    {
-                                      [s.selected]:
-                                        paymethod_type?.$ ===
-                                          values?.selectedPayMethod?.paymethod_type?.$ &&
-                                        paymethod?.$ ===
-                                          values?.selectedPayMethod?.paymethod?.$,
-                                    },
-                                    { [s.withHint]: paymethod?.$ === '71' },
-                                  )}
-                                  key={name?.$}
-                                >
-                                  <div className={s.descrWrapper}>
-                                    <img
-                                      src={`${process.env.REACT_APP_BASE_URL}${image?.$}`}
-                                      alt="icon"
-                                    />
-                                    <span
-                                      className={cn({
-                                        [s.methodDescr]: paymethod?.$ === '71',
-                                      })}
-                                    >
-                                      {paymentName}
-                                      {balance?.length > 0 && (
-                                        <>
-                                          <br />{' '}
-                                          <span className={s.balance}>
-                                            {Number(balance).toFixed(2)} EUR
-                                          </span>
-                                        </>
-                                      )}
-                                    </span>
-                                  </div>
-                                  {paymethod?.$ === '71' && (
-                                    <HintWrapper
-                                      popupClassName={s.cardHintWrapper}
-                                      label={t(method?.name.$, {
-                                        ns: 'other',
-                                      })}
-                                      wrapperClassName={cn(s.infoBtnCard)}
-                                      bottom
-                                    >
-                                      <Icon name="Info" />
-                                    </HintWrapper>
-                                  )}
-                                </button>
-                              )
-                            })}
-                          </div>
-                        </>
-                      )}
-                      <div className={s.additionalPayMethodBlock}>
-                        {state.additionalPayMethodts &&
-                          state.additionalPayMethodts?.length > 1 && (
-                            <Select
-                              placeholder={t('Not chosen', { ns: 'other' })}
-                              label={`${t('Payment method')} Yookasa:`}
-                              value={values.payment_method}
-                              getElement={item => {
-                                setFieldValue('payment_method', item)
-                                setState({ selectedAddPaymentMethod: item })
-                              }}
-                              isShadow
-                              className={cn(s.select, s.additionalSelectPayMentMethod)}
-                              dropdownClass={s.selectDropdownClass}
-                              itemsList={state.additionalPayMethodts?.map(
-                                ({ $key, $ }) => ({
-                                  label: t(`${$.trim()}`, { ns: 'billing' }),
-                                  value: $key,
-                                }),
-                              )}
-                              error={errors.payment_method}
-                              isRequired
-                            />
-                          )}
+                                      if (paymethod?.$ === '90') {
+                                        setCode(QIWI_PHONE_COUNTRIES)
+                                      } else if (paymethod?.$ === '86') {
+                                        setCode(SBER_PHONE_COUNTRIES)
+                                      } else if (paymethod?.$ === '87') {
+                                        setState({
+                                          phone: '',
+                                          countryCode: state.userCountryCode,
+                                        })
+                                      }
 
-                        {filteredPayment_method?.hide?.includes('phone') &&
-                          !filteredPayment_method?.hide?.includes('alfabank_login') && (
-                            <InputField
-                              inputWrapperClass={s.inputHeight}
-                              name="alfabank_login"
-                              label={`${t('Имя пользователя в Альфа-Клик', {
-                                ns: 'payers',
-                              })}:`}
-                              placeholder={t('Enter data', { ns: 'other' })}
-                              isShadow
-                              className={cn(s.inputBig, s.additionalSelectPayMentMethod)}
-                              error={!!errors.alfabank_login}
-                              touched={!!touched.alfabank_login}
-                              isRequired
-                              onChange={e => setState({ alfaLogin: e.target.value })}
-                            />
-                          )}
+                                      if (
+                                        method?.name?.$?.includes('balance') &&
+                                        method?.paymethod_type?.$ === '0'
+                                      ) {
+                                        setFieldValue('isPersonalBalance', 'on')
+                                      } else {
+                                        dispatch(
+                                          cartOperations.getPayMethodItem(
+                                            {
+                                              paymethod: method?.paymethod?.$,
+                                            },
+                                            setAdditionalPayMethodts,
+                                          ),
+                                        )
+                                        setFieldValue('isPersonalBalance', 'off')
+                                      }
+                                    }}
+                                    type="button"
+                                    className={cn(
+                                      s.paymentMethodBtn,
+                                      {
+                                        [s.selected]:
+                                          paymethod_type?.$ ===
+                                            values?.selectedPayMethod?.paymethod_type
+                                              ?.$ &&
+                                          paymethod?.$ ===
+                                            values?.selectedPayMethod?.paymethod?.$,
+                                      },
+                                      { [s.withHint]: paymethod?.$ === '71' },
+                                    )}
+                                    key={name?.$}
+                                  >
+                                    <div className={s.descrWrapper}>
+                                      <img
+                                        src={`${process.env.REACT_APP_BASE_URL}${image?.$}`}
+                                        alt="icon"
+                                      />
+                                      <span
+                                        className={cn({
+                                          [s.methodDescr]: paymethod?.$ === '71',
+                                        })}
+                                      >
+                                        {paymentName}
+                                        {balance?.length > 0 && (
+                                          <>
+                                            <br />{' '}
+                                            <span className={s.balance}>
+                                              {Number(balance).toFixed(2)} EUR
+                                            </span>
+                                          </>
+                                        )}
+                                      </span>
+                                    </div>
+                                    {paymethod?.$ === '71' && (
+                                      <HintWrapper
+                                        popupClassName={s.cardHintWrapper}
+                                        label={t(method?.name.$, {
+                                          ns: 'other',
+                                        })}
+                                        wrapperClassName={cn(s.infoBtnCard)}
+                                        bottom
+                                      >
+                                        <Icon name="Info" />
+                                      </HintWrapper>
+                                    )}
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          </>
+                        )}
+                        <div className={s.additionalPayMethodBlock}>
+                          {state.additionalPayMethodts &&
+                            state.additionalPayMethodts?.length > 1 && (
+                              <Select
+                                placeholder={t('Not chosen', { ns: 'other' })}
+                                label={`${t('Payment method')} Yookasa:`}
+                                value={values.payment_method}
+                                getElement={item => {
+                                  setFieldValue('payment_method', item)
+                                  setState({ selectedAddPaymentMethod: item })
+                                }}
+                                isShadow
+                                className={cn(s.select, s.additionalSelectPayMentMethod)}
+                                dropdownClass={s.selectDropdownClass}
+                                itemsList={state.additionalPayMethodts?.map(
+                                  ({ $key, $ }) => ({
+                                    label: t(`${$.trim()}`, { ns: 'billing' }),
+                                    value: $key,
+                                  }),
+                                )}
+                                error={errors.payment_method}
+                                isRequired
+                              />
+                            )}
 
-                        {!filteredPayment_method?.hide?.includes('phone') &&
-                          filteredPayment_method?.hide?.includes('alfabank_login') && (
-                            <CustomPhoneInput
-                              containerClass={cn(s.inputHeight, 'cartModal')}
-                              wrapperClass={s.inputBig}
-                              inputClass={s.phoneInputClass}
-                              value={values.phone}
-                              labelClass={s.phoneInputLabel}
-                              label={`${t('Phone', { ns: 'other' })}:`}
-                              handleBlur={handleBlur}
-                              setFieldValue={(name, value) => {
-                                setFieldValue(name, value)
-                                setState({ phone: value })
-                              }}
-                              name="phone"
-                              onlyCountries={renderPhoneList(
-                                filteredPayment_method?.$key,
-                              )}
-                              isRequired
-                              setCountryCode={value => setState({ countryCode: value })}
-                              country={state.countryCode}
-                            />
-                          )}
+                          {filteredPayment_method?.hide?.includes('phone') &&
+                            !filteredPayment_method?.hide?.includes('alfabank_login') && (
+                              <InputField
+                                inputWrapperClass={s.inputHeight}
+                                name="alfabank_login"
+                                label={`${t('Имя пользователя в Альфа-Клик', {
+                                  ns: 'payers',
+                                })}:`}
+                                placeholder={t('Enter data', { ns: 'other' })}
+                                isShadow
+                                className={cn(
+                                  s.inputBig,
+                                  s.additionalSelectPayMentMethod,
+                                )}
+                                error={!!errors.alfabank_login}
+                                touched={!!touched.alfabank_login}
+                                isRequired
+                                onChange={e => setState({ alfaLogin: e.target.value })}
+                              />
+                            )}
+
+                          {!filteredPayment_method?.hide?.includes('phone') &&
+                            filteredPayment_method?.hide?.includes('alfabank_login') && (
+                              <CustomPhoneInput
+                                containerClass={cn(s.inputHeight, 'cartModal')}
+                                wrapperClass={s.inputBig}
+                                inputClass={s.phoneInputClass}
+                                value={values.phone}
+                                labelClass={s.phoneInputLabel}
+                                label={`${t('Phone', { ns: 'other' })}:`}
+                                handleBlur={handleBlur}
+                                setFieldValue={(name, value) => {
+                                  setFieldValue(name, value)
+                                  setState({ phone: value })
+                                }}
+                                name="phone"
+                                onlyCountries={renderPhoneList(
+                                  filteredPayment_method?.$key,
+                                )}
+                                isRequired
+                                setCountryCode={value => setState({ countryCode: value })}
+                                country={state.countryCode}
+                              />
+                            )}
+                        </div>
+
+                        <ErrorMessage
+                          className={s.error_message}
+                          name={'selectedPayMethod'}
+                          component="span"
+                        />
                       </div>
-
-                      <ErrorMessage
-                        className={s.error_message}
-                        name={'selectedPayMethod'}
-                        component="span"
-                      />
-                    </div>
+                    )}
                     <div
                       className={cn(s.padding, s.payersList, {
                         [s.hide]: !values?.selectedPayMethod,
@@ -1232,7 +1278,7 @@ export default function Component() {
                       </button>
                     )}
 
-                    {!state.isPhoneVerification && (
+                    {!state.isPhoneVerification && !isFree && (
                       <div className={cn(s.formBlock, s.promocodeBlock, s.padding)}>
                         <div className={cn(s.formFieldsBlock, s.first, s.promocode)}>
                           <InputField
@@ -1250,7 +1296,7 @@ export default function Component() {
                           />
                           <button
                             onClick={() => setPromocodeToCart(values?.promocode)}
-                            disabled={values?.promocode?.length === 0}
+                            disabled={Boolean(!values?.promocode?.length)}
                             type="button"
                             className={s.promocodeBtn}
                           >
@@ -1378,7 +1424,11 @@ export default function Component() {
                               className={s.saveBtn}
                               isShadow
                               size="medium"
-                              label={t('Pay', { ns: 'billing' })}
+                              label={
+                                isFree
+                                  ? t('Activate', { ns: 'billing' })
+                                  : t('Pay', { ns: 'billing' })
+                              }
                               type="submit"
                             />
                           )}

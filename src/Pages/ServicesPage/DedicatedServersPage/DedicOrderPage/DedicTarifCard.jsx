@@ -1,7 +1,7 @@
 import s from './DedicOrderPage.module.scss'
 
 import classNames from 'classnames'
-import { dedicOperations, vdsOperations } from '@redux'
+import { cartOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import { HintWrapper, Icon } from '@src/Components'
 import { useTranslation } from 'react-i18next'
@@ -11,14 +11,12 @@ export default function DedicTarifCard({
   values,
   setParameters,
   setFieldValue,
-  setPrice,
   setTarifChosen,
-  periodName,
-  setVdsParameters,
   setSelectedTariffId,
   signal,
   setIsLoading,
   dedicInfoList,
+  setPeriodName,
 }) {
   const { t } = useTranslation(['dedicated_servers'])
   const dispatch = useDispatch()
@@ -31,6 +29,7 @@ export default function DedicTarifCard({
   const pricePercent = parsedPrice.percent
   const priceSale = parsedPrice.sale
   const hasSale = parsedPrice.length
+  const periodName = parsedPrice.periodName
 
   const itemInfo = dedicInfoList.find(el => el.service_id === +item.pricelist.$)
 
@@ -44,33 +43,24 @@ export default function DedicTarifCard({
       <button
         onClick={() => {
           if (item?.pricelist?.$ === values.tarif) return
-          setParameters(null)
-          setVdsParameters(null)
           setFieldValue('tarif', item?.pricelist?.$)
-          setPrice(priceAmount)
           setTarifChosen(item.isVds ? 'vds' : 'dedic')
+          setPeriodName(periodName)
           setSelectedTariffId(item?.pricelist?.$)
 
-          item.isVds
-            ? dispatch(
-                vdsOperations.getTariffParameters(
-                  values.period,
-                  item?.pricelist?.$,
-                  setVdsParameters,
-                  signal,
-                  setIsLoading,
-                ),
-              )
-            : dispatch(
-                dedicOperations.getParameters(
-                  values.period,
-                  item?.pricelist?.$,
-                  setParameters,
-                  setFieldValue,
-                  signal,
-                  setIsLoading,
-                ),
-              )
+          dispatch(
+            cartOperations.getTariffParameters(
+              {
+                service: item.isVds ? 'vds' : 'dedic',
+                id: item?.pricelist?.$,
+                period: values.period,
+              },
+              setParameters,
+              undefined,
+              signal,
+              setIsLoading,
+            ),
+          )
         }}
         type="button"
         className={classNames(s.tarif_card_btn, { [s.vds]: item.isVds })}

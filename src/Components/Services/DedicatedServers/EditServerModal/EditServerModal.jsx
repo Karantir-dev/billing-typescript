@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import s from './EditServerModal.module.scss'
 
 import { dedicOperations } from '@redux'
-import { translatePeriod, isDisabledDedicTariff, translatePeriodText } from '@utils'
+import { isDisabledDedicTariff, translatePeriodText, roundToDecimal } from '@utils'
 
 export default function EditServerModal({
   elid,
@@ -25,38 +25,114 @@ export default function EditServerModal({
     'autoprolong',
   ])
   const dispatch = useDispatch()
-  const [initialState, setInitialState] = useState()
-  const [currentIP, setCurrentIP] = useState()
-  const [currentManagePanel, setCurrentManagePanel] = useState()
+  const [parameters, setParameters] = useState()
+  const [isFirstFetch, setIsFirstFetch] = useState(true)
+  const [ipSelectDisabled, setIsIpListDisabled] = useState(false)
+  
+  useEffect(() => {
+    dispatch(dedicOperations.getCurrentDedicInfo(elid, {}, setParameters))
+  }, [])
 
-  const [currentOrder, setCurrentOrder] = useState('')
+  useEffect(() => {
+    if (parameters && isFirstFetch) {
+      if (parameters.IP_addresses_count === '2') {
+        setIsIpListDisabled(true)
+      }
+      setIsFirstFetch(false)
+    }
+  }, [parameters])
 
-  const orderText = currentOrder?.$?.split('<br/>')
-    ?.filter(item => item)
-    ?.slice(1)
+  const changeFieldHandler = (field, value, isUpdatePrice) => {
+    if (!isUpdatePrice) {
+      setParameters(params => ({ ...params, [field]: value }))
+      return
+    }
 
-  let controlPanelText = orderText?.filter(item => item.includes('Control panel'))
-  let ipAdressesText = orderText?.filter(item => item.includes('IP-addresses'))
-  let totalAmountText = orderText?.filter(item => item.includes('Total amount'))
+    const { register, ostempl, recipe, domain, server_name } = parameters
 
-  let amountToPay =
-    totalAmountText &&
-    totalAmountText[0]
-      ?.split(' ')
-      ?.filter(item => !isNaN(item))
-      .join('')
+    const params = {
+      elid,
+      ostempl: ostempl?.$,
+      recipe: recipe?.$,
+      autoprolong: parameters.autoprolong.$,
+      domain: domain?.$,
+      server_name: server_name?.$,
+    }
 
-  const initialIP = initialState?.ipamount?.$
-  const initialManagePanel = initialState?.managePanel
+    for (const key in register) {
+      params[register[key]] = key === field ? value : parameters[key]
+    }
+
+    dispatch(dedicOperations.getCurrentDedicInfo(elid, params, setParameters))
+  }
+
+  const getOptionsListExtended = fieldName => {
+    if (parameters && parameters.slist) {
+      const optionsList = parameters.slist.find(elem => elem.$name === fieldName)?.val
+      let firstItem = 0
+
+      return optionsList
+        ?.filter(el => el?.$)
+        ?.map(({ $key, $, $cost }, index) => {
+          let label = ''
+          let withSale = false
+          let words = []
+
+          const labelText = $?.replaceAll(
+            'unlimited traffic',
+            t('unlimited traffic', { ns: 'dedicated_servers' }),
+          )
+            .replaceAll('Without a license', t('Without a license'))
+            .replaceAll('Unlimited domains', t('Unlimited domains'))
+            .replaceAll('domains', t('domains'))
+
+          if (fieldName === 'Memory') {
+            words = labelText?.match(/[\d|.|\\+]+/g)
+
+            if (words?.length > 0 && index === 0) {
+              firstItem = words[0]
+            }
+
+            if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
+              withSale = true
+            }
+          }
+
+          if (withSale && words?.length > 0) {
+            label = (
+              <span className={s.selectWithSale}>
+                <div className={s.sale55Icon}>-55%</div>
+                <span className={s.saleSpan}>
+                  {`${words[0]} Gb (`}
+                  <span className={s.memorySale}>
+                    {roundToDecimal(Number($cost / 0.45))}
+                  </span>
+                  {translatePeriodText(labelText.trim().split('(')[1], t)}
+                </span>
+              </span>
+            )
+          } else if (fieldName === 'Memory' || labelText.includes('EUR ')) {
+            label = translatePeriodText(labelText.trim(), t)
+          } else {
+            label = t(labelText.trim())
+          }
+
+          return {
+            value: $key,
+            label: label,
+            sale: withSale,
+            newPrice: roundToDecimal(Number($cost)),
+            oldPrice: roundToDecimal(Number($cost) + $cost * 0.55),
+          }
+        })
+    }
+    return []
+  }
 
   const handleEditionModal = () => {
     closeModal()
   }
-
-  useEffect(() => {
-    dispatch(dedicOperations.getCurrentDedicInfo(elid, setInitialState))
-  }, [])
-
+  console.log(parameters, ' parameters')
   const handleSubmit = values => {
     const {
       elid,
@@ -65,22 +141,16 @@ export default function EditServerModal({
       ostempl,
       recipe,
       managePanel,
-      managePanelName,
       ipTotal,
-      ipName,
       ip,
       username,
       userpassword,
       password,
       server_name,
+      Port_speed,
     } = values
 
-    if (
-      (initialIP !== currentIP && currentIP !== undefined) ||
-      (initialManagePanel !== currentManagePanel &&
-        currentManagePanel !== undefined &&
-        currentManagePanel !== '97')
-    ) {
+    if (parameters?.orderinfo?.$) {
       dispatch(
         dedicOperations.editDedicServer(
           elid,
@@ -89,14 +159,16 @@ export default function EditServerModal({
           ostempl,
           recipe,
           managePanel,
-          managePanelName,
+          parameters.register.Control_panel,
           ipTotal,
-          ipName,
+          parameters.register.IP_addresses_count,
           ip,
           username,
           userpassword,
           password,
           server_name,
+          Port_speed,
+          parameters.register.Port_speed,
           handleEditionModal,
         ),
       )
@@ -109,14 +181,16 @@ export default function EditServerModal({
           ostempl,
           recipe,
           managePanel,
-          managePanelName,
+          managePanelName:  parameters.register.Control_panel,
           ipTotal,
-          ipName,
+          ipName: parameters.register.IP_addresses_count,
           ip,
           username,
           userpassword,
           password,
           server_name,
+          Port_speed,
+          PortSpeedName: parameters.register.Port_speed,
           handleModal: handleEditionModal,
           signal,
           setIsLoading,
@@ -132,13 +206,74 @@ export default function EditServerModal({
     ),
   })
 
-  const isProlongDisabled = isDisabledDedicTariff(initialState?.name?.$)
+  const isProlongDisabled = isDisabledDedicTariff(parameters?.name?.$)
+
+  const renderOrderDetail = () => {
+    const orderText = parameters?.orderinfo?.$?.split('<br/>')
+      ?.filter(item => item)
+      ?.slice(1)
+
+    const controlPanelText = orderText?.find(item => item.includes('Control panel'))
+    const ipAdressesText = orderText?.find(item => item.includes('IP-addresses'))
+    const portSpeedText = orderText?.find(item => item.includes('Port speed'))
+    const totalAmountText = orderText?.find(item => item.includes('Total amount'))
+
+    const amountToPay =
+      totalAmountText &&
+      totalAmountText
+        ?.split(' ')
+        ?.filter(item => !isNaN(item))
+        .join('')
+
+    return (
+      <>
+        <p className={s.total_amount}>
+          {`${t('topay')}:`}{' '}
+          <span className={s.price}>{`${roundToDecimal(amountToPay)} EUR`}</span>
+        </p>
+
+        <div className={s.order_description}>
+          <p className={s.panel_order}>
+            {controlPanelText
+              ? controlPanelText
+                  ?.replaceAll(
+                    'for order and then',
+                    t('for order and then', { ns: 'vds' }),
+                  )
+                  .replaceAll('per month', t('per month'))
+                  .replaceAll('Without a license', t('Without a license'))
+                  .replaceAll('domains', t('domains'))
+                  .replaceAll('Control panel', t('manage_panel'))
+              : null}
+          </p>
+
+          <p className={s.ipadresses_order}>
+            {ipAdressesText &&
+              ipAdressesText
+                ?.replaceAll('for order and then', t('for order and then', { ns: 'vds' }))
+                .replaceAll('per month', t('per month'))
+                .replaceAll('IP-addresses count', t('IP-addresses count'))
+                .replaceAll('Unit', t('Unit'))
+                .replaceAll('additional', t('additional'))}
+          </p>
+          <p>
+            {portSpeedText &&
+              portSpeedText
+                ?.replaceAll('for order and then', t('for order and then', { ns: 'vds' }))
+                .replaceAll('unlimited traffic', t('unlimited traffic'))
+                .replaceAll('per month', t('per month'))
+                .replaceAll('Port speed', t('port_speed'))}
+          </p>
+        </div>
+      </>
+    )
+  }
 
   return (
     <Modal closeModal={closeModal} isOpen={isOpen} className={s.modal}>
       <Modal.Header>
         <h2 className={s.page_title}>{t('Editing a service', { ns: 'other' })}</h2>
-        <span className={s.order_id}>{`(#${initialState?.id?.$})`}</span>
+        <span className={s.order_id}>{`(#${parameters?.id?.$})`}</span>
       </Modal.Header>
       <Modal.Body>
         <Formik
@@ -146,24 +281,21 @@ export default function EditServerModal({
           validationSchema={validationSchema}
           initialValues={{
             elid,
-            domainname: initialState?.domain?.$ || '',
-            ipTotal: initialState?.ipamount?.$ || null,
+            domainname: parameters?.domain?.$ || '',
+            ipTotal: parameters?.IP_addresses_count || null,
             price: null,
-            autoprolong: isProlongDisabled
-              ? 'null'
-              : initialState?.autoprolong?.$ || null,
-            ostempl: initialState?.ostempl?.$ || null,
-            recipe: initialState?.recipe?.$ || null,
-            managePanel: initialState?.managePanel,
-            managePanelName: initialState?.managePanelName || null,
-            ipName: initialState?.amountIPName,
-            ip: initialState?.ip?.$ || '',
-            username: initialState?.username?.$ || '',
-            userpassword: initialState?.userpassword?.$ || '',
-            password: initialState?.password?.$ || '',
-            pricelist: initialState?.pricelist?.$,
-            period: initialState?.period?.$,
-            server_name: initialState?.server_name?.$,
+            autoprolong: isProlongDisabled ? 'null' : parameters?.autoprolong?.$ || null,
+            ostempl: parameters?.ostempl?.$ || null,
+            recipe: parameters?.recipe?.$ || null,
+            managePanel: parameters?.Control_panel,
+            ip: parameters?.ip?.$ || '',
+            username: parameters?.username?.$ || '',
+            userpassword: parameters?.userpassword?.$ || '',
+            password: parameters?.password?.$ || '',
+            pricelist: parameters?.pricelist?.$,
+            period: parameters?.period?.$,
+            server_name: parameters?.server_name?.$,
+            Port_speed: parameters?.Port_speed,
           }}
           onSubmit={handleSubmit}
         >
@@ -173,11 +305,11 @@ export default function EditServerModal({
                 <div className={s.status_wrapper}>
                   <div className={s.creation_date_wrapper}>
                     <span className={s.label}>{t('created', { ns: 'vds' })}:</span>
-                    <span className={s.value}>{initialState?.createdate?.$}</span>
+                    <span className={s.value}>{parameters?.createdate?.$}</span>
                   </div>
                   <div className={s.expiration_date_wrapper}>
                     <span className={s.label}>{t('valid_until', { ns: 'vds' })}:</span>
-                    <span className={s.value}>{initialState?.expiredate?.$}</span>
+                    <span className={s.value}>{parameters?.expiredate?.$}</span>
                   </div>
                 </div>
 
@@ -190,12 +322,9 @@ export default function EditServerModal({
                       height={50}
                       value={values.autoprolong}
                       label={t('autoprolong')}
-                      getElement={item => setFieldValue('autoprolong', item)}
+                      getElement={item => changeFieldHandler('autoprolong', { $: item })}
                       isShadow
-                      itemsList={initialState?.autoprolonglList?.map(el => ({
-                        label: translatePeriod(el?.$, el.$key, t),
-                        value: el.$key,
-                      }))}
+                      itemsList={getOptionsListExtended('autoprolong')}
                       className={s.select}
                       disabled={isProlongDisabled}
                     />
@@ -242,8 +371,9 @@ export default function EditServerModal({
                       label={t('recipe')}
                       value={values?.recipe}
                       placeholder={t('recipe_placeholder')}
-                      itemsList={initialState?.recipelList
-                        ?.filter(e => {
+                      itemsList={parameters?.slist
+                        .find(el => el.$name === 'recipe')
+                        ?.val?.filter(e => {
                           return e.$depend === values.ostempl
                         })
                         .map(el => {
@@ -302,9 +432,7 @@ export default function EditServerModal({
                       isShadow
                       label={t('os')}
                       value={values?.ostempl}
-                      itemsList={initialState?.ostemplList?.map(el => {
-                        return { label: t(el.$), value: el.$key }
-                      })}
+                      itemsList={getOptionsListExtended('ostempl')}
                       className={s.select}
                       disabled
                     />
@@ -318,147 +446,53 @@ export default function EditServerModal({
                   <Select
                     height={50}
                     value={values?.managePanel}
-                    getElement={item => {
-                      setFieldValue('managePanel', item)
-                      setCurrentManagePanel(item)
-                      dispatch(
-                        dedicOperations.updatePriceEditModal(
-                          elid,
-                          values.autoprolong,
-                          values.domainname,
-                          values.ostempl,
-                          values.recipe,
-                          item,
-                          values.managePanelName,
-                          values.ipTotal,
-                          values.ipName,
-                          values.ip,
-                          values.username,
-                          values.userpassword,
-                          values.password,
-
-                          currentOrder,
-                          setCurrentOrder,
-                        ),
-                      )
-                    }}
+                    getElement={item => changeFieldHandler('Control_panel', item, true)}
                     isShadow
                     label={t('manage_panel')}
-                    itemsList={initialState?.managePanellList?.map(el => {
-                      let labelText = el.$
-
-                      if (labelText.includes('Without a license')) {
-                        labelText = labelText.replace(
-                          'Without a license',
-                          t('Without a license'),
-                        )
-                      }
-
-                      if (labelText.includes('EUR')) {
-                        labelText = translatePeriodText(labelText, t)
-                      }
-
-                      if (labelText.includes('Unlimited domains')) {
-                        labelText = labelText.replace(
-                          'Unlimited domains',
-                          t('Unlimited domains'),
-                        )
-                      }
-
-                      if (labelText.includes('domains')) {
-                        labelText = labelText.replace('domains', t('domains'))
-                      }
-
-                      return { label: labelText, value: el.$key }
-                    })}
+                    itemsList={getOptionsListExtended('Control_panel')}
                     className={s.select}
                   />
 
                   <Select
                     height={50}
                     value={values?.ipTotal}
-                    getElement={item => {
-                      setFieldValue('ipTotal', item)
-                      setCurrentIP(item)
-                      dispatch(
-                        dedicOperations.updatePriceEditModal(
-                          elid,
-                          values.autoprolong,
-                          values.domainname,
-                          values.ostempl,
-                          values.recipe,
-                          values.managePanel,
-                          values.managePanelName,
-                          item,
-                          values.ipName,
-                          values.ip,
-                          values.username,
-                          values.userpassword,
-                          values.password,
-
-                          currentOrder,
-                          setCurrentOrder,
-                        ),
-                      )
-                    }}
+                    getElement={item =>
+                      changeFieldHandler('IP_addresses_count', item, true)
+                    }
                     isShadow
                     label={t('count_ip')}
-                    itemsList={['1', '2'].map(el => {
-                      return { label: el, value: el }
+                    itemsList={parameters?.ipList?.map(el => {
+                      return {
+                        label: `${el?.value}
+                          ${t('pcs.', {
+                            ns: 'vds',
+                          })}
+                          (${roundToDecimal(el?.cost)} EUR)`,
+                        value: el?.value?.toString(),
+                      }
                     })}
                     className={s.select}
-                    disabled={initialIP === '2'}
+                    disabled={ipSelectDisabled}
                   />
+                  {values.Port_speed && (
+                    <Select
+                      className={s.select}
+                      value={values.Port_speed}
+                      itemsList={getOptionsListExtended('Port_speed')}
+                      getElement={value => changeFieldHandler('Port_speed', value, true)}
+                      label={`${t('port_speed')}:`}
+                      isShadow
+                    />
+                  )}
                 </div>
-                {((initialIP !== currentIP && currentIP !== undefined) ||
-                  (initialManagePanel !== currentManagePanel &&
-                    currentManagePanel !== undefined &&
-                    currentManagePanel !== '97')) && (
-                  <p className={s.total_amount}>
-                    {`${t('topay')}:`}{' '}
-                    <span className={s.price}>{`${Number(amountToPay).toFixed(
-                      2,
-                    )} EUR`}</span>
-                  </p>
-                )}
-
-                {((initialIP !== currentIP && currentIP !== undefined) ||
-                  (initialManagePanel !== currentManagePanel &&
-                    currentManagePanel !== undefined &&
-                    currentManagePanel !== '97')) && (
-                  <p className={s.order_description}>
-                    <p className={s.panel_order}>
-                      {controlPanelText
-                        ? controlPanelText[0]
-                            ?.replaceAll(
-                              'for order and then',
-                              t('for order and then', { ns: 'vds' }),
-                            )
-                            ?.replaceAll('per month', t('per month'))
-                        : null}
-                    </p>
-
-                    <p className={s.ipadresses_order}>
-                      {ipAdressesText &&
-                        ipAdressesText[0]
-                          ?.replaceAll(
-                            'for order and then',
-                            t('for order and then', { ns: 'vds' }),
-                          )
-                          ?.replaceAll('per month', t('per month'))}
-                    </p>
-                  </p>
-                )}
+                {parameters?.orderinfo?.$ && renderOrderDetail()}
               </Form>
             )
           }}
         </Formik>
       </Modal.Body>
       <Modal.Footer>
-        {(initialIP !== currentIP && currentIP !== undefined) ||
-        (initialManagePanel !== currentManagePanel &&
-          currentManagePanel !== undefined &&
-          currentManagePanel !== '97') ? (
+        {parameters?.orderinfo?.$ ? (
           <Button
             className={s.buy_btn}
             isShadow
