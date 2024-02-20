@@ -17,7 +17,6 @@ export default function ServicesPage(props) {
     selected,
     registerDomainHandler,
     transfer,
-    autoprolongPrices,
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
@@ -42,46 +41,46 @@ export default function ServicesPage(props) {
     }
   }, [domains])
 
-  const parsePrice = price => {
-    const words = price?.match(/[\d|.|\\+]+/g)
-    const amounts = []
+  // const parsePrice = price => {
+  //   const words = price?.match(/[\d|.|\\+]+/g)
+  //   const amounts = []
 
-    if (words.length > 0) {
-      words.forEach(w => {
-        if (!isNaN(w)) {
-          amounts.push(w)
-        }
-      })
-    } else {
-      return
-    }
+  //   if (words?.length > 0) {
+  //     words.forEach(w => {
+  //       if (!isNaN(w)) {
+  //         amounts.push(w)
+  //       }
+  //     })
+  //   } else {
+  //     return
+  //   }
 
-    let amoumt = (
-      <span>
-        {roundToDecimal(amounts[amounts.length - 1]) + ' ' + 'EUR'}
-        <span className={s.year}>
-          {transfer ? ' ' : '/'}
-          {t(transfer ? 'for the transfer' : 'year', { ns: 'other' })}
-        </span>
-      </span>
-    )
-    let percent = amounts[0] + '%'
-    let sale = (
-      <span>
-        {roundToDecimal(amounts[1]) + ' ' + 'EUR'}
-        <span className={s.year}>
-          {transfer ? ' ' : '/'}
-          {t(transfer ? '' : 'year', { ns: 'other' })}
-        </span>
-      </span>
-    )
-    return {
-      amoumt,
-      percent,
-      sale,
-      length: amounts.length,
-    }
-  }
+  //   let amoumt = (
+  //     <span>
+  //       {roundToDecimal(amounts[amounts.length - 1]) + ' ' + 'EUR'}
+  //       <span className={s.year}>
+  //         {transfer ? ' ' : '/'}
+  //         {t(transfer ? 'for the transfer' : 'year', { ns: 'other' })}
+  //       </span>
+  //     </span>
+  //   )
+  //   let percent = amounts[0] + '%'
+  //   let sale = (
+  //     <span>
+  //       {roundToDecimal(amounts[1]) + ' ' + 'EUR'}
+  //       <span className={s.year}>
+  //         {transfer ? ' ' : '/'}
+  //         {t(transfer ? '' : 'year', { ns: 'other' })}
+  //       </span>
+  //     </span>
+  //   )
+  //   return {
+  //     amoumt,
+  //     percent,
+  //     sale,
+  //     length: amounts.length,
+  //   }
+  // }
 
   const itemIsSelected = item => {
     return selectedDomains.indexOf(item) !== -1
@@ -90,81 +89,78 @@ export default function ServicesPage(props) {
   const setIsSelectedHandler = item => {
     const index = selectedDomains.indexOf(item)
 
-    if (index === -1 && !item.premium) {
-      setSelectedDomains(e => [...e, item])
+    if (index === -1) {
+      // Adding element to selectedDomains
+      setSelectedDomains(prevState => [...prevState, item])
     } else {
-      var newArray = selectedDomains.filter(f => {
-        return f !== item
-      })
+      // Removing element from selectedDomains
+      const newArray = selectedDomains.filter(domain => domain !== item)
       setSelectedDomains(newArray)
     }
   }
 
+  /* Calculation sums of selected domain zones */
   const calculateSumOfSelected = () => {
     let sum = 0
 
     selectedDomains?.forEach(e => {
-      const words = e?.price?.$?.match(/[\d|.|\\+]+/g)
-      const amounts = []
+      const [
+        ,
+        {
+          info: { price },
+        },
+      ] = e
 
-      if (words.length > 0) {
-        words.forEach(w => {
-          if (!isNaN(w)) {
-            amounts.push(w)
-          }
-        })
-      }
-      sum = sum + Number(amounts[amounts.length - 1])
+      const { reg, main_price_reg } = price
+
+      sum += reg ? reg : main_price_reg
     })
 
     return roundToDecimal(sum)
   }
 
-  const getPolongPrice = domain => {
-    return autoprolongPrices.find(el => el.zone === '.' + domain.$.split('.')[1])
-      ?.main_price_renew
-  }
+  const renderDomains = (d, index) => {
+    // Assuming 'd' is an array:
+    const [domainName, { info }] = d
+    const { is_available, price } = info
+    const { reg, main_price_reg, renew, main_price_renew } = price
 
-  const renderDomains = d => {
-    const { id, domain, price } = d
-    const renew = getPolongPrice(domain)
+    const salePercent = Math.floor(reg === 0 ? 0 : 100 - (100 * reg) / main_price_reg)
 
-    const notAvailable =
-      d?.desc?.$?.includes('Not available') || d?.desc?.$?.includes('Error') || d.premium
+    const notAvailable = is_available === false || d?.tld === 'invalid'
 
     return (
       <div
         tabIndex={0}
         role="button"
         onKeyDown={null}
-        key={id?.$}
+        key={`domain-${index}`}
         className={cn(s.domainItem, {
           [s.selected]: itemIsSelected(d),
           [s.notAvailable]: notAvailable,
         })}
         onClick={() => !notAvailable && setIsSelectedHandler(d)}
       >
-        {parsePrice(price?.$)?.length > 1 && (
-          <div className={s.sale}>-{parsePrice(price?.$)?.percent}</div>
-        )}
+        {salePercent > 0 && <div className={s.sale}>{salePercent}%</div>}
+
         <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
-          <div className={s.domainNameValue}>{domain?.$}</div>
-          <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
-          {parsePrice(price?.$)?.length > 1 && (
-            <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>
-          )}
+          <div className={s.domainNameValue}>{domainName}</div>
         </div>
+
         <div className={s.pricesBlock}>
-          <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
-          {parsePrice(price?.$)?.length > 1 && (
-            <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
-          )}
+          <div className={s.domainPrice}>
+            {reg > 0 ? reg : main_price_reg} EUR/{t('year', { ns: 'other' })}
+          </div>
+
+          <div className={cn(s.saleEur, s.ordering)}>
+            {reg && main_price_reg} EUR/{t('year', { ns: 'other' })}
+          </div>
         </div>
-        {renew && (
+        {main_price_renew && (
           <div className={s.prolongBlock}>
             <span>{t('prolong', { ns: 'vds' })}:</span>
             <span>
-              {roundToDecimal(renew)} EUR/
+              {renew ? roundToDecimal(renew) : roundToDecimal(main_price_renew)} EUR/
               <span className={s.prolongPeriod}>{t('year', { ns: 'other' })}</span>
             </span>
           </div>
@@ -190,55 +186,62 @@ export default function ServicesPage(props) {
       Array.isArray(domainsList) &&
       domainsList?.length > 0 && (
         <div className={s.domainsBlockTransfer}>
-          {domainsList?.map(d => {
-            const { id, domain, price } = d
-            const renew = getPolongPrice(domain)
+          {domainsList?.map((d, index) => {
+            /* Getting domain prices */
+            const [
+              domain,
+              {
+                info: {
+                  is_available,
+                  price: { reg, main_price_reg, renew, main_price_renew },
+                },
+              },
+            ] = d
 
-            const notAvailable =
-              d?.desc?.$.includes('Not registered') ||
-              d?.desc?.$?.includes('Error') ||
-              d.premium
-
-            const available = !notAvailable && d?.desc?.$.includes('Registered')
-
+            const salePercent = Math.floor(
+              reg === 0 ? 0 : 100 - (100 * reg) / main_price_reg,
+            )
             return (
               <div
-                key={id?.$}
+                key={`${index}`}
                 className={cn(s.domainItemTransfer, {
                   [s.selected]: itemIsSelected(d),
-                  [s.notAvailable]: notAvailable,
+                  [s.notAvailable]: !is_available,
                 })}
               >
-                {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.sale}>-{parsePrice(price?.$)?.percent}</div>
-                )}
-                {available && (
+                {salePercent > 0 && <div className={s.sale}>{salePercent}%</div>}
+                {!is_available && (
                   <CheckBox
                     value={itemIsSelected(d)}
                     onClick={() => setIsSelectedHandler(d)}
                     className={s.checkbox}
                   />
                 )}
-                <div className={s.domainNameTransfer}>{domain?.$}</div>
+                <div className={s.domainNameTransfer}>{domain}</div>
                 <div
                   className={cn(s.domainavailability, {
-                    [s.available]: available,
-                    [s.notAvailable]: notAvailable,
+                    [s.available]: !is_available,
+                    [s.notAvailable]: is_available,
                   })}
                 >
-                  {available ? t('Registered') : t('Not registered')}
+                  {!is_available ? t('Registered') : t('Not registered')}
                 </div>
                 <div className={s.pricesBlockTransfer}>
-                  {parsePrice(price?.$)?.length > 1 && (
-                    <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+                  {salePercent > 0 && (
+                    <div className={s.saleEur}>
+                      {reg && main_price_reg} EUR/{t('year', { ns: 'other' })}
+                    </div>
                   )}
-                  <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
+                  <div className={s.domainPrice}>
+                    {reg ? reg : main_price_reg} EUR/{t('year', { ns: 'other' })}
+                  </div>
                 </div>
-                {renew && (
-                  <div className={cn(s.prolongBlock, s.transferProlongBlock)}>
+                {main_price_renew && (
+                  <div className={s.prolongBlock}>
                     <span>{t('prolong', { ns: 'vds' })}:</span>
                     <span>
-                      {roundToDecimal(renew)} EUR/
+                      {renew ? roundToDecimal(renew) : roundToDecimal(main_price_renew)}{' '}
+                      EUR/
                       <span className={s.prolongPeriod}>
                         {t('year', { ns: 'other' })}
                       </span>
@@ -265,20 +268,21 @@ export default function ServicesPage(props) {
         </>
       ) : (
         <>
-          {domainsList?.suggested?.length > 0 && (
+          {/* {domainsList?.suggested?.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('Suggested Results')}</h2>
               <div className={cn(s.domainsBlock, s.suggested)}>
                 {domainsList?.suggested?.map(d => renderDomains(d))}
               </div>
             </>
-          )}
+          )} */}
 
-          {domainsList?.allResults?.length > 0 && (
+          {console.log('domainsList: ', domainsList)}
+          {domainsList?.allResults.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
               <div className={s.domainsBlock}>
-                {domainsList?.allResults?.map(d => renderDomains(d))}
+                {domainsList?.allResults?.map((d, index) => renderDomains(d, index))}
               </div>
             </>
           )}
@@ -291,12 +295,23 @@ export default function ServicesPage(props) {
           <span>{calculateSumOfSelected()} EUR</span>
         </div>
         <div className={s.selectedDomains}>
-          {selectedDomains?.map(e => {
+          {selectedDomains?.map((e, index) => {
+            const [
+              domainName,
+              {
+                info: {
+                  price: { reg, main_price_reg },
+                },
+              },
+            ] = e
+
             return (
-              <div className={s.selectedItem} key={e?.id?.$}>
-                <div className={s.domainName}>{e?.domain?.$}</div>
+              <div className={s.selectedItem} key={`dom_${index}`}>
+                <div className={s.domainName}>{domainName}</div>
                 <div className={s.pricesBlock}>
-                  <div className={s.domainPrice}>{parsePrice(e?.price?.$)?.amoumt}</div>
+                  <div className={s.domainPrice}>
+                    {reg ? reg : main_price_reg} EUR/{t('year', { ns: 'other' })}
+                  </div>
                 </div>
                 <Icon
                   name="Cross"

@@ -215,33 +215,71 @@ const getDomainsOrderName =
          * This request is to check if there is premium domains
          * among suggested by billmanager
          */
+        /* here should change for new request */
         await axios
           .post(
-            `${process.env.REACT_APP_API_URL}/api/domain/check/`,
+            'https://api.zomrodev.online/v1/api/domain/check_certain/',
+            // `${process.env.REACT_APP_API_URL}/v1/api/domain/check_certain/`,
             {
               host: domains?.map(e => e?.domain?.$),
             },
             { signal },
           )
-          .then(({ data: { data } }) => {
-            const newArr = []
-            const receivedDomains = Object.keys(data)
+          .then(async ({ data }) => {
+            if (data.status !== 'Created') {
+              console.warn('Error happened. Domains were not checked.')
+              return 'Error happened'
+            }
+            // Function for delay
+            function wait(ms) {
+              return new Promise(resolve => setTimeout(resolve, ms))
+            }
+            const taskId = data.task_id
 
-            receivedDomains?.forEach(d => {
-              domains?.forEach(dom => {
-                if (dom?.domain?.$ === d) {
-                  return newArr?.push({ ...dom, premium: data[d].info.premium })
-                }
-              })
-            })
-            const domainsData = {
-              list: newArr,
-              checked_domain: domainData?.checked_domain,
-              selected: selected,
-              domain_name: domainData?.tparams?.domain_name?.$,
+            /* Getting results */
+            let result
+            let status
+            do {
+              await wait(1000) // Delay 1 secound before repeating request
+
+              const response = await fetch(
+                `https://api.zomrodev.online/v1/api/domain/check_certain/${taskId}`,
+                // `${process.env.REACT_APP_API_URL}/v1/api/domain/check_certain/${taskId}`,
+                {
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                },
+                { signal },
+              )
+
+              result = await response.json()
+              status = result.status
+              console.log('second req. response: ', result)
+            } while (status === 'In Progress')
+
+            if (status === 'Not Found') {
+              return 'Not found'
             }
 
-            setDomains && setDomains(domainsData)
+            const domainsData = result.data
+            // receivedDomains?.forEach(d => {
+            //   domains?.forEach(dom => {
+            //     if (dom?.domain?.$ === d) {
+            //       return newArr?.push({ ...dom, premium: data[d].info.premium })
+            //     }
+            //   })
+            // })
+
+            // const domainsData = {
+            //   list: newArr,
+            //   checked_domain: domainData?.checked_domain,
+            //   selected: selected,
+            //   domain_name: domainData?.tparams?.domain_name?.$,
+            // }
+
+            setDomains && setDomains(Object.entries(domainsData))
 
             handleLoadersClosing('closeLoader', dispatch, setIsLoading)
           })
@@ -273,6 +311,7 @@ const getDomainsOrderName =
       })
   }
 
+  // this func doesn't work
 const getDomainsContacts =
   ({ setDomains, body = {}, navigate, transfer, signal, setIsLoading }) =>
   (dispatch, getState) => {

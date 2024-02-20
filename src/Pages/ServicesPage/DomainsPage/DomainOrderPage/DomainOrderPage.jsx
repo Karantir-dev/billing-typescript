@@ -37,6 +37,11 @@ export default function Component({ transfer = false }) {
   const setAutoProlong = () => (!autoprolongPrices.length ? setAutoprolongPrices : null)
 
   useEffect(() => {
+    console.log('selectedDomainsNames: ', selectedDomainsNames)
+    console.log('pickUpDomains: ', pickUpDomains)
+  }, [pickUpDomains, selectedDomainsNames])
+
+  useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
     if (isDomainsOrderAllowed || cartFromSite) {
       if (transfer) {
@@ -72,9 +77,10 @@ export default function Component({ transfer = false }) {
     const cartFromSite = localStorage.getItem('site_cart')
 
     if (cartFromSite && domains?.length > 0) {
-      const selectedDomain = domains?.find(
-        e => e?.tld?.$ === JSON.parse(cartFromSite)?.zone,
-      )
+      const selectedDomain = domains?.find(e => {
+        console.log('selected domain: ', e)
+        return e?.tld?.$ === JSON.parse(cartFromSite)?.zone
+      })
 
       const { domain_name } = JSON.parse(cartFromSite)
       if (domain_name && selectedDomain) {
@@ -98,9 +104,9 @@ export default function Component({ transfer = false }) {
 
   const validationSchema = Yup.object().shape({
     domain_name: Yup.string()
-    .required(t('Is a required field', { ns: 'other' }))
-    .min(2, t('Domain name must be at least 2 characters long', { ns: 'domains' }))
-    .max(63, t('Domain name must be at most 63 characters long', { ns: 'domains' })),
+      .required(t('Is a required field', { ns: 'other' }))
+      .min(2, t('Domain name must be at least 2 characters long', { ns: 'domains' }))
+      .max(63, t('Domain name must be at most 63 characters long', { ns: 'domains' })),
     selectedDomains: Yup.array().min(1, t('choose_min_one_domain', { ns: 'domains' })),
   })
 
@@ -126,9 +132,10 @@ export default function Component({ transfer = false }) {
   }
 
   const registerDomainHandler = () => {
-    const selected_domain_names = selectedDomainsNames?.map(
-      d => d?.checkbox?.input?.$name,
-    )
+    const selected_domain_names = selectedDomainsNames?.map(d => {
+      const [domain] = d
+      return domain
+    })
 
     const checkedDomain = pickUpDomains?.checked_domain?.$?.split(', ')
     const newCheckedDomains = []
@@ -139,6 +146,7 @@ export default function Component({ transfer = false }) {
 
       selected_domain?.push(newString)
       checkedDomain?.forEach(checked => {
+        console.log('show checked: ', checked)
         const check = checked.substring(0, checked.length - 1) + '1'
         if (checked?.includes(newString)) {
           newCheckedDomains.push(check)
@@ -146,15 +154,26 @@ export default function Component({ transfer = false }) {
       })
     })
 
-    const selected_domain_real_name = selectedDomainsNames?.map(d => d?.domain?.$)
+    const selected_domain_real_name = selectedDomainsNames?.map(d => {
+      console.log('should be domains selected name: ', d)
+      return d[0]
+    })
+    console.log('selected_domain_real_name: ', selected_domain_real_name.join(', '))
 
+    console.log('(registerDomainHandler) Pick up domain near data: ', pickUpDomains)
     const data = {
       domain_name: pickUpDomains?.domain_name,
       'zoom-domain_name': pickUpDomains?.domain_name,
       checked_domain: newCheckedDomains?.join(', '),
       selected_domain: selected_domain?.join(', '),
       selected_domain_real_name: selected_domain_real_name?.join(', '),
+      // domain_name: selected_domain_real_name?.join(', '),
+      // 'zoom-domain_name': selected_domain_real_name?.join(', '),
+      // checked_domain: selected_domain_real_name?.join(', '),
+      // selected_domain: selected_domain_real_name?.join(', '),
     }
+
+    console.log('data: ', data)
 
     selected_domain_names?.forEach(n => {
       data[n] = 'on'
@@ -229,15 +248,14 @@ export default function Component({ transfer = false }) {
                     type="submit"
                   />
                 </Form>
-                {pickUpDomains?.list?.length > 0 ? (
+                {pickUpDomains?.length > 0 ? (
                   <DomainsPickUpZones
                     setSelectedDomains={setSelectedDomainsNames}
                     selectedDomains={selectedDomainsNames}
-                    domains={pickUpDomains?.list}
-                    selected={pickUpDomains?.selected}
+                    domains={pickUpDomains}
+                    selected={pickUpDomains}
                     registerDomainHandler={registerDomainHandler}
                     transfer={transfer}
-                    autoprolongPrices={autoprolongPrices}
                   />
                 ) : (
                   <DomainsZone
