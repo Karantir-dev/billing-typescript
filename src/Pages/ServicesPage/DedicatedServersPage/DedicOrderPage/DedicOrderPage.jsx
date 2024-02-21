@@ -344,7 +344,7 @@ export default function DedicOrderPage() {
     setFiltersItems(getFiltersItems())
   }
 
-  const checkIsHasFilter = (filters, key, filterList) =>
+  const checkIfHasFilter = (filters, key, filterList) =>
     filters[key].length
       ? filterList.some(filterItem => filters[key].includes(filterItem.$key))
       : true
@@ -407,19 +407,19 @@ export default function DedicOrderPage() {
               const allowedFilters = categoriesKeys.reduce((acc, key, index) => {
                 acc[key] = tarifList?.tarifList?.filter(tariff => {
                   const filterList = tariff.filter.tag
-                  let isHasFilter = true
+                  let hasFilter = true
 
                   for (let i = 0; i < index; i++) {
-                    isHasFilter = checkIsHasFilter(
+                    hasFilter = checkIfHasFilter(
                       copyFilters,
                       categoriesKeys[i],
                       filterList,
                     )
 
-                    if (!isHasFilter) break
+                    if (!hasFilter) break
                   }
 
-                  return isHasFilter
+                  return hasFilter
                 })
 
                 copyFilters[key] = copyFilters[key].filter(el =>
@@ -442,15 +442,15 @@ export default function DedicOrderPage() {
 
               const filteredTariffList = tarifList?.tarifList?.filter(el => {
                 const filterList = el.filter.tag
-                let isHasFilter
+                let hasFilter
 
                 for (const key in copyFilters) {
-                  isHasFilter = checkIsHasFilter(copyFilters, key, filterList)
+                  hasFilter = checkIfHasFilter(copyFilters, key, filterList)
 
-                  if (!isHasFilter) break
+                  if (!hasFilter) break
                 }
 
-                return isHasFilter
+                return hasFilter
               })
 
               setFilters({ type: 'update_filter', value: copyFilters })
