@@ -7,7 +7,7 @@ COPY . .
 RUN npm install && npm run build
 
 
-FROM nginx:1.25.3-alpine-slim as local
+FROM nginx:1.25.4-alpine-slim as local
 
 WORKDIR /web
 
@@ -19,7 +19,7 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # USER portal
 
-FROM nginx:1.25.3-alpine-slim as github
+FROM nginx:1.25.4-alpine-slim as github
 
 WORKDIR /web
 
