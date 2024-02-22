@@ -218,8 +218,7 @@ const getDomainsOrderName =
         /* here should change for new request */
         await axios
           .post(
-            'https://api.zomrodev.online/v1/api/domain/check_certain/',
-            // `${process.env.REACT_APP_API_URL}/v1/api/domain/check_certain/`,
+            `${process.env.REACT_APP_API_URL}/v1/api/domain/check_certain/`,
             {
               host: domains?.map(e => e?.domain?.$),
             },
@@ -243,8 +242,7 @@ const getDomainsOrderName =
               await wait(1000) // Delay 1 secound before repeating request
 
               const response = await fetch(
-                `https://api.zomrodev.online/v1/api/domain/check_certain/${taskId}`,
-                // `${process.env.REACT_APP_API_URL}/v1/api/domain/check_certain/${taskId}`,
+                `${process.env.REACT_APP_API_URL}/v1/api/domain/check_certain/${taskId}`,
                 {
                   method: 'GET',
                   headers: {
@@ -256,30 +254,20 @@ const getDomainsOrderName =
 
               result = await response.json()
               status = result.status
-              console.log('second req. response: ', result)
             } while (status === 'In Progress')
 
             if (status === 'Not Found') {
               return 'Not found'
             }
 
-            const domainsData = result.data
-            // receivedDomains?.forEach(d => {
-            //   domains?.forEach(dom => {
-            //     if (dom?.domain?.$ === d) {
-            //       return newArr?.push({ ...dom, premium: data[d].info.premium })
-            //     }
-            //   })
-            // })
+            const domainsData = {
+              list: result.data,
+              checked_domain: domainData?.checked_domain,
+              selected: selected,
+              domain_name: domainData?.tparams?.domain_name?.$,
+            }
 
-            // const domainsData = {
-            //   list: newArr,
-            //   checked_domain: domainData?.checked_domain,
-            //   selected: selected,
-            //   domain_name: domainData?.tparams?.domain_name?.$,
-            // }
-
-            setDomains && setDomains(Object.entries(domainsData))
+            setDomains && setDomains(domainsData)
 
             handleLoadersClosing('closeLoader', dispatch, setIsLoading)
           })
@@ -311,7 +299,7 @@ const getDomainsOrderName =
       })
   }
 
-  // this func doesn't work
+
 const getDomainsContacts =
   ({ setDomains, body = {}, navigate, transfer, signal, setIsLoading }) =>
   (dispatch, getState) => {

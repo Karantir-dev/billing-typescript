@@ -31,15 +31,22 @@ export default function Component({ transfer = false }) {
   const [pickUpDomains, setPickUpDomains] = useState([])
   const [selectedDomains, setSelectedDomains] = useState([])
   const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
+  const [siteZoneArray, setSiteZoneArray] = useState([])
   const [inputValue, setInputValue] = useState('')
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
 
   const setAutoProlong = () => (!autoprolongPrices.length ? setAutoprolongPrices : null)
 
   useEffect(() => {
-    console.log('selectedDomainsNames: ', selectedDomainsNames)
-    console.log('pickUpDomains: ', pickUpDomains)
-  }, [pickUpDomains, selectedDomainsNames])
+    if (
+      'list' in pickUpDomains &&
+      selectedDomainsNames?.length > 0 &&
+      selectedDomains?.length > 0 &&
+      inputValue
+    ) {
+      registerDomainHandler()
+    }
+  }, [pickUpDomains, selectedDomainsNames, selectedDomains, inputValue])
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
@@ -75,20 +82,31 @@ export default function Component({ transfer = false }) {
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
+    const domainDataFromSite = JSON.parse(cartFromSite)
 
     if (cartFromSite && domains?.length > 0) {
-      const selectedDomain = domains?.find(e => {
-        console.log('selected domain: ', e)
-        return e?.tld?.$ === JSON.parse(cartFromSite)?.zone
-      })
+      const { domain_name, zone } = domainDataFromSite
 
-      const { domain_name } = JSON.parse(cartFromSite)
-      if (domain_name && selectedDomain) {
-        setSelectedDomains([selectedDomain?.id?.$])
+      const zonesArray = zone.split(', ')
+      /* Setting array zones from site to transfer it into DomainPuckUpZones component */
+      setSiteZoneArray(zonesArray)
+
+      const matchingDomains = domains?.filter(domain =>
+        zonesArray.includes(domain?.tld?.$),
+      )
+
+      if (domain_name && matchingDomains?.length > 0) {
         setInputValue(domain_name)
-        setDomainsNameHandler({ domain_name, selectedDomains: [selectedDomain?.id?.$] })
-      } else if (selectedDomain) {
-        setSelectedDomains([selectedDomain?.id?.$])
+        setSelectedDomains(matchingDomains.map(el => el?.id?.$))
+        setDomainsNameHandler(
+          {
+            domain_name,
+            selectedDomains: matchingDomains.map(el => el?.id?.$),
+          },
+          true,
+        )
+      } else if (matchingDomains?.length > 0) {
+        setSelectedDomains(matchingDomains.map(el => el?.id?.$))
       }
       localStorage.removeItem('site_cart')
     }
@@ -110,10 +128,12 @@ export default function Component({ transfer = false }) {
     selectedDomains: Yup.array().min(1, t('choose_min_one_domain', { ns: 'domains' })),
   })
 
-  const setDomainsNameHandler = values => {
+  const setDomainsNameHandler = (values, isDataFromSite = false) => {
     values['selected_pricelist'] = values?.selectedDomains.join(', ')
     values['sv_field'] = 'ok_whois'
-    selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+    !isDataFromSite
+      ? selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+      : values?.selectedDomains?.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
     if (transfer) {
       values['domain_action'] = 'transfer'
     }
@@ -128,7 +148,7 @@ export default function Component({ transfer = false }) {
       ),
     )
 
-    setSelectedDomainsNames([])
+    !isDataFromSite && setSelectedDomainsNames([])
   }
 
   const registerDomainHandler = () => {
@@ -146,34 +166,26 @@ export default function Component({ transfer = false }) {
 
       selected_domain?.push(newString)
       checkedDomain?.forEach(checked => {
-        console.log('show checked: ', checked)
         const check = checked.substring(0, checked.length - 1) + '1'
-        if (checked?.includes(newString)) {
+
+        if (checked?.includes(newString.split('.')[1])) {
           newCheckedDomains.push(check)
         }
       })
     })
 
     const selected_domain_real_name = selectedDomainsNames?.map(d => {
-      console.log('should be domains selected name: ', d)
-      return d[0]
+      const [domainName] = d
+      return domainName
     })
-    console.log('selected_domain_real_name: ', selected_domain_real_name.join(', '))
 
-    console.log('(registerDomainHandler) Pick up domain near data: ', pickUpDomains)
     const data = {
       domain_name: pickUpDomains?.domain_name,
       'zoom-domain_name': pickUpDomains?.domain_name,
       checked_domain: newCheckedDomains?.join(', '),
       selected_domain: selected_domain?.join(', '),
       selected_domain_real_name: selected_domain_real_name?.join(', '),
-      // domain_name: selected_domain_real_name?.join(', '),
-      // 'zoom-domain_name': selected_domain_real_name?.join(', '),
-      // checked_domain: selected_domain_real_name?.join(', '),
-      // selected_domain: selected_domain_real_name?.join(', '),
     }
-
-    console.log('data: ', data)
 
     selected_domain_names?.forEach(n => {
       data[n] = 'on'
@@ -248,14 +260,15 @@ export default function Component({ transfer = false }) {
                     type="submit"
                   />
                 </Form>
-                {pickUpDomains?.length > 0 ? (
+                {pickUpDomains?.list ? (
                   <DomainsPickUpZones
                     setSelectedDomains={setSelectedDomainsNames}
                     selectedDomains={selectedDomainsNames}
-                    domains={pickUpDomains}
-                    selected={pickUpDomains}
+                    domains={pickUpDomains?.list}
+                    selected={pickUpDomains?.selected}
                     registerDomainHandler={registerDomainHandler}
                     transfer={transfer}
+                    siteZoneArray={siteZoneArray}
                   />
                 ) : (
                   <DomainsZone

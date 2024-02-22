@@ -17,6 +17,7 @@ export default function ServicesPage(props) {
     selected,
     registerDomainHandler,
     transfer,
+    siteZoneArray,
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
@@ -27,60 +28,38 @@ export default function ServicesPage(props) {
     if (!transfer) {
       const suggested = []
       const allResults = []
-      domains?.forEach(d => {
-        if (selected?.indexOf(d?.checkbox?.input?.$name) !== -1) {
-          suggested.push(d)
-          setIsSelectedHandler(d)
-        } else {
-          allResults.push(d)
-        }
-      })
+      domains &&
+        Object.entries(domains).forEach(d => {
+          if (selected?.indexOf(d?.checkbox?.input?.$name) !== -1) {
+            suggested.push(d)
+            setIsSelectedHandler(d)
+          } else {
+            allResults.push(d)
+          }
+        })
       setDomainsList({ suggested, allResults })
+
+      /* If we have domain zones from the site - set them to selected */
+      if (siteZoneArray) {
+        const domainsShouldBeSelected = allResults?.filter(el => {
+          const [
+            domainName,
+            {
+              info: { is_available },
+            },
+          ] = el
+
+          const isDomainInZone = siteZoneArray.some(zone => domainName.includes(zone))
+
+          return isDomainInZone && is_available
+        })
+
+        domainsShouldBeSelected && setSelectedDomains(domainsShouldBeSelected)
+      }
     } else {
       setDomainsList(domains)
     }
   }, [domains])
-
-  // const parsePrice = price => {
-  //   const words = price?.match(/[\d|.|\\+]+/g)
-  //   const amounts = []
-
-  //   if (words?.length > 0) {
-  //     words.forEach(w => {
-  //       if (!isNaN(w)) {
-  //         amounts.push(w)
-  //       }
-  //     })
-  //   } else {
-  //     return
-  //   }
-
-  //   let amoumt = (
-  //     <span>
-  //       {roundToDecimal(amounts[amounts.length - 1]) + ' ' + 'EUR'}
-  //       <span className={s.year}>
-  //         {transfer ? ' ' : '/'}
-  //         {t(transfer ? 'for the transfer' : 'year', { ns: 'other' })}
-  //       </span>
-  //     </span>
-  //   )
-  //   let percent = amounts[0] + '%'
-  //   let sale = (
-  //     <span>
-  //       {roundToDecimal(amounts[1]) + ' ' + 'EUR'}
-  //       <span className={s.year}>
-  //         {transfer ? ' ' : '/'}
-  //         {t(transfer ? '' : 'year', { ns: 'other' })}
-  //       </span>
-  //     </span>
-  //   )
-  //   return {
-  //     amoumt,
-  //     percent,
-  //     sale,
-  //     length: amounts.length,
-  //   }
-  // }
 
   const itemIsSelected = item => {
     return selectedDomains.indexOf(item) !== -1
@@ -88,7 +67,6 @@ export default function ServicesPage(props) {
 
   const setIsSelectedHandler = item => {
     const index = selectedDomains.indexOf(item)
-
     if (index === -1) {
       // Adding element to selectedDomains
       setSelectedDomains(prevState => [...prevState, item])
@@ -268,6 +246,7 @@ export default function ServicesPage(props) {
         </>
       ) : (
         <>
+        {/* Suggested list was removed the same as on website: */}
           {/* {domainsList?.suggested?.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('Suggested Results')}</h2>
@@ -277,7 +256,6 @@ export default function ServicesPage(props) {
             </>
           )} */}
 
-          {console.log('domainsList: ', domainsList)}
           {domainsList?.allResults.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
