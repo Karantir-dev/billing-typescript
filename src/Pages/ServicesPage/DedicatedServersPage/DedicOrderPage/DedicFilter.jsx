@@ -13,8 +13,8 @@ const filterOrder = [
   'drive',
   'raid',
   'gpu',
-  'port',
   'traffic',
+  'rate',
 ]
 
 export default function DedicFilter({

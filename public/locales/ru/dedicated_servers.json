@@ -141,6 +141,7 @@
   "drivetype": "Тип диска",
   "gpu": "Тип GPU",
   "raid": "Тип RAID",
+  "rate": "Скорость порта",
   "dedic_activation_time": "Активация: до 3 часов",
   "dedic_available_count": "В наличии: {{count}}шт.",
   "dedic_ready_time": "Ожидание: до 3-5 рабочих дней",
@@ -148,6 +149,8 @@
   "clear_filter": "Очистить фильтр",
   "traffic": "Лимит трафика",
   "Unmetered traffic": "Безлимитный трафик",
+  "Unlimited traffic": "Безлимитный трафик",
   "Unmetered": "Безлимитный",
+  "Unlimited": "Безлимитный",
   "additional": "дополнительно"
 }

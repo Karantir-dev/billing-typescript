@@ -228,12 +228,32 @@ export default function DedicOrderPage() {
       .sort((a, b) => parsePrice(a.price.$).amount - parsePrice(b.price.$).amount)
       .sort((a, b) => parsePrice(b.price.$).length - parsePrice(a.price.$).length)
 
-    const newArrTarifList = [...vdsList, ...sortedDedic]?.map(e => {
+    const newVdsList = [...vdsList]?.map(e => {
       const tag = tarifsList?.fpricelist.filter(plist =>
         e.desc.$.includes(plist.$.split(':')[1]),
       )
       return { ...e, filter: { tag } }
     })
+
+    const deidcList = sortedDedic.map(el => {
+      let tag = tarifsList?.fpricelist.filter(plist => {
+        return el.filter.tag.find(tagItem => plist.$key === tagItem.$)
+      })
+
+      /* Config 41 has additional filters tags to filter VDS tariffs,
+       here we remove those tags form config 41 to filter works correct  */
+      if (el.desc.$.includes('Config 41')) {
+        const filters = el.desc.$.split(' / ')
+        const drive = filters.find(el => el.includes('SSD')).replace(' SSD', '')
+        tag = tag.filter(el =>
+          el.$.includes('drive:') ? drive === el.$.replace('drive:', '') : el,
+        )
+      }
+
+      return { ...el, filter: { tag } }
+    })
+
+    const newArrTarifList = [...newVdsList, ...deidcList]
 
     setFiltersItems(getFiltersItems())
     setTarifList({ ...tarifsList, tarifList: newArrTarifList })

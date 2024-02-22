@@ -141,6 +141,7 @@
   "drivetype": "Disk Type",
   "gpu": "GPU Type",
   "raid": "RAID Type",
+  "rate": "Rate limit",
   "dedic_activation_time": "Activation: up to 3 hours",
   "dedic_available_count": "Available: {{count}}pcs.",
   "dedic_ready_time": "Waiting: up to 3-5 business days",
@@ -148,6 +149,8 @@
   "clear_filter": "Clear filter",
   "traffic": "Traffic limit",
   "Unmetered traffic": "Unmetered traffic",
+  "Unlimited traffic": "Unlimited traffic",
+  "Unlimited": "Unlimited",
   "Unmetered": "Unmetered",
   "additional": "additional"
 }
