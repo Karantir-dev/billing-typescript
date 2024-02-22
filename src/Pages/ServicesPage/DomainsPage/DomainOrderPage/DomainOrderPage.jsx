@@ -39,6 +39,7 @@ export default function Component({ transfer = false }) {
 
   useEffect(() => {
     if (
+      siteZoneArray?.length > 0 &&
       'list' in pickUpDomains &&
       selectedDomainsNames?.length > 0 &&
       selectedDomains?.length > 0 &&
@@ -46,7 +47,7 @@ export default function Component({ transfer = false }) {
     ) {
       registerDomainHandler()
     }
-  }, [pickUpDomains, selectedDomainsNames, selectedDomains, inputValue])
+  }, [siteZoneArray, pickUpDomains, selectedDomainsNames, selectedDomains, inputValue])
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
