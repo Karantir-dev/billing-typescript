@@ -97,6 +97,10 @@
   font-size: 16px;
 }
 
+.filter_sublabel {
+  margin-bottom: 5px;
+}
+
 .filte__row {
   display: flex;
   flex-wrap: wrap;
@@ -106,7 +110,7 @@
 .filter__option_wrapper {
   display: none;
   padding: 10px;
-  .opened & {
+  &.opened {
     display: block;
   }
 }
@@ -139,10 +143,14 @@
       stroke: url(#gradient);
     }
   }
-  .opened & {
+  &.opened {
     svg {
       transform: rotate(180deg);
     }
+  }
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }
 

@@ -1,0 +1,33 @@
+.input_range {
+  margin: 25px 0;
+  .range-slider__range {
+    background: linear-gradient(#e72690, #e236fa);
+  }
+  [data-upper],
+  [data-lower] {
+    background-color: #fff;
+    border: 3px solid #e72690;
+    &:before {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--message-bg);
+      top: calc(100% + 13px);
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+    &:after {
+      content: attr(aria-valuenow);
+      min-width: 25px;
+      padding: 5px;
+      background: var(--message-bg);
+      border-radius: 5px;
+      position: absolute;
+      top: calc(100% + 13px);
+      left: 50%;
+      transform: translate(-50%);
+      text-align: center;
+    }
+  }
+}

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button, Select, Icon, Loader, TariffConfig } from '@components'
@@ -229,9 +230,44 @@ export default function DedicOrderPage() {
       .sort((a, b) => parsePrice(b.price.$).length - parsePrice(a.price.$).length)
 
     const newVdsList = [...vdsList]?.map(e => {
-      const tag = tarifsList?.fpricelist.filter(plist =>
-        e.desc.$.includes(plist.$.split(':')[1]),
-      )
+      const params = e.desc.$.split(' / ')
+
+      const gen = params.find(param => param.includes('HP G')).replace('HP ', '')
+      const ram = params.find(param => param.includes(' RAM DDR')).split(' RAM')[0]
+      const ramtype = params.find(param => param.includes(' RAM DDR')).split('RAM ')[1]
+      const drive = params.find(param => param.includes('NVMe')).split(' NVMe')[0]
+      const cpu = 'Xeon Silver 4116'
+      const cpumanuf = 'Intel'
+      const drivetype = 'NVMe'
+      const raid = 'No HW'
+      const gpu = 'none'
+      const traffic = '100TB'
+
+      const tag = tarifsList?.fpricelist.filter(plist => {
+        const [key, value] = plist.$.split(':')
+        switch (key) {
+          case 'gen':
+            return value === gen
+          case 'cpu':
+            return value === cpu
+          case 'cpumanuf':
+            return value === cpumanuf
+          case 'ram':
+            return value === ram
+          case 'ramtype':
+            return value === ramtype
+          case 'drive':
+            return value === drive
+          case 'drivetype':
+            return value === drivetype
+          case 'raid':
+            return value === raid
+          case 'gpu':
+            return value === gpu
+          case 'traffic':
+            return value === traffic
+        }
+      })
       return { ...e, filter: { tag } }
     })
 
@@ -260,14 +296,29 @@ export default function DedicOrderPage() {
     setFilteredTariffsList(newArrTarifList)
   }, [tarifsList])
 
-  const getFiltersItems = () =>
-    tarifsList.fpricelist?.reduce((acc, el) => {
-      const category = el.$.split(':')[0]
+  const sortCategoriesByQuantity = (...args) =>
+    args.map(arg =>
+      arg?.sort((a, b) => +a.$.replace(/\D/g, '') - +b.$.replace(/\D/g, '')),
+    )
 
-      acc[category] = [...(acc?.[category] || []), { ...el, available: true }]
+  const getFiltersItems = () => {
+    const items =
+      tarifsList.fpricelist?.reduce((acc, el) => {
+        const category = el.$.split(':')[0]
 
-      return acc
-    }, {}) || {}
+        acc[category] = [...(acc?.[category] || []), { ...el, available: true }]
+
+        return acc
+      }, {}) || {}
+
+    sortCategoriesByQuantity(items.gen, items.ram, items.cpucores, items.drive)
+
+    items.drive?.sort((a, b) =>
+      a.$.replace(/\d/g, '').localeCompare(b.$.replace(/\d/g, '')),
+    )
+
+    return items
+  }
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),

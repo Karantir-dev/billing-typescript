@@ -134,10 +134,10 @@
   "server_placeholder": "Мой сервер",
   "port": "Скорость порта",
   "gen": "Поколение сервера",
-  "cpu": "Процессор",
-  "ram": "Объем RAM",
+  "cpu": "CPU",
+  "ram": "RAM",
   "ramtype": "Стандарт RAM",
-  "drive": "Объем диска",
+  "drive": "Диск",
   "drivetype": "Тип диска",
   "gpu": "Тип GPU",
   "raid": "Тип RAID",
@@ -152,5 +152,19 @@
   "Unlimited traffic": "Безлимитный трафик",
   "Unmetered": "Безлимитный",
   "Unlimited": "Безлимитный",
-  "additional": "дополнительно"
+  "additional": "дополнительно",
+  "cores": "Ядра",
+  "No HW": "Без HW",
+  "none": "Отсутствует",
+  "subcategory": {
+    "cpu": "Модель",
+    "cpuamount": "Количество",
+    "ram": "Объем RAM",
+    "ramtype": "Стандарт RAM",
+    "drive": "Объем диска",
+    "drivetype": "Тип диска",
+    "driveamount": "Количество дисков",
+    "cpucores": "Ядра",
+    "cpumanuf": "Приизводитель"
+  }
 }
