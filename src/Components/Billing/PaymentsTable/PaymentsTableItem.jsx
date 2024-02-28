@@ -93,7 +93,7 @@ export default function Component(props) {
           })}
           ref={dropDownEl}
         >
-          {status.trim() !== 'Paid' && (
+          {status.trim() !== 'Paid' && status.trim() !== 'Canceled' && (
             <button
               className={s.settings_btn}
               onClick={() => {
