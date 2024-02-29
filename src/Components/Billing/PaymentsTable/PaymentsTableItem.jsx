@@ -99,8 +99,10 @@ export default function Component(props) {
               onClick={() => {
                 setIsOpened(false)
                 if (
-                  status.trim() === 'New' &&
-                  paymethod?.trim().toLowerCase() !== 'select'
+                  (status.trim() === 'New' &&
+                    paymethod?.trim().toLowerCase() !== 'select') ||
+                  (status.trim() === 'Payment in progress' &&
+                    paymethod?.trim().toLowerCase() === 'yookassa')
                 ) {
                   return payRedirectHandler()
                 }
