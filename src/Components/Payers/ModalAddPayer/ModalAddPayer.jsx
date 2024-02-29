@@ -229,6 +229,7 @@ export default function ModalAddPayer(props) {
                         touched={!!touched.eu_vat}
                         inputClassName={s.field}
                         infoText={t('eu_vat_info_text', { ns: 'other' })}
+                        isRequired
                       />
                     ) : null}
                   </div>
