@@ -62,6 +62,9 @@ export default function ModalAddPayer(props) {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
+    eu_vat: payersSelectedFields?.eu_vat_field
+      ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+      : null,
     [payersSelectedFields?.offer_field]: elid ? null : Yup.bool().oneOf([true]),
   })
 
