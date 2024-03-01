@@ -71,8 +71,10 @@ const getPayments =
         if (isPayNow) {
           const paymentInfo = data?.doc?.elem[0]
           if (
-            paymentInfo.status.$.trim() === 'New' &&
-            paymentInfo.paymethod_name.$.trim().toLowerCase() !== 'select'
+            (paymentInfo.status.$.trim() === 'New' &&
+              paymentInfo.paymethod_name.$.trim().toLowerCase() !== 'select') ||
+            (paymentInfo.status.$.trim() === 'Payment in progress' &&
+              paymentInfo.paymethod_name.$?.trim().toLowerCase() === 'yookassa')
           ) {
             return dispatch(
               getPaymentRedirect(
