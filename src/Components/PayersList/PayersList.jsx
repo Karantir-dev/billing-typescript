@@ -319,6 +319,8 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             value={values.eu_vat}
             onChange={e => setState({ euVat: e.target.value })}
             infoText={t('eu_vat_info_text', { ns: 'other' })}
+            validate={requiredValidation}
+            isRequired
           />
         ) : null}
       </div>

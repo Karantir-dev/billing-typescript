@@ -152,6 +152,7 @@ jobs:
           file: Dockerfile
           push: true
           provenance: false
+          target: github
           tags: |
             ${{ steps.login-ecr.outputs.registry }}/${{ env.APP_NAME }}:${{ env.PREFIX }}
           cache-from: type=gha

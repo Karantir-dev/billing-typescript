@@ -7,6 +7,7 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+      target: local
     env_file:
       - .env
     ports:
