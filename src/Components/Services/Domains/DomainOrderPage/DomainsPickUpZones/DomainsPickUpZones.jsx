@@ -144,17 +144,18 @@ export default function ServicesPage(props) {
   }
 
   const renderDomainTransferAll = () => {
+    const domainsTransferToRender = domainsList ? Object.entries(domainsList) : []
     return (
-      Array.isArray(domainsList) &&
-      domainsList?.length > 0 && (
+      domainsTransferToRender?.length > 0 && (
         <div className={s.domainsBlockTransfer}>
-          {domainsList?.map((d, index) => {
+          {domainsTransferToRender?.map(d => {
             /* Getting domain prices */
             const [
               domain,
               {
                 info: {
                   is_available,
+                  billing_id,
                   price: { reg, main_price_reg, renew, main_price_renew },
                 },
               },
@@ -165,7 +166,7 @@ export default function ServicesPage(props) {
             )
             return (
               <div
-                key={`${index}`}
+                key={`${billing_id}`}
                 className={cn(s.domainItemTransfer, {
                   [s.selected]: itemIsSelected(d),
                   [s.notAvailable]: !is_available,
