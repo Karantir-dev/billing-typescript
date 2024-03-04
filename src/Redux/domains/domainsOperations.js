@@ -113,7 +113,15 @@ const getDomainsFilters =
   }
 
 const getDomainsOrderName =
-  (setDomains, setAutoprolongPrices, body = {}, search = false, signal, setIsLoading) =>
+  (
+    setDomains,
+    setAutoprolongPrices,
+    body = {},
+    search = false,
+    signal,
+    setIsLoading,
+    siteDomainCheckData,
+  ) =>
   (dispatch, getState) => {
     setIsLoading(true)
 
@@ -215,90 +223,101 @@ const getDomainsOrderName =
          * This request is to check if there is premium domains
          * among suggested by billmanager
          */
-        /* here should change for new request */
-        await axios
-          .post(
-            `${process.env.REACT_APP_API_URL}/v1/api/domain/check_certain/`,
-            {
-              host: domains?.map(e => e?.domain?.$),
-            },
-            { signal },
-          )
-          .then(async ({ data }) => {
-            if (data.status !== 'Created') {
-              console.warn('Error happened. Domains were not checked.')
-              return 'Error happened'
-            }
-            // Function for delay
-            function wait(ms) {
-              return new Promise(resolve => setTimeout(resolve, ms))
-            }
-            const taskId = data.task_id
 
-            /* Getting results */
-            let result
-            let status
-            do {
-              await wait(1000) // Delay 1 secound before repeating request
+        if (siteDomainCheckData.length > 0) {
+          const domainsData = {
+            list: siteDomainCheckData,
+            checked_domain: domainData?.checked_domain,
+            selected: selected,
+            domain_name: domainData?.tparams?.domain_name?.$,
+          }
 
-              const response = await fetch(
-                `${process.env.REACT_APP_API_URL}/v1/api/domain/check_certain/${taskId}`,
-                {
-                  method: 'GET',
-                  headers: {
-                    'Content-Type': 'application/json',
+          setDomains && setDomains(domainsData)
+
+        } else {
+          await axios
+            .post(
+              `${process.env.REACT_APP_API_URL}/api/domain/check_certain/`,
+              {
+                host: domains?.map(e => e?.domain?.$),
+              },
+              { signal },
+            )
+            .then(async ({ data }) => {
+              if (data.status !== 'Created') {
+                console.warn('Error happened. Domains were not checked.')
+                return 'Error happened'
+              }
+              // Function for delay
+              function wait(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms))
+              }
+              const taskId = data.task_id
+
+              /* Getting results */
+              let result
+              let status
+              do {
+                await wait(1000) // Delay 1 secound before repeating request
+
+                const response = await fetch(
+                  `${process.env.REACT_APP_API_URL}/api/domain/check_certain/${taskId}`,
+                  {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
                   },
-                },
-                { signal },
-              )
+                  { signal },
+                )
 
-              result = await response.json()
-              status = result.status
-            } while (status === 'In Progress')
+                result = await response.json()
+                status = result.status
+              } while (status === 'In Progress')
 
-            if (status === 'Not Found') {
-              return 'Not found'
-            }
+              if (status === 'Not Found') {
+                return 'Not found'
+              }
 
-            const domainsData = {
-              list: result.data,
-              checked_domain: domainData?.checked_domain,
-              selected: selected,
-              domain_name: domainData?.tparams?.domain_name?.$,
-            }
+              const domainsData = {
+                list: result.data,
+                checked_domain: domainData?.checked_domain,
+                selected: selected,
+                domain_name: domainData?.tparams?.domain_name?.$,
+              }
 
-            setDomains && setDomains(domainsData)
+              setDomains && setDomains(domainsData)
 
-            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-          })
-          .catch(err => {
-            handleLoadersClosing(err?.message, dispatch, setIsLoading)
-            console.log(err)
+              handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+            })
+            .catch(err => {
+              handleLoadersClosing(err?.message, dispatch, setIsLoading)
+              console.log(err)
 
-            if (isTranslationExists(err?.message)) {
-              toast.error(t(err.message, { ns: ['auth', 'other'] }))
-            } else {
-              toast.error(t('premium_check_failed', { ns: 'domains' }), {
-                toastId: 'premium_check_failed',
-                updateId: 'premium_check_failed',
-              })
-            }
+              if (isTranslationExists(err?.message)) {
+                toast.error(t(err.message, { ns: ['auth', 'other'] }))
+              } else {
+                toast.error(t('premium_check_failed', { ns: 'domains' }), {
+                  toastId: 'premium_check_failed',
+                  updateId: 'premium_check_failed',
+                })
+              }
 
-            const domainsData = {
-              list: domains,
-              checked_domain: domainData?.checked_domain,
-              selected: selected,
-              domain_name: domainData?.tparams?.domain_name?.$,
-            }
-            setDomains && setDomains(domainsData)
-          })
+              const domainsData = {
+                list: domains,
+                checked_domain: domainData?.checked_domain,
+                selected: selected,
+                domain_name: domainData?.tparams?.domain_name?.$,
+              }
+              setDomains && setDomains(domainsData)
+            })
+        }
       })
       .catch(error => {
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
         checkIfTokenAlive(error.message, dispatch)
       })
   }
-
 
 const getDomainsContacts =
   ({ setDomains, body = {}, navigate, transfer, signal, setIsLoading }) =>

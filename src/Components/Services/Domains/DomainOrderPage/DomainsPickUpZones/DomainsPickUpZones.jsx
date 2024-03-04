@@ -17,7 +17,7 @@ export default function ServicesPage(props) {
     selected,
     registerDomainHandler,
     transfer,
-    siteZoneArray,
+    siteDomainCheckData,
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
@@ -27,7 +27,7 @@ export default function ServicesPage(props) {
   useEffect(() => {
     if (!transfer) {
       const suggested = []
-      const allResults = []
+      let allResults = []
       domains &&
         Object.entries(domains).forEach(d => {
           if (selected?.indexOf(d?.checkbox?.input?.$name) !== -1) {
@@ -40,21 +40,13 @@ export default function ServicesPage(props) {
       setDomainsList({ suggested, allResults })
 
       /* If we have domain zones from the site - set them to selected */
-      if (siteZoneArray) {
-        const domainsShouldBeSelected = allResults?.filter(el => {
-          const [
-            domainName,
-            {
-              info: { is_available },
-            },
-          ] = el
+      if (siteDomainCheckData.length > 0) {
+        allResults = [...siteDomainCheckData]
 
-          const isDomainInZone = siteZoneArray.some(zone => domainName.includes(zone))
+        /* Adding transferredFromSite to Domains List to monitor if data setted from site */
+        setDomainsList({ suggested, allResults, transferredFromSite: true })
 
-          return isDomainInZone && is_available
-        })
-
-        domainsShouldBeSelected && setSelectedDomains(domainsShouldBeSelected)
+        setSelectedDomains(siteDomainCheckData)
       }
     } else {
       setDomainsList(domains)
@@ -82,37 +74,33 @@ export default function ServicesPage(props) {
     let sum = 0
 
     selectedDomains?.forEach(e => {
-      const [
-        ,
-        {
-          info: { price },
-        },
-      ] = e
+      const price = e?.transferredFromSite ? e : e[1]?.info?.price
 
-      const { reg, main_price_reg } = price
-
-      sum += reg ? reg : main_price_reg
+      sum += price?.reg ? price.reg : price?.main_price_reg
     })
 
     return roundToDecimal(sum)
   }
 
-  const renderDomains = (d, index) => {
-    // Assuming 'd' is an array:
-    const [domainName, { info }] = d
-    const { is_available, price } = info
+  const renderDomains = d => {
+    /* Destructuring domainName and domainInfo depending on the object structure */
+    const domainName = domainsList?.transferredFromSite ? Object.keys(d)[0] : d?.[0]
+    const domainInfo = domainsList?.transferredFromSite ? Object.values(d)[0] : d?.[1]
+
+    const { info, tld } = domainInfo
+    const { billing_id, is_available, price } = info
     const { reg, main_price_reg, renew, main_price_renew } = price
 
     const salePercent = Math.floor(reg === 0 ? 0 : 100 - (100 * reg) / main_price_reg)
 
-    const notAvailable = is_available === false || d?.tld === 'invalid'
+    const notAvailable = is_available === false || tld === 'invalid'
 
     return (
       <div
         tabIndex={0}
         role="button"
         onKeyDown={null}
-        key={`domain-${index}`}
+        key={`domain-${billing_id}`}
         className={cn(s.domainItem, {
           [s.selected]: itemIsSelected(d),
           [s.notAvailable]: notAvailable,
@@ -246,7 +234,7 @@ export default function ServicesPage(props) {
         </>
       ) : (
         <>
-        {/* Suggested list was removed the same as on website: */}
+          {/* Suggested list was removed the same as on website: */}
           {/* {domainsList?.suggested?.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('Suggested Results')}</h2>
@@ -260,7 +248,7 @@ export default function ServicesPage(props) {
             <>
               <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
               <div className={s.domainsBlock}>
-                {domainsList?.allResults?.map((d, index) => renderDomains(d, index))}
+                {domainsList?.allResults?.map(d => renderDomains(d))}
               </div>
             </>
           )}
@@ -273,18 +261,21 @@ export default function ServicesPage(props) {
           <span>{calculateSumOfSelected()} EUR</span>
         </div>
         <div className={s.selectedDomains}>
-          {selectedDomains?.map((e, index) => {
-            const [
-              domainName,
-              {
-                info: {
-                  price: { reg, main_price_reg },
-                },
-              },
-            ] = e
+          {selectedDomains?.map(e => {
+            const domainName = domainsList?.transferredFromSite
+              ? Object.keys(e)[0]
+              : e?.[0]
+            const domainInfo = domainsList?.transferredFromSite
+              ? Object.values(e)[0]
+              : e?.[1]
+
+            const {
+              info: { billing_id, price },
+            } = domainInfo
+            const { reg, main_price_reg } = price
 
             return (
-              <div className={s.selectedItem} key={`dom_${index}`}>
+              <div className={s.selectedItem} key={`dom_${billing_id}`}>
                 <div className={s.domainName}>{domainName}</div>
                 <div className={s.pricesBlock}>
                   <div className={s.domainPrice}>

@@ -15,7 +15,7 @@ import { domainsOperations } from '@redux'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
 import s from './DomainOrderPage.module.scss'
-import { useCancelRequest } from '@src/utils'
+import { useCancelRequest, cookies } from '@src/utils'
 
 export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'other'])
@@ -31,7 +31,7 @@ export default function Component({ transfer = false }) {
   const [pickUpDomains, setPickUpDomains] = useState([])
   const [selectedDomains, setSelectedDomains] = useState([])
   const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
-  const [siteZoneArray, setSiteZoneArray] = useState([])
+  const [siteDomainCheckData, setSiteDomainCheckData] = useState([])
   const [inputValue, setInputValue] = useState('')
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
 
@@ -39,7 +39,7 @@ export default function Component({ transfer = false }) {
 
   useEffect(() => {
     if (
-      siteZoneArray?.length > 0 &&
+      siteDomainCheckData?.length > 0 &&
       'list' in pickUpDomains &&
       selectedDomainsNames?.length > 0 &&
       selectedDomains?.length > 0 &&
@@ -47,11 +47,23 @@ export default function Component({ transfer = false }) {
     ) {
       registerDomainHandler()
     }
-  }, [siteZoneArray, pickUpDomains, selectedDomainsNames, selectedDomains, inputValue])
+  }, [
+    siteDomainCheckData,
+    pickUpDomains,
+    selectedDomainsNames,
+    selectedDomains,
+    inputValue,
+  ])
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
+    const domainDetailData = JSON.parse(cookies.getCookie('domain_order'))
     if (isDomainsOrderAllowed || cartFromSite) {
+      /* If link is correct and cookies data exist => quiting from this functions. Logic for that case below in the next UseEffect */
+      if (cartFromSite && domainDetailData?.length > 0) {
+        return
+      }
+
       if (transfer) {
         const dataTransfer = { domain_action: 'transfer' }
         dispatch(
@@ -83,33 +95,38 @@ export default function Component({ transfer = false }) {
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
+    const domainDetailData = JSON.parse(cookies.getCookie('domain_order'))
     const domainDataFromSite = JSON.parse(cartFromSite)
 
-    if (cartFromSite && domains?.length > 0) {
-      const { domain_name, zone } = domainDataFromSite
+    const zonesArrayId = []
 
-      const zonesArray = zone.split(', ')
-      /* Setting array zones from site to transfer it into DomainPuckUpZones component */
-      setSiteZoneArray(zonesArray)
+    if (cartFromSite && domainDetailData) {
+      !!domainDetailData && setSiteDomainCheckData(domainDetailData)
 
-      const matchingDomains = domains?.filter(domain =>
-        zonesArray.includes(domain?.tld?.$),
-      )
+      for (const domain of domainDetailData) {
+        const zoneId = Object.values(domain)[0]?.info?.billing_id
+        zonesArrayId.push(zoneId)
+      }
 
-      if (domain_name && matchingDomains?.length > 0) {
+      const { domain_name } = domainDataFromSite
+
+      if (domain_name && zonesArrayId?.length > 0) {
         setInputValue(domain_name)
-        setSelectedDomains(matchingDomains.map(el => el?.id?.$))
+        setSelectedDomains(zonesArrayId.join(', '))
         setDomainsNameHandler(
           {
             domain_name,
-            selectedDomains: matchingDomains.map(el => el?.id?.$),
+            selectedDomains: zonesArrayId,
           },
-          true,
+          domainDetailData,
         )
-      } else if (matchingDomains?.length > 0) {
-        setSelectedDomains(matchingDomains.map(el => el?.id?.$))
+      } else if (zonesArrayId?.length > 0) {
+        setSelectedDomains(zonesArrayId)
       }
+
+      /* Removing data from link and cookies domain data from the site */
       localStorage.removeItem('site_cart')
+      cookies.eraseCookie('domain_order')
     }
   }, [domains])
 
@@ -129,12 +146,14 @@ export default function Component({ transfer = false }) {
     selectedDomains: Yup.array().min(1, t('choose_min_one_domain', { ns: 'domains' })),
   })
 
-  const setDomainsNameHandler = (values, isDataFromSite = false) => {
+  const setDomainsNameHandler = (values, siteDomainCheckData = []) => {
     values['selected_pricelist'] = values?.selectedDomains.join(', ')
     values['sv_field'] = 'ok_whois'
-    !isDataFromSite
-      ? selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
-      : values?.selectedDomains?.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+
+    siteDomainCheckData.length > 0
+      ? values?.selectedDomains?.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+      : selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+
     if (transfer) {
       values['domain_action'] = 'transfer'
     }
@@ -146,15 +165,17 @@ export default function Component({ transfer = false }) {
         true,
         signal,
         setIsLoading,
+        siteDomainCheckData,
       ),
     )
 
-    !isDataFromSite && setSelectedDomainsNames([])
+    !siteDomainCheckData.length < 1 && setSelectedDomainsNames([])
   }
 
   const registerDomainHandler = () => {
     const selected_domain_names = selectedDomainsNames?.map(d => {
-      const [domain] = d
+      const [domain] = siteDomainCheckData.length > 0 ? Object.keys(d) : d
+
       return domain
     })
 
@@ -176,7 +197,8 @@ export default function Component({ transfer = false }) {
     })
 
     const selected_domain_real_name = selectedDomainsNames?.map(d => {
-      const [domainName] = d
+      const [domainName] = siteDomainCheckData.length > 0 ? Object.keys(d) : d
+
       return domainName
     })
 
@@ -269,7 +291,7 @@ export default function Component({ transfer = false }) {
                     selected={pickUpDomains?.selected}
                     registerDomainHandler={registerDomainHandler}
                     transfer={transfer}
-                    siteZoneArray={siteZoneArray}
+                    siteDomainCheckData={siteDomainCheckData}
                   />
                 ) : (
                   <DomainsZone
