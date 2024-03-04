@@ -119,7 +119,7 @@ jobs:
           provenance: false
           target: github
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ vars.APP_NAME }}:${{ env.PREFIX }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ vars.APP_NAME }}:${{ env.PREFIX }}-app
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -150,7 +150,7 @@ jobs:
 
       - name: Update Version
         env:
-          TMP_IMAGE_PREFIX: ${{ vars.DOCKER_REPOSITORY }}/${{ vars.APP_NAME }}:${{ env.PREFIX }}
+          TMP_IMAGE_PREFIX: ${{ vars.DOCKER_REPOSITORY }}/${{ vars.APP_NAME }}:${{ env.PREFIX }}-app
         working-directory: deployment
         run: |
           sed -i "s|{{ IMAGE }}|${{ env.TMP_IMAGE_PREFIX }}|g" deployment.yml
