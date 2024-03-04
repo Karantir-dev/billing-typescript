@@ -71,15 +71,11 @@ export default function ServicesPage(props) {
 
   /* Calculation sums of selected domain zones */
   const calculateSumOfSelected = () => {
-    let sum = 0
+    return selectedDomains?.reduce((sum, domain) => {
+      const price = domain?.transferredFromSite ? domain : domain[1]?.info?.price
 
-    selectedDomains?.forEach(e => {
-      const price = e?.transferredFromSite ? e : e[1]?.info?.price
-
-      sum += price?.reg ? price.reg : price?.main_price_reg
-    })
-
-    return roundToDecimal(sum)
+      return sum + (price?.reg ? price.reg : price?.main_price_reg)
+    }, 0)
   }
 
   const renderDomains = d => {
