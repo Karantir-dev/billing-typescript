@@ -1081,7 +1081,10 @@ export default function Component() {
 
                                       if (paymethod?.$ === '90') {
                                         setCode(QIWI_PHONE_COUNTRIES)
-                                      } else if (paymethod?.$ === '86') {
+                                      } else if (
+                                        paymethod?.$ === '86' ||
+                                        paymethod?.$ === '98'
+                                      ) {
                                         setCode(SBER_PHONE_COUNTRIES)
                                       } else if (paymethod?.$ === '87') {
                                         setState({

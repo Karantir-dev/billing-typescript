@@ -76,6 +76,8 @@ export default function DedicOrderPage() {
   const [dedicInfoList, setDedicInfoList] = useState([])
 
   const [filters, setFilters] = useReducer(reducer, {})
+  const [selectedCategories, setSelectedCategories] = useState([])
+  const [filtersItems, setFiltersItems] = useState({})
 
   useEffect(() => {
     const set = new Set()
@@ -233,27 +235,19 @@ export default function DedicOrderPage() {
       return { ...e, filter: { tag } }
     })
 
+    setFiltersItems(getFiltersItems())
     setTarifList({ ...tarifsList, tarifList: newArrTarifList })
+    setFilteredTariffsList(newArrTarifList)
   }, [tarifsList])
 
-  useEffect(() => {
-    const filteredTariffList = tarifList?.tarifList?.filter(el => {
-      const filterList = el.filter.tag
-      let hasFilter = true
+  const getFiltersItems = () =>
+    tarifsList.fpricelist?.reduce((acc, el) => {
+      const category = el.$.split(':')[0]
 
-      for (const key in filters) {
-        hasFilter = filters[key].length
-          ? filterList.some(filterItem => filters[key].includes(filterItem.$key))
-          : true
+      acc[category] = [...(acc?.[category] || []), { ...el, available: true }]
 
-        if (!hasFilter) break
-      }
-
-      return hasFilter
-    })
-
-    setFilteredTariffsList(filteredTariffList || [])
-  }, [tarifList, filters])
+      return acc
+    }, {}) || {}
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
@@ -343,6 +337,18 @@ export default function DedicOrderPage() {
     )
   }
 
+  const clearFiltersHandler = () => {
+    setFilteredTariffsList(tarifList?.tarifList)
+    setFilters({ type: 'clear_filter' })
+    setSelectedCategories([])
+    setFiltersItems(getFiltersItems())
+  }
+
+  const checkIfHasFilter = (filters, key, filterList) =>
+    filters[key].length
+      ? filterList.some(filterItem => filters[key].includes(filterItem.$key))
+      : true
+
   return (
     <>
       <div className={s.modalHeader}>
@@ -364,17 +370,101 @@ export default function DedicOrderPage() {
           onSubmit={handleSubmit}
         >
           {({ values, setFieldValue }) => {
+            const changeFilterHandler = (value, category) => {
+              const copyFiltersItems = JSON.parse(JSON.stringify(filtersItems))
+
+              let copyFilters = JSON.parse(JSON.stringify(filters))
+              let isAdding = true
+
+              if (filters?.[category]?.includes(value)) {
+                copyFilters = {
+                  ...copyFilters,
+                  [category]: copyFilters[category].filter(el => el !== value),
+                }
+                isAdding = false
+              } else {
+                copyFilters = {
+                  ...copyFilters,
+                  [category]: [...copyFilters[category], value],
+                }
+              }
+              setParameters(null)
+              setFieldValue('tarif', 0)
+              setTarifChosen(false)
+
+              let categories = isAdding
+                ? selectedCategories.includes(category)
+                  ? selectedCategories
+                  : [...selectedCategories, category]
+                : copyFilters[category].length
+                ? selectedCategories
+                : selectedCategories.filter(el => el !== category)
+
+              const categoriesKeys = [
+                ...new Set([...categories, ...Object.keys(copyFilters)]),
+              ]
+
+              const allowedFilters = categoriesKeys.reduce((acc, key, index) => {
+                acc[key] = tarifList?.tarifList?.filter(tariff => {
+                  const filterList = tariff.filter.tag
+                  let hasFilter = true
+
+                  for (let i = 0; i < index; i++) {
+                    hasFilter = checkIfHasFilter(
+                      copyFilters,
+                      categoriesKeys[i],
+                      filterList,
+                    )
+
+                    if (!hasFilter) break
+                  }
+
+                  return hasFilter
+                })
+
+                copyFilters[key] = copyFilters[key].filter(el =>
+                  JSON.stringify(acc[key]).includes(el),
+                )
+
+                if (!copyFilters[key].length) {
+                  categories = categories.filter(el => el !== key)
+                }
+
+                return acc
+              }, {})
+
+              for (const key in copyFiltersItems) {
+                copyFiltersItems[key] = copyFiltersItems[key].map(el => ({
+                  ...el,
+                  available: JSON.stringify(allowedFilters[key]).includes(el.$key),
+                }))
+              }
+
+              const filteredTariffList = tarifList?.tarifList?.filter(el => {
+                const filterList = el.filter.tag
+                let hasFilter
+
+                for (const key in copyFilters) {
+                  hasFilter = checkIfHasFilter(copyFilters, key, filterList)
+
+                  if (!hasFilter) break
+                }
+
+                return hasFilter
+              })
+
+              setFilters({ type: 'update_filter', value: copyFilters })
+              setFiltersItems(copyFiltersItems)
+              setSelectedCategories(categories)
+              setFilteredTariffsList(filteredTariffList || [])
+            }
             return (
               <Form className={s.form}>
                 <DedicFilter
-                  filtersItems={tarifList?.fpricelist}
+                  filtersItems={filtersItems}
                   filters={filters}
-                  setFilters={setFilters}
-                  resetChosenTariff={() => {
-                    setParameters(null)
-                    setFieldValue('tarif', 0)
-                    setTarifChosen(false)
-                  }}
+                  changeFilterHandler={changeFilterHandler}
+                  clearFiltersHandler={clearFiltersHandler}
                 />
                 <Select
                   height={50}
