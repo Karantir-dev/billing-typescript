@@ -19,7 +19,7 @@ env:
   PREFIX: version-${{ github.run_number }}-${{ github.ref_name }}
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -65,7 +65,7 @@ jobs:
         if: failure()
 
   build_and_push:
-    needs: [ lint ]
+    needs: [ test ]
     name: Build and push bill docker
     runs-on: ubuntu-latest
     environment:
