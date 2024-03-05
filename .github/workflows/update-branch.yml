@@ -21,19 +21,14 @@ jobs:
         with:
           ref: ${{ matrix.head }}
 
-      - name: Configurate github
-        run: |
-          git config --global user.email "oleksiy.moturnyak@zomro.org"
-          git config --global user.name "user-a54"
-
       - name: Delete branch
         run: | 
           git push -d ${{ github.server_url }}/${{ github.repository }} ${{ matrix.base }} || true
 
       - name: Create branch
         run: |
-          git checkout -b ${{ matrix.base }}
-          git commit --allow-empty -m "Trigger"
-          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.base }}:${{ matrix.base }} 
-          git commit --allow-empty -m "Trigger"
-          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.base }}:${{ matrix.base }} 
+          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }} 
+
+      - name: Run workflow
+        run: |
+          gh workflow run deploy.yml --ref ${{ matrix.base }}
