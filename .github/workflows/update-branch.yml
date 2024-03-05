@@ -23,8 +23,8 @@ jobs:
 
       - name: Configurate github
         run: |
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+          git config --global user.email "oleksiy.moturnyak@zomro.org"
+          git config --global user.name "user-a54"
 
       - name: Delete branch
         run: | 
