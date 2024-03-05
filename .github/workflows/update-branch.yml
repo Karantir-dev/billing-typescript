@@ -25,3 +25,5 @@ jobs:
         run: |
           git push -d ${{ github.server_url }}/${{ github.repository }} ${{ matrix.base }} || true
           git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }} 
+          git commit --allow-empty -m "Trigger"
+          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }} 
