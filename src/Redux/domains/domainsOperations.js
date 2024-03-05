@@ -233,7 +233,6 @@ const getDomainsOrderName =
           }
 
           setDomains && setDomains(domainsData)
-
         } else {
           await axios
             .post(
@@ -248,39 +247,39 @@ const getDomainsOrderName =
                 console.warn('Error happened. Domains were not checked.')
                 return 'Error happened'
               }
-              // Function for delay
-              function wait(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms))
-              }
               const taskId = data.task_id
 
-              /* Getting results */
-              let result
-              let status
-              do {
-                await wait(1000) // Delay 1 secound before repeating request
+              async function checkDomainStatus(taskId, signal) {
+                let result, status
 
-                const response = await fetch(
-                  `${process.env.REACT_APP_API_URL}/api/domain/check_certain/${taskId}`,
-                  {
-                    method: 'GET',
-                    headers: {
-                      'Content-Type': 'application/json',
+                // Loop until the status is not "In Progress"
+                do {
+                  await new Promise(resolve => setTimeout(resolve, 1000)) // Delay 1 second
+
+                  const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/domain/check_certain/${taskId}`,
+                    {
+                      method: 'GET',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      signal,
                     },
-                  },
-                  { signal },
-                )
+                  )
 
-                result = await response.json()
-                status = result.status
-              } while (status === 'In Progress')
+                  result = await response.json()
+                  status = result.status
+                } while (status === 'In Progress')
 
-              if (status === 'Not Found') {
-                return 'Not found'
+                if (status === 'Not Found') {
+                  return 'Not found'
+                }
+
+                return result.data // Return the data after successful completion
               }
 
               const domainsData = {
-                list: result.data,
+                list: await checkDomainStatus(taskId, signal),
                 checked_domain: domainData?.checked_domain,
                 selected: selected,
                 domain_name: domainData?.tparams?.domain_name?.$,
