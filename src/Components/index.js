@@ -62,6 +62,7 @@ export { default as EditCell } from './ui/EditCell/EditCell'
 export { default as Icon } from './ui/Icon/Icon'
 export { default as CertificateModal } from './ui/CertificateModal/CertificateModal'
 export { default as InstructionModal } from './ui/InstructionModal/InstructionModal'
+export { default as InputRange } from './ui/InputRange/InputRange'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -220,4 +221,3 @@ export { default as TariffConfig } from './TariffConfig/TariffConfig'
 export { default as Header } from './Container/Header/Header'
 export { default as Options } from './Options/Options'
 export { default as OrderTariff } from './OrderTariff/OrderTariff'
-
