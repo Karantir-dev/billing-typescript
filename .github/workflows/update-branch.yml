@@ -13,7 +13,7 @@ jobs:
       matrix:
         include:
           - head: dev # з якої гілки
-            base: bill-update # до якої гілки
+            base: update # до якої гілки
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:

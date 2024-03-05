@@ -1,7 +1,7 @@
 name: Deployment
 on:
   push:
-    branches: [ prod, dev, prod-biz, bill-update ]
+    branches: [ prod, dev, prod-biz, update ]
 
   workflow_dispatch:
 
