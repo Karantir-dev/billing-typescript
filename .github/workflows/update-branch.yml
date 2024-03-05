@@ -19,5 +19,5 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: ${{ matrix.base }}
-          base: ${{ matrix.head }}
+          branch: ${{ matrix.head }}
+          base: ${{ matrix.base }}
