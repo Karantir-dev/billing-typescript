@@ -1,7 +1,7 @@
 name: Deployment
 on:
   push:
-    branches: [ prod, dev ]
+    branches: [ prod, dev, prod-biz, bill-update ]
 
   workflow_dispatch:
 
@@ -15,55 +15,21 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_NAME: zomro-bill
+  NAMESPACE: ${{ vars.NAMESPACE_PREFIX }}-${{ github.ref_name }}
   PREFIX: version-${{ github.run_number }}-${{ github.ref_name }}
-  NAMESPACE: bill-zomro-com-${{ github.ref_name }}
 
 jobs:
-#  jest:
-#    runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        node-version: [ v16.13.1 ]
-#        npm-version: [ 8.1.2 ]
-#    environment:
-#      name: ${{ github.ref_name }}
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Use Node.js ${{ matrix.node-version }}
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: ${{ matrix.node-version }}
-#          cache: 'npm'
-#      - run: npm install -g npm@${{ matrix.npm-version }}
-#      - run: npm install -f
-#      # Обов'язкові змінні потрібні лише для збірки JS
-#      - name: Create core .env
-#        uses: SpicyPizza/create-envfile@v1.3
-#        with:
-#          envkey_REACT_APP_API_URL: ${{ vars.API_URL }}
-#          envkey_REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
-#
-#      - name: Run test
-#        run: npm run test
-#      - name: Send fail start in Slack
-#        uses: 8398a7/action-slack@v3
-#        with:
-#          status: ${{ job.status }}
-#          fields: all
-#          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
-#          channel: 'github-actions'
-#          if_mention: always
-#        env:
-#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-#        # if: failure()
-
-  eslint:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ v16.13.1 ]
-        npm-version: [ 8.1.2 ]
+        node-version:
+          - v16.13.1
+        npm-version:
+          - 8.1.2
+        command:
+#          - test
+          - lint
     environment:
       name: ${{ github.ref_name }}
     steps:
@@ -78,15 +44,14 @@ jobs:
       - name: Get Static version
         id: static_version
         run: echo "value=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
-      - name: Run List
+      - name: Run test
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
           REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
           REACT_APP_TRANSLATION_VERSION: ${{ steps.static_version.outputs.value }}
           REACT_APP_SITE_URL: ${{ vars.SITE_URL }}
-        run: npm run lint
-
+        run: npm run ${{ matrix.command }}
       - name: Send fail start in Slack
         uses: 8398a7/action-slack@v3
         with:
@@ -96,11 +61,11 @@ jobs:
           channel: 'github-actions'
           if_mention: always
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
         if: failure()
 
   build_and_push:
-    needs: [ eslint ]
+    needs: [ test ]
     name: Build and push bill docker
     runs-on: ubuntu-latest
     environment:
@@ -133,8 +98,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
-          role-session-name: github-actions-${{ env.APP_NAME }}-${{ github.ref_name }}
+          role-to-assume: ${{ vars.ROLE_TO_ASSUME }}-${{ vars.APP_NAME }}
+          role-session-name: github-actions-${{ vars.APP_NAME }}
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -142,7 +107,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
         env:
           AWS_REGION: ${{ vars.AWS_REGION }}
-          ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}
+          ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}-${{ vars.APP_NAME }}
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
@@ -154,7 +119,7 @@ jobs:
           provenance: false
           target: github
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ env.APP_NAME }}:${{ env.PREFIX }}
+            ${{ steps.login-ecr.outputs.registry }}/${{ vars.APP_NAME }}:${{ env.PREFIX }}-app
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -185,7 +150,7 @@ jobs:
 
       - name: Update Version
         env:
-          TMP_IMAGE_PREFIX: ${{ vars.DOCKER_REPOSITORY }}/${{ env.APP_NAME }}:${{ env.PREFIX }}
+          TMP_IMAGE_PREFIX: ${{ vars.DOCKER_REPOSITORY }}/${{ vars.APP_NAME }}:${{ env.PREFIX }}-app
         working-directory: deployment
         run: |
           sed -i "s|{{ IMAGE }}|${{ env.TMP_IMAGE_PREFIX }}|g" deployment.yml
