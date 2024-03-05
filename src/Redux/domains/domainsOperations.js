@@ -113,7 +113,15 @@ const getDomainsFilters =
   }
 
 const getDomainsOrderName =
-  (setDomains, setAutoprolongPrices, body = {}, search = false, signal, setIsLoading) =>
+  (
+    setDomains,
+    setAutoprolongPrices,
+    body = {},
+    search = false,
+    signal,
+    setIsLoading,
+    siteDomainCheckData,
+  ) =>
   (dispatch, getState) => {
     setIsLoading(true)
 
@@ -215,57 +223,94 @@ const getDomainsOrderName =
          * This request is to check if there is premium domains
          * among suggested by billmanager
          */
-        await axios
-          .post(
-            `${process.env.REACT_APP_API_URL}/api/domain/check/`,
-            {
-              host: domains?.map(e => e?.domain?.$),
-            },
-            { signal },
-          )
-          .then(({ data: { data } }) => {
-            const newArr = []
-            const receivedDomains = Object.keys(data)
 
-            receivedDomains?.forEach(d => {
-              domains?.forEach(dom => {
-                if (dom?.domain?.$ === d) {
-                  return newArr?.push({ ...dom, premium: data[d].info.premium })
+        if (siteDomainCheckData.length > 0) {
+          const domainsData = {
+            list: siteDomainCheckData,
+            checked_domain: domainData?.checked_domain,
+            selected: selected,
+            domain_name: domainData?.tparams?.domain_name?.$,
+          }
+
+          setDomains && setDomains(domainsData)
+        } else {
+          await axios
+            .post(
+              `${process.env.REACT_APP_API_URL}/api/domain/check_certain/`,
+              {
+                host: domains?.map(e => e?.domain?.$),
+              },
+              { signal },
+            )
+            .then(async ({ data }) => {
+              if (data.status !== 'Created') {
+                console.warn('Error happened. Domains were not checked.')
+                return 'Error happened'
+              }
+              const taskId = data.task_id
+
+              async function checkDomainStatus(taskId, signal) {
+                let result, status
+
+                // Loop until the status is not "In Progress"
+                do {
+                  await new Promise(resolve => setTimeout(resolve, 1000)) // Delay 1 second
+
+                  const response = await fetch(
+                    `${process.env.REACT_APP_API_URL}/api/domain/check_certain/${taskId}`,
+                    {
+                      method: 'GET',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      signal,
+                    },
+                  )
+
+                  result = await response.json()
+                  status = result.status
+                } while (status === 'In Progress')
+
+                if (status === 'Not Found') {
+                  return 'Not found'
                 }
-              })
+
+                return result.data // Return the data after successful completion
+              }
+
+              const domainsData = {
+                list: await checkDomainStatus(taskId, signal),
+                checked_domain: domainData?.checked_domain,
+                selected: selected,
+                domain_name: domainData?.tparams?.domain_name?.$,
+              }
+
+              setDomains && setDomains(domainsData)
+
+              handleLoadersClosing('closeLoader', dispatch, setIsLoading)
             })
-            const domainsData = {
-              list: newArr,
-              checked_domain: domainData?.checked_domain,
-              selected: selected,
-              domain_name: domainData?.tparams?.domain_name?.$,
-            }
+            .catch(err => {
+              handleLoadersClosing(err?.message, dispatch, setIsLoading)
+              console.log(err)
 
-            setDomains && setDomains(domainsData)
+              if (isTranslationExists(err?.message)) {
+                toast.error(t(err.message, { ns: ['auth', 'other'] }))
+              } else {
+                toast.error(t('premium_check_failed', { ns: 'domains' }), {
+                  toastId: 'premium_check_failed',
+                  updateId: 'premium_check_failed',
+                })
+              }
 
-            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-          })
-          .catch(err => {
-            handleLoadersClosing(err?.message, dispatch, setIsLoading)
-            console.log(err)
-
-            if (isTranslationExists(err?.message)) {
-              toast.error(t(err.message, { ns: ['auth', 'other'] }))
-            } else {
-              toast.error(t('premium_check_failed', { ns: 'domains' }), {
-                toastId: 'premium_check_failed',
-                updateId: 'premium_check_failed',
-              })
-            }
-
-            const domainsData = {
-              list: domains,
-              checked_domain: domainData?.checked_domain,
-              selected: selected,
-              domain_name: domainData?.tparams?.domain_name?.$,
-            }
-            setDomains && setDomains(domainsData)
-          })
+              const domainsData = {
+                list: domains,
+                checked_domain: domainData?.checked_domain,
+                selected: selected,
+                domain_name: domainData?.tparams?.domain_name?.$,
+              }
+              setDomains && setDomains(domainsData)
+            })
+        }
       })
       .catch(error => {
         handleLoadersClosing(error?.message, dispatch, setIsLoading)

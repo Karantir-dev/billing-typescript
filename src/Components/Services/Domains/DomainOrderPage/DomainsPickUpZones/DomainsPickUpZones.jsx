@@ -17,7 +17,7 @@ export default function ServicesPage(props) {
     selected,
     registerDomainHandler,
     transfer,
-    autoprolongPrices,
+    siteDomainCheckData,
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
@@ -27,61 +27,31 @@ export default function ServicesPage(props) {
   useEffect(() => {
     if (!transfer) {
       const suggested = []
-      const allResults = []
-      domains?.forEach(d => {
-        if (selected?.indexOf(d?.checkbox?.input?.$name) !== -1) {
-          suggested.push(d)
-          setIsSelectedHandler(d)
-        } else {
-          allResults.push(d)
-        }
-      })
+      let allResults = []
+      domains &&
+        Object.entries(domains).forEach(d => {
+          if (selected?.indexOf(d?.checkbox?.input?.$name) !== -1) {
+            suggested.push(d)
+            setIsSelectedHandler(d)
+          } else {
+            allResults.push(d)
+          }
+        })
       setDomainsList({ suggested, allResults })
+
+      /* If we have domain zones from the site - set them to selected */
+      if (siteDomainCheckData.length > 0) {
+        allResults = [...siteDomainCheckData]
+
+        /* Adding transferredFromSite to Domains List to monitor if data setted from site */
+        setDomainsList({ suggested, allResults, transferredFromSite: true })
+
+        setSelectedDomains(siteDomainCheckData)
+      }
     } else {
       setDomainsList(domains)
     }
   }, [domains])
-
-  const parsePrice = price => {
-    const words = price?.match(/[\d|.|\\+]+/g)
-    const amounts = []
-
-    if (words.length > 0) {
-      words.forEach(w => {
-        if (!isNaN(w)) {
-          amounts.push(w)
-        }
-      })
-    } else {
-      return
-    }
-
-    let amoumt = (
-      <span>
-        {roundToDecimal(amounts[amounts.length - 1]) + ' ' + 'EUR'}
-        <span className={s.year}>
-          {transfer ? ' ' : '/'}
-          {t(transfer ? 'for the transfer' : 'year', { ns: 'other' })}
-        </span>
-      </span>
-    )
-    let percent = amounts[0] + '%'
-    let sale = (
-      <span>
-        {roundToDecimal(amounts[1]) + ' ' + 'EUR'}
-        <span className={s.year}>
-          {transfer ? ' ' : '/'}
-          {t(transfer ? '' : 'year', { ns: 'other' })}
-        </span>
-      </span>
-    )
-    return {
-      amoumt,
-      percent,
-      sale,
-      length: amounts.length,
-    }
-  }
 
   const itemIsSelected = item => {
     return selectedDomains.indexOf(item) !== -1
@@ -89,82 +59,70 @@ export default function ServicesPage(props) {
 
   const setIsSelectedHandler = item => {
     const index = selectedDomains.indexOf(item)
-
-    if (index === -1 && !item.premium) {
-      setSelectedDomains(e => [...e, item])
+    if (index === -1) {
+      // Adding element to selectedDomains
+      setSelectedDomains(prevState => [...prevState, item])
     } else {
-      var newArray = selectedDomains.filter(f => {
-        return f !== item
-      })
+      // Removing element from selectedDomains
+      const newArray = selectedDomains.filter(domain => domain !== item)
       setSelectedDomains(newArray)
     }
   }
 
+  /* Calculation sums of selected domain zones */
   const calculateSumOfSelected = () => {
-    let sum = 0
+    return selectedDomains?.reduce((sum, domain) => {
+      const price = domain?.transferredFromSite ? domain : domain[1]?.info?.price
 
-    selectedDomains?.forEach(e => {
-      const words = e?.price?.$?.match(/[\d|.|\\+]+/g)
-      const amounts = []
-
-      if (words.length > 0) {
-        words.forEach(w => {
-          if (!isNaN(w)) {
-            amounts.push(w)
-          }
-        })
-      }
-      sum = sum + Number(amounts[amounts.length - 1])
-    })
-
-    return roundToDecimal(sum)
-  }
-
-  const getPolongPrice = domain => {
-    return autoprolongPrices.find(el => el.zone === '.' + domain.$.split('.')[1])
-      ?.main_price_renew
+      return sum + (price?.reg ? price.reg : price?.main_price_reg)
+    }, 0)
   }
 
   const renderDomains = d => {
-    const { id, domain, price } = d
-    const renew = getPolongPrice(domain)
+    /* Destructuring domainName and domainInfo depending on the object structure */
+    const domainName = domainsList?.transferredFromSite ? Object.keys(d)[0] : d?.[0]
+    const domainInfo = domainsList?.transferredFromSite ? Object.values(d)[0] : d?.[1]
 
-    const notAvailable =
-      d?.desc?.$?.includes('Not available') || d?.desc?.$?.includes('Error') || d.premium
+    const { info, tld } = domainInfo
+    const { billing_id, is_available, price } = info
+    const { reg, main_price_reg, renew, main_price_renew } = price
+
+    const salePercent = Math.floor(reg === 0 ? 0 : 100 - (100 * reg) / main_price_reg)
+
+    const notAvailable = is_available === false || tld === 'invalid'
 
     return (
       <div
         tabIndex={0}
         role="button"
         onKeyDown={null}
-        key={id?.$}
+        key={`domain-${billing_id}`}
         className={cn(s.domainItem, {
           [s.selected]: itemIsSelected(d),
           [s.notAvailable]: notAvailable,
         })}
         onClick={() => !notAvailable && setIsSelectedHandler(d)}
       >
-        {parsePrice(price?.$)?.length > 1 && (
-          <div className={s.sale}>-{parsePrice(price?.$)?.percent}</div>
-        )}
+        {salePercent > 0 && <div className={s.sale}>{salePercent}%</div>}
+
         <div className={cn(s.domainName, { [s.notAvailable]: notAvailable })}>
-          <div className={s.domainNameValue}>{domain?.$}</div>
-          <div className={s.domainPriceMobile}>{parsePrice(price?.$)?.amoumt}</div>
-          {parsePrice(price?.$)?.length > 1 && (
-            <div className={s.saleEurMobile}>{parsePrice(price?.$)?.sale}</div>
-          )}
+          <div className={s.domainNameValue}>{domainName}</div>
         </div>
+
         <div className={s.pricesBlock}>
-          <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
-          {parsePrice(price?.$)?.length > 1 && (
-            <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
-          )}
+          <div className={s.domainPrice}>
+            {reg > 0 ? reg : main_price_reg} EUR/{t('year', { ns: 'other' })}
+          </div>
+
+          <div className={cn(s.saleEur, s.ordering)}>
+            {reg && main_price_reg} EUR/{t('year', { ns: 'other' })}
+          </div>
         </div>
-        {renew && (
+        {main_price_renew && (
           <div className={s.prolongBlock}>
             <span>{t('prolong', { ns: 'vds' })}:</span>
             <span>
-              {roundToDecimal(renew)} EUR/
+              {renew ? roundToDecimal(renew) : roundToDecimal(main_price_renew)} EUR/
               <span className={s.prolongPeriod}>{t('year', { ns: 'other' })}</span>
             </span>
           </div>
@@ -186,59 +144,67 @@ export default function ServicesPage(props) {
   }
 
   const renderDomainTransferAll = () => {
+    const domainsTransferToRender = domainsList ? Object.entries(domainsList) : []
     return (
-      Array.isArray(domainsList) &&
-      domainsList?.length > 0 && (
+      domainsTransferToRender?.length > 0 && (
         <div className={s.domainsBlockTransfer}>
-          {domainsList?.map(d => {
-            const { id, domain, price } = d
-            const renew = getPolongPrice(domain)
+          {domainsTransferToRender?.map(d => {
+            /* Getting domain prices */
+            const [
+              domain,
+              {
+                info: {
+                  is_available,
+                  billing_id,
+                  price: { reg, main_price_reg, renew, main_price_renew },
+                },
+              },
+            ] = d
 
-            const notAvailable =
-              d?.desc?.$.includes('Not registered') ||
-              d?.desc?.$?.includes('Error') ||
-              d.premium
-
-            const available = !notAvailable && d?.desc?.$.includes('Registered')
-
+            const salePercent = Math.floor(
+              reg === 0 ? 0 : 100 - (100 * reg) / main_price_reg,
+            )
             return (
               <div
-                key={id?.$}
+                key={`${billing_id}`}
                 className={cn(s.domainItemTransfer, {
                   [s.selected]: itemIsSelected(d),
-                  [s.notAvailable]: notAvailable,
+                  [s.notAvailable]: !is_available,
                 })}
               >
-                {parsePrice(price?.$)?.length > 1 && (
-                  <div className={s.sale}>-{parsePrice(price?.$)?.percent}</div>
-                )}
-                {available && (
+                {salePercent > 0 && <div className={s.sale}>{salePercent}%</div>}
+                {!is_available && (
                   <CheckBox
                     value={itemIsSelected(d)}
                     onClick={() => setIsSelectedHandler(d)}
                     className={s.checkbox}
                   />
                 )}
-                <div className={s.domainNameTransfer}>{domain?.$}</div>
+                <div className={s.domainNameTransfer}>{domain}</div>
                 <div
                   className={cn(s.domainavailability, {
-                    [s.available]: available,
-                    [s.notAvailable]: notAvailable,
+                    [s.available]: !is_available,
+                    [s.notAvailable]: is_available,
                   })}
                 >
-                  {available ? t('Registered') : t('Not registered')}
+                  {!is_available ? t('Registered') : t('Not registered')}
                 </div>
                 <div className={s.pricesBlockTransfer}>
-                  {parsePrice(price?.$)?.length > 1 && (
-                    <div className={s.saleEur}>{parsePrice(price?.$)?.sale}</div>
+                  {salePercent > 0 && (
+                    <div className={s.saleEur}>
+                      {reg && main_price_reg} EUR/{t('year', { ns: 'other' })}
+                    </div>
                   )}
-                  <div className={s.domainPrice}>{parsePrice(price?.$)?.amoumt}</div>
+                  <div className={s.domainPrice}>
+                    {reg ? reg : main_price_reg} EUR/{t('year', { ns: 'other' })}
+                  </div>
                 </div>
-                {renew && (
-                  <div className={cn(s.prolongBlock, s.transferProlongBlock)}>
+                {main_price_renew && (
+                  <div className={s.prolongBlock}>
                     <span>{t('prolong', { ns: 'vds' })}:</span>
                     <span>
-                      {roundToDecimal(renew)} EUR/
+                      {renew ? roundToDecimal(renew) : roundToDecimal(main_price_renew)}{' '}
+                      EUR/
                       <span className={s.prolongPeriod}>
                         {t('year', { ns: 'other' })}
                       </span>
@@ -265,16 +231,17 @@ export default function ServicesPage(props) {
         </>
       ) : (
         <>
-          {domainsList?.suggested?.length > 0 && (
+          {/* Suggested list was removed the same as on website: */}
+          {/* {domainsList?.suggested?.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('Suggested Results')}</h2>
               <div className={cn(s.domainsBlock, s.suggested)}>
                 {domainsList?.suggested?.map(d => renderDomains(d))}
               </div>
             </>
-          )}
+          )} */}
 
-          {domainsList?.allResults?.length > 0 && (
+          {domainsList?.allResults.length > 0 && (
             <>
               <h2 className={s.domainsZoneTitle}>{t('All results')}</h2>
               <div className={s.domainsBlock}>
@@ -292,11 +259,25 @@ export default function ServicesPage(props) {
         </div>
         <div className={s.selectedDomains}>
           {selectedDomains?.map(e => {
+            const domainName = domainsList?.transferredFromSite
+              ? Object.keys(e)[0]
+              : e?.[0]
+            const domainInfo = domainsList?.transferredFromSite
+              ? Object.values(e)[0]
+              : e?.[1]
+
+            const {
+              info: { billing_id, price },
+            } = domainInfo
+            const { reg, main_price_reg } = price
+
             return (
-              <div className={s.selectedItem} key={e?.id?.$}>
-                <div className={s.domainName}>{e?.domain?.$}</div>
+              <div className={s.selectedItem} key={`dom_${billing_id}`}>
+                <div className={s.domainName}>{domainName}</div>
                 <div className={s.pricesBlock}>
-                  <div className={s.domainPrice}>{parsePrice(e?.price?.$)?.amoumt}</div>
+                  <div className={s.domainPrice}>
+                    {reg ? reg : main_price_reg} EUR/{t('year', { ns: 'other' })}
+                  </div>
                 </div>
                 <Icon
                   name="Cross"
