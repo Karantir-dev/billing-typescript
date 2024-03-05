@@ -34,6 +34,6 @@ jobs:
         run: |
           git checkout -b ${{ matrix.base }}
           git commit --allow-empty -m "Trigger"
-          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }} 
+          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.base }}:${{ matrix.base }} 
           git commit --allow-empty -m "Trigger"
-          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }} 
+          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.base }}:${{ matrix.base }} 
