@@ -14,10 +14,14 @@ jobs:
         include:
           - head: dev # з якої гілки
             base: bill-update # до якої гілки
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
         with:
-          branch: ${{ matrix.head }}
-          base: ${{ matrix.base }}
+          ref: ${{ matrix.head }}
+
+      - name: Create branch
+        run: |
+          git push -d ${{ github.server_url }}/${{ github.repository }} ${{ matrix.base }}
+          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }} 
