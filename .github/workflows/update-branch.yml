@@ -1,0 +1,23 @@
+name: Update branch
+
+on:
+  push:
+    branches: [ dev ]
+  workflow_dispatch:
+
+jobs:
+  createPullRequest:
+    name: Update branch
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - head: dev # з якої гілки
+            base: bill-update # до якої гілки
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: ${{ matrix.base }}
+          base: ${{ matrix.head }}
