@@ -105,7 +105,7 @@ export default function ModalAddPayer(props) {
   const editPayerHandler = values => {
     let data = {
       ...values,
-      country_physical: values?.country,
+      country_physical: values?.country_physical || values?.country,
       sok: 'ok',
       elid: elid,
     }
@@ -128,6 +128,7 @@ export default function ModalAddPayer(props) {
             country:
               payersSelectedFields?.country ||
               payersSelectedFields?.country_physical ||
+              geoData?.clients_country_id ||
               '',
             profiletype: payersSelectedFields?.profiletype || '',
             maildocs: payersSelectedFields?.maildocs || '',
@@ -139,6 +140,7 @@ export default function ModalAddPayer(props) {
             country_physical:
               payersSelectedFields?.country ||
               payersSelectedFields?.country_physical ||
+              geoData?.clients_country_id ||
               '',
             postcode_physical: payersSelectedFields?.postcode_physical || '',
             passport: payersSelectedFields?.passport || '',
@@ -239,7 +241,7 @@ export default function ModalAddPayer(props) {
                   <div className={s.formFieldsBlock}>
                     <SelectGeo
                       setSelectFieldValue={item => setFieldValue('country', item)}
-                      selectValue={values.country}
+                      selectValue={payersSelectedFields?.country_physical}
                       selectClassName={s.select}
                       countrySelectClassName={s.countrySelectItem}
                       geoData={geoData}
