@@ -56,10 +56,6 @@ export default function Component({ transfer = false }) {
   }, [])
 
   useEffect(() => {
-    console.log('Payment data: ', paymentData)
-  }, [paymentData])
-
-  useEffect(() => {
     const data = {}
     let shema = {}
     if (selectedDomain?.length > 1 && differentNS) {
@@ -324,7 +320,7 @@ export default function Component({ transfer = false }) {
                                   <div className={s.details}>
                                     {sums?.length && (
                                       <div>
-                                        <p className={s.details_domainName}>
+                                        <p className={s.domainName}>
                                           {domenName}
                                         </p>
                                         <span>
