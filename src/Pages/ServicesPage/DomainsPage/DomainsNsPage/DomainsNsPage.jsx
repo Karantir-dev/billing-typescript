@@ -131,10 +131,8 @@ export default function Component({ transfer = false }) {
       data['period'] = -200
     }
 
-    console.log('values that should be sended: ', values)
     for (let key in values) {
       if (key?.includes('licence_agreement_')) {
-        console.log('data[key] if key includes licence agreement: ', data[key])
         data[key] = 'on'
       }
     }
