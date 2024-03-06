@@ -73,8 +73,9 @@ export default function ServicesPage(props) {
   const calculateSumOfSelected = () => {
     return selectedDomains?.reduce((sum, domain) => {
       const price = domain?.transferredFromSite ? domain : domain[1]?.info?.price
+      const calculatedPrice = sum + (price?.reg ? price.reg : price?.main_price_reg)
 
-      return sum + (price?.reg ? price.reg : price?.main_price_reg)
+      return +calculatedPrice.toFixed(2)
     }, 0)
   }
 
