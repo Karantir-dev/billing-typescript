@@ -1,0 +1,29 @@
+.options {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.filter__icon {
+  svg {
+    min-width: 18px;
+    max-width: 25px;
+    min-height: 18px;
+    max-height: 20px;
+    fill: var(--icon-color_2);
+  }
+
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
+.filter {
+  position: relative;
+}
+
+.pagination {
+  margin-top: 32px;
+}

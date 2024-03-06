@@ -58,6 +58,15 @@ export default function ServicesList() {
       icon_height: '117',
     },
     {
+      name: t('burger_menu.services.services_list.cloud_vps'),
+      id: 11,
+      routeName: routes.CLOUD_VPS,
+      allowedToRender: true,
+      icon_name: 'vds',
+      icon_width: '131',
+      icon_height: '100',
+    },
+    {
       name: t('burger_menu.services.services_list.virtual_servers'),
       id: 2,
       routeName: routes.VPS,

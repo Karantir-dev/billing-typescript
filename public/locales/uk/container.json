@@ -28,7 +28,10 @@
         "external_ftp": "Зовнішнє сховище FTP",
         "wetsite_care": "Турбота про сайт",
         "forex_server": "Сервер для Forex",
-        "wordpress_hosting": "Wordpress хостинг"
+        "wordpress_hosting": "Wordpress хостинг",
+        "cloud_vps": "Сервери VPS",
+        "instances": "instances",
+        "ssh_keys": "ssh_keys"
       }
     },
     "ref_program": {

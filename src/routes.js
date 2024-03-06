@@ -81,3 +81,6 @@ export const WORDPRESS_ORDER = '/services/wordpress/wordpress_order'
 
 export const CART = '/cart'
 export const ORDER = '/order'
+
+export const CLOUD_VPS = '/services/cloud_vps'
+export const CLOUD_VPS_CREATE_INSTANCE = '/services/cloud_vps/create_instance'
