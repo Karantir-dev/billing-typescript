@@ -242,7 +242,7 @@ export default function Component({ transfer = false }) {
                             }
                           })
 
-                          const domenName =
+                          const domainName =
                             state?.contacts?.selected_domain_real_name?.split(', ')[index]
 
                           const sums = paymentData[`domain_${select}_details`]?.$?.match(
@@ -251,7 +251,7 @@ export default function Component({ transfer = false }) {
 
                           return (
                             <div key={select} className={s.formBlock}>
-                              <div className={s.formBlockTitle}>{domenName}</div>
+                              <div className={s.formBlockTitle}>{domainName}</div>
                               <div className={s.formFieldsBlock}>
                                 {transfer && (
                                   <>
@@ -319,7 +319,7 @@ export default function Component({ transfer = false }) {
                                     {sums?.length && (
                                       <div>
                                         <p className={s.domainName}>
-                                          {domenName}
+                                          {domainName}
                                         </p>
                                         <span>
                                           - {roundToDecimal(sums[0])} EUR {t('per year')}
