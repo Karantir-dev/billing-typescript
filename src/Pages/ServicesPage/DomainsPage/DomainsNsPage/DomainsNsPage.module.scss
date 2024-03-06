@@ -77,6 +77,7 @@
   line-height: 115%;
   margin-bottom: 5px;
   color: var(--main-text);
+  word-break: break-word;
 }
 
 .btnBlock {
@@ -116,7 +117,7 @@
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
-    line-height: 70.9%;
+    line-height: 120%;
     color: var(--main-text);
     margin-left: 18px;
   }
@@ -141,13 +142,16 @@
 
 .details {
   width: 100%;
-  max-width: 100%;
   margin-top: 25px;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
   line-height: 130.5%;
   color: var(--main-text);
+}
+
+.details_domainName {
+  word-break: break-word;
 }
 
 .agreeTerms {
@@ -262,7 +266,6 @@
     margin-right: 20px;
   }
   .details {
-    max-width: 48%;
     margin-right: 20px;
   }
 }

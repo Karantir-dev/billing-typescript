@@ -56,6 +56,10 @@ export default function Component({ transfer = false }) {
   }, [])
 
   useEffect(() => {
+    console.log('Payment data: ', paymentData)
+  }, [paymentData])
+
+  useEffect(() => {
     const data = {}
     let shema = {}
     if (selectedDomain?.length > 1 && differentNS) {
@@ -131,8 +135,10 @@ export default function Component({ transfer = false }) {
       data['period'] = -200
     }
 
+    console.log('values that should be sended: ', values)
     for (let key in values) {
       if (key?.includes('licence_agreement_')) {
+        console.log('data[key] if key includes licence agreement: ', data[key])
         data[key] = 'on'
       }
     }
@@ -318,8 +324,12 @@ export default function Component({ transfer = false }) {
                                   <div className={s.details}>
                                     {sums?.length && (
                                       <div>
-                                        {domenName} - {roundToDecimal(sums[0])} EUR{' '}
-                                        {t('per year')}
+                                        <p className={s.details_domainName}>
+                                          {domenName}
+                                        </p>
+                                        <span>
+                                          - {roundToDecimal(sums[0])} EUR {t('per year')}
+                                        </span>
                                       </div>
                                     )}
                                     {checkBoxName && (

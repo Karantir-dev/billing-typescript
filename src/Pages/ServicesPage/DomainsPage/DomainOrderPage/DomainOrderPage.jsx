@@ -183,14 +183,14 @@ export default function Component({ transfer = false }) {
     const newCheckedDomains = []
 
     const selected_domain = []
-    selected_domain_names?.forEach(el => {
+    pickUpDomains?.selected?.forEach(el => {
       const newString = el?.replace('select_domain_', '')
 
       selected_domain?.push(newString)
       checkedDomain?.forEach(checked => {
         const check = checked.substring(0, checked.length - 1) + '1'
 
-        if (checked?.includes(newString.split('.')[1])) {
+        if (checked?.includes(newString)) {
           newCheckedDomains.push(check)
         }
       })
