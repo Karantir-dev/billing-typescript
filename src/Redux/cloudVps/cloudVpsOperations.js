@@ -4,7 +4,7 @@ import { actions, authSelectors } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
-import i18n from '@src/i18n'
+import { t } from 'i18next'
 
 const getInstances =
   ({
@@ -39,6 +39,7 @@ const getInstances =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         setInstances(data.doc.elem || [])
         setTotalElems(data.doc.p_elems.$)
+
         return axiosInstance.post(
           '/',
           qs.stringify({
@@ -136,7 +137,17 @@ const setInstancesFilter =
   }
 
 const editInstance =
-  ({ values, elid, errorCallback, setIsLoading, signal }) =>
+  ({
+    values,
+    elid,
+    errorCallback = () => {},
+    closeModal = () => {},
+    setInstances,
+    setTotalElems,
+    setFilters,
+    setIsLoading,
+    signal,
+  }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -158,13 +169,153 @@ const editInstance =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }))
+
+        dispatch(
+          getInstances({
+            setInstances,
+            setTotalElems,
+            setFilters,
+            signal,
+            setIsLoading,
+          }),
+        )
+        closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        toast.success(t('Changes saved successfully', { ns: 'other' }))
       })
       .catch(error => {
         errorCallback()
+        closeModal()
         checkIfTokenAlive(error.message, dispatch)
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
+const deleteInstance =
+  ({ elid, closeModal, setInstances, setTotalElems, setFilters, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.delete',
+          auth: sessionId,
+          elid,
+          out: 'json',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(
+          getInstances({
+            setInstances,
+            setTotalElems,
+            setFilters,
+            signal,
+            setIsLoading,
+          }),
+        )
+        closeModal()
+        toast.success(t('server_deleted_success', { ns: 'other', id: `#${elid}` }))
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        closeModal()
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const startStopInstance =
+  ({
+    action,
+    elid,
+    closeModal,
+    setInstances,
+    setTotalElems,
+    setFilters,
+    signal,
+    setIsLoading,
+    p_num,
+    p_cnt,
+  }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `service.${action}`,
+          auth: sessionId,
+          elid,
+          out: 'json',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(
+          getInstances({
+            setInstances,
+            setTotalElems,
+            setFilters,
+            signal,
+            setIsLoading,
+            p_num,
+            p_cnt,
+          }),
+        )
+        closeModal()
+        toast.success(action === 'stop' ? 'Server stopped' : 'Server activeted')
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        closeModal()
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const changeInstancePassword =
+  ({ password, elid, closeModal, setIsLoading, signal }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.fotbo.fotbochangepassword',
+          out: 'json',
+          sok: 'ok',
+          auth: sessionId,
+          elid,
+          lang: 'en',
+          clicked_button: 'ok',
+          fotbochangepassword: password,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        toast.success(t('Password changed', { ns: 'other' }))
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+      .finally(() => {
+        closeModal()
       })
   }
 
@@ -172,4 +323,7 @@ export default {
   getInstances,
   setInstancesFilter,
   editInstance,
+  deleteInstance,
+  startStopInstance,
+  changeInstancePassword,
 }

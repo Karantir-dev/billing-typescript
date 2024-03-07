@@ -12,7 +12,7 @@ import no_vds from '@images/services/no_vds.png'
 import { useTranslation } from 'react-i18next'
 const headCells = [
   { name: 'Name', isSort: true, key: 'servername' },
-  { name: 'Status', isSort: true, key: 'item_status' },
+  { name: 'Status', isSort: true, key: 'fotbo_status' },
   { name: 'Flavor', isSort: true, key: 'pricelist' },
   { name: 'Price', isSort: true, key: 'cost' },
   { name: 'Region', isSort: true, key: 'datacentername' },
@@ -26,13 +26,10 @@ export default function InstancesList({
   setSortHandler,
   sortBy,
   editInstance,
+  setItemForModals,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
-  const [stopInstanceModal, setStopInstanceModal] = useState(false)
-  const [changePasswordModal, setChangePasswordModal] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
-  const navigate = useNavigate()
 
   const renderHeadCells = () =>
     headCells.map(cell => {
@@ -79,9 +76,9 @@ export default function InstancesList({
         <table>
           <thead>
             <tr>
-              <th>
+              {/* <th>
                 <CheckBox />
-              </th>
+              </th> */}
               {renderHeadCells()}
               <th></th>
             </tr>
@@ -91,10 +88,8 @@ export default function InstancesList({
               <InstanceItem
                 key={item.id.$}
                 item={item}
-                setStopInstanceModal={setStopInstanceModal}
-                setChangePasswordModal={setChangePasswordModal}
-                setDeleteModal={setDeleteModal}
                 editInstance={editInstance}
+                setItemForModals={setItemForModals}
               />
             ))}
           </tbody>
@@ -105,22 +100,11 @@ export default function InstancesList({
             <InstanceItemMobile
               key={item.id.$}
               item={item}
-              setStopInstanceModal={setStopInstanceModal}
-              setChangePasswordModal={setChangePasswordModal}
-              setDeleteModal={setDeleteModal}
-              editInstance={editInstance}
+              setItemForModals={setItemForModals}
             />
           ))}
         </div>
       )}
-      <Modals
-        stopInstanceModal={stopInstanceModal}
-        setStopInstanceModal={setStopInstanceModal}
-        changePasswordModal={changePasswordModal}
-        setChangePasswordModal={setChangePasswordModal}
-        deleteModal={deleteModal}
-        setDeleteModal={setDeleteModal}
-      />
     </>
   )
 }

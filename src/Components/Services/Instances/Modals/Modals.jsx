@@ -1,28 +1,42 @@
-import { ChangePasswordModal, ShutDownModal, DeleteModal } from '.'
+/* eslint-disable no-unused-vars */
+import { ChangePasswordModal, ShutDownModal, DeleteModal, EditNameModal } from '.'
 
 export const Modals = ({
-  stopInstanceModal,
-  setStopInstanceModal,
-  changePasswordModal,
-  setChangePasswordModal,
-  deleteModal,
-  setDeleteModal,
+  itemForModals,
+  setItemForModals,
+  deleteInstanceSubmit,
+  startStopInstanceSubmit,
+  changeInstancePasswordSubmit,
+  editNameSubmit,
 }) => (
   <>
-    {!!stopInstanceModal && (
+    {!!itemForModals.start_stop && (
       <ShutDownModal
-        stopInstanceModal={stopInstanceModal}
-        setStopInstanceModal={setStopInstanceModal}
+        item={itemForModals.start_stop}
+        closeModal={() => setItemForModals({ start_stop: false })}
+        onSubmit={startStopInstanceSubmit}
       />
     )}
-    {!!changePasswordModal && (
+    {!!itemForModals.change_pass && (
       <ChangePasswordModal
-        changePasswordModal={changePasswordModal}
-        setChangePasswordModal={setChangePasswordModal}
+        item={itemForModals.change_pass}
+        closeModal={() => setItemForModals({ change_pass: false })}
+        onSubmit={changeInstancePasswordSubmit}
       />
     )}
-    {!!deleteModal && (
-      <DeleteModal deleteModal={deleteModal} setDeleteModal={setDeleteModal} />
+    {!!itemForModals.delete && (
+      <DeleteModal
+        item={itemForModals.delete}
+        closeModal={() => setItemForModals({ delete: false })}
+        onSubmit={deleteInstanceSubmit}
+      />
+    )}
+    {!!itemForModals.edit_name && (
+      <EditNameModal
+        item={itemForModals.edit_name}
+        closeModal={() => setItemForModals({ edit_name: false })}
+        onSubmit={editNameSubmit}
+      />
     )}
   </>
 )

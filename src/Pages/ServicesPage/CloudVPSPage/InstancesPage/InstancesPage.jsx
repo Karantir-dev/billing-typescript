@@ -9,6 +9,7 @@ import { cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@src/utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
+import { Modals } from '@components/Services/Instances/Modals/Modals'
 
 export default function InstancesPage() {
   const navigate = useNavigate()
@@ -19,6 +20,10 @@ export default function InstancesPage() {
   const dispatch = useDispatch()
   const [instances, setInstances] = useState()
   const [sortBy, setSortBy] = useState('+id')
+
+  const [itemForModals, setItemForModals] = useReducer((state, action) => {
+    return { ...state, ...action }
+  }, {})
 
   const [filters, setFilters] = useReducer(
     (state, action) => {
@@ -33,9 +38,18 @@ export default function InstancesPage() {
     },
     { p_num: 1, p_cnt: '10', totalElems: 0 },
   )
+
   /* crutch for paginations */
   const [isPaginationChanged, setIsPaginationChanged] = useState(false)
   const [isFirstRender, setIsFirstRender] = useState(true)
+
+  const getInstancesRequiredParams = {
+    setInstances,
+    setTotalElems: value => setPagination({ totalElems: value }),
+    setFilters,
+    signal,
+    setIsLoading,
+  }
 
   useEffect(() => {
     setFiltersHandler()
@@ -45,11 +59,7 @@ export default function InstancesPage() {
   const getInstances = p_col => {
     dispatch(
       cloudVpsOperations.getInstances({
-        setInstances,
-        setTotalElems: value => setPagination({ totalElems: value }),
-        setFilters,
-        signal,
-        setIsLoading,
+        ...getInstancesRequiredParams,
         ...pagination,
         p_col,
       }),
@@ -68,11 +78,7 @@ export default function InstancesPage() {
     dispatch(
       cloudVpsOperations.setInstancesFilter({
         values,
-        setInstances,
-        setTotalElems: value => setPagination({ totalElems: value }),
-        setFilters,
-        signal,
-        setIsLoading,
+        ...getInstancesRequiredParams,
         p_num: 1,
         p_cnt: pagination.p_cnt,
         p_col: sortBy,
@@ -86,17 +92,62 @@ export default function InstancesPage() {
     setSortBy(value)
     getInstances(value)
   }
-  const editInstanceHandler = (values, elid, errorCallback) => {
+
+  const editInstanceHandler = ({ values, elid, closeModal, errorCallback }) => {
     dispatch(
       cloudVpsOperations.editInstance({
         values,
         elid,
         errorCallback,
+        closeModal,
+        ...getInstancesRequiredParams,
+      }),
+    )
+  }
+
+  const editNameSubmit = ({ value, elid, closeModal, errorCallback }) => {
+    editInstanceHandler({
+      values: { servername: value },
+      elid,
+      closeModal,
+      errorCallback,
+    })
+  }
+
+  const deleteInstanceSubmit = () => {
+    setPagination({ p_num: 1 })
+    dispatch(
+      cloudVpsOperations.deleteInstance({
+        elid: itemForModals.delete.id.$,
+        closeModal: () => setItemForModals({ delete: false }),
+        ...getInstancesRequiredParams,
+      }),
+    )
+  }
+  const startStopInstanceSubmit = action => {
+    dispatch(
+      cloudVpsOperations.startStopInstance({
+        action,
+        elid: itemForModals.start_stop.id.$,
+        closeModal: () => setItemForModals({ start_stop: false }),
+        ...getInstancesRequiredParams,
+        ...pagination,
+      }),
+    )
+  }
+
+  const changeInstancePasswordSubmit = password => {
+    dispatch(
+      cloudVpsOperations.changeInstancePassword({
+        password,
+        elid: itemForModals.change_pass.id.$,
+        closeModal: () => setItemForModals({ change_pass: false }),
         signal,
         setIsLoading,
       }),
     )
   }
+
   return (
     <>
       {instances && (
@@ -137,7 +188,8 @@ export default function InstancesPage() {
             instances={instances}
             setSortHandler={setSortValue}
             sortBy={sortBy}
-            editInstance={editInstanceHandler}
+            editInstance={editNameSubmit}
+            setItemForModals={setItemForModals}
           />
         </>
       )}
@@ -156,6 +208,14 @@ export default function InstancesPage() {
           }}
         />
       )}
+      <Modals
+        itemForModals={itemForModals}
+        setItemForModals={setItemForModals}
+        deleteInstanceSubmit={deleteInstanceSubmit}
+        startStopInstanceSubmit={startStopInstanceSubmit}
+        changeInstancePasswordSubmit={changeInstancePasswordSubmit}
+        editNameSubmit={editNameSubmit}
+      />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )

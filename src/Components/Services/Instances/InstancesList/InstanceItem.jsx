@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
 import { CheckBox, EditCell, HintWrapper, Icon, Options } from '@components'
@@ -8,122 +8,128 @@ import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName } from '@utils'
 import { useTranslation } from 'react-i18next'
 
-export default function InstanceItem({
-  status = 'runing',
-  item,
-  setStopInstanceModal,
-  setChangePasswordModal,
-  setDeleteModal,
-  editInstance,
-}) {
+export default function InstanceItem({ item, editInstance, setItemForModals }) {
   const { t } = useTranslation(['vds', 'other'])
 
   const optionsCell = useRef()
   const checkboxCell = useRef()
   const servernameCell = useRef()
   const navigate = useNavigate()
-  const [originName, setOriginName] = useState(item.servername?.$ || '')
+  const [serverName, setServerName] = useState(item.servername?.$ || '')
+
+  const isNotActive =
+    item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
+
+  const editServerName = value => {
+    editInstance({
+      value,
+      elid: item.id.$,
+      errorCallback: () => setServerName(serverName),
+    })
+    setServerName(value)
+  }
+
+  useEffect(() => {
+    setServerName(item.servername?.$)
+  }, [item.servername?.$])
+
   const options = [
     {
-      label: 'Shut down',
+      label: item.item_status.$orig === '2_2_16' ? 'Start' : 'Shut down',
       icon: 'Shutdown',
-      disabled: false,
-      onClick: () => setStopInstanceModal(status),
+      onClick: () => setItemForModals({ start_stop: item }),
+      disabled: item.item_status.$.includes('in progress') || isNotActive,
     },
     {
       label: 'Console',
       icon: 'Console',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Reboot',
       icon: 'Reboot',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Shelve',
       icon: 'Shelve',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Resize',
       icon: 'Resize',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
 
     {
       label: 'Change password',
       icon: 'ChangePassword',
-      disabled: false,
-      onClick: () => setChangePasswordModal(status),
+      disabled: isNotActive,
+      onClick: () => setItemForModals({ change_pass: item }),
     },
     {
       label: 'Rescue',
       icon: 'Rescue',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Instructions',
       icon: 'Instruction',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Rebuild',
       icon: 'Rebuild',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Create ticket',
       icon: 'Headphone',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Rename',
       icon: 'Rename',
-      disabled: false,
-      onClick: () => {},
+      disabled: isNotActive,
+      onClick: () => setItemForModals({ edit_name: item }),
     },
     {
       label: 'Delete',
       icon: 'Remove',
       disabled: false,
-      onClick: () => setDeleteModal(status),
+      onClick: () => setItemForModals({ delete: item }),
       isDelete: true,
     },
   ]
 
-  const editServerName = value => {
-    editInstance({ servername: value }, item.id.$, () => setOriginName(originName))
-    setOriginName(value)
-  }
   return (
     <tr
       onClick={e => {
         if (
           optionsCell.current.contains(e.target) ||
-          checkboxCell.current.contains(e.target) ||
+          // checkboxCell.current.contains(e.target) ||
           servernameCell.current.contains(e.target)
         )
           return
         navigate(`${route.CLOUD_VPS}/${item.id.$}`, { state: item })
       }}
     >
-      <td ref={checkboxCell}>
+      {/* <td ref={checkboxCell}>
         <CheckBox />
-      </td>
+      </td> */}
       <td ref={servernameCell} className={s.servername_cell}>
         <EditCell
-          originName={originName}
+          originName={serverName}
           onSubmit={editServerName}
-          placeholder={t(originName || t('server_placeholder', { ns: 'vds' }), {
+          placeholder={t(serverName || t('server_placeholder', { ns: 'vds' }), {
             ns: 'vds',
           })}
           isShadow={true}

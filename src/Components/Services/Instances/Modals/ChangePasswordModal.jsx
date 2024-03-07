@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import cn from 'classnames'
 
-export const ChangePasswordModal = ({ changePasswordModal, setChangePasswordModal }) => {
+export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation()
 
   const changePassValidationSchema = Yup.object().shape({
@@ -20,24 +20,17 @@ export const ChangePasswordModal = ({ changePasswordModal, setChangePasswordModa
       .required(t('warnings.password_required', { ns: 'auth' })),
   })
   return (
-    <Modal
-      isOpen={!!changePasswordModal}
-      closeModal={() => setChangePasswordModal(false)}
-      isClickOutside
-    >
+    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
       <Modal.Header>
         <p>Change admin password</p>
         <p className={s.modal__subtitle}>
-          <span className={s.modal__subtitle_transparent}>Instance:</span>{' '}
-          {changePasswordModal}
+          <span className={s.modal__subtitle_transparent}>Instance:</span> {item.id.$}
         </p>
       </Modal.Header>
       <Modal.Body>
         <Formik
           initialValues={{ password: '' }}
-          onSubmit={() => {
-            setChangePasswordModal(false)
-          }}
+          onSubmit={values => onSubmit(values.password)}
           validationSchema={changePassValidationSchema}
         >
           {({ errors, touched }) => {
@@ -70,7 +63,7 @@ export const ChangePasswordModal = ({ changePasswordModal, setChangePasswordModa
           form={'change_pass'}
           isShadow
         />
-        <button type="button" onClick={() => setChangePasswordModal(false)}>
+        <button type="button" onClick={closeModal}>
           Cancel
         </button>
       </Modal.Footer>

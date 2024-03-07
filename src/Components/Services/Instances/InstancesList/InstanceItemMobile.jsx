@@ -7,89 +7,86 @@ import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName } from '@utils'
 
-export default function InstanceItemMobile({
-  status = 'runing',
-  item,
-  setStopInstanceModal,
-  setChangePasswordModal,
-  setDeleteModal,
-}) {
+export default function InstanceItemMobile({ item, setItemForModals }) {
   const optionsBlock = useRef()
   const navigate = useNavigate()
 
+  const isNotActive =
+    item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
+
   const options = [
     {
-      label: 'Shut down',
+      label: item.item_status.$orig === '2_2_16' ? 'Start' : 'Shut down',
       icon: 'Shutdown',
-      disabled: false,
-      onClick: () => setStopInstanceModal(status),
+      onClick: () => setItemForModals({ start_stop: item }),
+      disabled: item.item_status.$.includes('in progress') || isNotActive,
     },
     {
       label: 'Console',
       icon: 'Console',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Reboot',
       icon: 'Reboot',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Shelve',
       icon: 'Shelve',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Resize',
       icon: 'Resize',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
 
     {
       label: 'Change password',
       icon: 'ChangePassword',
-      disabled: false,
-      onClick: () => setChangePasswordModal(status),
+      disabled: isNotActive,
+      onClick: () => setItemForModals({ change_pass: item.id.$ }),
     },
     {
       label: 'Rescue',
       icon: 'Rescue',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Instructions',
       icon: 'Instruction',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Rebuild',
       icon: 'Rebuild',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Create ticket',
       icon: 'Headphone',
-      disabled: false,
+      disabled: isNotActive,
       onClick: () => {},
     },
     {
       label: 'Rename',
       icon: 'Rename',
-      disabled: false,
-      onClick: () => {},
+      disabled: isNotActive,
+      onClick: () => setItemForModals({ edit_name: item }),
     },
     {
       label: 'Delete',
       icon: 'Remove',
       disabled: false,
-      onClick: () => setDeleteModal(status),
+      onClick: () => setItemForModals({ delete: item.id.$ }),
       isDelete: true,
     },
   ]
@@ -105,8 +102,8 @@ export default function InstanceItemMobile({
       role="button"
     >
       <div className={s.mobile_item__header}>
-        <div>
-          <p className={s.mobile_item__name}>{item.name.$}</p>
+        <div className={s.mobile_item__header_name}>
+          <p className={s.mobile_item__name}>{item.servername.$}</p>
           <p
             className={cn(
               s.status,

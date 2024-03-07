@@ -6,28 +6,26 @@ import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import cn from 'classnames'
 
-export const DeleteModal = ({ deleteModal, setDeleteModal }) => {
+export const DeleteModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation()
 
   const changePassValidationSchema = Yup.object().shape({
     comfirm: Yup.string()
-      .matches('Permanently delete', 'invalid value')
+      .matches(/^Permanently delete$/, 'invalid value')
       .required(t('required')),
   })
   return (
-    <Modal isOpen={!!deleteModal} closeModal={() => setDeleteModal(false)} isClickOutside>
+    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
       <Modal.Header>
         <p>Delete</p>
         <p className={s.modal__subtitle}>
-          <span className={s.modal__subtitle_transparent}>Instance:</span> {deleteModal}
+          <span className={s.modal__subtitle_transparent}>Instance:</span> {item.id.$}
         </p>
       </Modal.Header>
       <Modal.Body>
         <Formik
           initialValues={{ comfirm: '' }}
-          onSubmit={() => {
-            setDeleteModal(false)
-          }}
+          onSubmit={onSubmit}
           validationSchema={changePassValidationSchema}
         >
           {({ errors, touched }) => {
@@ -60,7 +58,7 @@ export const DeleteModal = ({ deleteModal, setDeleteModal }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button label="Delete" size="small" type="submit" form={'delete'} isShadow />
-        <button type="button" onClick={() => setDeleteModal(false)}>
+        <button type="button" onClick={closeModal}>
           Cancel
         </button>
       </Modal.Footer>
