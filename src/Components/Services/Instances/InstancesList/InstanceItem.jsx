@@ -7,14 +7,19 @@ import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName } from '@utils'
 import { useTranslation } from 'react-i18next'
+import { cloudVpsActions } from '@redux'
+import { useDispatch } from 'react-redux'
 
-export default function InstanceItem({ item, editInstance, setItemForModals }) {
+
+export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['vds', 'other'])
 
   const optionsCell = useRef()
   const checkboxCell = useRef()
   const servernameCell = useRef()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
   const isNotActive =
@@ -40,9 +45,9 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
       label: isStopped ? 'Start' : 'Shut down',
       icon: 'Shutdown',
       onClick: () =>
-        setItemForModals({
+      dispatch(cloudVpsActions.setItemForModals({
           confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
-        }),
+        })),
       disabled: item.item_status.$.includes('in progress') || isNotActive,
     },
     {
@@ -55,7 +60,7 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
       label: 'Reboot',
       icon: 'Reboot',
       disabled: isNotActive,
-      onClick: () => setItemForModals({ confirm: { ...item, confirm_action: 'reboot' } }),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ confirm: { ...item, confirm_action: 'reboot' } })),
     },
     {
       label: 'Shelve',
@@ -74,7 +79,7 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
       label: 'Change password',
       icon: 'ChangePassword',
       disabled: isNotActive,
-      onClick: () => setItemForModals({ change_pass: item }),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
     },
     {
       label: 'Rescue',
@@ -104,13 +109,13 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
       label: 'Rename',
       icon: 'Rename',
       disabled: isNotActive,
-      onClick: () => setItemForModals({ edit_name: item }),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
       label: 'Delete',
       icon: 'Remove',
       disabled: false,
-      onClick: () => setItemForModals({ delete: item }),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
       isDelete: true,
     },
   ]

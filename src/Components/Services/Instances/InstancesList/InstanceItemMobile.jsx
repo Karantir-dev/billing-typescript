@@ -6,10 +6,13 @@ import { Icon, Options } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName } from '@utils'
+import { cloudVpsActions } from '@redux'
+import { useDispatch } from 'react-redux'
 
-export default function InstanceItemMobile({ item, setItemForModals }) {
+export default function InstanceItemMobile({ item }) {
   const optionsBlock = useRef()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const isNotActive =
     item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
@@ -18,7 +21,7 @@ export default function InstanceItemMobile({ item, setItemForModals }) {
     {
       label: item.item_status.$orig === '2_2_16' ? 'Start' : 'Shut down',
       icon: 'Shutdown',
-      onClick: () => setItemForModals({ start_stop: item }),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ start_stop: item })),
       disabled: item.item_status.$.includes('in progress') || isNotActive,
     },
     {
@@ -50,7 +53,7 @@ export default function InstanceItemMobile({ item, setItemForModals }) {
       label: 'Change password',
       icon: 'ChangePassword',
       disabled: isNotActive,
-      onClick: () => setItemForModals({ change_pass: item.id.$ }),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item.id.$ })),
     },
     {
       label: 'Rescue',
@@ -80,13 +83,13 @@ export default function InstanceItemMobile({ item, setItemForModals }) {
       label: 'Rename',
       icon: 'Rename',
       disabled: isNotActive,
-      onClick: () => setItemForModals({ edit_name: item }),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
       label: 'Delete',
       icon: 'Remove',
       disabled: false,
-      onClick: () => setItemForModals({ delete: item.id.$ }),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item.id.$ })),
       isDelete: true,
     },
   ]
@@ -95,7 +98,7 @@ export default function InstanceItemMobile({ item, setItemForModals }) {
       className={s.mobile_item}
       onClick={e => {
         if (optionsBlock.current.contains(e.target)) return
-        navigate(route.CLOUD_VPS_CREATE_INSTANCE)
+        navigate(`${route.CLOUD_VPS}/${item.id.$}`, { state: item })
       }}
       tabIndex={0}
       onKeyUp={() => {}}

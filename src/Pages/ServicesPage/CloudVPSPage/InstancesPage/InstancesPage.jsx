@@ -4,8 +4,8 @@ import s from './InstancesPage.module.scss'
 import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { InstanceFiltersModal } from '@components/Services/Instances/Modals'
-import { useDispatch } from 'react-redux'
-import { cloudVpsOperations } from '@redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest } from '@src/utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
@@ -21,9 +21,11 @@ export default function InstancesPage() {
   const [instances, setInstances] = useState()
   const [sortBy, setSortBy] = useState('+id')
 
-  const [itemForModals, setItemForModals] = useReducer((state, action) => {
-    return { ...state, ...action }
-  }, {})
+  // const [itemForModals, setItemForModals] = useReducer((state, action) => {
+  //   return { ...state, ...action }
+  // }, {})
+
+  const itemForModals = useSelector(state => state.cloudVps.itemForModals)
 
   const [filters, setFilters] = useReducer(
     (state, action) => {
@@ -119,7 +121,7 @@ export default function InstancesPage() {
     dispatch(
       cloudVpsOperations.deleteInstance({
         elid: itemForModals.delete.id.$,
-        closeModal: () => setItemForModals({ delete: false }),
+        closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
         ...getInstancesRequiredParams,
       }),
     )
@@ -130,7 +132,7 @@ export default function InstancesPage() {
       cloudVpsOperations.changeInstanceState({
         action,
         elid,
-        closeModal: () => setItemForModals({ confirm: false }),
+        closeModal: () => dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
         ...getInstancesRequiredParams,
         ...pagination,
       }),
@@ -142,7 +144,8 @@ export default function InstancesPage() {
       cloudVpsOperations.changeInstancePassword({
         password,
         elid: itemForModals.change_pass.id.$,
-        closeModal: () => setItemForModals({ change_pass: false }),
+        closeModal: () =>
+          dispatch(cloudVpsActions.setItemForModals({ change_pass: false })),
         signal,
         setIsLoading,
       }),
@@ -190,7 +193,6 @@ export default function InstancesPage() {
             setSortHandler={setSortValue}
             sortBy={sortBy}
             editInstance={editNameSubmit}
-            setItemForModals={setItemForModals}
           />
         </>
       )}
@@ -210,8 +212,6 @@ export default function InstancesPage() {
         />
       )}
       <Modals
-        itemForModals={itemForModals}
-        setItemForModals={setItemForModals}
         deleteInstanceSubmit={deleteInstanceSubmit}
         changeInstancePasswordSubmit={changeInstancePasswordSubmit}
         editNameSubmit={editNameSubmit}
