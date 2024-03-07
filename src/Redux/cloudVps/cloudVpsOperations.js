@@ -274,7 +274,7 @@ const startStopInstance =
           }),
         )
         closeModal()
-        toast.success(action === 'stop' ? 'Server stopped' : 'Server activeted')
+        toast.success(`Server ${action}ed`)
         dispatch(actions.hideLoader())
       })
       .catch(err => {

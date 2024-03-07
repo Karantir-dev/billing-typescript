@@ -20,6 +20,8 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
   const isNotActive =
     item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
 
+  const isStopped = item.item_status.$orig === '2_2_16'
+
   const editServerName = value => {
     editInstance({
       value,
@@ -35,9 +37,12 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
 
   const options = [
     {
-      label: item.item_status.$orig === '2_2_16' ? 'Start' : 'Shut down',
+      label: isStopped ? 'Start' : 'Shut down',
       icon: 'Shutdown',
-      onClick: () => setItemForModals({ start_stop: item }),
+      onClick: () =>
+        setItemForModals({
+          confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
+        }),
       disabled: item.item_status.$.includes('in progress') || isNotActive,
     },
     {
@@ -50,7 +55,7 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
       label: 'Reboot',
       icon: 'Reboot',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => setItemForModals({ confirm: { ...item, confirm_action: 'reboot' } }),
     },
     {
       label: 'Shelve',

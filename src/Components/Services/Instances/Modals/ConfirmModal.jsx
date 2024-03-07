@@ -1,26 +1,24 @@
 import { Button, Modal } from '@components'
 import s from './Modals.module.scss'
+import { useTranslation } from 'react-i18next'
 
-export const ShutDownModal = ({ item, closeModal, onSubmit }) => {
-  const isStopped = item.item_status.$orig === '2_2_16'
+export const ConfirmModal = ({ item, closeModal, onSubmit }) => {
+  const { t } = useTranslation()
   return (
     <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
       <Modal.Header>
-        <p>{isStopped ? 'Start instance' : 'Stop instance'}</p>
+        <p> {t(`confirm.${item.confirm_action}.title`)}</p>
       </Modal.Header>
       <Modal.Body>
         <p className={s.body__text}>
-          {isStopped
-            ? 'Do you really want to start the instance'
-            : 'Are you sure you want to stop instance'}{' '}
-          {item.id.$}?
+          {t(`confirm.${item.confirm_action}.text`)} {item.id.$}?
         </p>
       </Modal.Body>
       <Modal.Footer>
         <Button
           label="Yes"
           size={'small'}
-          onClick={() => onSubmit(isStopped ? 'start' : 'stop')}
+          onClick={() => onSubmit(item.confirm_action, item.id.$)}
           isShadow
         />
         <button type="button" onClick={closeModal}>

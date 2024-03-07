@@ -1,22 +1,20 @@
 /* eslint-disable no-unused-vars */
-import { ChangePasswordModal, ShutDownModal, DeleteModal, EditNameModal } from '.'
+import {
+  ChangePasswordModal,
+  DeleteModal,
+  EditNameModal,
+  ConfirmModal,
+} from '.'
 
 export const Modals = ({
   itemForModals,
   setItemForModals,
   deleteInstanceSubmit,
-  startStopInstanceSubmit,
   changeInstancePasswordSubmit,
   editNameSubmit,
+  confirmSubmit,
 }) => (
   <>
-    {!!itemForModals.start_stop && (
-      <ShutDownModal
-        item={itemForModals.start_stop}
-        closeModal={() => setItemForModals({ start_stop: false })}
-        onSubmit={startStopInstanceSubmit}
-      />
-    )}
     {!!itemForModals.change_pass && (
       <ChangePasswordModal
         item={itemForModals.change_pass}
@@ -36,6 +34,14 @@ export const Modals = ({
         item={itemForModals.edit_name}
         closeModal={() => setItemForModals({ edit_name: false })}
         onSubmit={editNameSubmit}
+      />
+    )}
+
+    {!!itemForModals.confirm && (
+      <ConfirmModal
+        item={itemForModals.confirm}
+        closeModal={() => setItemForModals({ confirm: false })}
+        onSubmit={confirmSubmit}
       />
     )}
   </>

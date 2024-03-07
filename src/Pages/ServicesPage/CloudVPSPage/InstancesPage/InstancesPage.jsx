@@ -124,12 +124,13 @@ export default function InstancesPage() {
       }),
     )
   }
-  const startStopInstanceSubmit = action => {
+
+  const confirmInstanceSubmit = (action, elid) => {
     dispatch(
       cloudVpsOperations.startStopInstance({
         action,
-        elid: itemForModals.start_stop.id.$,
-        closeModal: () => setItemForModals({ start_stop: false }),
+        elid,
+        closeModal: () => setItemForModals({ confirm: false }),
         ...getInstancesRequiredParams,
         ...pagination,
       }),
@@ -212,9 +213,9 @@ export default function InstancesPage() {
         itemForModals={itemForModals}
         setItemForModals={setItemForModals}
         deleteInstanceSubmit={deleteInstanceSubmit}
-        startStopInstanceSubmit={startStopInstanceSubmit}
         changeInstancePasswordSubmit={changeInstancePasswordSubmit}
         editNameSubmit={editNameSubmit}
+        confirmSubmit={confirmInstanceSubmit}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
