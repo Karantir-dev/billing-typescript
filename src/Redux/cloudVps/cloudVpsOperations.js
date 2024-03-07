@@ -231,7 +231,7 @@ const deleteInstance =
       })
   }
 
-const startStopInstance =
+const changeInstanceState =
   ({
     action,
     elid,
@@ -324,6 +324,6 @@ export default {
   setInstancesFilter,
   editInstance,
   deleteInstance,
-  startStopInstance,
+  changeInstanceState,
   changeInstancePassword,
 }

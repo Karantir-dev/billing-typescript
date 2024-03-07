@@ -127,7 +127,7 @@ export default function InstancesPage() {
 
   const confirmInstanceSubmit = (action, elid) => {
     dispatch(
-      cloudVpsOperations.startStopInstance({
+      cloudVpsOperations.changeInstanceState({
         action,
         elid,
         closeModal: () => setItemForModals({ confirm: false }),
