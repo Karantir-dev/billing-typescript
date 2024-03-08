@@ -93,14 +93,16 @@ export default function Component(props) {
           })}
           ref={dropDownEl}
         >
-          {status.trim() !== 'Paid' && (
+          {status.trim() !== 'Paid' && status.trim() !== 'Canceled' && (
             <button
               className={s.settings_btn}
               onClick={() => {
                 setIsOpened(false)
                 if (
-                  status.trim() === 'New' &&
-                  paymethod?.trim().toLowerCase() !== 'select'
+                  (status.trim() === 'New' &&
+                    paymethod?.trim().toLowerCase() !== 'select') ||
+                  (status.trim() === 'Payment in progress' &&
+                    paymethod?.trim().toLowerCase() === 'yookassa')
                 ) {
                   return payRedirectHandler()
                 }

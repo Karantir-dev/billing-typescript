@@ -15,7 +15,7 @@ import { domainsOperations } from '@redux'
 import * as route from '@src/routes'
 import * as Yup from 'yup'
 import s from './DomainOrderPage.module.scss'
-import { useCancelRequest } from '@src/utils'
+import { useCancelRequest, cookies } from '@src/utils'
 
 export default function Component({ transfer = false }) {
   const { t } = useTranslation(['domains', 'other'])
@@ -31,14 +31,39 @@ export default function Component({ transfer = false }) {
   const [pickUpDomains, setPickUpDomains] = useState([])
   const [selectedDomains, setSelectedDomains] = useState([])
   const [selectedDomainsNames, setSelectedDomainsNames] = useState([])
+  const [siteDomainCheckData, setSiteDomainCheckData] = useState([])
   const [inputValue, setInputValue] = useState('')
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
 
   const setAutoProlong = () => (!autoprolongPrices.length ? setAutoprolongPrices : null)
 
   useEffect(() => {
+    if (
+      siteDomainCheckData?.length > 0 &&
+      'list' in pickUpDomains &&
+      selectedDomainsNames?.length > 0 &&
+      selectedDomains?.length > 0 &&
+      inputValue
+    ) {
+      registerDomainHandler()
+    }
+  }, [
+    siteDomainCheckData,
+    pickUpDomains,
+    selectedDomainsNames,
+    selectedDomains,
+    inputValue,
+  ])
+
+  useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
+    const domainDetailData = JSON.parse(cookies.getCookie('domain_order'))
     if (isDomainsOrderAllowed || cartFromSite) {
+      /* If link is correct and cookies data exist => quiting from this functions. Logic for that case below in the next UseEffect */
+      if (cartFromSite && domainDetailData?.length > 0) {
+        return
+      }
+
       if (transfer) {
         const dataTransfer = { domain_action: 'transfer' }
         dispatch(
@@ -70,21 +95,38 @@ export default function Component({ transfer = false }) {
 
   useEffect(() => {
     const cartFromSite = localStorage.getItem('site_cart')
+    const domainDetailData = JSON.parse(cookies.getCookie('domain_order'))
+    const domainDataFromSite = JSON.parse(cartFromSite)
 
-    if (cartFromSite && domains?.length > 0) {
-      const selectedDomain = domains?.find(
-        e => e?.tld?.$ === JSON.parse(cartFromSite)?.zone,
-      )
+    const zonesArrayId = []
 
-      const { domain_name } = JSON.parse(cartFromSite)
-      if (domain_name && selectedDomain) {
-        setSelectedDomains([selectedDomain?.id?.$])
-        setInputValue(domain_name)
-        setDomainsNameHandler({ domain_name, selectedDomains: [selectedDomain?.id?.$] })
-      } else if (selectedDomain) {
-        setSelectedDomains([selectedDomain?.id?.$])
+    if (cartFromSite && domainDetailData) {
+      !!domainDetailData && setSiteDomainCheckData(domainDetailData)
+
+      for (const domain of domainDetailData) {
+        const zoneId = Object.values(domain)[0]?.info?.billing_id
+        zonesArrayId.push(zoneId)
       }
+
+      const { domain_name } = domainDataFromSite
+
+      if (domain_name && zonesArrayId?.length > 0) {
+        setInputValue(domain_name)
+        setSelectedDomains(zonesArrayId.join(', '))
+        setDomainsNameHandler(
+          {
+            domain_name,
+            selectedDomains: zonesArrayId,
+          },
+          domainDetailData,
+        )
+      } else if (zonesArrayId?.length > 0) {
+        setSelectedDomains(zonesArrayId)
+      }
+
+      /* Removing data from link and cookies domain data from the site */
       localStorage.removeItem('site_cart')
+      cookies.eraseCookie('domain_order')
     }
   }, [domains])
 
@@ -98,16 +140,20 @@ export default function Component({ transfer = false }) {
 
   const validationSchema = Yup.object().shape({
     domain_name: Yup.string()
-    .required(t('Is a required field', { ns: 'other' }))
-    .min(2, t('Domain name must be at least 2 characters long', { ns: 'domains' }))
-    .max(63, t('Domain name must be at most 63 characters long', { ns: 'domains' })),
+      .required(t('Is a required field', { ns: 'other' }))
+      .min(2, t('Domain name must be at least 2 characters long', { ns: 'domains' }))
+      .max(63, t('Domain name must be at most 63 characters long', { ns: 'domains' })),
     selectedDomains: Yup.array().min(1, t('choose_min_one_domain', { ns: 'domains' })),
   })
 
-  const setDomainsNameHandler = values => {
+  const setDomainsNameHandler = (values, siteDomainCheckData = []) => {
     values['selected_pricelist'] = values?.selectedDomains.join(', ')
     values['sv_field'] = 'ok_whois'
-    selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+
+    siteDomainCheckData.length > 0
+      ? values?.selectedDomains?.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+      : selectedDomains.forEach(el => (values[`select_pricelist_${el}`] = 'on'))
+
     if (transfer) {
       values['domain_action'] = 'transfer'
     }
@@ -119,34 +165,42 @@ export default function Component({ transfer = false }) {
         true,
         signal,
         setIsLoading,
+        siteDomainCheckData,
       ),
     )
 
-    setSelectedDomainsNames([])
+    !siteDomainCheckData.length < 1 && setSelectedDomainsNames([])
   }
 
   const registerDomainHandler = () => {
-    const selected_domain_names = selectedDomainsNames?.map(
-      d => d?.checkbox?.input?.$name,
-    )
+    const selected_domain_names = selectedDomainsNames?.map(d => {
+      const [domain] = siteDomainCheckData.length > 0 ? Object.keys(d) : d
+
+      return domain
+    })
 
     const checkedDomain = pickUpDomains?.checked_domain?.$?.split(', ')
     const newCheckedDomains = []
 
     const selected_domain = []
-    selected_domain_names?.forEach(el => {
+    pickUpDomains?.selected?.forEach(el => {
       const newString = el?.replace('select_domain_', '')
 
       selected_domain?.push(newString)
       checkedDomain?.forEach(checked => {
         const check = checked.substring(0, checked.length - 1) + '1'
+
         if (checked?.includes(newString)) {
           newCheckedDomains.push(check)
         }
       })
     })
 
-    const selected_domain_real_name = selectedDomainsNames?.map(d => d?.domain?.$)
+    const selected_domain_real_name = selectedDomainsNames?.map(d => {
+      const [domainName] = siteDomainCheckData.length > 0 ? Object.keys(d) : d
+
+      return domainName
+    })
 
     const data = {
       domain_name: pickUpDomains?.domain_name,
@@ -229,7 +283,7 @@ export default function Component({ transfer = false }) {
                     type="submit"
                   />
                 </Form>
-                {pickUpDomains?.list?.length > 0 ? (
+                {pickUpDomains?.list ? (
                   <DomainsPickUpZones
                     setSelectedDomains={setSelectedDomainsNames}
                     selectedDomains={selectedDomainsNames}
@@ -237,7 +291,7 @@ export default function Component({ transfer = false }) {
                     selected={pickUpDomains?.selected}
                     registerDomainHandler={registerDomainHandler}
                     transfer={transfer}
-                    autoprolongPrices={autoprolongPrices}
+                    siteDomainCheckData={siteDomainCheckData}
                   />
                 ) : (
                   <DomainsZone

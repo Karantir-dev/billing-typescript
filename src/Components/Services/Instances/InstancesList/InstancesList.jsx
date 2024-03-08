@@ -26,7 +26,6 @@ export default function InstancesList({
   setSortHandler,
   sortBy,
   editInstance,
-  setItemForModals,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
@@ -89,7 +88,6 @@ export default function InstancesList({
                 key={item.id.$}
                 item={item}
                 editInstance={editInstance}
-                setItemForModals={setItemForModals}
               />
             ))}
           </tbody>
@@ -100,7 +98,6 @@ export default function InstancesList({
             <InstanceItemMobile
               key={item.id.$}
               item={item}
-              setItemForModals={setItemForModals}
             />
           ))}
         </div>

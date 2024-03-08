@@ -231,6 +231,20 @@ const deleteInstance =
       })
   }
 
+const serviceActionRequest = ({ elid, action, sessionId, ...params }) => {
+  return axiosInstance.post(
+    '/',
+    qs.stringify({
+      func: `service.${action}`,
+      auth: sessionId,
+      elid,
+      out: 'json',
+      lang: 'en',
+      ...params,
+    }),
+  )
+}
+
 const changeInstanceState =
   ({
     action,
@@ -248,17 +262,7 @@ const changeInstanceState =
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: `service.${action}`,
-          auth: sessionId,
-          elid,
-          out: 'json',
-          lang: 'en',
-        }),
-      )
+    serviceActionRequest({ elid, action, sessionId })
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
@@ -280,6 +284,48 @@ const changeInstanceState =
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         closeModal()
+        dispatch(actions.hideLoader())
+      })
+  }
+
+const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
+  const sessionId = authSelectors.getSessionId(getState())
+  serviceActionRequest({ elid, action: 'changepricelist', sessionId })
+    .then(({ data }) => {
+      if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+      const tariffs = data.doc.slist.find(item => item.$name === 'pricelist')?.val
+      setTariffs(tariffs)
+      dispatch(actions.hideLoader())
+    })
+    .catch(err => {
+      checkIfTokenAlive(err.message, dispatch)
+      closeModal()
+      dispatch(actions.hideLoader())
+    })
+}
+const changeTariff =
+  ({ elid, pricelist, elname }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+    serviceActionRequest({
+      elid,
+      action: 'changepricelist.pricelist',
+      sessionId,
+      pricelist,
+      clicked_button: 'next',
+      snext: 'ok',
+      sok: 'ok',
+      elname,
+    })
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        console.log(data, ' data change tariff')
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
@@ -319,6 +365,34 @@ const changeInstancePassword =
       })
   }
 
+const rebuildInstance =
+  ({ elid, setState }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.fotbo.rebuild',
+          out: 'json',
+          auth: sessionId,
+          elid,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setState(data.doc)
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 const getCloudOrderPageInfo =
   ({ setIsLoading, signal }) =>
   (dispatch, getState) => {
@@ -348,5 +422,8 @@ export default {
   deleteInstance,
   changeInstanceState,
   changeInstancePassword,
+  getTariffsListToChange,
+  changeTariff,
+  rebuildInstance,
   getCloudOrderPageInfo,
 }

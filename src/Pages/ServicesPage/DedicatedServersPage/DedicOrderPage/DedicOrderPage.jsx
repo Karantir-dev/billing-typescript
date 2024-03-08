@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button, Select, Icon, Loader, TariffConfig } from '@components'
@@ -228,26 +229,96 @@ export default function DedicOrderPage() {
       .sort((a, b) => parsePrice(a.price.$).amount - parsePrice(b.price.$).amount)
       .sort((a, b) => parsePrice(b.price.$).length - parsePrice(a.price.$).length)
 
-    const newArrTarifList = [...vdsList, ...sortedDedic]?.map(e => {
-      const tag = tarifsList?.fpricelist.filter(plist =>
-        e.desc.$.includes(plist.$.split(':')[1]),
-      )
+    const newVdsList = [...vdsList]?.map(e => {
+      const params = e.desc.$.split(' / ')
+
+      const gen = params.find(param => param.includes('HP G')).replace('HP ', '')
+      const ram = params.find(param => param.includes(' RAM DDR')).split(' RAM')[0]
+      const ramtype = params.find(param => param.includes(' RAM DDR')).split('RAM ')[1]
+      const drive = params.find(param => param.includes('NVMe')).split(' NVMe')[0]
+      const cpu = 'Xeon Silver 4116'
+      const cpumanuf = 'Intel'
+      const drivetype = 'NVMe'
+      const raid = 'No HW'
+      const gpu = 'none'
+      const traffic = '100TB'
+
+      const tag = tarifsList?.fpricelist.filter(plist => {
+        const [key, value] = plist.$.split(':')
+        switch (key) {
+          case 'gen':
+            return value === gen
+          case 'cpu':
+            return value === cpu
+          case 'cpumanuf':
+            return value === cpumanuf
+          case 'ram':
+            return value === ram
+          case 'ramtype':
+            return value === ramtype
+          case 'drive':
+            return value === drive
+          case 'drivetype':
+            return value === drivetype
+          case 'raid':
+            return value === raid
+          case 'gpu':
+            return value === gpu
+          case 'traffic':
+            return value === traffic
+        }
+      })
       return { ...e, filter: { tag } }
     })
+
+    const deidcList = sortedDedic.map(el => {
+      let tag = tarifsList?.fpricelist.filter(plist => {
+        return el.filter.tag.find(tagItem => plist.$key === tagItem.$)
+      })
+
+      /* Config 41 has additional filters tags to filter VDS tariffs,
+       here we remove those tags form config 41 to filter works correct  */
+      if (el.desc.$.includes('Config 41')) {
+        const filters = el.desc.$.split(' / ')
+        const drive = filters.find(el => el.includes('SSD')).replace(' SSD', '')
+        tag = tag.filter(el =>
+          el.$.includes('drive:') ? drive === el.$.replace('drive:', '') : el,
+        )
+      }
+
+      return { ...el, filter: { tag } }
+    })
+
+    const newArrTarifList = [...newVdsList, ...deidcList]
 
     setFiltersItems(getFiltersItems())
     setTarifList({ ...tarifsList, tarifList: newArrTarifList })
     setFilteredTariffsList(newArrTarifList)
   }, [tarifsList])
 
-  const getFiltersItems = () =>
-    tarifsList.fpricelist?.reduce((acc, el) => {
-      const category = el.$.split(':')[0]
+  const sortCategoriesByQuantity = (...args) =>
+    args.map(arg =>
+      arg?.sort((a, b) => +a.$.replace(/\D/g, '') - +b.$.replace(/\D/g, '')),
+    )
 
-      acc[category] = [...(acc?.[category] || []), { ...el, available: true }]
+  const getFiltersItems = () => {
+    const items =
+      tarifsList.fpricelist?.reduce((acc, el) => {
+        const category = el.$.split(':')[0]
 
-      return acc
-    }, {}) || {}
+        acc[category] = [...(acc?.[category] || []), { ...el, available: true }]
+
+        return acc
+      }, {}) || {}
+
+    sortCategoriesByQuantity(items.gen, items.ram, items.cpucores, items.drive)
+
+    items.drive?.sort((a, b) =>
+      a.$.replace(/\d/g, '').localeCompare(b.$.replace(/\d/g, '')),
+    )
+
+    return items
+  }
 
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
