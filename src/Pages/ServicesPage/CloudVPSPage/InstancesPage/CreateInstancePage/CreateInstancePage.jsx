@@ -1,12 +1,12 @@
 import { BreadCrumbs, Loader } from '@components'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@src/Redux'
 import { useCancelRequest } from '@src/utils'
 
-// import s from './CreateInstancePage.module.scss'
+import s from './CreateInstancePage.module.scss'
 
 export default function CreateInstancePage() {
   const location = useLocation()
@@ -14,10 +14,14 @@ export default function CreateInstancePage() {
 
   const { t } = useTranslation([])
 
+  const [dcList, setDcList] = useState()
+
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   useEffect(() => {
-    dispatch(cloudVpsOperations.getCloudOrderPageInfo({ signal, setIsLoading }))
+    dispatch(
+      cloudVpsOperations.getCloudOrderPageInfo({ signal, setIsLoading, setDcList }),
+    )
   }, [])
 
   return (
@@ -25,7 +29,15 @@ export default function CreateInstancePage() {
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
       <h3>{t('server_location')}</h3>
-      <ul></ul>
+      <ul>
+        {dcList.map(dc => {
+          return (
+            <li className={s.dc_item} key={dc.key}>
+              {dc.$}
+            </li>
+          )
+        })}
+      </ul>
       <h3>{t('server_image')}</h3>
 
       {isLoading && <Loader local shown={isLoading} />}

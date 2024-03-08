@@ -394,7 +394,7 @@ const rebuildInstance =
   }
 
 const getCloudOrderPageInfo =
-  ({ setIsLoading, signal }) =>
+  ({ setIsLoading, signal, setDcList }) =>
   (dispatch, getState) => {
     setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
@@ -411,7 +411,9 @@ const getCloudOrderPageInfo =
         { signal },
       )
       .then(({ data }) => {
-        console.log(data)
+        console.log(data.doc)
+        const dcList = data.doc.slist.find(el => el.$name === 'datacenter').val
+        setDcList && setDcList(dcList)
       })
   }
 
