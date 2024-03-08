@@ -65,6 +65,11 @@ import {
   PaymentProcessingPageLazy,
   DedicatedPageLazy,
   CloneOrderPageLazy,
+  CloudVPSPageLazy,
+  CloudVPSInstancesPageLazy,
+  CloudVPSSSHKeysPageLazy,
+  CreateInstancePageLazy,
+  CloudInstanceItemPageLazy,
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
@@ -262,6 +267,20 @@ const Component = ({ fromPromotionLink }) => {
             <Route index element={<DedicatedServersPageLazy />} />
             <Route path="vds" element={<VDSPageLazy isDedic />} />
           </Route>
+
+          <Route path={route.CLOUD_VPS} element={<CloudVPSPageLazy />}>
+            <Route index element={<CloudVPSInstancesPageLazy />} />
+            <Route path="ssh_keys" element={<CloudVPSSSHKeysPageLazy />} />
+          </Route>
+          <Route
+            path={route.CLOUD_VPS_CREATE_INSTANCE}
+            element={<CreateInstancePageLazy />}
+          />
+          <Route
+            path={`${route.CLOUD_VPS}/:id`}
+            element={<CloudInstanceItemPageLazy />}
+          />
+
           <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
           <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />
           <Route path={route.FTP} element={<FTPPageLazy />} />

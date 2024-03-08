@@ -1,6 +1,6 @@
 .wrapper {
   position: relative;
-
+  width: max-content;
   &.disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -25,8 +25,6 @@
 .dropdown {
   position: absolute;
   right: -10px;
-  width: max-content;
-  max-width: 250px;
   top: calc(100% + 20px);
   border-radius: 3px;
   z-index: 1;
@@ -54,6 +52,14 @@
   box-shadow: var(--forms2_shadow);
 }
 
+.tools__list {
+  padding: 15px;
+  display: grid;
+  column-gap: 5px;
+}
+.tool_item {
+  white-space: nowrap;
+}
 .tool_item_delete {
   color: var(--red-text_2);
 }
@@ -63,13 +69,14 @@
   align-items: center;
   width: 100%;
   padding: 10px 15px;
+  border-radius: 3px;
   cursor: pointer;
   font-size: 18px;
   font-weight: 300;
   text-align: left;
 
   &:hover {
-    background-color: var(--select_option_bgc);
+    background-color: var(--btn-bgc);
 
     svg:not(.tool_icon_delete) {
       fill: url('#gradient');

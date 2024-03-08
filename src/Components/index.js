@@ -221,3 +221,9 @@ export { default as TariffConfig } from './TariffConfig/TariffConfig'
 export { default as Header } from './Container/Header/Header'
 export { default as Options } from './Options/Options'
 export { default as OrderTariff } from './OrderTariff/OrderTariff'
+
+//==========================================Instances==========================================//
+
+export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
+export { InstanceFiltersModal } from './Services/Instances/Modals'
+

@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useRef, useState } from 'react'
 import { Icon } from '..'
 import s from './Options.module.scss'
 import cn from 'classnames'
 import { useOutsideAlerter } from '@utils'
 
-export default function Options({ options }) {
+export default function Options({ options, columns = 1 }) {
   const dropdownEl = useRef()
   const [isOptionsOpen, setIsOptionsOpen] = useState(false)
 
@@ -21,7 +22,10 @@ export default function Options({ options }) {
           <div className={s.pointer_wrapper}>
             <div className={s.pointer}></div>
           </div>
-          <ul>
+          <ul
+            className={cn(s.tools__list)}
+            style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
+          >
             {options
               .filter(option => !option.hidden)
               .map(option => (
