@@ -7,59 +7,73 @@ import {
   ResizeModal,
   RebuildModal,
 } from '.'
+import { cloudVpsActions, cloudVpsSelectors } from '@redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const Modals = ({
-  itemForModals,
-  setItemForModals,
   deleteInstanceSubmit,
   changeInstancePasswordSubmit,
   editNameSubmit,
   confirmSubmit,
   resizeSubmit,
-}) => (
-  <>
-    {!!itemForModals.change_pass && (
-      <ChangePasswordModal
-        item={itemForModals.change_pass}
-        closeModal={() => setItemForModals({ change_pass: false })}
-        onSubmit={changeInstancePasswordSubmit}
-      />
-    )}
-    {!!itemForModals.delete && (
-      <DeleteModal
-        item={itemForModals.delete}
-        closeModal={() => setItemForModals({ delete: false })}
-        onSubmit={deleteInstanceSubmit}
-      />
-    )}
-    {!!itemForModals.edit_name && (
-      <EditNameModal
-        item={itemForModals.edit_name}
-        closeModal={() => setItemForModals({ edit_name: false })}
-        onSubmit={editNameSubmit}
-      />
-    )}
+}) => {
+  const dispatch = useDispatch()
+  const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
 
-    {!!itemForModals.confirm && (
-      <ConfirmModal
-        item={itemForModals.confirm}
-        closeModal={() => setItemForModals({ confirm: false })}
-        onSubmit={confirmSubmit}
-      />
-    )}
-    {!!itemForModals.resize && (
-      <ResizeModal
-        item={itemForModals.resize}
-        closeModal={() => setItemForModals({ resize: false })}
-        onSubmit={resizeSubmit}
-      />
-    )}
-    {!!itemForModals.rebuild && (
-      <RebuildModal
-        item={itemForModals.rebuild}
-        closeModal={() => setItemForModals({ rebuild: false })}
-        onSubmit={() => {}}
-      />
-    )}
-  </>
-)
+  return (
+    <>
+      {!!itemForModals?.change_pass && (
+        <ChangePasswordModal
+          item={itemForModals?.change_pass}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ change_pass: false }))
+          }
+          onSubmit={changeInstancePasswordSubmit}
+        />
+      )}
+      {!!itemForModals?.delete && (
+        <DeleteModal
+          item={itemForModals?.delete}
+          closeModal={() => dispatch(cloudVpsActions.setItemForModals({ delete: false }))}
+          onSubmit={deleteInstanceSubmit}
+        />
+      )}
+      {!!itemForModals?.edit_name && (
+        <EditNameModal
+          item={itemForModals?.edit_name}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ edit_name: false }))
+          }
+          onSubmit={editNameSubmit}
+        />
+      )}
+
+      {!!itemForModals?.confirm && (
+        <ConfirmModal
+          item={itemForModals?.confirm}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ confirm: false }))
+          }
+          onSubmit={confirmSubmit}
+        />
+      )}
+
+      {!!itemForModals.resize && (
+        <ResizeModal
+          item={itemForModals.resize}
+          closeModal={() => dispatch(cloudVpsActions.setItemForModals({ resize: false }))}
+          onSubmit={resizeSubmit}
+        />
+      )}
+      {!!itemForModals.rebuild && (
+        <RebuildModal
+          item={itemForModals.rebuild}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ rebuild: false }))
+          }
+          onSubmit={() => {}}
+        />
+      )}
+    </>
+  )
+}

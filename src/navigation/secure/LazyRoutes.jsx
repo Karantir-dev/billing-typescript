@@ -99,6 +99,13 @@ const CloudInstanceItemPage = lazy(() =>
     /* webpackChunkName: "CloudInstanceItemPage" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/CloudInstanceItemPage/CloudInstanceItemPage'
   ),
 )
+
+const InstanceDetailsOverview = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceDetailsOverview" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview'
+  ),
+)
+
 const DedicOrderPage = lazy(() =>
   import(
     /* webpackChunkName: "DedicOrderPage" */ '@pages/ServicesPage/DedicatedServersPage/DedicOrderPage/DedicOrderPage'
@@ -505,6 +512,19 @@ export const CloudInstanceItemPageLazy = () => {
   return (
     <ShellСomponent title={title}>
       <CloudInstanceItemPage />
+    </ShellСomponent>
+  )
+}
+
+export const InstanceDetailsOverviewLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceDetailsOverview />
     </ShellСomponent>
   )
 }
