@@ -89,13 +89,15 @@ export default function DedicTarifCard({
           {!item.isVds && (
             <div className={s.activation_info}>
               <span>
-                {t('dedic_available_count', { count: itemInfo?.specs.count_exists || 0 })}
+                {t('dedic_available_count', {
+                  count: itemInfo?.specs?.count_exists || 0,
+                })}
               </span>
               <span>
-                {itemInfo?.specs.count_exists
+                {itemInfo?.specs?.count_exists
                   ? t('dedic_activation_time')
                   : t('dedic_ready_time')}
-                {!itemInfo?.specs.count_exists && (
+                {!itemInfo?.specs?.count_exists && (
                   <HintWrapper
                     popupClassName={s.activation_info_hint}
                     label={t('dedic_activation_info')}
