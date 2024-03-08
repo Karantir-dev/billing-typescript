@@ -216,6 +216,7 @@ export default function InstancesPage() {
         changeInstancePasswordSubmit={changeInstancePasswordSubmit}
         editNameSubmit={editNameSubmit}
         confirmSubmit={confirmInstanceSubmit}
+        resizeSubmit={() => {}}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>

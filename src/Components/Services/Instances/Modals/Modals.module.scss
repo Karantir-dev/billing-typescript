@@ -8,8 +8,17 @@
   }
 }
 
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .body__text {
   font-size: 18px;
+}
+.body__text_small {
+  font-size: 14px;
 }
 
 .warning {
@@ -345,4 +354,11 @@
       }
     }
   }
+}
+
+
+// resize
+
+.tariff_active {
+  border: 1px solid red;
 }

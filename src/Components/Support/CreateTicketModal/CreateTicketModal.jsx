@@ -41,7 +41,7 @@ export default function Component(props) {
             message: '',
             files: [],
             client_department: '',
-            ticket_item: 'null',
+            ticket_item: props.relatedService ?? 'null',
             subject: '',
           }}
           onSubmit={sendMessageHandle}

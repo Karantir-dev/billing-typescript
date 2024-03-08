@@ -57,17 +57,17 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
       disabled: isNotActive,
       onClick: () => setItemForModals({ confirm: { ...item, confirm_action: 'reboot' } }),
     },
-    {
-      label: 'Shelve',
-      icon: 'Shelve',
-      disabled: isNotActive,
-      onClick: () => {},
-    },
+    // {
+    //   label: 'Shelve',
+    //   icon: 'Shelve',
+    //   disabled: isNotActive,
+    //   onClick: () => {},
+    // },
     {
       label: 'Resize',
       icon: 'Resize',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => setItemForModals({ resize: item }),
     },
 
     {
@@ -92,13 +92,16 @@ export default function InstanceItem({ item, editInstance, setItemForModals }) {
       label: 'Rebuild',
       icon: 'Rebuild',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => setItemForModals({ rebuild: item }),
     },
     {
       label: 'Create ticket',
       icon: 'Headphone',
-      disabled: isNotActive,
-      onClick: () => {},
+      disabled: false,
+      onClick: () =>
+        navigate(`${route.SUPPORT}/requests`, {
+          state: { id: item.id.$, openModal: true },
+        }),
     },
     {
       label: 'Rename',
