@@ -4,6 +4,8 @@ import {
   DeleteModal,
   EditNameModal,
   ConfirmModal,
+  ResizeModal,
+  RebuildModal,
 } from '.'
 
 export const Modals = ({
@@ -13,6 +15,7 @@ export const Modals = ({
   changeInstancePasswordSubmit,
   editNameSubmit,
   confirmSubmit,
+  resizeSubmit,
 }) => (
   <>
     {!!itemForModals.change_pass && (
@@ -42,6 +45,20 @@ export const Modals = ({
         item={itemForModals.confirm}
         closeModal={() => setItemForModals({ confirm: false })}
         onSubmit={confirmSubmit}
+      />
+    )}
+    {!!itemForModals.resize && (
+      <ResizeModal
+        item={itemForModals.resize}
+        closeModal={() => setItemForModals({ resize: false })}
+        onSubmit={resizeSubmit}
+      />
+    )}
+    {!!itemForModals.rebuild && (
+      <RebuildModal
+        item={itemForModals.rebuild}
+        closeModal={() => setItemForModals({ rebuild: false })}
+        onSubmit={() => {}}
       />
     )}
   </>

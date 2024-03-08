@@ -9,7 +9,7 @@ import cn from 'classnames'
 export const DeleteModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation()
 
-  const changePassValidationSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
     comfirm: Yup.string()
       .matches(/^Permanently delete$/, 'invalid value')
       .required(t('required')),
@@ -26,7 +26,7 @@ export const DeleteModal = ({ item, closeModal, onSubmit }) => {
         <Formik
           initialValues={{ comfirm: '' }}
           onSubmit={onSubmit}
-          validationSchema={changePassValidationSchema}
+          validationSchema={validationSchema}
         >
           {({ errors, touched }) => {
             return (
