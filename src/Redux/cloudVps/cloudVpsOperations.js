@@ -319,6 +319,28 @@ const changeInstancePassword =
       })
   }
 
+const getCloudOrderPageInfo =
+  ({ setIsLoading, signal }) =>
+  (dispatch, getState) => {
+    setIsLoading(true)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.order',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        console.log(data)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -326,4 +348,5 @@ export default {
   deleteInstance,
   changeInstanceState,
   changeInstancePassword,
+  getCloudOrderPageInfo,
 }
