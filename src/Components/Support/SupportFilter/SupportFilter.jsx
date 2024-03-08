@@ -128,7 +128,7 @@ export default function Component(props) {
             </div>
           )}
         </div>
-       </div>
+      </div>
       {params?.path === 'requests' && (
         <Button
           dataTestid={'new_ticket_btn'}
@@ -141,7 +141,10 @@ export default function Component(props) {
         />
       )}
       {createTicketModal && (
-        <CreateTicketModal setCreateTicketModal={setCreateTicketModal} />
+        <CreateTicketModal
+          setCreateTicketModal={setCreateTicketModal}
+          relatedService={location.state?.id}
+        />
       )}
     </div>
   )

@@ -62,17 +62,17 @@ export default function InstanceItem({ item, editInstance }) {
       disabled: isNotActive,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ confirm: { ...item, confirm_action: 'reboot' } })),
     },
-    {
-      label: 'Shelve',
-      icon: 'Shelve',
-      disabled: isNotActive,
-      onClick: () => {},
-    },
+    // {
+    //   label: 'Shelve',
+    //   icon: 'Shelve',
+    //   disabled: isNotActive,
+    //   onClick: () => {},
+    // },
     {
       label: 'Resize',
       icon: 'Resize',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
     },
 
     {
@@ -97,13 +97,16 @@ export default function InstanceItem({ item, editInstance }) {
       label: 'Rebuild',
       icon: 'Rebuild',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ rebuild: item })),
     },
     {
       label: 'Create ticket',
       icon: 'Headphone',
-      disabled: isNotActive,
-      onClick: () => {},
+      disabled: false,
+      onClick: () =>
+        navigate(`${route.SUPPORT}/requests`, {
+          state: { id: item.id.$, openModal: true },
+        }),
     },
     {
       label: 'Rename',

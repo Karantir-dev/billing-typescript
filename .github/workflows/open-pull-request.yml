@@ -1,0 +1,24 @@
+name: Open pull request
+
+on:
+  push:
+    branches: [ prod ]
+  workflow_dispatch:
+
+jobs:
+  createPullRequest:
+    name: Create pull request
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - head: prod # з якої гілки
+            base: prod-biz # до якої гілки
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create -B ${{ matrix.base }} -H ${{ matrix.head }} --title '${{ matrix.base }} <<< ${{ matrix.head }}' --body 'Created by Github action' || true
+

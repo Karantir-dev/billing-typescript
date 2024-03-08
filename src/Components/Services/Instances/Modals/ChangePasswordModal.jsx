@@ -9,7 +9,7 @@ import cn from 'classnames'
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation()
 
-  const changePassValidationSchema = Yup.object().shape({
+  const validationSchema = Yup.object().shape({
     password: Yup.string()
       .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
       .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
@@ -31,7 +31,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
         <Formik
           initialValues={{ password: '' }}
           onSubmit={values => onSubmit(values.password)}
-          validationSchema={changePassValidationSchema}
+          validationSchema={validationSchema}
         >
           {({ errors, touched }) => {
             return (

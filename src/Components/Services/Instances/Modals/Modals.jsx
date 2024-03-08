@@ -1,5 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { ChangePasswordModal, DeleteModal, EditNameModal, ConfirmModal } from '.'
+import {
+  ChangePasswordModal,
+  DeleteModal,
+  EditNameModal,
+  ConfirmModal,
+  ResizeModal,
+  RebuildModal,
+} from '.'
 import { cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -8,6 +15,7 @@ export const Modals = ({
   changeInstancePasswordSubmit,
   editNameSubmit,
   confirmSubmit,
+  resizeSubmit,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -47,6 +55,23 @@ export const Modals = ({
             dispatch(cloudVpsActions.setItemForModals({ confirm: false }))
           }
           onSubmit={confirmSubmit}
+        />
+      )}
+
+      {!!itemForModals.resize && (
+        <ResizeModal
+          item={itemForModals.resize}
+          closeModal={() => dispatch(cloudVpsActions.setItemForModals({ resize: false }))}
+          onSubmit={resizeSubmit}
+        />
+      )}
+      {!!itemForModals.rebuild && (
+        <RebuildModal
+          item={itemForModals.rebuild}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ rebuild: false }))
+          }
+          onSubmit={() => {}}
         />
       )}
     </>
