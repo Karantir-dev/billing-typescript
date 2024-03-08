@@ -14,8 +14,6 @@ import { useDispatch } from 'react-redux'
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['vds', 'other'])
 
-  console.log('Instance Item: ', item)
-
   const optionsCell = useRef()
   const checkboxCell = useRef()
   const servernameCell = useRef()
