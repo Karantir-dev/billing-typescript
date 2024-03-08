@@ -17,6 +17,8 @@ export default function CloudInstanceItemPage() {
 
   const { state: item } = location
 
+  console.log('Item with opened Instance Page: ', item)
+
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
 

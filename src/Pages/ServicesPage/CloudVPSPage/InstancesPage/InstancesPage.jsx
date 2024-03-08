@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { InstanceFiltersModal } from '@components/Services/Instances/Modals'
 import { useDispatch, useSelector } from 'react-redux'
-import { cloudVpsOperations, cloudVpsActions } from '@redux'
+import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { useCancelRequest } from '@src/utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
@@ -21,11 +21,7 @@ export default function InstancesPage() {
   const [instances, setInstances] = useState()
   const [sortBy, setSortBy] = useState('+id')
 
-  // const [itemForModals, setItemForModals] = useReducer((state, action) => {
-  //   return { ...state, ...action }
-  // }, {})
-
-  const itemForModals = useSelector(state => state.cloudVps.itemForModals)
+  const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
 
   const [filters, setFilters] = useReducer(
     (state, action) => {

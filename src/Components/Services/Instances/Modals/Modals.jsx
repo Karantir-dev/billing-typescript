@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { ChangePasswordModal, DeleteModal, EditNameModal, ConfirmModal } from '.'
-import { cloudVpsActions } from '@redux'
+import { cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const Modals = ({
@@ -10,7 +10,7 @@ export const Modals = ({
   confirmSubmit,
 }) => {
   const dispatch = useDispatch()
-  const itemForModals = useSelector(state => state.cloudVps.itemForModals)
+  const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
 
   return (
     <>
