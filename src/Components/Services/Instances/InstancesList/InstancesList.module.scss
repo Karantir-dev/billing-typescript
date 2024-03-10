@@ -80,7 +80,7 @@ tbody {
 
     &:hover {
       td:before {
-        background: linear-gradient(89.98deg, #feeff7 0.02%, #f5eafe 99.98%);
+        background: var(--access_rights_bg_item_title_gradient);
       }
     }
   }
