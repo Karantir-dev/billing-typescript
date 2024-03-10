@@ -14,7 +14,7 @@ import s from './InstanceDetailsOverview.module.scss'
 import cn from 'classnames'
 
 export default function InstanceDetailsOverview() {
-  const { i18n, t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
+  const { i18n, t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
   const location = useLocation()
   // const params = useParams()
@@ -86,31 +86,31 @@ export default function InstanceDetailsOverview() {
     <div className={s.content}>
       <div className={s.leftBlock}>
         <div className={s.block_wrapper}>
-          <h3 className={s.block_title}>Instance specifications</h3>
+          <h3 className={s.block_title}>{t('Instance specifications')}</h3>
 
           <div className={s.info_block_wrapper}>
             <div className={s.info_block_item}>
-              <p className={s.item_name}>Image</p>
+              <p className={s.item_name}>{t('Image')}</p>
               <p className={s.item_info}>{item?.instances_os?.$}</p>
             </div>
 
             <div className={s.info_block_item}>
-              <p className={s.item_name}>Flavor</p>
+              <p className={s.item_name}>{t('Flavor')}</p>
               <p className={s.item_info}>{item?.name?.$}</p>
             </div>
 
             <div className={s.info_block_item}>
-              <p className={s.item_name}>Memory</p>
+              <p className={s.item_name}>{t('Memory')}</p>
               <p className={s.item_info}>{instanceInfo?.Memory?.replace('.', '')}</p>
             </div>
 
             <div className={s.info_block_item}>
-              <p className={s.item_name}>Virtual CPUs</p>
+              <p className={s.item_name}>{t('Virtual CPUs')}</p>
               <p className={s.item_info}>{instanceInfo?.CPU}</p>
             </div>
 
             <div className={s.info_block_item}>
-              <p className={s.item_name}>Storage</p>
+              <p className={s.item_name}>{t('Storage')}</p>
               <p className={s.item_info}>{instanceInfo?.Disk_space}</p>
             </div>
           </div>
@@ -118,15 +118,15 @@ export default function InstanceDetailsOverview() {
 
         {/* Othe Details Block */}
         <div className={s.block_wrapper}>
-          <h3 className={s.block_title}>Other details</h3>
+          <h3 className={s.block_title}>{t('Other details')}</h3>
 
           <div className={s.info_block_wrapper}>
             <div className={s.info_block_item}>
-              <p className={s.item_name}>Instance UUID</p>
+              <p className={s.item_name}>{t('UUID')}</p>
               <p className={s.item_info}>{instanceInfo?.fotbo_id}</p>
             </div>
             <div className={s.info_block_item}>
-              <p className={s.item_name}>Created at</p>
+              <p className={s.item_name}>{t('Created at')}</p>
               {instanceInfo?.createdate && (
                 <p className={s.item_info}>
                   {formatDate(new Date(instanceInfo?.createdate))}
@@ -135,7 +135,7 @@ export default function InstanceDetailsOverview() {
             </div>
             {/* Region Block */}
             <div className={s.info_block_item}>
-              <p className={s.item_name}>Region</p>
+              <p className={s.item_name}>{t('Region')}</p>
               <div className={s.item_info_block}>
                 <img
                   src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -154,7 +154,7 @@ export default function InstanceDetailsOverview() {
 
       <div className={s.rightBlock}>
         <div className={s.block_wrapper}>
-          <h3 className={s.block_title}>Network Details</h3>
+          <h3 className={s.block_title}>{t('Network Details')}</h3>
 
           <div className={s.info_block_wrapper}>
             {instanceInfo?.network?.map(el => {

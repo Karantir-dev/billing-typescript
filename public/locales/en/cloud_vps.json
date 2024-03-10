@@ -1,0 +1,13 @@
+{
+  "Instance specifications": "Instance specifications",
+  "Image": "Image",
+  "Flavor": "Flavor",
+  "Memory": "Memory",
+  "Virtual CPUs": "Virtual CPUs",
+  "Storage": "Storage",
+  "Other details": "Other details",
+  "UUID": "Instance UUID",
+  "Created at": "Created at",
+  "Region": "Region",
+  "Network Details": "Network Details"
+}

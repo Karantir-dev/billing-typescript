@@ -1,0 +1,13 @@
+{
+  "Instance specifications": "Специфікація",
+  "Image": "Образ",
+  "Flavor": "Тариф",
+  "Memory": "Пам'ять",
+  "Virtual CPUs": "Віртуальні CPU",
+  "Storage": "Пам'ять",
+  "Other details": "Інші деталі",
+  "UUID": "UUID",
+  "Created at": "Створено",
+  "Region": "Регіон",
+  "Network Details": "Інформація про мережу"
+}
