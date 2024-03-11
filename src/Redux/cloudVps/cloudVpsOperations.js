@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import { t } from 'i18next'
+import { map } from 'async'
 
 const getInstances =
   ({
@@ -413,7 +414,14 @@ const getCloudOrderPageInfo =
       .then(({ data }) => {
         console.log(data.doc)
         const dcList = data.doc.slist.find(el => el.$name === 'datacenter').val
+        dcList.forEach(dc => (dc.$ = dc.$.replace('Fotbo ', '')))
         setDcList && setDcList(dcList)
+
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
       })
   }
 
