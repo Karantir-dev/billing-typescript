@@ -10,6 +10,7 @@ module.exports = {
       '@utils': path.resolve(__dirname, 'src/utils'),
       '@src': path.resolve(__dirname, 'src'),
       '@config': path.resolve(__dirname, 'src/config'),
+      '@scss': path.resolve(__dirname, 'src/scss'),
     },
   },
   eslint: {

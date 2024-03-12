@@ -1,3 +1,9 @@
+@import '@scss/placeholders.scss';
+
+.section {
+  padding: 24px 0;
+}
+
 .section_title {
   font-weight: 400;
   font-size: 20px;
@@ -10,7 +16,6 @@
   flex-direction: column;
   gap: 10px;
   max-width: 820px;
-  margin-bottom: 48px;
 }
 
 .category_item {
@@ -59,4 +64,101 @@
 
 .flag {
   box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+.os_list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ip_checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 125%;
+}
+
+.ip_discount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  width: 30px;
+  height: 20px;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 133%;
+  letter-spacing: 0.01em;
+  color: #fff;
+  background-image: var(--accent-gradient);
+}
+
+.tariffs_list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.tariff_btn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+  cursor: pointer;
+  padding: 16px;
+}
+
+.tariff_item {
+  border-radius: 3px;
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--shadow_cards_static);
+}
+
+.tariff_title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.tariff_parameters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tariff_row {
+  display: flex;
+}
+
+.parameter_label {
+  display: block;
+  text-align: start;
+  width: 72px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 117%;
+  color: var(--transparent-color);
+}
+
+.parameter_value {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 114%;
+}
+
+.infinity {
+  fill: var(--main-text);
+}
+
+.tariff_price {
+  @extend %accent-text-gradient;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
 }

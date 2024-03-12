@@ -1,4 +1,4 @@
-@import '../../../../scss/placeholders.scss';
+@import '@scss/placeholders.scss';
 
 .page_title {
   margin-bottom: 25px;
@@ -354,7 +354,7 @@
   &_bg {
     border-radius: 2px;
     background: var(--elements-bgc);
-    overflow: hidden
+    overflow: hidden;
   }
 }
 

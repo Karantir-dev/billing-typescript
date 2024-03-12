@@ -395,7 +395,7 @@ const rebuildInstance =
   }
 
 const getCloudOrderPageInfo =
-  ({ setIsLoading, signal, setDcList }) =>
+  ({ setIsLoading, signal, setDcList, setOsList, setTariffsList }) =>
   (dispatch, getState) => {
     setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
@@ -404,7 +404,7 @@ const getCloudOrderPageInfo =
       .post(
         '/',
         qs.stringify({
-          func: 'instances.order',
+          func: 'v2.instances.order.pricelist',
           out: 'json',
           auth: sessionId,
           lang: 'en',
@@ -412,10 +412,36 @@ const getCloudOrderPageInfo =
         { signal },
       )
       .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
         console.log(data.doc)
         const dcList = data.doc.slist.find(el => el.$name === 'datacenter').val
         dcList.forEach(dc => (dc.$ = dc.$.replace('Fotbo ', '')))
-        setDcList && setDcList(dcList)
+
+        const tariffs = data.doc.list[0].elem
+        const lastTariffID = tariffs[tariffs.length - 1].pricelist.$
+        axiosInstance
+          .post(
+            '/',
+            qs.stringify({
+              func: 'v2.instances.order.param',
+              out: 'json',
+              auth: sessionId,
+              lang: 'en',
+              pricelist: lastTariffID,
+              period_6594: '-50',
+              period_6593: '-50',
+            }),
+            { signal },
+          )
+          .then(({ data }) => {
+            const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+
+            setOsList(osList)
+            setTariffsList(tariffs)
+            setDcList(dcList)
+            console.log(osList)
+          })
 
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
