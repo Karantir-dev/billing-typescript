@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Button, Icon, InputField, Modal } from '@components'
+import { Button, Icon, InputField, Modal, WarningMessage } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
@@ -35,11 +35,11 @@ export const DeleteModal = ({ item, closeModal, onSubmit }) => {
                   <p className={s.body__text}>
                     Are you sure you want to delete the instance?
                   </p>
-                  <p className={s.warning}>
-                    <Icon name="Attention" />
+                  <WarningMessage>
                     Files will be permanently lost. To delete an istance, you must type
                     “Permanently delete”.
-                  </p>
+                  </WarningMessage>
+
                   <InputField
                     inputClassName={s.input}
                     name="comfirm"

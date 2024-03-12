@@ -15,12 +15,12 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
         <p>Edit Name</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>Instance:</span>{' '}
-          {item.servername.$ || item.id.$}
+          {item.servername?.$ || item.id.$}
         </p>
       </Modal.Header>
       <Modal.Body>
         <Formik
-          initialValues={{ servername: item.servername.$ || '' }}
+          initialValues={{ servername: item.servername?.$ || '' }}
           onSubmit={values => {
             onSubmit({ value: values.servername, elid: item.id.$, closeModal })
           }}

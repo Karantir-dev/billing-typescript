@@ -45,7 +45,7 @@ export default function InstancesList({
       const isDesc = isActiveSort && sortBy[0] === '+'
 
       return (
-        <th key={cell.name}>
+        <th key={cell.name} className={s.th}>
           {cell.isSort ? (
             <button
               className={cn(s.sort, { [s.sort_active]: isActiveSort })}
@@ -72,33 +72,26 @@ export default function InstancesList({
   return (
     <>
       {widerThan768 ? (
-        <table>
-          <thead>
-            <tr>
-              {/* <th>
+        <table className={s.table}>
+          <thead className={s.thead}>
+            <tr className={s.tr}>
+              {/* <th className={s.th}>
                 <CheckBox />
               </th> */}
               {renderHeadCells()}
-              <th></th>
+              <th className={s.th}></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={s.tbody}>
             {instances.map(item => (
-              <InstanceItem
-                key={item.id.$}
-                item={item}
-                editInstance={editInstance}
-              />
+              <InstanceItem key={item.id.$} item={item} editInstance={editInstance} />
             ))}
           </tbody>
         </table>
       ) : (
         <div className={s.mobile__list}>
           {instances.map(item => (
-            <InstanceItemMobile
-              key={item.id.$}
-              item={item}
-            />
+            <InstanceItemMobile key={item.id.$} item={item} />
           ))}
         </div>
       )}

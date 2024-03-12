@@ -7,9 +7,8 @@ import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName } from '@utils'
 import { useTranslation } from 'react-i18next'
-import { cloudVpsActions } from '@redux'
+import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useDispatch } from 'react-redux'
-
 
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['vds', 'other'])
@@ -37,7 +36,7 @@ export default function InstanceItem({ item, editInstance }) {
   }
 
   useEffect(() => {
-    setServerName(item.servername?.$)
+    setServerName(item.servername?.$ || '')
   }, [item.servername?.$])
 
   const options = [
@@ -45,33 +44,34 @@ export default function InstanceItem({ item, editInstance }) {
       label: isStopped ? 'Start' : 'Shut down',
       icon: 'Shutdown',
       onClick: () =>
-      dispatch(cloudVpsActions.setItemForModals({
-          confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
-        })),
-      disabled: item.item_status.$.includes('in progress') || isNotActive,
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
+          }),
+        ),
+      disabled: isNotActive,
     },
     {
       label: 'Console',
       icon: 'Console',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => dispatch(cloudVpsOperations.openConsole({ elid: item.id.$ })),
     },
     {
       label: 'Reboot',
       icon: 'Reboot',
       disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ confirm: { ...item, confirm_action: 'reboot' } })),
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: 'reboot' },
+          }),
+        ),
     },
-    // {
-    //   label: 'Shelve',
-    //   icon: 'Shelve',
-    //   disabled: isNotActive,
-    //   onClick: () => {},
-    // },
     {
       label: 'Resize',
       icon: 'Resize',
-      disabled: isNotActive,
+      disabled: isNotActive || item.change_pricelist?.$ === 'off',
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
     },
 
@@ -85,24 +85,33 @@ export default function InstanceItem({ item, editInstance }) {
       label: 'Rescue',
       icon: 'Rescue',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            rebuild: { ...item, rebuild_action: 'bootimage' },
+          }),
+        ),
     },
     {
       label: 'Instructions',
       icon: 'Instruction',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
     {
       label: 'Rebuild',
       icon: 'Rebuild',
       disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ rebuild: item })),
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            rebuild: { ...item, rebuild_action: 'rebuild' },
+          }),
+        ),
     },
     {
       label: 'Create ticket',
       icon: 'Headphone',
-      disabled: false,
       onClick: () =>
         navigate(`${route.SUPPORT}/requests`, {
           state: { id: item.id.$, openModal: true },
@@ -111,13 +120,11 @@ export default function InstanceItem({ item, editInstance }) {
     {
       label: 'Rename',
       icon: 'Rename',
-      disabled: isNotActive,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
       label: 'Delete',
       icon: 'Remove',
-      disabled: false,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
       isDelete: true,
     },
@@ -125,6 +132,7 @@ export default function InstanceItem({ item, editInstance }) {
 
   return (
     <tr
+      className={s.tr}
       onClick={e => {
         if (
           optionsCell.current.contains(e.target) ||
@@ -138,7 +146,7 @@ export default function InstanceItem({ item, editInstance }) {
       {/* <td ref={checkboxCell}>
         <CheckBox />
       </td> */}
-      <td ref={servernameCell} className={s.servername_cell}>
+      <td ref={servernameCell} className={cn(s.td, s.servername_cell)}>
         <EditCell
           originName={serverName}
           onSubmit={editServerName}
@@ -148,7 +156,7 @@ export default function InstanceItem({ item, editInstance }) {
           isShadow={true}
         />
       </td>
-      <td>
+      <td className={s.td}>
         <span
           className={cn(
             s.status,
@@ -161,9 +169,9 @@ export default function InstanceItem({ item, editInstance }) {
           {item.fotbo_status?.$?.replaceAll('_', ' ') || item.item_status?.$}
         </span>
       </td>
-      <td>{item.pricelist.$}</td>
-      <td>{item.cost.$}</td>
-      <td>
+      <td className={s.td}>{item.pricelist.$}</td>
+      <td className={s.td}>{item.cost.$}</td>
+      <td className={s.td}>
         <HintWrapper
           popupClassName={s.popup}
           wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
@@ -179,8 +187,8 @@ export default function InstanceItem({ item, editInstance }) {
           />
         </HintWrapper>
       </td>
-      <td>{item.createdate.$}</td>
-      <td>
+      <td className={s.td}>{item.createdate.$}</td>
+      <td className={s.td}>
         <HintWrapper
           popupClassName={s.popup}
           wrapperClassName={s.popup__wrapper}
@@ -189,8 +197,8 @@ export default function InstanceItem({ item, editInstance }) {
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </HintWrapper>
       </td>
-      <td className={s.ip_cell}>{item.ip?.$}</td>
-      <td ref={optionsCell}>
+      <td className={cn(s.td, s.ip_cell)}>{item.ip?.$}</td>
+      <td className={s.td} ref={optionsCell}>
         <Options options={options} columns={2} />
       </td>
     </tr>

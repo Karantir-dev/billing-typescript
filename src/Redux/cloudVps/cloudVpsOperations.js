@@ -1,27 +1,18 @@
 /* eslint-disable no-unused-vars */
 import qs from 'qs'
-import { actions, authSelectors } from '@redux'
+import { actions, authSelectors, cloudVpsActions } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import { t } from 'i18next'
 
 const getInstances =
-  ({
-    setInstances,
-    setTotalElems,
-    setFilters,
-    p_cnt,
-    p_num,
-    signal,
-    setIsLoading,
-    p_col,
-  }) =>
+  ({ p_cnt, p_num, p_col, signal, setIsLoading }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
-    axiosInstance
+    return axiosInstance
       .post(
         '/',
         qs.stringify({
@@ -37,8 +28,8 @@ const getInstances =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        setInstances(data.doc.elem || [])
-        setTotalElems(data.doc.p_elems.$)
+        dispatch(cloudVpsActions.setInstancesList(data.doc.elem || []))
+        dispatch(cloudVpsActions.setInstancesCount(data.doc.p_elems.$))
 
         return axiosInstance.post(
           '/',
@@ -64,7 +55,7 @@ const getInstances =
           period: data.doc?.slist?.find(el => el.$name === 'period')?.val,
           pricelist: data.doc?.slist?.find(el => el.$name === 'pricelist')?.val,
         }
-        setFilters({ active: data.doc, filtersList })
+        dispatch(cloudVpsActions.setInstancesFilters({ active: data.doc, filtersList }))
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -74,17 +65,7 @@ const getInstances =
   }
 
 const setInstancesFilter =
-  ({
-    values,
-    setInstances,
-    setTotalElems,
-    setFilters,
-    p_cnt,
-    p_num,
-    signal,
-    setIsLoading,
-    p_col,
-  }) =>
+  ({ values, p_cnt, p_num, signal, setIsLoading, p_col }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -119,9 +100,6 @@ const setInstancesFilter =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         return dispatch(
           getInstances({
-            setInstances,
-            setTotalElems,
-            setFilters,
             p_cnt,
             p_num,
             signal,
@@ -142,9 +120,6 @@ const editInstance =
     elid,
     errorCallback = () => {},
     closeModal = () => {},
-    setInstances,
-    setTotalElems,
-    setFilters,
     setIsLoading,
     signal,
   }) =>
@@ -172,9 +147,6 @@ const editInstance =
 
         dispatch(
           getInstances({
-            setInstances,
-            setTotalElems,
-            setFilters,
             signal,
             setIsLoading,
           }),
@@ -192,7 +164,7 @@ const editInstance =
   }
 
 const deleteInstance =
-  ({ elid, closeModal, setInstances, setTotalElems, setFilters, signal, setIsLoading }) =>
+  ({ elid, closeModal, successCallback, signal, setIsLoading }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -210,16 +182,15 @@ const deleteInstance =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-        dispatch(
+        return dispatch(
           getInstances({
-            setInstances,
-            setTotalElems,
-            setFilters,
             signal,
             setIsLoading,
           }),
         )
+      })
+      .then(() => {
+        successCallback && successCallback()
         closeModal()
         toast.success(t('server_deleted_success', { ns: 'other', id: `#${elid}` }))
         dispatch(actions.hideLoader())
@@ -246,18 +217,7 @@ const serviceActionRequest = ({ elid, action, sessionId, ...params }) => {
 }
 
 const changeInstanceState =
-  ({
-    action,
-    elid,
-    closeModal,
-    setInstances,
-    setTotalElems,
-    setFilters,
-    signal,
-    setIsLoading,
-    p_num,
-    p_cnt,
-  }) =>
+  ({ action, elid, closeModal, signal, setIsLoading, p_num, p_cnt }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -268,9 +228,6 @@ const changeInstanceState =
 
         dispatch(
           getInstances({
-            setInstances,
-            setTotalElems,
-            setFilters,
             signal,
             setIsLoading,
             p_num,
@@ -305,23 +262,22 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
     })
 }
 const changeTariff =
-  ({ elid, pricelist, elname }) =>
+  ({ elid, pricelist, successCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
     serviceActionRequest({
       elid,
-      action: 'changepricelist.pricelist',
+      action: 'changepricelist.getmoney',
       sessionId,
       pricelist,
-      clicked_button: 'next',
+      clicked_button: 'finish',
       snext: 'ok',
       sok: 'ok',
-      elname,
     })
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data, ' data change tariff')
+        successCallback && successCallback()
         dispatch(actions.hideLoader())
       })
       .catch(err => {
@@ -366,7 +322,7 @@ const changeInstancePassword =
   }
 
 const rebuildInstance =
-  ({ elid, setState }) =>
+  ({ action, elid, successCallback, errorCallback, ...params }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -375,7 +331,36 @@ const rebuildInstance =
       .post(
         '/',
         qs.stringify({
-          func: 'instances.fotbo.rebuild',
+          func: `instances.fotbo.${action}`,
+          out: 'json',
+          auth: sessionId,
+          elid,
+          lang: 'en',
+          ...params,
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback(data.doc)
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        errorCallback && errorCallback()
+        checkIfTokenAlive(err.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+const openConsole =
+  ({ elid }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.fotbovnc',
           out: 'json',
           auth: sessionId,
           elid,
@@ -384,7 +369,14 @@ const rebuildInstance =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        setState(data.doc)
+        const url = data.doc.ok.$
+        const link = document.createElement('a')
+        link.setAttribute('target', '__blank')
+        link.href = url
+        document.body.appendChild(link)
+        link.click()
+        link.parentNode.removeChild(link)
+
         dispatch(actions.hideLoader())
       })
       .catch(err => {
@@ -403,4 +395,5 @@ export default {
   getTariffsListToChange,
   changeTariff,
   rebuildInstance,
+  openConsole,
 }
