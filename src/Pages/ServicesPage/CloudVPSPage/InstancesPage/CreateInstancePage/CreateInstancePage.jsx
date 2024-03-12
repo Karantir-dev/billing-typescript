@@ -13,22 +13,38 @@ import { cloudVpsOperations } from '@src/Redux'
 import { getFlagFromCountryName, useCancelRequest } from '@src/utils'
 import cn from 'classnames'
 import { Form, Formik } from 'formik'
+import { Infinity } from '@src/images'
 
 import s from './CreateInstancePage.module.scss'
-import { Infinity } from '@src/images'
 
 export default function CreateInstancePage() {
   const location = useLocation()
   const dispatch = useDispatch()
-
   const { t } = useTranslation([])
 
-  const [dcList, setDcList] = useState()
-  const [currentDC, setCurrentDC] = useState()
+  const { signal, isLoading, setIsLoading } = useCancelRequest()
+
+  /** Data to render the page (lists) */
+  const [dcList, setDcList] = useState([])
   const [osList, setOsList] = useState([])
   const [tariffsList, setTariffsList] = useState([])
+  const [windowsTag, setWindowsTag] = useState([])
 
-  const { signal, isLoading, setIsLoading } = useCancelRequest()
+  /** This state doesn`t change between rerenders */
+  const [currentDC, setCurrentDC] = useState('')
+
+  const onDCchange = $key => {
+    setCurrentDC($key)
+
+    dispatch(
+      cloudVpsOperations.getCloudOrderPageInfo({
+        signal,
+        setIsLoading,
+        setTariffsList,
+        datacenter: $key,
+      }),
+    )
+  }
 
   useEffect(() => {
     dispatch(
@@ -38,9 +54,11 @@ export default function CreateInstancePage() {
         setDcList,
         setOsList,
         setTariffsList,
+        setCurrentDC,
+        setWindowsTag,
       }),
     )
-  }, [currentDC])
+  }, [])
 
   const renderSoftwareOSFields = ({
     fieldName,
@@ -130,7 +148,9 @@ export default function CreateInstancePage() {
                 <button
                   className={cn(s.category_btn)}
                   type="button"
-                  onClick={() => setCurrentDC($key)}
+                  onClick={() => {
+                    onDCchange($key)
+                  }}
                 >
                   <img
                     className={s.flag}
@@ -153,7 +173,7 @@ export default function CreateInstancePage() {
         enableReinitialize
         initialValues={{
           instances_os: osList[0]?.$key || '',
-          // autoprolong: parametersInfo?.autoprolong?.$ || '',
+          tariff_id: '',
         }}
         // validationSchema={validationSchema}
         // onSubmit={onFormSubmit}
@@ -162,6 +182,21 @@ export default function CreateInstancePage() {
           const onOSchange = value => {
             setFieldValue('instances_os', value)
           }
+
+          const isItWindows = osList
+            ?.find(el => el.$key === values.instances_os)
+            ?.$.toLowerCase()
+            .includes('windows')
+
+          const filteredTariffsList = isItWindows
+            ? tariffsList.filter(tariff => {
+                if (Array.isArray(tariff.flabel.tag)) {
+                  return tariff.flabel.tag.some(el => el.$ === windowsTag)
+                } else {
+                  tariff.flabel.tag.$ === windowsTag
+                }
+              })
+            : tariffsList
 
           return (
             <Form>
@@ -189,7 +224,7 @@ export default function CreateInstancePage() {
                 </label>
 
                 <ul className={s.tariffs_list}>
-                  {tariffsList.map(tariff => {
+                  {filteredTariffsList.map(tariff => {
                     const cpu = tariff.detail.find(
                       el => el.name.$.toLowerCase() === 'cpu',
                     ).value.$
@@ -228,7 +263,7 @@ export default function CreateInstancePage() {
                               </span>
                             </div>
                           </div>
-                          <p className={s.tariff_price}>123</p>
+                          <p className={s.tariff_price}>{tariff.prices.price.cost.$}€</p>
                         </button>
                       </li>
                     )

@@ -5,7 +5,6 @@ import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import { t } from 'i18next'
-import { map } from 'async'
 
 const getInstances =
   ({
@@ -395,7 +394,16 @@ const rebuildInstance =
   }
 
 const getCloudOrderPageInfo =
-  ({ setIsLoading, signal, setDcList, setOsList, setTariffsList }) =>
+  ({
+    setIsLoading,
+    signal,
+    setDcList,
+    setOsList,
+    setTariffsList,
+    setCurrentDC,
+    setWindowsTag,
+    datacenter,
+  }) =>
   (dispatch, getState) => {
     setIsLoading(true)
     const sessionId = authSelectors.getSessionId(getState())
@@ -408,6 +416,7 @@ const getCloudOrderPageInfo =
           out: 'json',
           auth: sessionId,
           lang: 'en',
+          datacenter,
         }),
         { signal },
       )
@@ -415,40 +424,64 @@ const getCloudOrderPageInfo =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         console.log(data.doc)
+
         const dcList = data.doc.slist.find(el => el.$name === 'datacenter').val
         dcList.forEach(dc => (dc.$ = dc.$.replace('Fotbo ', '')))
 
         const tariffs = data.doc.list[0].elem
         const lastTariffID = tariffs[tariffs.length - 1].pricelist.$
-        axiosInstance
-          .post(
-            '/',
-            qs.stringify({
-              func: 'v2.instances.order.param',
-              out: 'json',
-              auth: sessionId,
-              lang: 'en',
-              pricelist: lastTariffID,
-              period_6594: '-50',
-              period_6593: '-50',
-            }),
-            { signal },
+
+        const setPageData = osList => {
+          setOsList && setOsList(osList)
+          setTariffsList && setTariffsList(tariffs)
+          setDcList && setDcList(dcList)
+          setCurrentDC && setCurrentDC(data.doc.datacenter.$)
+          setWindowsTag &&
+            setWindowsTag(
+              data.doc.flist.val.find(el => el.$.toLowerCase().includes('windows')).$key,
+            )
+        }
+
+        if (setOsList) {
+          return dispatch(getTariffParams({ signal, id: lastTariffID })).then(
+            ({ data }) => {
+              console.log(data)
+              const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+
+              setPageData(osList)
+            },
           )
-          .then(({ data }) => {
-            const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
-
-            setOsList(osList)
-            setTariffsList(tariffs)
-            setDcList(dcList)
-            console.log(osList)
-          })
-
+        } else {
+          setPageData()
+        }
+      })
+      .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
         handleLoadersClosing(err?.message, dispatch, setIsLoading)
       })
+  }
+
+const getTariffParams =
+  ({ signal, id }) =>
+  (_, getState) => {
+    const sessionId = authSelectors.getSessionId(getState())
+
+    return axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'v2.instances.order.param',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        pricelist: id,
+        period_6594: '-50',
+        period_6593: '-50',
+      }),
+      { signal },
+    )
   }
 
 export default {
@@ -462,4 +495,5 @@ export default {
   changeTariff,
   rebuildInstance,
   getCloudOrderPageInfo,
+  getTariffParams,
 }
