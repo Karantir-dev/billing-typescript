@@ -25,6 +25,7 @@ export default function CreateInstancePage() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   /** Data to render the page (lists) */
+  /** Probably it makes sense to use here useReducer instead of useStates */
   const [dcList, setDcList] = useState([])
   const [osList, setOsList] = useState([])
   const [tariffsList, setTariffsList] = useState([])
