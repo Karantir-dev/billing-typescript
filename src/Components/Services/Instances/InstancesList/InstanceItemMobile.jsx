@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName } from '@utils'
 import { cloudVpsActions } from '@redux'
 import { useDispatch } from 'react-redux'
+import formatCountryName from '../ExternalFunc/formatCountryName'
 
 export default function InstanceItemMobile({ item }) {
   const optionsBlock = useRef()
@@ -138,7 +139,7 @@ export default function InstanceItemMobile({ item }) {
             )}.png`)}
             width={20}
             height={14}
-            alt={item.datacentername.$.replace('Fotbo ', '')}
+            alt={formatCountryName(item.datacentername.$)}
           />
         </p>
 
