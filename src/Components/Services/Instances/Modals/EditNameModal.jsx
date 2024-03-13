@@ -19,7 +19,7 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
         <p>{t('Rename')}</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
-          {item.servername?.$ || item.id.$}
+          {item.servername?.$ || item.name.$}
         </p>
       </Modal.Header>
       <Modal.Body>

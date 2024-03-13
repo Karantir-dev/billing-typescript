@@ -12,7 +12,7 @@ export const DeleteModal = ({ item, closeModal, onSubmit }) => {
   const validationSchema = Yup.object().shape({
     comfirm: Yup.string()
       .matches(/^Permanently delete$/, t('type_delete'))
-      .required(t('Is a required field', {ns: 'other'})),
+      .required(t('Is a required field', { ns: 'other' })),
   })
   return (
     <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
@@ -20,7 +20,7 @@ export const DeleteModal = ({ item, closeModal, onSubmit }) => {
         <p>{t('delete', { ns: 'other' })}</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
-          {item.id.$}
+          {item.servername?.$ || item.name.$}
         </p>
       </Modal.Header>
       <Modal.Body>

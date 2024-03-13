@@ -286,6 +286,48 @@ const changeTariff =
       })
   }
 
+const changeTariffConfirm =
+  ({ action, elid, closeModal, signal, setIsLoading, p_num, p_cnt }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.confirm.resize',
+          select_resize: action,
+          auth: sessionId,
+          elid,
+          out: 'json',
+          lang: 'en',
+          sok: 'ok',
+          clicked_button: 'ok',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(
+          getInstances({
+            signal,
+            setIsLoading,
+            p_num,
+            p_cnt,
+          }),
+        )
+        closeModal()
+        toast.success(`${action} success`)
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        closeModal()
+        dispatch(actions.hideLoader())
+      })
+  }
+
 const changeInstancePassword =
   ({ password, elid, closeModal, setIsLoading, signal }) =>
   (dispatch, getState) => {
@@ -453,6 +495,7 @@ export default {
   changeInstancePassword,
   getTariffsListToChange,
   changeTariff,
+  changeTariffConfirm,
   rebuildInstance,
   openConsole,
   getAllTariffsInfo,

@@ -11,7 +11,9 @@ export const ConfirmModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Header>
       <Modal.Body>
         <p className={s.body__text}>
-          {t(`confirm.text.${item.confirm_action}`, {name: item.id.$})}
+          {t(`confirm.text.${item.confirm_action}`, {
+            name: item.servername?.$ || item.name.$,
+          })}
         </p>
       </Modal.Body>
       <Modal.Footer>

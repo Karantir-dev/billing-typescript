@@ -129,15 +129,37 @@ export default function InstancesPage() {
   }
 
   const confirmInstanceSubmit = (action, elid) => {
-    dispatch(
-      cloudVpsOperations.changeInstanceState({
-        action,
-        elid,
-        closeModal: () => dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-        ...loadingParams,
-        ...pagination,
-      }),
-    )
+    if (action.includes('resize_')) {
+      return dispatch(
+        cloudVpsOperations.changeTariffConfirm({
+          action: action.replace('resize_', ''),
+          elid,
+          closeModal: () =>
+            dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
+          ...loadingParams,
+          ...pagination,
+        }),
+      )
+    } else if (action === 'unrescue') {
+      return dispatch(
+        cloudVpsOperations.rebuildInstance({
+          action: itemForModals.confirm.confirm_action,
+          elid: itemForModals.confirm.id.$,
+          successCallback: () => getInstances(),
+        }),
+      )
+    } else {
+      return dispatch(
+        cloudVpsOperations.changeInstanceState({
+          action,
+          elid,
+          closeModal: () =>
+            dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
+          ...loadingParams,
+          ...pagination,
+        }),
+      )
+    }
   }
 
   const changeInstancePasswordSubmit = password => {

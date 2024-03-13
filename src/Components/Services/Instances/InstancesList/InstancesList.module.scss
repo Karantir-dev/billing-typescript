@@ -124,6 +124,39 @@
   border-radius: 10px;
   background-color: #ccc;
   line-height: 1;
+  position: relative;
+  background-color: #f79649;
+  &.resized {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding-right: 20px;
+    .popup {
+      width: 300px;
+      text-transform: none;
+      white-space: normal;
+      text-align: left;
+      font-size: 13px;
+    }
+    .popup__wrapper {
+      position: absolute;
+      right: 3px;
+    }
+    svg {
+      @media (max-width: 767px) {
+        position: absolute;
+        right: 3px;
+      }
+      width: 14px;
+      height: 14px;
+      circle {
+        fill: #fff;
+      }
+      path {
+        fill: #f79649;
+      }
+    }
+  }
   &.runing,
   &.active {
     background-color: #45a884;
@@ -131,9 +164,6 @@
   &.stopped,
   &.deletion_in_progress {
     background-color: #fa6848;
-  }
-  &.ordered {
-    background-color: #f79649;
   }
 }
 

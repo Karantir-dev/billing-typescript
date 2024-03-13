@@ -2,7 +2,7 @@
 import { useRef } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { Icon, Options } from '@components'
+import { HintWrapper, Icon, Options } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName } from '@utils'
@@ -20,9 +20,45 @@ export default function InstanceItemMobile({ item }) {
   const isNotActive =
     item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
 
-  const isStopped = item.item_status.$orig === '2_2_16'
+  const isStopped = item.fotbo_status?.$ === 'stopped'
+  const isResized = item.fotbo_status?.$ === 'resized'
+  const isRescued = item.fotbo_status?.$ === 'booted_from_iso'
 
   const options = [
+    {
+      label: t('Confirm Resize'),
+      icon: 'CheckFat',
+      hidden: !isResized,
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: 'resize_confirm' },
+          }),
+        ),
+    },
+    {
+      label: t('Unrescue'),
+      icon: 'Rescue',
+      hidden: !isRescued,
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: 'unrescue' },
+          }),
+        ),
+    },
+    {
+      label: t('Revert Resize'),
+      icon: 'Cross',
+      hidden: !isResized,
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: 'resize_rollback' },
+          }),
+        ),
+    },
+
     {
       label: t(isStopped ? 'Start' : 'Shut down'),
       icon: 'Shutdown',
@@ -33,6 +69,7 @@ export default function InstanceItemMobile({ item }) {
           }),
         ),
       disabled: isNotActive,
+      hidden: isResized || isRescued,
     },
     {
       label: t('Console'),
@@ -50,12 +87,14 @@ export default function InstanceItemMobile({ item }) {
             confirm: { ...item, confirm_action: 'reboot' },
           }),
         ),
+      hidden: isResized || isRescued,
     },
     {
       label: t('Resize'),
       icon: 'Resize',
       disabled: isNotActive || item.change_pricelist?.$ === 'off',
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
+      hidden: isResized || isRescued,
     },
 
     {
@@ -63,6 +102,7 @@ export default function InstanceItemMobile({ item }) {
       icon: 'ChangePassword',
       disabled: isNotActive,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
+      hidden: isResized || isRescued,
     },
     {
       label: t('Rescue'),
@@ -74,12 +114,14 @@ export default function InstanceItemMobile({ item }) {
             rebuild: { ...item, rebuild_action: 'bootimage' },
           }),
         ),
+      hidden: isResized || isRescued,
     },
     {
       label: t('Instructions'),
       icon: 'Instruction',
       disabled: isNotActive,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
+      hidden: isResized || isRescued,
     },
     {
       label: t('Rebuild'),
@@ -91,6 +133,7 @@ export default function InstanceItemMobile({ item }) {
             rebuild: { ...item, rebuild_action: 'rebuild' },
           }),
         ),
+      hidden: isResized || isRescued,
     },
     {
       label: t('Create ticket'),
@@ -99,11 +142,13 @@ export default function InstanceItemMobile({ item }) {
         navigate(`${route.SUPPORT}/requests`, {
           state: { id: item.id.$, openModal: true },
         }),
+      hidden: isResized || isRescued,
     },
     {
       label: t('Rename'),
       icon: 'Rename',
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
+      hidden: isResized || isRescued,
     },
     {
       label: t('Delete'),
@@ -136,6 +181,7 @@ export default function InstanceItemMobile({ item }) {
             )}
           >
             {item.fotbo_status?.$?.replaceAll('_', ' ') || item.item_status?.$}
+            {item.fotbo_status?.$ === 'resized' && <Icon name="Attention" />}
           </p>
         </div>
         <div ref={optionsBlock}>

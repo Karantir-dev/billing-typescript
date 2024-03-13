@@ -25,7 +25,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         <p> {t('choose_flavor')}</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
-          {item.id.$}
+          {item.servername?.$ || item.name.$}
         </p>
       </Modal.Header>
       <Modal.Body>
