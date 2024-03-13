@@ -52,7 +52,6 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
                     {instancesTariffs[item.datacenter.$]
                       ?.filter(el => tariffs.find(tariff => tariff.$key === el.id.$))
                       .map(item => {
-                        console.log(item, ' item')
                         return (
                           <button
                             type="button"
