@@ -7,21 +7,27 @@ import s from './Modals.module.scss'
 import cn from 'classnames'
 
 export const EditNameModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+
+  const validationSchema = Yup.object().shape({
+    servername: Yup.string().required(t('Is a required field', { ns: 'other' })),
+  })
 
   return (
     <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
       <Modal.Header>
-        <p>Edit Name</p>
+        <p>{t('Rename')}</p>
         <p className={s.modal__subtitle}>
-          <span className={s.modal__subtitle_transparent}>Instance:</span>{' '}
+          <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
           {item.servername?.$ || item.id.$}
         </p>
       </Modal.Header>
       <Modal.Body>
         <Formik
           initialValues={{ servername: item.servername?.$ || '' }}
+          validationSchema={validationSchema}
           onSubmit={values => {
+            if (values.servername === item.servername?.$) return closeModal()
             onSubmit({ value: values.servername, elid: item.id.$, closeModal })
           }}
         >
@@ -33,8 +39,8 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
                     inputClassName={s.input}
                     name="servername"
                     isShadow
-                    label={`${t('name')}:`}
-                    placeholder={t('server_placeholder')}
+                    label={`${t('name', { ns: 'vds' })}:`}
+                    placeholder={t('server_placeholder', { ns: 'vds' })}
                     error={!!errors.servername}
                     touched={!!touched.servername}
                     isRequired
@@ -47,9 +53,15 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
         </Formik>
       </Modal.Body>
       <Modal.Footer>
-        <Button label="Edit" size={'large'} type="submit" form={'edit_name'} isShadow />
+        <Button
+          label={t('edit', { ns: 'other' })}
+          size={'large'}
+          type="submit"
+          form={'edit_name'}
+          isShadow
+        />
         <button type="button" onClick={closeModal}>
-          Cancel
+          {t('Cancel', { ns: 'other' })}
         </button>
       </Modal.Footer>
     </Modal>

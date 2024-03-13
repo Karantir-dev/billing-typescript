@@ -19,7 +19,7 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
   const dispatch = useDispatch()
   const [data, setData] = useState()
 
@@ -37,6 +37,10 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const windowsOS = data?.slist
     ?.find(el => el.$name === select)
     ?.val.filter(el => el.$.includes('Windows'))
+
+  const isWindowsOS = !!windowsOS?.find(el =>
+    state[select] ? el.$key === state[select] : el.$key === data[select].$,
+  )
 
   useEffect(() => {
     dispatch(
@@ -103,6 +107,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const validationSchema = Yup.object().shape({
     password:
       (!isRebuild || state.passwordType === 'password') &&
+      !isWindowsOS &&
       Yup.string()
         .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
@@ -112,12 +117,18 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
         )
         .required(t('warnings.password_required', { ns: 'auth' })),
     password_type:
-      isRebuild && Yup.string().required(t('warnings.password_required', { ns: 'auth' })),
+      isRebuild &&
+      !isWindowsOS &&
+      Yup.string().required(t('Is a required field', { ns: 'other' })),
     ssh_keys:
       state.passwordType === 'ssh' &&
       Yup.string()
-        .required(t('warnings.password_required', { ns: 'auth' }))
-        .test('ssh_validate', t('warnings.password_required'), value => value !== 'none'),
+        .required(t('Is a required field', { ns: 'other' }))
+        .test(
+          'ssh_validate',
+          t('Is a required field', { ns: 'other' }),
+          value => value !== 'none',
+        ),
   })
 
   return (
@@ -128,7 +139,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       className={s.rebuild_modal}
     >
       <Modal.Header>
-        <p>Rebuild</p>
+        <p>{t(`rebuild_modal.title.${item.rebuild_action}`)}</p>
       </Modal.Header>
       <Modal.Body className={s.rebuild_modal__body}>
         <Formik
@@ -145,29 +156,30 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
             if (isRebuild) {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
             }
+            if (isWindowsOS) {
+              submitData.password = 'QQQqqq111Hello'
+            }
             onSubmit(submitData)
           }}
         >
           {({ values, errors, touched }) => {
-            const isWindowsOS = !!windowsOS.find(el => el.$key === values[select])
-
             return (
               <Form id={'rebuild'}>
                 <div className={s.body}>
                   {isRebuild && (
                     <WarningMessage>
-                      All data currently on the instance disk will be permanently deleted.
+                      {t(`rebuild_modal.warning.${item.rebuild_action}`)}
                     </WarningMessage>
                   )}
-                  <p className={s.body__text}>Select boot source</p>
+                  <p className={s.body__text}>
+                    {t(`rebuild_modal.text.${item.rebuild_action}`)}
+                  </p>
                   <div className={s.rebuild__os_list}>
                     {renderSoftwareOSFields(select, values[select], depends)}
                   </div>
 
                   {isWindowsOS ? (
-                    <WarningMessage>
-                      Please create an instance and go to the console to set a password
-                    </WarningMessage>
+                    <WarningMessage>{t('windows_password_warning')}</WarningMessage>
                   ) : (
                     <>
                       {isRebuild ? (
@@ -195,8 +207,8 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                           name="password"
                           isShadow
                           type="password"
-                          label={`${t('new_password')}:`}
-                          placeholder={t('new_password_placeholder')}
+                          label={`${t('new_password', { ns: 'vds' })}:`}
+                          placeholder={t('new_password_placeholder', { ns: 'vds' })}
                           error={!!errors.password}
                           touched={!!touched.password}
                           isRequired
@@ -213,14 +225,14 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={isRebuild ? 'Rebuild' : 'Rescue'}
+          label={t(isRebuild ? 'Rebuild' : 'Rescue')}
           size="small"
           type="submit"
           form={'rebuild'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          Cancel
+          {t('Cancel', { ns: 'other' })}
         </button>
       </Modal.Footer>
     </Modal>

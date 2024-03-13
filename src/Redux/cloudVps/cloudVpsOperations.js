@@ -350,6 +350,7 @@ const rebuildInstance =
         dispatch(actions.hideLoader())
       })
   }
+
 const openConsole =
   ({ elid }) =>
   (dispatch, getState) => {
@@ -385,6 +386,64 @@ const openConsole =
       })
   }
 
+const getTariffs = data => {
+  return {
+    [data.doc.datacenter.$]:
+      data.doc.list.find(el => el.$name === 'pricelist').elem || [],
+  }
+}
+
+const getAllTariffsInfo =
+  ({ signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    Promise.all([
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'v2.instances.order.pricelist',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          datacenter: 12,
+        }),
+        { signal },
+      ),
+      axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'v2.instances.order.pricelist',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          datacenter: 13,
+        }),
+        { signal },
+      ),
+    ])
+      .then(([{ data: netherlandsData }, { data: polandData }]) => {
+        if (netherlandsData.doc?.error) throw new Error(netherlandsData.doc.error.msg.$)
+        if (polandData.doc?.error) throw new Error(polandData.doc.error.msg.$)
+
+        const netherlandsTariffs = getTariffs(netherlandsData)
+        const polandTariffs = getTariffs(polandData)
+
+        dispatch(
+          cloudVpsActions.setInstancesTariffs({
+            ...netherlandsTariffs,
+            ...polandTariffs,
+          }),
+        )
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -396,4 +455,5 @@ export default {
   changeTariff,
   rebuildInstance,
   openConsole,
+  getAllTariffsInfo,
 }

@@ -10,9 +10,11 @@ import { useCancelRequest } from '@src/utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
+import { useTranslation } from 'react-i18next'
 
 export default function InstancesPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation(['cloud_vps'])
 
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
@@ -24,6 +26,8 @@ export default function InstancesPage() {
   const instances = useSelector(cloudVpsSelectors.getInstancesList)
   const instancesCount = useSelector(cloudVpsSelectors.getInstancesCount)
   const filters = useSelector(cloudVpsSelectors.getInstancesFilters)
+
+  const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
 
   const [pagination, setPagination] = useReducer(
     (state, action) => {
@@ -44,6 +48,11 @@ export default function InstancesPage() {
   useEffect(() => {
     setFiltersHandler()
     setIsFirstRender(false)
+
+    if (!instancesTariffs) {
+      dispatch(cloudVpsOperations.getAllTariffsInfo({ signal, setIsLoading }))
+    }
+
     return () => {
       dispatch(cloudVpsActions.setInstancesCount(0))
       dispatch(cloudVpsActions.setInstancesList(null))
@@ -189,7 +198,7 @@ export default function InstancesPage() {
               </div>
             </div>
             <Button
-              label="Create new Instance"
+              label={t('create_instance_btn')}
               size="large"
               isShadow
               onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}

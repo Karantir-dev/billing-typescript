@@ -11,7 +11,7 @@ export default function PasswordMethod({
   errors,
   touched,
 }) {
-  const { t } = useTranslation()
+  const { t } = useTranslation(['cloud_vps'])
   return (
     <div className={s.list}>
       <div className={s.item}>
@@ -22,10 +22,8 @@ export default function PasswordMethod({
             value={state.passwordType === 'ssh'}
           />
           <div className={s.item__text_wrapper}>
-            <p className={s.item__name}>SSH Key</p>
-            <p className={s.item__text}>
-              Подключитесь к вашему экземпляру с помощью пары ключей SSH
-            </p>
+            <p className={s.item__name}>{t('ssh_key')}</p>
+            <p className={s.item__text}>{t('pass_method_ssh')}</p>
           </div>
           <Icon name="Ssh_keys" />
         </div>
@@ -34,7 +32,7 @@ export default function PasswordMethod({
             <Select
               isShadow
               itemsList={sshList}
-              placeholder="SSH Keys"
+              placeholder={t('ssh_key')}
               getElement={item => {
                 setState({ ssh_keys: item })
               }}
@@ -52,10 +50,8 @@ export default function PasswordMethod({
             value={state.passwordType === 'password'}
           />
           <div className={s.item__text_wrapper}>
-            <p className={s.item__name}>Password</p>
-            <p className={s.item__text}>
-              Подключитесь к вашему экземпляру как пользователь root через пароль
-            </p>
+            <p className={s.item__name}>{t('password', { ns: 'vds' })}</p>
+            <p className={s.item__text}>{t('pass_method_password')}</p>
           </div>
           <Icon name="Lock" />
         </div>
@@ -65,12 +61,12 @@ export default function PasswordMethod({
               name="password"
               isShadow
               type="password"
-              placeholder={t('new_password_placeholder')}
+              placeholder={t('new_password_placeholder', { ns: 'vds' })}
               error={!!errors.password}
               touched={!!touched.password}
               isRequired
               autoComplete="off"
-              onChange={() => setState({ password: event.target.value })}
+              onChange={e => setState({ password: e.target.value })}
             />
           </div>
         )}

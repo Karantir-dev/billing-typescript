@@ -7,6 +7,7 @@ const initialState = {
   instances: null,
   instancesCount: 0,
   instancesFilters: {},
+  instancesTariffs: null
 }
 
 const itemForModalsReducer = createReducer(initialState.itemForModalsReducer, {
@@ -23,12 +24,16 @@ const instancesCount = createReducer(initialState.instancesCount, {
 const instancesFilters = createReducer(initialState.instancesFilters, {
   [cloudVpsActions.setInstancesFilters]: (_, { payload }) => payload,
 })
+const instancesTariffs = createReducer(initialState.instancesTariffs, {
+  [cloudVpsActions.setInstancesTariffs]: (_, { payload }) => payload,
+})
 
 const cloudVpsReducer = combineReducers({
   itemForModalsReducer,
   instances,
   instancesCount,
   instancesFilters,
+  instancesTariffs
 })
 
 export default cloudVpsReducer

@@ -27,7 +27,7 @@ export default function InstancesList({
   sortBy,
   editInstance,
 }) {
-  const { t } = useTranslation(['vds', 'other'])
+  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
 
   const renderHeadCells = () =>
@@ -51,10 +51,10 @@ export default function InstancesList({
               className={cn(s.sort, { [s.sort_active]: isActiveSort })}
               onClick={changeSortHandler}
             >
-              {cell.name} <Icon name={`Sort_${isDesc ? 'z_a' : 'a_z'}`} />
+              {t(cell.name)} <Icon name={`Sort_${isDesc ? 'z_a' : 'a_z'}`} />
             </button>
           ) : (
-            <>{cell.name}</>
+            <>{t(cell.name)}</>
           )}
         </th>
       )
@@ -64,7 +64,7 @@ export default function InstancesList({
     return (
       <div className={s.no_vds_wrapper}>
         <img className={s.no_vds} src={no_vds} alt="no_vds" />
-        <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
+        <p className={s.no_vds_title}>{t('no_servers_yet', { ns: 'vds' })}</p>
       </div>
     )
   }
