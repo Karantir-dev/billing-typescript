@@ -184,6 +184,11 @@ export default function CreateInstancePage() {
             setFieldValue('instances_os', value)
           }
 
+          const onTariffChange = id => {
+            setFieldValue('tariff_id', id)
+            dispatch(cloudVpsOperations.getTariffParams({ signal, id }))
+          }
+
           const isItWindows = osList
             ?.find(el => el.$key === values.instances_os)
             ?.$.toLowerCase()
@@ -238,7 +243,11 @@ export default function CreateInstancePage() {
                       .value.$.replace('.', '')
                     return (
                       <li className={s.tariff_item} key={tariff.id.$}>
-                        <button className={s.tariff_btn} type="button">
+                        <button
+                          className={s.tariff_btn}
+                          type="button"
+                          onClick={() => onTariffChange(tariff.id.$)}
+                        >
                           <p className={s.tariff_title}>{tariff.title.main.$}</p>
                           <div className={s.tariff_parameters}>
                             <div className={s.tariff_row}>

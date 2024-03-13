@@ -3,7 +3,7 @@ import qs from 'qs'
 import { actions, authSelectors } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
 import { t } from 'i18next'
 
 const getInstances =
@@ -443,7 +443,7 @@ const getCloudOrderPageInfo =
         }
 
         if (setOsList) {
-          return dispatch(getTariffParams({ signal, id: lastTariffID })).then(
+          return dispatch(getTariffParamsRequest({ signal, id: lastTariffID })).then(
             ({ data }) => {
               console.log(data)
               const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
@@ -465,6 +465,15 @@ const getCloudOrderPageInfo =
   }
 
 const getTariffParams =
+  ({ signal, id }) =>
+  dispatch => {
+    dispatch(getTariffParamsRequest({ signal, id })).then(({ data }) => {
+      console.log(data.doc)
+      renameAddonFields(data.doc, { isNewFunc: true })
+    })
+  }
+
+const getTariffParamsRequest =
   ({ signal, id }) =>
   (_, getState) => {
     const sessionId = authSelectors.getSessionId(getState())
