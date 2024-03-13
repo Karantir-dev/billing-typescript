@@ -6,6 +6,7 @@ import {
   ConfirmModal,
   ResizeModal,
   RebuildModal,
+  // AddSshKeyModal,
 } from '.'
 import { cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,6 +17,7 @@ export const Modals = ({
   editNameSubmit,
   confirmSubmit,
   resizeSubmit,
+  // addSsh,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -74,6 +76,15 @@ export const Modals = ({
           onSubmit={() => {}}
         />
       )}
+      {/* {!!itemForModals.publicKey && (
+        <AddSshKeyModal
+          item={itemForModals.publicKey}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ publicKey: false }))
+          }
+          onSubmit={addSsh}
+        />
+      )} */}
     </>
   )
 }

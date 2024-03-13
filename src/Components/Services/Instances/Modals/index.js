@@ -5,4 +5,5 @@ export { EditNameModal } from './EditNameModal'
 export { ConfirmModal } from './ConfirmModal'
 export { ResizeModal } from './ResizeModal'
 export { RebuildModal } from './RebuildModal'
+export { AddSshKeyModal } from './AddSshKeyModal'
 

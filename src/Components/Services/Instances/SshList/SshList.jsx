@@ -1,28 +1,23 @@
 /* eslint-disable no-unused-vars */
 import { useMediaQuery } from 'react-responsive'
-import s from './InstancesList.module.scss'
+import s from '../InstancesList/InstancesList.module.scss'
 import cn from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import InstanceItem from './InstanceItem'
-import InstanceItemMobile from './InstanceItemMobile'
+import SshItem from './SshItem'
+// import InstanceItemMobile from './InstanceItemMobile'
 import { useState } from 'react'
 import { CheckBox, Icon } from '@components'
 import { Modals } from '../Modals/Modals'
 import no_vds from '@images/services/no_vds.png'
 import { useTranslation } from 'react-i18next'
 const headCells = [
-  { name: 'Name', isSort: true, key: 'servername' },
-  { name: 'Status', isSort: true, key: 'fotbo_status' },
-  { name: 'Flavor', isSort: true, key: 'pricelist' },
-  { name: 'Price', isSort: true, key: 'cost' },
-  { name: 'Region', isSort: true, key: 'datacentername' },
-  { name: 'Created at', isSort: true, key: 'createdate' },
-  { name: 'OS', isSort: true, key: 'instances_os' },
-  { name: 'Access IP', isSort: false, key: 'ip' },
+  { name: 'Name', isSort: true, key: 'comment' },
+  { name: 'Created at', isSort: true, key: 'cdate' },
+  { name: 'Fingerprint', isSort: false, key: 'fingerprint' },
 ]
 
-export default function InstancesList({
-  instances,
+export default function SshList({
+  ssh,
   setSortHandler,
   sortBy,
   editInstance,
@@ -60,7 +55,7 @@ export default function InstancesList({
       )
     })
 
-  if (!instances?.length) {
+  if (!ssh?.length) {
     return (
       <div className={s.no_vds_wrapper}>
         <img className={s.no_vds} src={no_vds} alt="no_vds" />
@@ -83,9 +78,9 @@ export default function InstancesList({
             </tr>
           </thead>
           <tbody>
-            {instances.map(item => (
-              <InstanceItem
-                key={item.id.$}
+            {ssh.map(item => (
+              <SshItem
+                key={item.elid.$}
                 item={item}
                 editInstance={editInstance}
               />
@@ -94,12 +89,13 @@ export default function InstancesList({
         </table>
       ) : (
         <div className={s.mobile__list}>
-          {instances.map(item => (
+          {/* {ssh.map(item => (
             <InstanceItemMobile
-              key={item.id.$}
+              key={item.elid.$}
               item={item}
             />
-          ))}
+          ))} */}
+          here going to be mobile component
         </div>
       )}
     </>

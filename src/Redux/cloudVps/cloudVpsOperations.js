@@ -393,6 +393,149 @@ const rebuildInstance =
       })
   }
 
+const getSshKeys =
+  ({ setSshItems, setTotalElems, p_cnt, p_num, signal, setIsLoading, p_col }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys',
+          out: 'json',
+          auth: sessionId,
+          p_num,
+          p_cnt,
+          p_col,
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        console.log('data from sshkeys request: ', data)
+        setSshItems(data.doc.elem || [])
+        setTotalElems(data.doc.p_elems.$)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
+const setSshKey =
+  ({
+    values,
+    closeModal = () => {},
+    errorCallback = () => {},
+    setSshItems,
+    setTotalElems,
+    setIsLoading,
+    signal,
+  }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys.edit',
+          out: 'json',
+          sok: 'ok',
+          processingmodules: '234' /* 233 - Poland, 234 - Netherlands */,
+          auth: sessionId,
+
+          lang: 'en',
+          clicked_button: 'ok',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(
+          getSshKeys({
+            setSshItems,
+            setTotalElems,
+            signal,
+            setIsLoading,
+          }),
+        )
+        closeModal()
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        toast.success(t('Saved successfully', { ns: 'other' }))
+      })
+      .catch(error => {
+        errorCallback()
+        closeModal()
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
+/* Below being request for changing data of ssh keys */
+const editSsh =
+  ({
+    values,
+    elid,
+    errorCallback = () => {},
+    closeModal = () => {},
+    setSshItems,
+    setTotalElems,
+    setIsLoading,
+    signal,
+  }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    console.log('values on editing: ', values)
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys.edit',
+          out: 'json',
+          sok: 'ok',
+          auth: sessionId,
+          elid,
+          lang: 'en',
+          clicked_button: 'ok',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(
+          getSshKeys({
+            setSshItems,
+            setTotalElems,
+            signal,
+            setIsLoading,
+          }),
+        )
+        closeModal()
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        toast.success(t('Changes saved successfully', { ns: 'other' }))
+      })
+      .catch(error => {
+        errorCallback()
+        closeModal()
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -403,4 +546,7 @@ export default {
   getTariffsListToChange,
   changeTariff,
   rebuildInstance,
+  getSshKeys,
+  setSshKey,
+  editSsh,
 }
