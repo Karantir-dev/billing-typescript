@@ -124,6 +124,8 @@ export default function InstanceItem({ item, editInstance }) {
     },
   ]
 
+  const itemCountry = formatCountryName(item)
+
   return (
     <tr
       onClick={e => {
@@ -168,7 +170,7 @@ export default function InstanceItem({ item, editInstance }) {
         <HintWrapper
           popupClassName={s.popup}
           wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
-          label={formatCountryName(item.datacentername.$)}
+          label={itemCountry}
         >
           <img
             src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -176,7 +178,7 @@ export default function InstanceItem({ item, editInstance }) {
             )}.png`)}
             width={20}
             height={14}
-            alt={formatCountryName(item.datacentername.$)}
+            alt={itemCountry}
           />
         </HintWrapper>
       </td>

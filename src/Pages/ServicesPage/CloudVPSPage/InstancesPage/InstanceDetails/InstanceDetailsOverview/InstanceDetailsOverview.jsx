@@ -11,7 +11,6 @@ import dayjs from 'dayjs'
 import { Loader } from '@components'
 import { getFlagFromCountryName, useCancelRequest } from '@utils'
 import formatCountryName from '@components/Services/Instances/ExternalFunc/formatCountryName'
-// import formatCountryName from '../../../../../'
 
 import s from './InstanceDetailsOverview.module.scss'
 
@@ -44,6 +43,8 @@ export default function InstanceDetailsOverview() {
 
     return `${formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)}`
   }
+
+  const itemCountry = formatCountryName(item)
 
   return (
     <>
@@ -105,9 +106,9 @@ export default function InstanceDetailsOverview() {
                     )}.png`)}
                     width={20}
                     height={14}
-                    alt={formatCountryName(item.datacentername.$)}
+                    alt={itemCountry}
                   />
-                  <p>{formatCountryName(item?.datacentername?.$)}</p>
+                  <p>{itemCountry}</p>
                 </div>
               </div>
             </div>

@@ -1,3 +1,4 @@
-export default function formatCountryName(country) {
+export default function formatCountryName(item) {
+  const country = item.datacentername.$
   return country.replace('Fotbo ', '')
 }

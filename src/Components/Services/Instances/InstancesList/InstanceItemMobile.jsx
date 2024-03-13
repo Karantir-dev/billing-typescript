@@ -54,7 +54,7 @@ export default function InstanceItemMobile({ item }) {
       label: 'Change password',
       icon: 'ChangePassword',
       disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item})),
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
     },
     {
       label: 'Rescue',
@@ -139,7 +139,7 @@ export default function InstanceItemMobile({ item }) {
             )}.png`)}
             width={20}
             height={14}
-            alt={formatCountryName(item.datacentername.$)}
+            alt={formatCountryName(item)}
           />
         </p>
 
