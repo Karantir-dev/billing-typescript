@@ -44,8 +44,6 @@ export default function InstanceDetailsOverview() {
     return `${formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)}`
   }
 
-  const itemCountry = formatCountryName(item)
-
   return (
     <>
       <div className={s.content}>
@@ -66,7 +64,7 @@ export default function InstanceDetailsOverview() {
 
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Memory')}</p>
-                <p className={s.item_info}>{instanceInfo?.Memory.replace('.', '')}</p>
+                <p className={s.item_info}>{instanceInfo?.Memory?.replace('.', '')}</p>
               </div>
 
               <div className={s.info_block_item}>
@@ -76,7 +74,7 @@ export default function InstanceDetailsOverview() {
 
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Storage')}</p>
-                <p className={s.item_info}>{instanceInfo?.Disk_space.replace('.', '')}</p>
+                <p className={s.item_info}>{instanceInfo?.Disk_space?.replace('.', '')}</p>
               </div>
             </div>
           </div>
@@ -106,9 +104,9 @@ export default function InstanceDetailsOverview() {
                     )}.png`)}
                     width={20}
                     height={14}
-                    alt={itemCountry}
+                    alt={formatCountryName(item?.datacentername?.$)}
                   />
-                  <p>{itemCountry}</p>
+                  <p>{formatCountryName(item?.datacentername?.$)}</p>
                 </div>
               </div>
             </div>

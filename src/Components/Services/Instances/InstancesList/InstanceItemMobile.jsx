@@ -107,7 +107,7 @@ export default function InstanceItemMobile({ item }) {
     >
       <div className={s.mobile_item__header}>
         <div className={s.mobile_item__header_name}>
-          <p className={s.mobile_item__name}>{item.servername.$}</p>
+          <p className={s.mobile_item__name}>{item?.servername?.$}</p>
           <p
             className={cn(
               s.status,
@@ -139,7 +139,7 @@ export default function InstanceItemMobile({ item }) {
             )}.png`)}
             width={20}
             height={14}
-            alt={formatCountryName(item)}
+            alt={formatCountryName(item?.datacentername?.$)}
           />
         </p>
 
