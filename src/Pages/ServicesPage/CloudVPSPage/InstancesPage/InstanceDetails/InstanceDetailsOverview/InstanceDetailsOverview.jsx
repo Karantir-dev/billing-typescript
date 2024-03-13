@@ -44,6 +44,8 @@ export default function InstanceDetailsOverview() {
     return `${formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)}`
   }
 
+  const itemCountry = formatCountryName(item)
+
   return (
     <>
       <div className={s.content}>
@@ -106,7 +108,7 @@ export default function InstanceDetailsOverview() {
                     height={14}
                     alt={formatCountryName(item?.datacentername?.$)}
                   />
-                  <p>{formatCountryName(item?.datacentername?.$)}</p>
+                  <p>{itemCountry}</p>
                 </div>
               </div>
             </div>

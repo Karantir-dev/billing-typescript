@@ -124,6 +124,8 @@ export default function InstanceItem({ item, editInstance }) {
     },
   ]
 
+  const itemCountry = formatCountryName(item)
+
   return (
     <tr
       onClick={e => {
