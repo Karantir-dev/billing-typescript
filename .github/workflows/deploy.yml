@@ -1,9 +1,16 @@
 name: Deployment
 on:
   push:
-    branches: [ prod, dev, prod-biz, update ]
+    branches: [ prod, dev, prod-biz, update, update_deploy ]
 
   workflow_dispatch:
+    inputs:
+      environments:
+        default: ${{ github.ref_name }}
+        description: "Яку environments github використовується"
+      namespace:
+        default: ${{ github.ref_name }}
+        description: "Частина namespace, яка створена в "
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -17,6 +24,7 @@ concurrency:
 env:
   NAMESPACE: ${{ vars.NAMESPACE_PREFIX }}-${{ github.ref_name }}
   PREFIX: version-${{ github.run_number }}-${{ github.ref_name }}
+  ENVIRONMENTS: ${{ inputs.environments }} || ${{ github.ref_name }}
 
 jobs:
   test:
