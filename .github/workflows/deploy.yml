@@ -43,38 +43,40 @@ jobs:
       environment: ${{ steps.dynamic.outputs.environment }}
     steps:
       # Logic
-      - name: Set default value for prefix
-        if: ${{ !inputs.prefix }}
+      - name: Set prefix
+        env:
+          VALUE: ${{ inputs.prefix }}
+          DEFAULT: ${{ github.ref_name }}
         id: _tmp_prefix
         run: |
-          echo "value=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-      - name: Set value for prefix
-        if: ${{ inputs.prefix }}
-        id: _tmp_prefix
-        run: |
-          echo "value=${{ inputs.prefix }}" >> $GITHUB_OUTPUT
+          if [[ -n "$VALUE" ]]; then
+            echo "value=${{ env.VALUE }}" >> $GITHUB_OUTPUT
+          else
+            echo "value=${{ env.DEFAULT }}" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Set default value for environments
-        if: ${{ !inputs.environment }}
+      - name: Set environments
+        env:
+          VALUE: ${{ inputs.environment }}
+          DEFAULT: ${{ github.ref_name }}
         id: _tmp_environment
         run: |
-          echo "value=${{ github.ref_name }}" >> $GITHUB_OUTPUT
-      - name: Set value for environments
-        if: ${{ inputs.environment }}
-        id: _tmp_environment
-        run: |
-          echo "value=${{ inputs.environment }}" >> $GITHUB_OUTPUT
+          if [[ -n "$VALUE" ]]; then
+            echo "value=${{ env.VALUE }}" >> $GITHUB_OUTPUT
+          else
+            echo "value=${{ env.DEFAULT }}" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Set default value for KUBECONFIG
-        if: ${{ !inputs.KUBECONFIG }}
+      - name: Set environments KUBECONFIG
+        env:
+          VALUE: ${{ inputs.KUBECONFIG }}
         id: _tmp_KUBECONFIG_VERSION
         run: |
-          echo "value=$( echo "secrets" )" >> $GITHUB_OUTPUT
-      - name: Set value for KUBECONFIG
-        if: ${{ inputs.KUBECONFIG }}
-        id: _tmp_KUBECONFIG_VERSION
-        run: |
-          echo "value=$( echo "inputs" )" >> $GITHUB_OUTPUT
+          if [[ -n "$CHECK" ]]; then
+            echo "value=$( echo "secrets" )" >> $GITHUB_OUTPUT
+          else
+            echo "value=$( echo "inputs" )" >> $GITHUB_OUTPUT
+          fi
 
       # Set
       - name: Create dynamic vars
