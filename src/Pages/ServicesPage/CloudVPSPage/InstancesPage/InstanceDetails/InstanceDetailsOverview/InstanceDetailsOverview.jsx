@@ -106,7 +106,7 @@ export default function InstanceDetailsOverview() {
                     )}.png`)}
                     width={20}
                     height={14}
-                    alt={formatCountryName(item?.datacentername?.$)}
+                    alt={itemCountry}
                   />
                   <p>{itemCountry}</p>
                 </div>
