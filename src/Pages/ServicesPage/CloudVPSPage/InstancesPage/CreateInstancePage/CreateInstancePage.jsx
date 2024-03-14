@@ -8,8 +8,8 @@ import {
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { cloudVpsOperations } from '@src/Redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { cloudVpsOperations, cloudVpsSelectors } from '@src/Redux'
 import { getFlagFromCountryName, useCancelRequest } from '@src/utils'
 import cn from 'classnames'
 import { Form, Formik } from 'formik'
@@ -24,41 +24,31 @@ export default function CreateInstancePage() {
 
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
-  /** Data to render the page (lists) */
-  /** Probably it makes sense to use here useReducer instead of useStates */
-  const [dcList, setDcList] = useState([])
-  const [osList, setOsList] = useState([])
-  const [tariffsList, setTariffsList] = useState([])
-  const [windowsTag, setWindowsTag] = useState([])
+  const tariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
+  const dcList = useSelector(cloudVpsSelectors.getDClist)
+  const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
+  const osList = useSelector(cloudVpsSelectors.getOsList)
 
-  /** This state doesn`t change between rerenders */
-  const [currentDC, setCurrentDC] = useState('')
+  const [currentDC, setCurrentDC] = useState(dcList?.[0]?.$key)
 
   const onDCchange = $key => {
     setCurrentDC($key)
-
-    dispatch(
-      cloudVpsOperations.getCloudOrderPageInfo({
-        signal,
-        setIsLoading,
-        setTariffsList,
-        datacenter: $key,
-      }),
-    )
   }
 
   useEffect(() => {
-    dispatch(
-      cloudVpsOperations.getCloudOrderPageInfo({
-        signal,
-        setIsLoading,
-        setDcList,
-        setOsList,
-        setTariffsList,
-        setCurrentDC,
-        setWindowsTag,
-      }),
-    )
+    if (!tariffs) {
+      dispatch(
+        cloudVpsOperations.getAllTariffsInfo({
+          signal,
+          setIsLoading,
+          needOsList: !osList,
+        }),
+      )
+    }
+
+    if (!osList) {
+      dispatch(cloudVpsOperations)
+    }
   }, [])
 
   const renderSoftwareOSFields = ({
@@ -173,7 +163,7 @@ export default function CreateInstancePage() {
       <Formik
         enableReinitialize
         initialValues={{
-          instances_os: osList[0]?.$key || '',
+          instances_os: osList?.[0]?.$key || '',
           tariff_id: '',
         }}
         // validationSchema={validationSchema}
@@ -195,14 +185,14 @@ export default function CreateInstancePage() {
             .includes('windows')
 
           const filteredTariffsList = isItWindows
-            ? tariffsList.filter(tariff => {
+            ? tariffs?.[currentDC].filter(tariff => {
                 if (Array.isArray(tariff.flabel.tag)) {
                   return tariff.flabel.tag.some(el => el.$ === windowsTag)
                 } else {
                   tariff.flabel.tag.$ === windowsTag
                 }
               })
-            : tariffsList
+            : tariffs?.[currentDC]
 
           return (
             <Form>
@@ -230,7 +220,7 @@ export default function CreateInstancePage() {
                 </label>
 
                 <ul className={s.tariffs_list}>
-                  {filteredTariffsList.map(tariff => {
+                  {filteredTariffsList?.map(tariff => {
                     const cpu = tariff.detail.find(
                       el => el.name.$.toLowerCase() === 'cpu',
                     ).value.$

@@ -7,7 +7,10 @@ const initialState = {
   instances: null,
   instancesCount: 0,
   instancesFilters: {},
-  instancesTariffs: null
+  instancesTariffs: null,
+  instancesDcList: null,
+  windowsTag: '',
+  osList: null,
 }
 
 const itemForModalsReducer = createReducer(initialState.itemForModalsReducer, {
@@ -28,12 +31,27 @@ const instancesTariffs = createReducer(initialState.instancesTariffs, {
   [cloudVpsActions.setInstancesTariffs]: (_, { payload }) => payload,
 })
 
+const instancesDcList = createReducer(initialState.instancesDcList, {
+  [cloudVpsActions.setInstancesDCList]: (_, { payload }) => payload,
+})
+
+const windowsTag = createReducer(initialState.windowsTag, {
+  [cloudVpsActions.setWindowsTag]: (_, { payload }) => payload,
+})
+
+const osList = createReducer(initialState.osList, {
+  [cloudVpsActions.setOsList]: (_, { payload }) => payload,
+})
+
 const cloudVpsReducer = combineReducers({
   itemForModalsReducer,
   instances,
   instancesCount,
   instancesFilters,
-  instancesTariffs
+  instancesTariffs,
+  instancesDcList,
+  windowsTag,
+  osList,
 })
 
 export default cloudVpsReducer

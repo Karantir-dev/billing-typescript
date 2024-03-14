@@ -1,10 +1,10 @@
-/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import { actions, authSelectors, cloudVpsActions } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
 import { t } from 'i18next'
+import { DC_ID_IN } from '@src/utils/constants'
 
 const getInstances =
   ({ p_cnt, p_num, p_col, signal, setIsLoading }) =>
@@ -445,7 +445,7 @@ const getInstanceInfo =
       })
   }
 
-const getTariffs = data => {
+const writeTariffsWithDC = data => {
   return {
     [data.doc.datacenter.$]:
       data.doc.list.find(el => el.$name === 'pricelist').elem || [],
@@ -453,7 +453,7 @@ const getTariffs = data => {
 }
 
 const getAllTariffsInfo =
-  ({ signal, setIsLoading }) =>
+  ({ signal, setIsLoading, needOsList }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -466,7 +466,7 @@ const getAllTariffsInfo =
           out: 'json',
           auth: sessionId,
           lang: 'en',
-          datacenter: 12,
+          datacenter: DC_ID_IN.netherlands,
         }),
         { signal },
       ),
@@ -477,7 +477,7 @@ const getAllTariffsInfo =
           out: 'json',
           auth: sessionId,
           lang: 'en',
-          datacenter: 13,
+          datacenter: DC_ID_IN.poland,
         }),
         { signal },
       ),
@@ -486,15 +486,40 @@ const getAllTariffsInfo =
         if (netherlandsData.doc?.error) throw new Error(netherlandsData.doc.error.msg.$)
         if (polandData.doc?.error) throw new Error(polandData.doc.error.msg.$)
 
-        const netherlandsTariffs = getTariffs(netherlandsData)
-        const polandTariffs = getTariffs(polandData)
+        const DClist = netherlandsData.doc.slist.find(el => el.$name === 'datacenter').val
+
+        const windowsTag = netherlandsData.doc.flist.val.find(el =>
+          el.$.toLowerCase().includes('windows'),
+        ).$key
+
+        if (needOsList) {
+          return dispatch(getOsList({ signal, setIsLoading }))
+          // const polandTariffs = polandData.doc.list.find(
+          //   el => el.$name === 'pricelist',
+          // ).elem
+          // const lastTariffID = polandTariffs[polandTariffs.length - 1].pricelist.$
+
+          // return dispatch(getTariffParamsRequest({ signal, id: lastTariffID })).then(
+          //   ({ data }) => {
+          //     if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+          //     console.log(data)
+          //     const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+
+          //     dispatch(cloudVpsActions.setOsList(osList))
+          //   },
+          // )
+        }
 
         dispatch(
           cloudVpsActions.setInstancesTariffs({
-            ...netherlandsTariffs,
-            ...polandTariffs,
+            ...writeTariffsWithDC(netherlandsData),
+            ...writeTariffsWithDC(polandData),
           }),
         )
+        dispatch(cloudVpsActions.setInstancesDCList(DClist))
+        dispatch(cloudVpsActions.setWindowsTag(windowsTag))
+
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -503,76 +528,69 @@ const getAllTariffsInfo =
       })
   }
 
-const getCloudOrderPageInfo =
-  ({
-    setIsLoading,
-    signal,
-    setDcList,
-    setOsList,
-    setTariffsList,
-    setCurrentDC,
-    setWindowsTag,
-    datacenter,
-  }) =>
+const getOsList =
+  ({ signal, setIsLoading }) =>
   (dispatch, getState) => {
-    setIsLoading(true)
-    const sessionId = authSelectors.getSessionId(getState())
-
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'v2.instances.order.pricelist',
-          out: 'json',
-          auth: sessionId,
-          lang: 'en',
-          datacenter,
-        }),
-        { signal },
-      )
-      .then(({ data }) => {
+    return dispatch(getTariffParamsRequest({ signal, id: lastTariffID })).then(
+      ({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
+        console.log(data)
+        const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
 
-        const dcList = data.doc.slist.find(el => el.$name === 'datacenter').val
-        dcList.forEach(dc => (dc.$ = dc.$.replace('Fotbo ', '')))
-
-        const tariffs = data.doc.list[0].elem
-        const lastTariffID = tariffs[tariffs.length - 1].pricelist.$
-
-        const setPageData = osList => {
-          setOsList && setOsList(osList)
-          setTariffsList && setTariffsList(tariffs)
-          setDcList && setDcList(dcList)
-          setCurrentDC && setCurrentDC(data.doc.datacenter.$)
-          setWindowsTag &&
-            setWindowsTag(
-              data.doc.flist.val.find(el => el.$.toLowerCase().includes('windows')).$key,
-            )
-        }
-
-        if (setOsList) {
-          return dispatch(getTariffParamsRequest({ signal, id: lastTariffID })).then(
-            ({ data }) => {
-              console.log(data)
-              const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
-
-              setPageData(osList)
-            },
-          )
-        } else {
-          setPageData()
-        }
-      })
-      .then(() => {
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-      })
-      .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        handleLoadersClosing(err?.message, dispatch, setIsLoading)
-      })
+        dispatch(cloudVpsActions.setOsList(osList))
+      },
+    )
   }
+
+// const getCloudOrderPageInfo =
+//   ({ setIsLoading, signal, setOsList, datacenter }) =>
+//   (dispatch, getState) => {
+//     setIsLoading(true)
+//     const sessionId = authSelectors.getSessionId(getState())
+
+//     axiosInstance
+//       .post(
+//         '/',
+//         qs.stringify({
+//           func: 'v2.instances.order.pricelist',
+//           out: 'json',
+//           auth: sessionId,
+//           lang: 'en',
+//           datacenter,
+//         }),
+//         { signal },
+//       )
+//       .then(({ data }) => {
+//         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+//         console.log(data.doc)
+
+//         const dcList = data.doc.slist.find(el => el.$name === 'datacenter').val
+//         dcList.forEach(dc => (dc.$ = dc.$.replace('Fotbo ', '')))
+
+//         const tariffs = data.doc.list[0].elem
+//         const lastTariffID = tariffs[tariffs.length - 1].pricelist.$
+
+//         if (setOsList) {
+//           return dispatch(getTariffParamsRequest({ signal, id: lastTariffID })).then(
+//             ({ data }) => {
+//               console.log(data)
+//               const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+
+//               setOsList && setOsList(osList)
+//             },
+//           )
+//         }
+//       })
+//       .then(() => {
+//         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+//       })
+//       .catch(err => {
+//         checkIfTokenAlive(err.message, dispatch)
+//         handleLoadersClosing(err?.message, dispatch, setIsLoading)
+//       })
+//   }
 
 const getTariffParams =
   ({ signal, id }) =>
@@ -616,6 +634,5 @@ export default {
   getInstanceInfo,
   openConsole,
   getAllTariffsInfo,
-  getCloudOrderPageInfo,
   getTariffParams,
 }
