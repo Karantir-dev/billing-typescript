@@ -6,10 +6,10 @@ on:
   workflow_dispatch:
     inputs:
       environments:
-        default: ${{ github.ref_name }}
+        default: dev
         description: "Яку environments github використовується"
       namespace:
-        default: ${{ github.ref_name }}
+        default: dev
         description: "Частина namespace, яка створена в "
 
 permissions:
