@@ -108,6 +108,7 @@ jobs:
           REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
           REACT_APP_TRANSLATION_VERSION: ${{ needs.vars.outputs.static_version }}
           REACT_APP_SITE_URL: ${{ vars.SITE_URL }}
+          CI: false
         run: |
           npm run build
 
