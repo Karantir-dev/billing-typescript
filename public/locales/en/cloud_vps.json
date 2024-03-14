@@ -9,5 +9,65 @@
   "UUID": "Instance UUID",
   "Created at": "Created at",
   "Region": "Region",
-  "Network Details": "Network Details"
+  "Network Details": "Network Details",
+
+  "Start": "Start",
+  "Shut down": "Shut down",
+  "Console": "Console",
+  "Reboot": "Reboot",
+  "Resize": "Resize",
+  "Change password": "Change password",
+  "Rescue": "Rescue",
+  "Instructions": "Instructions",
+  "Rebuild": "Rebuild",
+  "Create ticket": "Create ticket",
+  "Rename": "Rename",
+  "Delete": "Delete",
+  "Name": "Name",
+  "Status": "Status",
+  "Price": "Price",
+  "Access IP": "Access IP",
+  "OS": "OS",
+  "create_instance_btn": "Create new Instance",
+  "Day": "Day",
+  "Yes": "Yes",
+  "No": "No",
+
+  "change_password_title": "Change admin password",
+  "instance": "Instance",
+  "delete_text": "Are you sure you want to delete the instance?",
+  "delete_warning": "Files will be permanently lost. To delete an istance, you must type \"Permanently delete\".",
+  "type_delete": "Type \"Permanently delete\"",
+  "choose_flavor": "Choose a flavor",
+  "resize_warning": "Warning: instance resize will cause downtime. The instance will shutdown and the disk image will be copied to a new disk. This may take a while, depending on the disk size.",
+  "resize_notes": "Notes: you can only select flavors larger than your current flavor. After the resize is completed, the instance will have the state \"VERIFY RESIZE\". Check if everything is ok with your data and then click on \"Confirm resize\" in the instance menu.",
+  "ssh_key": "SSH Key",
+  "pass_method_ssh": "Connect to your instance using SSH key pair",
+  "pass_method_password": "Connect to your instance as root user via password",
+  "windows_password_warning": "Please create an instance and go to the console to set a password",
+  "confirm": {
+    "title": {
+      "stop": "Stop instance",
+      "start": "Start instance",
+      "reboot": "Reboot instance"
+    },
+    "text": {
+      "stop": "Are you sure you want to stop instance {{name}}?",
+      "start": "Are you sure you want to start instance {{name}}?",
+      "reboot": "Are you sure you want to reboot instance {{name}}?"
+    }
+  },
+  "rebuild_modal": {
+    "title": {
+      "bootimage": "Rescue",
+      "rebuild": "Rebuild instance"
+    },
+    "text": {
+      "bootimage": "Select distribution",
+      "rebuild": "Select boot source"
+    },
+    "warning": {
+      "rebuild": "All data currently on the instance disk will be permanently deleted."
+    }
+  }
 }
