@@ -189,6 +189,29 @@ export default function InstancesPage() {
       }),
     )
   }
+  const resizeSubmit = values => {
+    dispatch(
+      cloudVpsOperations.changeTariff({
+        elid: itemForModals.resize.id.$,
+        pricelist: values.pricelist,
+        successCallback: () =>
+          dispatch(cloudVpsActions.setItemForModals({ resize: false })),
+        ...loadingParams,
+        ...pagination,
+      }),
+    )
+
+    dispatch(
+      cloudVpsOperations.rebuildInstance({
+        action: itemForModals.rebuild.rebuild_action,
+        elid: itemForModals.rebuild.id.$,
+        sok: 'ok',
+        clicked_button: 'ok',
+        ...values,
+        successCallback: () => getInstances(),
+      }),
+    )
+  }
 
   return (
     <>
@@ -254,9 +277,8 @@ export default function InstancesPage() {
         changeInstancePasswordSubmit={changeInstancePasswordSubmit}
         editNameSubmit={editNameSubmit}
         confirmSubmit={confirmInstanceSubmit}
-        resizeSubmit={() => {}}
+        resizeSubmit={resizeSubmit}
         rebuildSubmit={rebuildSubmit}
-        loadingParams={loadingParams}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>

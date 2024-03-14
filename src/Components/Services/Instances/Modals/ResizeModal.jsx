@@ -31,18 +31,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         </p>
       </Modal.Header>
       <Modal.Body>
-        <Formik
-          initialValues={{ pricelist: '' }}
-          onSubmit={values =>
-            dispatch(
-              cloudVpsOperations.changeTariff({
-                elid: item.id.$,
-                pricelist: values.pricelist,
-                successCallback: closeModal,
-              }),
-            )
-          }
-        >
+        <Formik initialValues={{ pricelist: '' }} onSubmit={onSubmit}>
           {({ values, setFieldValue }) => {
             return (
               <Form id={'resize'}>

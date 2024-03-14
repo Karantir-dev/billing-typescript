@@ -262,7 +262,7 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
     })
 }
 const changeTariff =
-  ({ elid, pricelist, successCallback }) =>
+  ({ elid, pricelist, successCallback, signal, setIsLoading, p_num, p_cnt }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -278,7 +278,14 @@ const changeTariff =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         successCallback && successCallback()
-        dispatch(actions.hideLoader())
+        dispatch(
+          getInstances({
+            signal,
+            setIsLoading,
+            p_num,
+            p_cnt,
+          }),
+        )
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
