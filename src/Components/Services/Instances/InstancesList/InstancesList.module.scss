@@ -1,14 +1,14 @@
-table {
+.table {
   width: 100%;
   text-align: left;
   border-spacing: 0 8px;
 
-  th {
+  .th {
     white-space: nowrap;
     font-size: 14px;
     font-weight: 400;
   }
-  td {
+  .td {
     font-size: 16px;
     white-space: nowrap;
     &.ip_cell {
@@ -20,8 +20,8 @@ table {
       max-width: 200px;
     }
   }
-  td,
-  th {
+  .td,
+  .th {
     // &:first-child {
     //   width: 46px;
     //   padding-right: 16px;
@@ -53,14 +53,14 @@ table {
   }
 }
 
-tbody {
+.tbody {
   position: relative;
   z-index: 1;
-  tr {
+  .tr {
     position: relative;
     cursor: pointer;
 
-    td {
+    .td {
       &:nth-child(1) {
         &::before {
           content: '';
@@ -79,7 +79,7 @@ tbody {
     }
 
     &:hover {
-      td:before {
+      .td:before {
         background: linear-gradient(89.98deg, #feeff7 0.02%, #f5eafe 99.98%);
       }
     }

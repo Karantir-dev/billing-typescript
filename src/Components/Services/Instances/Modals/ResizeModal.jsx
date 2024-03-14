@@ -1,31 +1,31 @@
 /* eslint-disable no-unused-vars */
-import { Button, Icon, InputField, Modal } from '@components'
+import { Button, Icon, InputField, Modal, WarningMessage } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import cn from 'classnames'
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { cloudVpsOperations } from '@redux'
+import { useEffect, useState, Fragment } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { cloudVpsOperations, cloudVpsSelectors } from '@redux'
 
 export const ResizeModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
   const dispatch = useDispatch()
   const [tariffs, setTariffs] = useState()
+  const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
 
   useEffect(() => {
     dispatch(cloudVpsOperations.getTariffsListToChange(item.id.$, setTariffs, closeModal))
   }, [])
 
-  console.log(tariffs, ' pricelist')
-
   return (
-    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
+    <Modal isOpen={!!item && !!tariffs} closeModal={closeModal} isClickOutside>
       <Modal.Header>
-        <p>Choose a flavor</p>
+        <p> {t('choose_flavor')}</p>
         <p className={s.modal__subtitle}>
-          <span className={s.modal__subtitle_transparent}>Instance:</span> {item.id.$}
+          <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
+          {item.id.$}
         </p>
       </Modal.Header>
       <Modal.Body>
@@ -36,43 +36,48 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
               cloudVpsOperations.changeTariff({
                 elid: item.id.$,
                 pricelist: values.pricelist,
-                elname: item.name.$,
+                successCallback: closeModal,
               }),
             )
           }
         >
           {({ values, setFieldValue }) => {
             return (
-              <Form id={'delete'}>
+              <Form id={'resize'}>
                 <div className={s.body}>
-                  <p className={s.warning}>
-                    <Icon name="Attention" />
-                    Warning: instance resize will cause downtime. The instance will
-                    shutdown and the disk image will be copied to a new disk. This may
-                    take a while, depending on the disk size.
-                  </p>
-                  <p className={s.body__text_small}>
-                    Notes: you can only select flavors larger than your current flavor.
-                    After the resize is completed, the instance will have the state
-                    &quot;VERIFY RESIZE&quot;. Check if everything is ok with your data
-                    and then click on &quot;Confirm resize&quot; in the instance menu.
-                  </p>
+                  <WarningMessage>{t('resize_warning')}</WarningMessage>
+                  <p className={s.body__text_small}>{t('resize_notes')}</p>
 
-                  <div className={s.tariffs}>
-                    {tariffs?.map(item => {
-                      return (
-                        <button
-                          type="button"
-                          key={item.$key}
-                          onClick={() => setFieldValue('pricelist', item.$key)}
-                          className={cn({
-                            [s.tariff_active]: values.pricelist === item.$key,
-                          })}
-                        >
-                          {item.$}
-                        </button>
-                      )
-                    })}
+                  <div className={s.tariff_list}>
+                    {instancesTariffs[item.datacenter.$]
+                      ?.filter(el => tariffs.find(tariff => tariff.$key === el.id.$))
+                      .map(item => {
+                        return (
+                          <button
+                            type="button"
+                            key={item.id.$}
+                            onClick={() => setFieldValue('pricelist', item.id.$)}
+                            className={cn(s.tariff, {
+                              [s.tariff_active]: values.pricelist === item.id.$,
+                            })}
+                          >
+                            <p className={s.tariff__name}>{item.title.main.$}</p>
+                            <div className={s.tariff__params}>
+                              {item.detail.map(el => {
+                                return (
+                                  <Fragment key={el.name.$}>
+                                    <p className={s.tariff__param_name}>{t(el.name.$)}</p>
+                                    <p className={s.tariff__param_value}>
+                                      {t(el.value.$)}
+                                    </p>
+                                  </Fragment>
+                                )
+                              })}
+                            </div>
+                            <p className={s.tariff__price}>{item.prices.price.cost.$}€</p>
+                          </button>
+                        )
+                      })}
                   </div>
                 </div>
               </Form>
@@ -81,9 +86,9 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         </Formik>
       </Modal.Body>
       <Modal.Footer>
-        <Button label="Delete" size="small" type="submit" form={'delete'} isShadow />
+        <Button label={t('Resize')} size="small" type="submit" form={'resize'} isShadow />
         <button type="button" onClick={closeModal}>
-          Cancel
+          {t('Cancel', { ns: 'other' })}
         </button>
       </Modal.Footer>
     </Modal>
