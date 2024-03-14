@@ -28,8 +28,8 @@
   display: grid;
   gap: 14px;
 
-  & .info_block_item:not(:last-child),
-  & .network_block_item:not(:last-child) {
+  .info_block_item:not(:last-child),
+  .network_block_item:not(:last-child) {
     border-bottom: 1px solid var(--item_bottom_splitter);
   }
 }
