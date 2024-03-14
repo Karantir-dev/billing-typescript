@@ -21,7 +21,7 @@ import cn from 'classnames'
 import * as route from '@src/routes'
 
 export default function CloudInstanceItemPage() {
-  const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
+  const { t } = useTranslation(['cloud_vps', 'container', 'other'])
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const navigate = useNavigate()
