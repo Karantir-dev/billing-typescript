@@ -221,12 +221,12 @@ jobs:
       name: ${{ needs.vars.outputs.environment }}
     steps:
       - uses: actions/checkout@v4
-      - name: Import kubeconfig
+      - name: Import kubeconfig from secrets
         if: ${{ needs.vars.outputs.kubeconfig_version == 'secrets' }}
         uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBECONFIG }}
-      - name: Import kubeconfig from
+      - name: Import kubeconfig from inputs
         if: ${{ needs.vars.outputs.kubeconfig_version == 'inputs' }}
         uses: tale/kubectl-action@v1
         with:
