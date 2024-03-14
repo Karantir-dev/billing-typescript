@@ -2,6 +2,31 @@
   margin-bottom: 16px;
 }
 
+.btn_wrapper {
+  background-color: var(--btn-bgc);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  box-shadow: var(--forms_shadow);
+
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 100ms;
+
+  &:hover:not(:disabled) {
+    & > svg {
+      rect {
+        stroke: url(#gradient);
+      }
+      path {
+        fill: url(#gradient);
+      }
+    }
+  }
+}
+
 .page_title_container {
   display: flex;
   justify-content: space-between;
@@ -54,5 +79,12 @@
   }
   .head_coponent {
     margin-bottom: 32px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .btn_wrapper {
+    width: 50px;
+    height: 50px;
   }
 }

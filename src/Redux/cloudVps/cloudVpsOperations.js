@@ -3,7 +3,7 @@ import qs from 'qs'
 import { actions, authSelectors, cloudVpsActions } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
 import { t } from 'i18next'
 
 const getInstances =
@@ -44,7 +44,6 @@ const getInstances =
       })
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
         data.doc?.slist?.forEach(el => {
           el.val.unshift({ $key: '', $: 'Not selected' })
         })
@@ -386,6 +385,66 @@ const openConsole =
       })
   }
 
+/* EDIT SERVERS OPERATION TO GET FULL DATA */
+const getInstanceInfo =
+  (elid, params, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.edit',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          ...params,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        const renamedSlistData = renameAddonFields(data?.doc, { isEditFunc: true })
+
+        const d = {
+          createdate: renamedSlistData?.createdate?.$,
+          fotbo_id: renamedSlistData?.fotbo_id.$,
+          ip: renamedSlistData?.ip?.$,
+          ip_v6: renamedSlistData?.ip_v6?.$,
+        }
+
+        const clearStr = /\s*\(.*?\)\s*\.?/g
+
+        renamedSlistData?.slist?.forEach(list => {
+          if (list?.$name === 'stored_method') {
+            d[`${list?.$name}_list`] = list?.val?.filter(
+              v => v?.$key && v?.$key?.length > 0,
+            )
+          } else {
+            d[`${list?.$name}`] =
+              list?.val?.length > 1
+                ? list?.val?.map(v => {
+                    const { $ } = v
+                    return $?.replace(clearStr, '')
+                  })
+                : list?.val?.[0]?.$.replace(clearStr, '')
+          }
+        })
+
+        setInstanceInfo(d)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+  }
+
 const getTariffs = data => {
   return {
     [data.doc.datacenter.$]:
@@ -440,7 +499,7 @@ const getAllTariffsInfo =
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
-        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
   }
 
@@ -454,6 +513,7 @@ export default {
   getTariffsListToChange,
   changeTariff,
   rebuildInstance,
+  getInstanceInfo,
   openConsole,
   getAllTariffsInfo,
 }

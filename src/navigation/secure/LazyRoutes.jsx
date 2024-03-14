@@ -102,7 +102,7 @@ const CloudInstanceItemPage = lazy(() =>
 
 const InstanceDetailsOverview = lazy(() =>
   import(
-    /* webpackChunkName: "InstanceDetailsOverview" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview'
+    /* webpackChunkName: "InstanceDetailsOverview" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceDetailsOverview'
   ),
 )
 
