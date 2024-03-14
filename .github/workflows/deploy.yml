@@ -7,14 +7,17 @@ on:
     inputs:
       environment:
         required: true
-        default: dev
+        options:
+          - dev
+        type: choice
         description: "Яку environment github використовується"
       prefix:
         required: true
-        deprecationMessage: branch-123
+        type: string
         description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
       KUBECONFIG:
         required: true
+        type: string
         description: "Kubeconfig in base64"
 
 permissions:
