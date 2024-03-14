@@ -1,5 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { BreadCrumbs, PageTabBar, HintWrapper, Icon, Loader, Options } from '@components'
+import {
+  BreadCrumbs,
+  PageTabBar,
+  HintWrapper,
+  Icon,
+  Loader,
+  Options,
+  Button,
+} from '@components'
 import { useLocation, useParams, Outlet, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
@@ -13,7 +21,7 @@ import cn from 'classnames'
 import * as route from '@src/routes'
 
 export default function CloudInstanceItemPage() {
-  const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
+  const { t } = useTranslation(['cloud_vps', 'container', 'other'])
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const navigate = useNavigate()
@@ -24,8 +32,6 @@ export default function CloudInstanceItemPage() {
   const { state: item } = location
 
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
-
-  console.log('Item with opened Instance Page: ', item)
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -73,95 +79,94 @@ export default function CloudInstanceItemPage() {
 
   const options = [
     {
-      label: isStopped ? 'Start' : 'Shut down',
+      label: t(isStopped ? 'Start' : 'Shut down'),
       icon: 'Shutdown',
       onClick: () =>
-      dispatch(cloudVpsActions.setItemForModals({
-          confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
-        })),
-      disabled: item.item_status.$.includes('in progress') || isNotActive,
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
+          }),
+        ),
+      disabled: isNotActive,
     },
     {
-      label: 'Console',
+      label: t('Console'),
       icon: 'Console',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => dispatch(cloudVpsOperations.openConsole({ elid: item.id.$ })),
     },
     {
-      label: 'Reboot',
+      label: t('Reboot'),
       icon: 'Reboot',
       disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ confirm: { ...item, confirm_action: 'reboot' } })),
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: 'reboot' },
+          }),
+        ),
     },
-    // {
-    //   label: 'Shelve',
-    //   icon: 'Shelve',
-    //   disabled: isNotActive,
-    //   onClick: () => {},
-    // },
     {
-      label: 'Resize',
+      label: t('Resize'),
       icon: 'Resize',
-      disabled: isNotActive,
+      disabled: isNotActive || item.change_pricelist?.$ === 'off',
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
     },
 
     {
-      label: 'Change password',
+      label: t('Change password'),
       icon: 'ChangePassword',
       disabled: isNotActive,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
     },
     {
-      label: 'Rescue',
+      label: t('Rescue'),
       icon: 'Rescue',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            rebuild: { ...item, rebuild_action: 'bootimage' },
+          }),
+        ),
     },
     {
-      label: 'Instructions',
+      label: t('Instructions'),
       icon: 'Instruction',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
     {
-      label: 'Rebuild',
+      label: t('Rebuild'),
       icon: 'Rebuild',
       disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ rebuild: item })),
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            rebuild: { ...item, rebuild_action: 'rebuild' },
+          }),
+        ),
     },
     {
-      label: 'Create ticket',
+      label: t('Create ticket'),
       icon: 'Headphone',
-      disabled: false,
       onClick: () =>
         navigate(`${route.SUPPORT}/requests`, {
           state: { id: item.id.$, openModal: true },
         }),
     },
     {
-      label: 'Rename',
+      label: t('Rename'),
       icon: 'Rename',
-      disabled: isNotActive,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
-      label: 'Delete',
+      label: t('Delete'),
       icon: 'Remove',
-      disabled: false,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
       isDelete: true,
     },
   ]
-
-  const getInstancesRequiredParams = {
-    // setInstances,
-    // setTotalElems: value => setPagination({ totalElems: value }),
-    // setFilters,
-    signal,
-    setIsLoading,
-  }
-
 
   const editInstanceHandler = ({ values, elid, closeModal, errorCallback }) => {
     dispatch(
@@ -170,7 +175,6 @@ export default function CloudInstanceItemPage() {
         elid,
         errorCallback,
         closeModal,
-        ...getInstancesRequiredParams,
       }),
     )
   }
@@ -189,7 +193,6 @@ export default function CloudInstanceItemPage() {
       cloudVpsOperations.deleteInstance({
         elid: itemForModals.delete.id.$,
         closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
-        ...getInstancesRequiredParams,
       }),
     )
   }
@@ -200,8 +203,6 @@ export default function CloudInstanceItemPage() {
         action,
         elid,
         closeModal: () => dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-        ...getInstancesRequiredParams,
-        // ...pagination,
       }),
     )
   }
@@ -236,7 +237,7 @@ export default function CloudInstanceItemPage() {
               </HintWrapper>
             </div>
 
-            <Options options={options} columns={2} />
+            <Options options={options} columns={2} buttonClassName={s.btn_wrapper} />
           </div>
 
           <span
@@ -251,12 +252,15 @@ export default function CloudInstanceItemPage() {
             {item.fotbo_status?.$?.replaceAll('_', ' ') || item.item_status?.$}
           </span>
         </div>
-        <PageTabBar sections={tavBarSections} />
+
+        {/* Commented until only one tab exist: */}
+        {/* <PageTabBar sections={tavBarSections} /> */}
 
         <div className={s.content}>
           <Outlet />
         </div>
       </div>
+
       <Modals
         deleteInstanceSubmit={deleteInstanceSubmit}
         changeInstancePasswordSubmit={changeInstancePasswordSubmit}

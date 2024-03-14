@@ -9,6 +9,7 @@ import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
 import { useTranslation } from 'react-i18next'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useDispatch } from 'react-redux'
+import formatCountryName from '../ExternalFunc/formatCountryName'
 
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['cloud_vps', 'vds', 'countries'])
@@ -171,7 +172,10 @@ export default function InstanceItem({ item, editInstance }) {
     },
   ]
 
+
   const optionsColumns = options.filter(el => !el.hidden).length > 5 && 2
+  const itemCountry = formatCountryName(item)
+
 
   return (
     <tr
@@ -227,7 +231,7 @@ export default function InstanceItem({ item, editInstance }) {
         <HintWrapper
           popupClassName={s.popup}
           wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
-          label={t(item.datacentername.$.replace('Fotbo ', ''), { ns: 'countries' })}
+          label={itemCountry}
         >
           <img
             src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -235,7 +239,7 @@ export default function InstanceItem({ item, editInstance }) {
             )}.png`)}
             width={20}
             height={14}
-            alt={item.datacentername.$.replace('Fotbo ', '')}
+            alt={itemCountry}
           />
         </HintWrapper>
       </td>
