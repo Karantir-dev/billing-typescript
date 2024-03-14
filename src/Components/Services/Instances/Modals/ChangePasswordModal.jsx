@@ -7,7 +7,7 @@ import s from './Modals.module.scss'
 import cn from 'classnames'
 
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation(['cloud_vps', 'vps', 'auth', 'other'])
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -22,9 +22,10 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
   return (
     <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
       <Modal.Header>
-        <p>Change admin password</p>
+        <p>{t('change_password_title')}</p>
         <p className={s.modal__subtitle}>
-          <span className={s.modal__subtitle_transparent}>Instance:</span> {item.id.$}
+          <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
+          {item.id.$}
         </p>
       </Modal.Header>
       <Modal.Body>
@@ -42,8 +43,8 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
                     name="password"
                     isShadow
                     type="password"
-                    label={`${t('new_password')}:`}
-                    placeholder={t('new_password_placeholder')}
+                    label={`${t('new_password', { ns: 'vds' })}:`}
+                    placeholder={t('new_password_placeholder', { ns: 'vds' })}
                     error={!!errors.password}
                     touched={!!touched.password}
                     isRequired
@@ -57,14 +58,14 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label="Change Password"
+          label={t('Change password')}
           size={'large'}
           type="submit"
           form={'change_pass'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          Cancel
+          {t('Cancel', { ns: 'other' })}
         </button>
       </Modal.Footer>
     </Modal>

@@ -27,7 +27,7 @@ export default function InstancesList({
   sortBy,
   editInstance,
 }) {
-  const { t } = useTranslation(['vds', 'other'])
+  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
 
   const renderHeadCells = () =>
@@ -45,16 +45,16 @@ export default function InstancesList({
       const isDesc = isActiveSort && sortBy[0] === '+'
 
       return (
-        <th key={cell.name}>
+        <th key={cell.name} className={s.th}>
           {cell.isSort ? (
             <button
               className={cn(s.sort, { [s.sort_active]: isActiveSort })}
               onClick={changeSortHandler}
             >
-              {cell.name} <Icon name={`Sort_${isDesc ? 'z_a' : 'a_z'}`} />
+              {t(cell.name)} <Icon name={`Sort_${isDesc ? 'z_a' : 'a_z'}`} />
             </button>
           ) : (
-            <>{cell.name}</>
+            <>{t(cell.name)}</>
           )}
         </th>
       )
@@ -64,7 +64,7 @@ export default function InstancesList({
     return (
       <div className={s.no_vds_wrapper}>
         <img className={s.no_vds} src={no_vds} alt="no_vds" />
-        <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
+        <p className={s.no_vds_title}>{t('no_servers_yet', { ns: 'vds' })}</p>
       </div>
     )
   }
@@ -72,33 +72,26 @@ export default function InstancesList({
   return (
     <>
       {widerThan768 ? (
-        <table>
-          <thead>
-            <tr>
-              {/* <th>
+        <table className={s.table}>
+          <thead className={s.thead}>
+            <tr className={s.tr}>
+              {/* <th className={s.th}>
                 <CheckBox />
               </th> */}
               {renderHeadCells()}
-              <th></th>
+              <th className={s.th}></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={s.tbody}>
             {instances.map(item => (
-              <InstanceItem
-                key={item.id.$}
-                item={item}
-                editInstance={editInstance}
-              />
+              <InstanceItem key={item.id.$} item={item} editInstance={editInstance} />
             ))}
           </tbody>
         </table>
       ) : (
         <div className={s.mobile__list}>
           {instances.map(item => (
-            <InstanceItemMobile
-              key={item.id.$}
-              item={item}
-            />
+            <InstanceItemMobile key={item.id.$} item={item} />
           ))}
         </div>
       )}

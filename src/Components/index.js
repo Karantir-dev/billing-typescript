@@ -63,6 +63,7 @@ export { default as Icon } from './ui/Icon/Icon'
 export { default as CertificateModal } from './ui/CertificateModal/CertificateModal'
 export { default as InstructionModal } from './ui/InstructionModal/InstructionModal'
 export { default as InputRange } from './ui/InputRange/InputRange'
+export { default as WarningMessage } from './ui/WarningMessage/WarningMessage'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -227,5 +228,5 @@ export { default as OrderTariff } from './OrderTariff/OrderTariff'
 export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
 export { default as SshList } from './Services/Instances/SshList/SshList'
 
+export { default as PasswordMethod } from './Services/Instances/PasswordMethod/PasswordMethod'
 export { InstanceFiltersModal } from './Services/Instances/Modals'
-
