@@ -6,17 +6,15 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        required: true
-        options:
-          - dev
-        type: choice
+        required: false
+        type: string
         description: "Яку environment github використовується"
       prefix:
-        required: true
+        required: false
         type: string
         description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
       KUBECONFIG:
-        required: true
+        required: false
         type: string
         description: "Kubeconfig in base64"
 
