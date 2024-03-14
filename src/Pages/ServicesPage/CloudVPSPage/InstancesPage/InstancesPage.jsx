@@ -10,41 +10,37 @@ import { useCancelRequest } from '@src/utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
+import { useTranslation } from 'react-i18next'
 
 export default function InstancesPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation(['cloud_vps'])
 
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
-  const [instances, setInstances] = useState()
   const [sortBy, setSortBy] = useState('+id')
 
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
+  const instances = useSelector(cloudVpsSelectors.getInstancesList)
+  const instancesCount = useSelector(cloudVpsSelectors.getInstancesCount)
+  const filters = useSelector(cloudVpsSelectors.getInstancesFilters)
 
-  const [filters, setFilters] = useReducer(
-    (state, action) => {
-      return { ...state, ...action }
-    },
-    { active: {}, filtersList: {} },
-  )
+  const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
 
   const [pagination, setPagination] = useReducer(
     (state, action) => {
       return { ...state, ...action }
     },
-    { p_num: 1, p_cnt: '10', totalElems: 0 },
+    { p_num: 1, p_cnt: '10' },
   )
 
   /* crutch for paginations */
   const [isPaginationChanged, setIsPaginationChanged] = useState(false)
   const [isFirstRender, setIsFirstRender] = useState(true)
 
-  const getInstancesRequiredParams = {
-    setInstances,
-    setTotalElems: value => setPagination({ totalElems: value }),
-    setFilters,
+  const loadingParams = {
     signal,
     setIsLoading,
   }
@@ -52,12 +48,21 @@ export default function InstancesPage() {
   useEffect(() => {
     setFiltersHandler()
     setIsFirstRender(false)
+
+    if (!instancesTariffs) {
+      dispatch(cloudVpsOperations.getAllTariffsInfo({ signal, setIsLoading }))
+    }
+
+    return () => {
+      dispatch(cloudVpsActions.setInstancesCount(0))
+      dispatch(cloudVpsActions.setInstancesList(null))
+    }
   }, [])
 
   const getInstances = p_col => {
     dispatch(
       cloudVpsOperations.getInstances({
-        ...getInstancesRequiredParams,
+        ...loadingParams,
         ...pagination,
         p_col,
       }),
@@ -76,7 +81,7 @@ export default function InstancesPage() {
     dispatch(
       cloudVpsOperations.setInstancesFilter({
         values,
-        ...getInstancesRequiredParams,
+        ...loadingParams,
         p_num: 1,
         p_cnt: pagination.p_cnt,
         p_col: sortBy,
@@ -98,7 +103,7 @@ export default function InstancesPage() {
         elid,
         errorCallback,
         closeModal,
-        ...getInstancesRequiredParams,
+        ...loadingParams,
       }),
     )
   }
@@ -113,12 +118,12 @@ export default function InstancesPage() {
   }
 
   const deleteInstanceSubmit = () => {
-    setPagination({ p_num: 1 })
     dispatch(
       cloudVpsOperations.deleteInstance({
         elid: itemForModals.delete.id.$,
         closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
-        ...getInstancesRequiredParams,
+        ...loadingParams,
+        successCallback: () => setPagination({ p_num: 1 }),
       }),
     )
   }
@@ -129,7 +134,7 @@ export default function InstancesPage() {
         action,
         elid,
         closeModal: () => dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-        ...getInstancesRequiredParams,
+        ...loadingParams,
         ...pagination,
       }),
     )
@@ -144,6 +149,21 @@ export default function InstancesPage() {
           dispatch(cloudVpsActions.setItemForModals({ change_pass: false })),
         signal,
         setIsLoading,
+      }),
+    )
+  }
+
+  const rebuildSubmit = values => {
+    dispatch(cloudVpsActions.setItemForModals({ rebuild: false }))
+
+    dispatch(
+      cloudVpsOperations.rebuildInstance({
+        action: itemForModals.rebuild.rebuild_action,
+        elid: itemForModals.rebuild.id.$,
+        sok: 'ok',
+        clicked_button: 'ok',
+        ...values,
+        successCallback: () => getInstances(),
       }),
     )
   }
@@ -178,7 +198,7 @@ export default function InstancesPage() {
               </div>
             </div>
             <Button
-              label="Create new Instance"
+              label={t('create_instance_btn')}
               size="large"
               isShadow
               onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}
@@ -192,11 +212,11 @@ export default function InstancesPage() {
           />
         </>
       )}
-      {pagination.totalElems > 5 && (
+      {instancesCount > 5 && (
         <Pagination
           className={s.pagination}
           currentPage={pagination.p_num}
-          totalCount={Number(pagination.totalElems)}
+          totalCount={Number(instancesCount)}
           onPageChange={value => {
             setPagination({ p_num: value })
             setIsPaginationChanged(prev => !prev)
@@ -213,6 +233,8 @@ export default function InstancesPage() {
         editNameSubmit={editNameSubmit}
         confirmSubmit={confirmInstanceSubmit}
         resizeSubmit={() => {}}
+        rebuildSubmit={rebuildSubmit}
+        loadingParams={loadingParams}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
