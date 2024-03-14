@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 
@@ -15,7 +13,7 @@ import formatCountryName from '@components/Services/Instances/ExternalFunc/forma
 import s from './InstanceDetailsOverview.module.scss'
 
 export default function InstanceDetailsOverview() {
-  const { i18n, t } = useTranslation(['cloud_vps'])
+  const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
   const location = useLocation()
   const { signal, isLoading, setIsLoading } = useCancelRequest()

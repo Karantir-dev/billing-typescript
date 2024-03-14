@@ -79,7 +79,7 @@ export default function CloudInstanceItemPage() {
 
   const options = [
     {
-      label: isStopped ? 'Start' : 'Shut down',
+      label: t(isStopped ? 'Start' : 'Shut down'),
       icon: 'Shutdown',
       onClick: () =>
         dispatch(
@@ -87,16 +87,16 @@ export default function CloudInstanceItemPage() {
             confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
           }),
         ),
-      disabled: item.item_status.$.includes('in progress') || isNotActive,
+      disabled: isNotActive,
     },
     {
-      label: 'Console',
+      label: t('Console'),
       icon: 'Console',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => dispatch(cloudVpsOperations.openConsole({ elid: item.id.$ })),
     },
     {
-      label: 'Reboot',
+      label: t('Reboot'),
       icon: 'Reboot',
       disabled: isNotActive,
       onClick: () =>
@@ -106,62 +106,63 @@ export default function CloudInstanceItemPage() {
           }),
         ),
     },
-    // {
-    //   label: 'Shelve',
-    //   icon: 'Shelve',
-    //   disabled: isNotActive,
-    //   onClick: () => {},
-    // },
     {
-      label: 'Resize',
+      label: t('Resize'),
       icon: 'Resize',
-      disabled: isNotActive,
+      disabled: isNotActive || item.change_pricelist?.$ === 'off',
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
     },
 
     {
-      label: 'Change password',
+      label: t('Change password'),
       icon: 'ChangePassword',
       disabled: isNotActive,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
     },
     {
-      label: 'Rescue',
+      label: t('Rescue'),
       icon: 'Rescue',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            rebuild: { ...item, rebuild_action: 'bootimage' },
+          }),
+        ),
     },
     {
-      label: 'Instructions',
+      label: t('Instructions'),
       icon: 'Instruction',
       disabled: isNotActive,
-      onClick: () => {},
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
     {
-      label: 'Rebuild',
+      label: t('Rebuild'),
       icon: 'Rebuild',
       disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ rebuild: item })),
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            rebuild: { ...item, rebuild_action: 'rebuild' },
+          }),
+        ),
     },
     {
-      label: 'Create ticket',
+      label: t('Create ticket'),
       icon: 'Headphone',
-      disabled: false,
       onClick: () =>
         navigate(`${route.SUPPORT}/requests`, {
           state: { id: item.id.$, openModal: true },
         }),
     },
     {
-      label: 'Rename',
+      label: t('Rename'),
       icon: 'Rename',
-      disabled: isNotActive,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
-      label: 'Delete',
+      label: t('Delete'),
       icon: 'Remove',
-      disabled: false,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
       isDelete: true,
     },
