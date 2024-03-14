@@ -70,7 +70,7 @@ jobs:
           VALUE: ${{ inputs.KUBECONFIG }}
         id: _tmp_KUBECONFIG_VERSION
         run: |
-          if [[ -n "$CHECK" ]]; then
+          if [[ -n "$VALUE" ]]; then
             echo "value=$( echo "inputs" )" >> $GITHUB_OUTPUT
           else
             echo "value=$( echo "secrets" )" >> $GITHUB_OUTPUT
