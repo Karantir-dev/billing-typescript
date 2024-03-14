@@ -1,16 +1,21 @@
 name: Deployment
 on:
   push:
-    branches: [ prod, dev, prod-biz, update, update_deploy ]
+    branches: [ prod, dev, prod-biz, update ]
 
   workflow_dispatch:
     inputs:
-      environments:
+      environment:
+        required: true
         default: dev
-        description: "Яку environments github використовується"
-      namespace:
-        default: dev
-        description: "Частина namespace, яка створена в "
+        description: "Яку environment github використовується"
+      prefix:
+        required: true
+        deprecationMessage: branch-123
+        description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
+      KUBECONFIG:
+        required: true
+        description: "Kubeconfig in base64"
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -27,17 +32,62 @@ jobs:
     name: Generation vars
     runs-on: ubuntu-latest
     outputs:
-      namespace: ${{ steps.basic.outputs.NAMESPACE }}
-      prefix: ${{ steps.basic.outputs.PREFIX }}
-      environment: ${{ steps.basic.outputs.environment }}
       static_version: ${{ steps.basic.outputs.static_version }}
+
+      namespace: ${{ steps.dynamic.outputs.NAMESPACE }}
+      prefix: ${{ steps.dynamic.outputs.PREFIX }}
+      kubeconfig_version: ${{ steps.dynamic.outputs.KUBECONFIG_VERSION }}
+      environment: ${{ steps.dynamic.outputs.environment }}
     steps:
-      - id: basic
+      # Logic
+      - name: Set default value for prefix
+        if: ${{ !inputs.prefix }}
+        id: _tmp_prefix
         run: |
-          echo "NAMESPACE=${{ vars.NAMESPACE_PREFIX }}-${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
-          echo "PREFIX=version-${{ github.run_number }}-${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
-          echo "environment=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          echo "value=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+      - name: Set value for prefix
+        if: ${{ inputs.prefix }}
+        id: _tmp_prefix
+        run: |
+          echo "value=${{ inputs.prefix }}" >> $GITHUB_OUTPUT
+
+      - name: Set default value for environments
+        if: ${{ !inputs.environment }}
+        id: _tmp_environment
+        run: |
+          echo "value=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+      - name: Set value for environments
+        if: ${{ inputs.environment }}
+        id: _tmp_environment
+        run: |
+          echo "value=${{ inputs.environment }}" >> $GITHUB_OUTPUT
+
+      - name: Set default value for KUBECONFIG
+        if: ${{ !inputs.KUBECONFIG }}
+        id: _tmp_KUBECONFIG_VERSION
+        run: |
+          echo "value=$( echo "secrets" )" >> $GITHUB_OUTPUT
+      - name: Set value for KUBECONFIG
+        if: ${{ inputs.KUBECONFIG }}
+        id: _tmp_KUBECONFIG_VERSION
+        run: |
+          echo "value=$( echo "inputs" )" >> $GITHUB_OUTPUT
+
+      # Set
+      - name: Create dynamic vars
+        id: dynamic
+        run: |
+          echo "NAMESPACE=${{ vars.NAMESPACE_PREFIX }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
+          echo "PREFIX=version-${{ github.run_number }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
+          echo "environment=${{ steps._tmp_environment.outputs.value }}" >> "$GITHUB_OUTPUT"
+          
+          echo "KUBECONFIG_VERSION=${{ steps._tmp_KUBECONFIG_VERSION.outputs.value }}" >> "$GITHUB_OUTPUT"
+
+      - name: Create basic vars
+        id: basic
+        run: |
           echo "static_version=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
+  
 
   test:
     needs: [ vars ]
@@ -84,7 +134,7 @@ jobs:
 
   build_and_push:
     needs: [ vars, test ]
-    name: Build and push bill docker
+    name: Build and push
     runs-on: ubuntu-latest
     environment:
       name: ${{ needs.vars.outputs.environment }}
@@ -167,9 +217,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Import kubeconfig
+        if: ${{ needs.vars.outputs.kubeconfig_version == 'secrets' }}
         uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBECONFIG }}
+      - name: Import kubeconfig from
+        if: ${{ needs.vars.outputs.kubeconfig_version == 'inputs' }}
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ inputs.KUBECONFIG }}
+
       - name: Update Version
         working-directory: deployment
         run: |
