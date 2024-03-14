@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { HintWrapper, Icon, Options } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName } from '@utils'
+import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -17,12 +17,8 @@ export default function InstanceItemMobile({ item }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const isNotActive =
-    item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
-
-  const isStopped = item.fotbo_status?.$ === 'stopped'
-  const isResized = item.fotbo_status?.$ === 'resized'
-  const isRescued = item.fotbo_status?.$ === 'booted_from_iso'
+  const { isNotActive, isStopped, isResized, isRescued, displayStatus, displayName } =
+    getInstanceMainInfo(item)
 
   const options = [
     {
@@ -170,7 +166,7 @@ export default function InstanceItemMobile({ item }) {
     >
       <div className={s.mobile_item__header}>
         <div className={s.mobile_item__header_name}>
-          <p className={s.mobile_item__name}>{item.servername?.$ || item.name?.$}</p>
+          <p className={s.mobile_item__name}>{displayName}</p>
           <p
             className={cn(
               s.status,
@@ -180,8 +176,8 @@ export default function InstanceItemMobile({ item }) {
               ],
             )}
           >
-            {item.fotbo_status?.$?.replaceAll('_', ' ') || item.item_status?.$}
-            {item.fotbo_status?.$ === 'resized' && <Icon name="Attention" />}
+            {displayStatus}
+            {isResized && <Icon name="Attention" />}
           </p>
         </div>
         <div ref={optionsBlock}>

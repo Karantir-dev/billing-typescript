@@ -5,9 +5,11 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import cn from 'classnames'
+import { getInstanceMainInfo } from '@utils'
 
 export const DeleteModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
     comfirm: Yup.string()
@@ -20,7 +22,7 @@ export const DeleteModal = ({ item, closeModal, onSubmit }) => {
         <p>{t('delete', { ns: 'other' })}</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
-          {item.servername?.$ || item.name.$}
+          {displayName}
         </p>
       </Modal.Header>
       <Modal.Body>

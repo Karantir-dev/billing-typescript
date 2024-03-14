@@ -1,9 +1,12 @@
 import { Button, Modal } from '@components'
 import s from './Modals.module.scss'
 import { useTranslation } from 'react-i18next'
+import { getInstanceMainInfo } from '@utils'
 
 export const ConfirmModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps'])
+  const { displayName } = getInstanceMainInfo(item)
+
   return (
     <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
       <Modal.Header>
@@ -12,7 +15,7 @@ export const ConfirmModal = ({ item, closeModal, onSubmit }) => {
       <Modal.Body>
         <p className={s.body__text}>
           {t(`confirm.text.${item.confirm_action}`, {
-            name: item.servername?.$ || item.name.$,
+            name: displayName,
           })}
         </p>
       </Modal.Body>

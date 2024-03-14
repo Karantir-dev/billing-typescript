@@ -5,10 +5,11 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import cn from 'classnames'
+import { getInstanceMainInfo } from '@utils'
 
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vps', 'auth', 'other'])
-  const isWindows = item.instances_os?.$.includes('Windows')
+  const { isWindows, displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
@@ -27,7 +28,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
         <p>{t('change_password_title')}</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
-          {item.servername?.$ || item.name.$}
+          {displayName}
         </p>
       </Modal.Header>
       <Modal.Body>

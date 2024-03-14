@@ -17,10 +17,13 @@ import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
+import { getInstanceMainInfo } from '@utils'
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
   const dispatch = useDispatch()
+  const { displayName } = getInstanceMainInfo(item)
+
   const [data, setData] = useState()
 
   const [state, setState] = useReducer((state, action) => {

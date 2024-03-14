@@ -5,7 +5,7 @@ import cn from 'classnames'
 import { CheckBox, EditCell, HintWrapper, Icon, Options } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName } from '@utils'
+import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
 import { useTranslation } from 'react-i18next'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useDispatch } from 'react-redux'
@@ -21,12 +21,8 @@ export default function InstanceItem({ item, editInstance }) {
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
-  const isNotActive =
-    item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
-
-  const isStopped = item.fotbo_status?.$ === 'stopped'
-  const isResized = item.fotbo_status?.$ === 'resized'
-  const isRescued = item.fotbo_status?.$ === 'booted_from_iso'
+  const { isNotActive, isStopped, isResized, isRescued, displayStatus } =
+    getInstanceMainInfo(item)
 
   const editServerName = value => {
     editInstance({
@@ -213,8 +209,8 @@ export default function InstanceItem({ item, editInstance }) {
             ],
           )}
         >
-          {item.fotbo_status?.$?.replaceAll('_', ' ') || item.item_status?.$}
-          {item.fotbo_status?.$ === 'resized' && (
+          {displayStatus}
+          {isResized && (
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
