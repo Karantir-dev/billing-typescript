@@ -39,19 +39,8 @@ export default function InstanceItem({ item, editInstance }) {
 
   const options = [
     {
-      label: t('Confirm Resize'),
-      icon: 'CheckFat',
-      hidden: !isResized,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: 'resize_confirm' },
-          }),
-        ),
-    },
-    {
       label: t('Unrescue'),
-      icon: 'Rescue',
+      icon: 'Wrench',
       hidden: !isRescued,
       onClick: () =>
         dispatch(
@@ -61,8 +50,19 @@ export default function InstanceItem({ item, editInstance }) {
         ),
     },
     {
+      label: t('Confirm Resize'),
+      icon: 'Check_square',
+      hidden: !isResized,
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: 'resize_confirm' },
+          }),
+        ),
+    },
+    {
       label: t('Revert Resize'),
-      icon: 'Cross',
+      icon: 'Close_square',
       hidden: !isResized,
       onClick: () =>
         dispatch(

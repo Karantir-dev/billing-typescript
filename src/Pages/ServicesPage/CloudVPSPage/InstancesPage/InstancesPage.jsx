@@ -145,7 +145,10 @@ export default function InstancesPage() {
         cloudVpsOperations.rebuildInstance({
           action: itemForModals.confirm.confirm_action,
           elid: itemForModals.confirm.id.$,
-          successCallback: () => getInstances(),
+          successCallback: () => {
+            dispatch(cloudVpsActions.setItemForModals({ confirm: false }))
+            getInstances()
+          },
         }),
       )
     } else {
@@ -198,17 +201,6 @@ export default function InstancesPage() {
           dispatch(cloudVpsActions.setItemForModals({ resize: false })),
         ...loadingParams,
         ...pagination,
-      }),
-    )
-
-    dispatch(
-      cloudVpsOperations.rebuildInstance({
-        action: itemForModals.rebuild.rebuild_action,
-        elid: itemForModals.rebuild.id.$,
-        sok: 'ok',
-        clicked_button: 'ok',
-        ...values,
-        successCallback: () => getInstances(),
       }),
     )
   }
