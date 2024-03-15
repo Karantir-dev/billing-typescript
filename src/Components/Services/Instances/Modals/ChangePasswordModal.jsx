@@ -40,7 +40,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
             onSubmit={values => onSubmit(values.password)}
             validationSchema={validationSchema}
           >
-            {({ errors, touched }) => {
+            {({ values, errors, touched, setFieldValue }) => {
               return (
                 <Form id={'change_pass'}>
                   <div>
@@ -55,6 +55,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
                       touched={!!touched.password}
                       isRequired
                       autoComplete="off"
+                      generatePasswordValue={value => setFieldValue('password', value)}
                     />
                   </div>
                 </Form>

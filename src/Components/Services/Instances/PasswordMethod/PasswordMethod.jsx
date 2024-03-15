@@ -67,6 +67,7 @@ export default function PasswordMethod({
               isRequired
               autoComplete="off"
               onChange={e => setState({ password: e.target.value })}
+              generatePasswordValue={value => setState({ password: value })}
             />
           </div>
         )}

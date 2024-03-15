@@ -227,4 +227,5 @@ export { default as OrderTariff } from './OrderTariff/OrderTariff'
 
 export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
 export { default as PasswordMethod } from './Services/Instances/PasswordMethod/PasswordMethod'
+export { default as InstancesOptions } from './Services/Instances/InstancesOptions/InstancesOptions'
 export { InstanceFiltersModal } from './Services/Instances/Modals'

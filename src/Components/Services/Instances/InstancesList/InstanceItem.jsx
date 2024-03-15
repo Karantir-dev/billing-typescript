@@ -1,29 +1,24 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { CheckBox, EditCell, HintWrapper, Icon, Options } from '@components'
+import { EditCell, HintWrapper, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
 import { useTranslation } from 'react-i18next'
-import { cloudVpsActions, cloudVpsOperations } from '@redux'
-import { useDispatch } from 'react-redux'
 import formatCountryName from '../ExternalFunc/formatCountryName'
 
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['cloud_vps', 'vds', 'countries'])
 
   const optionsCell = useRef()
-  const checkboxCell = useRef()
+  // const checkboxCell = useRef()
   const servernameCell = useRef()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
-  const { isNotActive, isStopped, isResized, isRescued, displayStatus } =
-    getInstanceMainInfo(item)
+  const { isResized, displayStatus } = getInstanceMainInfo(item)
 
   const editServerName = value => {
     editInstance({
@@ -38,144 +33,7 @@ export default function InstanceItem({ item, editInstance }) {
     setServerName(item.servername?.$ || '')
   }, [item.servername?.$])
 
-  const options = [
-    {
-      label: t('Unrescue'),
-      icon: 'Wrench',
-      hidden: !isRescued,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: 'unrescue' },
-          }),
-        ),
-    },
-    {
-      label: t('Confirm Resize'),
-      icon: 'Check_square',
-      hidden: !isResized,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: 'resize_confirm' },
-          }),
-        ),
-    },
-    {
-      label: t('Revert Resize'),
-      icon: 'Close_square',
-      hidden: !isResized,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: 'resize_rollback' },
-          }),
-        ),
-    },
-
-    {
-      label: t(isStopped ? 'Start' : 'Shut down'),
-      icon: 'Shutdown',
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
-          }),
-        ),
-      disabled: isNotActive,
-      hidden: isResized || isRescued,
-    },
-    {
-      label: t('Console'),
-      icon: 'Console',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsOperations.openConsole({ elid: item.id.$ })),
-    },
-    {
-      label: t('Reboot'),
-      icon: 'Reboot',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: 'reboot' },
-          }),
-        ),
-      hidden: isResized || isRescued,
-    },
-    {
-      label: t('Resize'),
-      icon: 'Resize',
-      disabled: isNotActive || item.change_pricelist?.$ === 'off',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
-      hidden: isResized || isRescued,
-    },
-
-    {
-      label: t('Change password'),
-      icon: 'ChangePassword',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
-      hidden: isResized || isRescued,
-    },
-    {
-      label: t('Rescue'),
-      icon: 'Rescue',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            rebuild: { ...item, rebuild_action: 'bootimage' },
-          }),
-        ),
-      hidden: isResized || isRescued,
-    },
-    {
-      label: t('Instructions'),
-      icon: 'Instruction',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
-      hidden: isResized || isRescued,
-    },
-    {
-      label: t('Rebuild'),
-      icon: 'Rebuild',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            rebuild: { ...item, rebuild_action: 'rebuild' },
-          }),
-        ),
-      hidden: isResized || isRescued,
-    },
-    {
-      label: t('Create ticket'),
-      icon: 'Headphone',
-      onClick: () =>
-        navigate(`${route.SUPPORT}/requests`, {
-          state: { id: item.id.$, openModal: true },
-        }),
-      hidden: isResized || isRescued,
-    },
-    {
-      label: t('Rename'),
-      icon: 'Rename',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
-      hidden: isResized || isRescued,
-    },
-    {
-      label: t('Delete'),
-      icon: 'Remove',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
-      isDelete: true,
-    },
-  ]
-
-
-  const optionsColumns = options.filter(el => !el.hidden).length > 5 && 2
   const itemCountry = formatCountryName(item)
-
 
   return (
     <tr
@@ -255,7 +113,7 @@ export default function InstanceItem({ item, editInstance }) {
       </td>
       <td className={cn(s.td, s.ip_cell)}>{item.ip?.$}</td>
       <td className={s.td} ref={optionsCell}>
-        <Options options={options} columns={optionsColumns} />
+        <InstancesOptions item={item} />
       </td>
     </tr>
   )

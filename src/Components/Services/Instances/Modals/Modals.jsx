@@ -7,20 +7,117 @@ import {
   ResizeModal,
   RebuildModal,
 } from '.'
-import { cloudVpsActions, cloudVpsSelectors, dedicOperations } from '@redux'
+import {
+  cloudVpsActions,
+  cloudVpsOperations,
+  cloudVpsSelectors,
+  dedicOperations,
+} from '@redux'
 import { InstructionModal } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const Modals = ({
-  deleteInstanceSubmit,
-  changeInstancePasswordSubmit,
+  // deleteInstanceSubmit,
+  // changeInstancePasswordSubmit,
   editNameSubmit,
-  confirmSubmit,
-  resizeSubmit,
-  rebuildSubmit,
+  // confirmSubmit,
+  // resizeSubmit,
+  // rebuildSubmit,
+  loadingParams = {},
+  pagination,
+  setPagination = () => {},
+  getInstances = () => {},
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
+
+  const deleteInstanceSubmit = () => {
+    dispatch(
+      cloudVpsOperations.deleteInstance({
+        elid: itemForModals.delete.id.$,
+        closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
+        ...loadingParams,
+        successCallback: () => setPagination({ p_num: 1 }),
+      }),
+    )
+  }
+
+  const confirmSubmit = (action, elid) => {
+    if (action.includes('resize_')) {
+      return dispatch(
+        cloudVpsOperations.changeTariffConfirm({
+          action: action.replace('resize_', ''),
+          elid,
+          closeModal: () =>
+            dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
+          ...loadingParams,
+          ...pagination,
+        }),
+      )
+    } else if (action === 'unrescue') {
+      return dispatch(
+        cloudVpsOperations.rebuildInstance({
+          action: itemForModals.confirm.confirm_action,
+          elid: itemForModals.confirm.id.$,
+          successCallback: () => {
+            dispatch(cloudVpsActions.setItemForModals({ confirm: false }))
+            getInstances()
+          },
+        }),
+      )
+    } else {
+      return dispatch(
+        cloudVpsOperations.changeInstanceState({
+          action,
+          elid,
+          closeModal: () =>
+            dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
+          ...loadingParams,
+          ...pagination,
+        }),
+      )
+    }
+  }
+
+  const resizeSubmit = values => {
+    dispatch(
+      cloudVpsOperations.changeTariff({
+        elid: itemForModals.resize.id.$,
+        pricelist: values.pricelist,
+        successCallback: () =>
+          dispatch(cloudVpsActions.setItemForModals({ resize: false })),
+        ...loadingParams,
+        ...pagination,
+      }),
+    )
+  }
+
+  const rebuildSubmit = values => {
+    dispatch(cloudVpsActions.setItemForModals({ rebuild: false }))
+
+    dispatch(
+      cloudVpsOperations.rebuildInstance({
+        action: itemForModals.rebuild.rebuild_action,
+        elid: itemForModals.rebuild.id.$,
+        sok: 'ok',
+        clicked_button: 'ok',
+        ...values,
+        successCallback: () => getInstances(),
+      }),
+    )
+  }
+
+  const changeInstancePasswordSubmit = password => {
+    dispatch(
+      cloudVpsOperations.changeInstancePassword({
+        password,
+        elid: itemForModals.change_pass.id.$,
+        closeModal: () =>
+          dispatch(cloudVpsActions.setItemForModals({ change_pass: false })),
+        ...loadingParams,
+      }),
+    )
+  }
 
   return (
     <>
