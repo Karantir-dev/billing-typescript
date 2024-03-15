@@ -16,7 +16,11 @@ import { payersOperations, payersSelectors, authSelectors } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import s from './ModalAddPayer.module.scss'
 import * as Yup from 'yup'
-import { ADDRESS_SPECIAL_CHARACTERS_REGEX, ADDRESS_REGEX } from '@src/utils/constants'
+import {
+  ADDRESS_SPECIAL_CHARACTERS_REGEX,
+  ADDRESS_REGEX,
+  CNP_REGEX,
+} from '@src/utils/constants'
 
 export default function ModalAddPayer(props) {
   const dispatch = useDispatch()
@@ -65,6 +69,13 @@ export default function ModalAddPayer(props) {
     eu_vat: payersSelectedFields?.eu_vat_field
       ? Yup.string().required(t('Is a required field', { ns: 'other' }))
       : null,
+    cnp:
+      payersSelectedFields?.profiletype === '1' &&
+      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
+        ? Yup.string()
+            .required(t('Is a required field', { ns: 'other' }))
+            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
+        : null,
     [payersSelectedFields?.offer_field]: elid ? null : Yup.bool().oneOf([true]),
   })
 
@@ -136,6 +147,7 @@ export default function ModalAddPayer(props) {
             person: payersSelectedFields?.person || '',
             name: payersSelectedFields?.name || '',
             eu_vat: payersSelectedFields?.eu_vat || '',
+            cnp: payersSelectedFields?.cnp || '',
             country_physical:
               payersSelectedFields?.country ||
               payersSelectedFields?.country_physical ||
@@ -185,6 +197,24 @@ export default function ModalAddPayer(props) {
                       disabled={payersSelectLists?.profiletype?.length === 1}
                       withoutArrow={payersSelectLists?.profiletype?.length === 1}
                     />
+
+                    {payersSelectedFields?.profiletype === '1' &&
+                    (payersSelectedFields?.country ||
+                      payersSelectedFields?.country_physical) === '181' ? (
+                      <InputField
+                        inputWrapperClass={s.inputHeight}
+                        name="cnp"
+                        label={`${t('CNP')}:`}
+                        placeholder={t('Enter data', { ns: 'other' })}
+                        isShadow
+                        className={s.input}
+                        error={!!errors.name}
+                        touched={!!touched.name}
+                        isRequired
+                        inputClassName={s.field}
+                        onBlur={e => setFieldValue('cnp', e.target.value.trim())}
+                      />
+                    ) : null}
 
                     {values?.profiletype === '3' || values?.profiletype === '2' ? (
                       <InputField

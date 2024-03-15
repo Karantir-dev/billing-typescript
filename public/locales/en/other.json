@@ -83,6 +83,7 @@
   "Passport": "Passport",
   "Series and passport number": "Series and passport number",
   "Is a required field": "Is a required field",
+  "cnp_validation": "CNP must contain 13 digits",
   "error_type": "Page not found",
   "error_text": "Looks like something has gone wrong. Sorry for the inconveniences",
   "Active": "Active",
