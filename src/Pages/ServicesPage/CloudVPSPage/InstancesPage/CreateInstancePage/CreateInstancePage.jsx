@@ -5,6 +5,8 @@ import {
   SoftwareOSBtn,
   CheckBox,
   RadioTypeButton,
+  TariffCard,
+  ConnectMethod,
 } from '@components'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -14,7 +16,6 @@ import { cloudVpsOperations, cloudVpsSelectors } from '@src/Redux'
 import { getFlagFromCountryName, useCancelRequest } from '@src/utils'
 import cn from 'classnames'
 import { Form, Formik } from 'formik'
-import { Infinity } from '@src/images'
 
 import s from './CreateInstancePage.module.scss'
 
@@ -257,17 +258,6 @@ export default function CreateInstancePage() {
 
                 <ul className={s.tariffs_list}>
                   {filteredTariffsList?.map(tariff => {
-                    const cpu = tariff.detail.find(
-                      el => el.name.$.toLowerCase() === 'cpu',
-                    ).value.$
-                    // const network = tariff.detail.find(el => el.name.$.toLowerCase() === 'network')
-                    const memory = tariff.detail
-                      .find(el => el.name.$.toLowerCase() === 'memory')
-                      .value.$.replace('.', '')
-                    const disk = tariff.detail
-                      .find(el => el.name.$.toLowerCase() === 'disk space')
-                      .value.$.replace('.', '')
-
                     const calculatePrice = () => {
                       const dailyCost = tariff.prices.price.cost.$
                       const ipDailyDiscount = values.network_ipv6 ? 1 / 30 : 0
@@ -283,40 +273,12 @@ export default function CreateInstancePage() {
                     const price = calculatePrice()
 
                     return (
-                      <li className={s.tariff_item} key={tariff.id.$}>
-                        <button
-                          className={s.tariff_btn}
-                          type="button"
-                          onClick={() => onTariffChange(tariff.id.$)}
-                        >
-                          <p className={s.tariff_title}>{tariff.title.main.$}</p>
-                          <div className={s.tariff_parameters}>
-                            <div className={s.tariff_row}>
-                              <span className={s.parameter_label}>CPU</span>
-                              <span className={s.parameter_value}>{cpu}</span>
-                            </div>
-                            <div className={s.tariff_row}>
-                              <span className={s.parameter_label}>RAM</span>
-                              <span className={s.parameter_value}>{memory}</span>
-                            </div>
-                            <div className={s.tariff_row}>
-                              <span className={s.parameter_label}>NVMe</span>
-                              <span className={s.parameter_value}>{disk}</span>
-                            </div>
-                            <div className={s.tariff_row}>
-                              <span className={s.parameter_label}>Speed</span>
-                              <span className={s.parameter_value}>250 Mbps</span>
-                            </div>
-                            <div className={s.tariff_row}>
-                              <span className={s.parameter_label}>Traffic</span>
-                              <span className={s.parameter_value}>
-                                <Infinity className={s.infinity} />
-                              </span>
-                            </div>
-                          </div>
-                          <p className={s.tariff_price}>{price}€</p>
-                        </button>
-                      </li>
+                      <TariffCard
+                        key={tariff.id.$}
+                        tariff={tariff}
+                        onClick={onTariffChange}
+                        price={price}
+                      />
                     )
                   })}
                 </ul>
@@ -325,6 +287,7 @@ export default function CreateInstancePage() {
               <section className={s.section}>
                 <h3 className={s.section_title}>Choose Authentication Method</h3>
               </section>
+              <ConnectMethod />
               {/* <div className={cn(s.buying_panel, { [s.opened]: parametersInfo })}>
                   {widerThanMobile && (
                     <div className={s.buying_panel_item}>

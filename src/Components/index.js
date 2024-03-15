@@ -224,8 +224,10 @@ export { default as Header } from './Container/Header/Header'
 export { default as Options } from './Options/Options'
 export { default as OrderTariff } from './OrderTariff/OrderTariff'
 
+/** I suggest to rename this section and all of the files with "Cloud" */
 //==========================================Instances==========================================//
 
 export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
-export { default as PasswordMethod } from './Services/Instances/PasswordMethod/PasswordMethod'
+export { default as ConnectMethod } from './Services/Instances/ConnectMethod/ConnectMethod'
 export { InstanceFiltersModal } from './Services/Instances/Modals'
+export { default as TariffCard } from './Services/cloud/TariffCard/TariffCard'

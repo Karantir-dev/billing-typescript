@@ -1,11 +1,15 @@
 /* eslint-disable no-unused-vars */
 import { CheckBox, Icon, InputField, Select } from '@components'
-import s from './PasswordMethod.module.scss'
 import { useTranslation } from 'react-i18next'
+import PropTypes from 'prop-types'
 
-export default function PasswordMethod({
-  state,
-  setState,
+import s from './ConnectMethod.module.scss'
+
+export default function ConnectMethod({
+  connectionType,
+  onChangeType,
+  setSSHkey,
+  setPassword,
   sshList,
   values,
   errors,
@@ -18,8 +22,8 @@ export default function PasswordMethod({
         <div className={s.item__description}>
           <CheckBox
             type="radio"
-            onClick={() => setState({ passwordType: 'ssh' })}
-            value={state.passwordType === 'ssh'}
+            onClick={() => onChangeType('ssh')}
+            value={connectionType === 'ssh'}
           />
           <div className={s.item__text_wrapper}>
             <p className={s.item__name}>{t('ssh_key')}</p>
@@ -27,15 +31,13 @@ export default function PasswordMethod({
           </div>
           <Icon name="Ssh_keys" />
         </div>
-        {state.passwordType === 'ssh' && (
+        {connectionType === 'ssh' && (
           <div className={s.item__field}>
             <Select
               isShadow
               itemsList={sshList}
               placeholder={t('ssh_key')}
-              getElement={item => {
-                setState({ ssh_keys: item })
-              }}
+              getElement={setSSHkey}
               value={values.ssh_keys}
               error={errors.ssh_keys}
             />
@@ -46,8 +48,8 @@ export default function PasswordMethod({
         <div className={s.item__description}>
           <CheckBox
             type="radio"
-            onClick={() => setState({ passwordType: 'password' })}
-            value={state.passwordType === 'password'}
+            onClick={() => onChangeType('password')}
+            value={connectionType === 'password'}
           />
           <div className={s.item__text_wrapper}>
             <p className={s.item__name}>{t('password', { ns: 'vds' })}</p>
@@ -55,7 +57,7 @@ export default function PasswordMethod({
           </div>
           <Icon name="Lock" />
         </div>
-        {state.passwordType === 'password' && (
+        {connectionType === 'password' && (
           <div className={s.item__field}>
             <InputField
               name="password"
@@ -66,11 +68,17 @@ export default function PasswordMethod({
               touched={!!touched.password}
               isRequired
               autoComplete="off"
-              onChange={e => setState({ password: e.target.value })}
+              onChange={e => setPassword(e.target.value)}
             />
           </div>
         )}
       </div>
     </div>
   )
+}
+
+ConnectMethod.propTypes = {
+  onChangeType: PropTypes.func,
+  setSSHkey: PropTypes.func,
+  setPassword: PropTypes.func,
 }
