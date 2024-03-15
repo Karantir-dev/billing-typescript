@@ -64,6 +64,7 @@ export { default as CertificateModal } from './ui/CertificateModal/CertificateMo
 export { default as InstructionModal } from './ui/InstructionModal/InstructionModal'
 export { default as InputRange } from './ui/InputRange/InputRange'
 export { default as WarningMessage } from './ui/WarningMessage/WarningMessage'
+export { default as RadioTypeButton } from './ui/RadioTypeButton/RadioTypeButton'
 
 //==========================================ACCESS LOGS==========================================//
 

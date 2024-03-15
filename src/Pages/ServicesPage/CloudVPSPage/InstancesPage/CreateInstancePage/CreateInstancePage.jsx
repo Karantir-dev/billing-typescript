@@ -4,6 +4,7 @@ import {
   SoftwareOSSelect,
   SoftwareOSBtn,
   CheckBox,
+  RadioTypeButton,
 } from '@components'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -16,6 +17,12 @@ import { Form, Formik } from 'formik'
 import { Infinity } from '@src/images'
 
 import s from './CreateInstancePage.module.scss'
+
+const periodList = [
+  { value: 30, label: 'month' },
+  { value: 1, label: 'day' },
+  { value: 0.0416, label: 'hour' },
+]
 
 export default function CreateInstancePage() {
   const location = useLocation()
@@ -46,10 +53,22 @@ export default function CreateInstancePage() {
       )
     }
 
-    if (!osList) {
-      dispatch(cloudVpsOperations)
+    if (tariffs && !osList) {
+      dispatch(
+        cloudVpsOperations.getOsList({
+          signal,
+          setIsLoading,
+          closeLoader: () => setIsLoading(false),
+        }),
+      )
     }
   }, [])
+
+  useEffect(() => {
+    if (!currentDC && dcList) {
+      setCurrentDC(dcList?.[0]?.$key)
+    }
+  }, [dcList])
 
   const renderSoftwareOSFields = ({
     fieldName,
@@ -165,6 +184,8 @@ export default function CreateInstancePage() {
         initialValues={{
           instances_os: osList?.[0]?.$key || '',
           tariff_id: '',
+          period: 30,
+          network_ipv6: false,
         }}
         // validationSchema={validationSchema}
         // onSubmit={onFormSubmit}
@@ -213,11 +234,26 @@ export default function CreateInstancePage() {
               <section className={s.section}>
                 <h3 className={s.section_title}>{t('Server size')}</h3>
 
-                <label className={s.ip_checkbox} htmlFor="ipv6">
-                  <CheckBox id="ipv6" />
-                  Enable only IPv6
-                  <span className={s.ip_discount}>-1€</span>
-                </label>
+                <div className={s.period_bar}>
+                  <label className={s.ip_checkbox} htmlFor="ipv6">
+                    <CheckBox
+                      name="network_ipv6"
+                      id="ipv6"
+                      value={values.network_ipv6}
+                      onClick={() => {
+                        setFieldValue('network_ipv6', !values.network_ipv6)
+                      }}
+                    />
+                    Enable only IPv6
+                    <span className={s.ip_discount}>-1€/mon</span>
+                  </label>
+
+                  <RadioTypeButton
+                    list={periodList}
+                    value={values.period}
+                    onClick={value => setFieldValue('period', value)}
+                  />
+                </div>
 
                 <ul className={s.tariffs_list}>
                   {filteredTariffsList?.map(tariff => {
@@ -231,6 +267,21 @@ export default function CreateInstancePage() {
                     const disk = tariff.detail
                       .find(el => el.name.$.toLowerCase() === 'disk space')
                       .value.$.replace('.', '')
+
+                    const calculatePrice = () => {
+                      const dailyCost = tariff.prices.price.cost.$
+                      const ipDailyDiscount = values.network_ipv6 ? 1 / 30 : 0
+                      let price = (dailyCost - ipDailyDiscount) * values.period
+                      if (price < 0.01) {
+                        price = price.toFixed(3)
+                      } else {
+                        price = price.toFixed(2)
+                      }
+                      return price
+                    }
+
+                    const price = calculatePrice()
+
                     return (
                       <li className={s.tariff_item} key={tariff.id.$}>
                         <button
@@ -263,7 +314,7 @@ export default function CreateInstancePage() {
                               </span>
                             </div>
                           </div>
-                          <p className={s.tariff_price}>{tariff.prices.price.cost.$}€</p>
+                          <p className={s.tariff_price}>{price}€</p>
                         </button>
                       </li>
                     )

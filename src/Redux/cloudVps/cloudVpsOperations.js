@@ -1,5 +1,5 @@
 import qs from 'qs'
-import { actions, authSelectors, cloudVpsActions } from '@redux'
+import { actions, authSelectors, cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
@@ -452,6 +452,33 @@ const writeTariffsWithDC = data => {
   }
 }
 
+const getOsList =
+  ({ signal, setIsLoading, lastTariffID, closeLoader }) =>
+  (dispatch, getState) => {
+    setIsLoading(true)
+
+    if (!lastTariffID) {
+      const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
+      const tariffsArray = tariffs[Object.keys(tariffs)[0]]
+      lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
+    }
+
+    dispatch(getTariffParamsRequest({ signal, id: lastTariffID }))
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+
+        dispatch(cloudVpsActions.setOsList(osList))
+
+        closeLoader && closeLoader()
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+      })
+  }
+
 const getAllTariffsInfo =
   ({ signal, setIsLoading, needOsList }) =>
   (dispatch, getState) => {
@@ -482,7 +509,7 @@ const getAllTariffsInfo =
         { signal },
       ),
     ])
-      .then(([{ data: netherlandsData }, { data: polandData }]) => {
+      .then(async ([{ data: netherlandsData }, { data: polandData }]) => {
         if (netherlandsData.doc?.error) throw new Error(netherlandsData.doc.error.msg.$)
         if (polandData.doc?.error) throw new Error(polandData.doc.error.msg.$)
 
@@ -492,23 +519,12 @@ const getAllTariffsInfo =
           el.$.toLowerCase().includes('windows'),
         ).$key
 
+        const tariffs = polandData.doc.list.find(el => el.$name === 'pricelist').elem
+
+        const lastTariffID = tariffs[tariffs.length - 1].id.$
+
         if (needOsList) {
-          return dispatch(getOsList({ signal, setIsLoading }))
-          // const polandTariffs = polandData.doc.list.find(
-          //   el => el.$name === 'pricelist',
-          // ).elem
-          // const lastTariffID = polandTariffs[polandTariffs.length - 1].pricelist.$
-
-          // return dispatch(getTariffParamsRequest({ signal, id: lastTariffID })).then(
-          //   ({ data }) => {
-          //     if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-          //     console.log(data)
-          //     const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
-
-          //     dispatch(cloudVpsActions.setOsList(osList))
-          //   },
-          // )
+          await dispatch(getOsList({ signal, setIsLoading, lastTariffID }))
         }
 
         dispatch(
@@ -519,78 +535,15 @@ const getAllTariffsInfo =
         )
         dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
-
+      })
+      .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
-      .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
       })
   }
-
-const getOsList =
-  ({ signal, setIsLoading }) =>
-  (dispatch, getState) => {
-    return dispatch(getTariffParamsRequest({ signal, id: lastTariffID })).then(
-      ({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-        console.log(data)
-        const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
-
-        dispatch(cloudVpsActions.setOsList(osList))
-      },
-    )
-  }
-
-// const getCloudOrderPageInfo =
-//   ({ setIsLoading, signal, setOsList, datacenter }) =>
-//   (dispatch, getState) => {
-//     setIsLoading(true)
-//     const sessionId = authSelectors.getSessionId(getState())
-
-//     axiosInstance
-//       .post(
-//         '/',
-//         qs.stringify({
-//           func: 'v2.instances.order.pricelist',
-//           out: 'json',
-//           auth: sessionId,
-//           lang: 'en',
-//           datacenter,
-//         }),
-//         { signal },
-//       )
-//       .then(({ data }) => {
-//         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-//         console.log(data.doc)
-
-//         const dcList = data.doc.slist.find(el => el.$name === 'datacenter').val
-//         dcList.forEach(dc => (dc.$ = dc.$.replace('Fotbo ', '')))
-
-//         const tariffs = data.doc.list[0].elem
-//         const lastTariffID = tariffs[tariffs.length - 1].pricelist.$
-
-//         if (setOsList) {
-//           return dispatch(getTariffParamsRequest({ signal, id: lastTariffID })).then(
-//             ({ data }) => {
-//               console.log(data)
-//               const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
-
-//               setOsList && setOsList(osList)
-//             },
-//           )
-//         }
-//       })
-//       .then(() => {
-//         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-//       })
-//       .catch(err => {
-//         checkIfTokenAlive(err.message, dispatch)
-//         handleLoadersClosing(err?.message, dispatch, setIsLoading)
-//       })
-//   }
 
 const getTariffParams =
   ({ signal, id }) =>
@@ -605,6 +558,7 @@ const getTariffParamsRequest =
   ({ signal, id }) =>
   (_, getState) => {
     const sessionId = authSelectors.getSessionId(getState())
+    const specialTariffFieldName = `period_${id}`
 
     return axiosInstance.post(
       '/',
@@ -614,8 +568,7 @@ const getTariffParamsRequest =
         auth: sessionId,
         lang: 'en',
         pricelist: id,
-        period_6594: '-50',
-        period_6593: '-50',
+        [specialTariffFieldName]: '-50',
       }),
       { signal },
     )
@@ -635,4 +588,5 @@ export default {
   openConsole,
   getAllTariffsInfo,
   getTariffParams,
+  getOsList,
 }
