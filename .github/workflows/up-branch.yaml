@@ -150,7 +150,7 @@ jobs:
         working-directory: deployment/infrastructure
         run: |
           kubectl apply -f main
-          kubectl apply -f main/ci-ci-deploy
+          kubectl apply -f main/ci-cd-deploy
 
       - name: Generation config in base64
         id: deploy_config
