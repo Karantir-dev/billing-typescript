@@ -10,16 +10,20 @@ metadata:
   name: role-ci-cd-admin
   namespace: {{ NAMESPACE }}
 rules:
-  - apiGroups:
-      - apps
+  - apiGroups: [ "" ]
     resources:
-      - deployments
+      - services
     verbs:
       - create
-      - watch
       - get
-      - patch
-      - list
+  - apiGroups: [ networking.k8s.io ]
+    resources:
+      - ingresses
+    verbs:
+      - create
+      - get
+
+
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1

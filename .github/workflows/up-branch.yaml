@@ -66,7 +66,7 @@ jobs:
               echo "value=${BASH_REMATCH[0]}-${{ env.BRANCH }}" >> $GITHUB_OUTPUT
               exit 0
           else
-              echo "::error title=Назва гілки, не є валідною::Назва гілки повинна починатися з цифр. Переназвіть гілку, або заповність поле inputs.prefix, в форматі branch_<number>. Наприклад - <branch-123>"
+              echo "::error title=Назва гілки, не є валідною::Назва гілки повинна починатися з цифр. Переназвіть гілку, або заповність поле inputs.prefix, в форматі branch-<number>. Наприклад - <branch-123>"
               exit 1
           fi
 
@@ -99,6 +99,10 @@ jobs:
         run: |
           sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" namespace.yaml
           sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ci-cd-admin.yaml
+
+      - name: Apply namespace
+        working-directory: deployment/infrastructure/basic
+        run: kubectl apply -f namespace.yaml
 
       - name: Apply admin k8s manifest
         working-directory: deployment/infrastructure
