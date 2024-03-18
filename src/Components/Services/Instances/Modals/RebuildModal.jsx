@@ -4,7 +4,7 @@ import {
   Icon,
   InputField,
   Modal,
-  PasswordMethod,
+  ConnectMethod,
   SoftwareOSBtn,
   SoftwareOSSelect,
   WarningMessage,
@@ -12,12 +12,13 @@ import {
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import s from './Modals.module.scss'
 import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
 import { generatePassword, getInstanceMainInfo } from '@utils'
+
+import s from './Modals.module.scss'
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
@@ -192,16 +193,18 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     <>
                       {isRebuild ? (
                         <div>
-                          <PasswordMethod
-                            state={state}
-                            setState={setState}
+                          <ConnectMethod
+                            connectionType={state.passwordType}
+                            onChangeType={type => setState({ passwordType: type })}
+                            setSSHkey={value => setState({ ssh_keys: value })}
+                            setPassword={value => setState({ password: value })}
                             errors={errors}
                             touched={touched}
                             sshList={sshList.map(el => ({
                               label: el.$,
                               value: el.$key,
                             }))}
-                            values={values}
+                            sshKey={values.ssh_keys}
                           />
                           <ErrorMessage
                             className={s.error_message}

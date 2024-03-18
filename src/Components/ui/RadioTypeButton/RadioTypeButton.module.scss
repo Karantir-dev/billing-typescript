@@ -1,0 +1,44 @@
+.cloud__toolbar {
+  display: flex;
+  border-radius: 99px;
+  height: 50px;
+  box-shadow: var(--forms_shadow);
+  background-color: var(--forms_bgc_2);
+  overflow: hidden;
+  font-size: 16px;
+}
+
+.toolbar_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  flex-grow: 1;
+  text-transform: capitalize;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    border-right: 1px solid var(--transparent_lines);
+  }
+
+  &:hover {
+    color: var(--accent-color-light);
+  }
+
+  &.selected {
+    background-color: var(--forms_bgc_3);
+    color: var(--accent-color-light);
+    font-weight: 600;
+    box-shadow: var(--forms_shadow);
+    pointer-events: none;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .cloud__toolbar {
+    width: 208px;
+    height: 56px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+}
