@@ -515,10 +515,12 @@ const getOsList =
     dispatch(getTariffParamsRequest({ signal, id: lastTariffID }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
+        console.log(data.doc)
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+        const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
 
         dispatch(cloudVpsActions.setOsList(osList))
+        dispatch(cloudVpsActions.setSshList(sshList))
 
         closeLoader && closeLoader()
       })

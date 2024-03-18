@@ -6,6 +6,7 @@ const getInstancesTariffs = state => state.cloudVps.instancesTariffs
 const getDClist = state => state.cloudVps.instancesDcList
 const getWindowsTag = state => state.cloudVps.windowsTag
 const getOsList = state => state.cloudVps.osList
+const getSshList = state => state.cloudVps.sshList
 
 export default {
   getItemForModals,
@@ -16,4 +17,5 @@ export default {
   getDClist,
   getWindowsTag,
   getOsList,
+  getSshList,
 }

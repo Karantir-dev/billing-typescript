@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   BreadCrumbs,
   Loader,
@@ -7,6 +8,9 @@ import {
   RadioTypeButton,
   TariffCard,
   ConnectMethod,
+  InputField,
+  WarningMessage,
+  Button,
 } from '@components'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -28,7 +32,7 @@ const periodList = [
 export default function CreateInstancePage() {
   const location = useLocation()
   const dispatch = useDispatch()
-  const { t } = useTranslation([])
+  const { t } = useTranslation(['cloud_vps'])
 
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
@@ -36,8 +40,8 @@ export default function CreateInstancePage() {
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const osList = useSelector(cloudVpsSelectors.getOsList)
-
-  const [sshList, setSshList] = useState([])
+  const sshList = useSelector(cloudVpsSelectors.getSshList)
+  console.log(windowsTag)
   const [currentDC, setCurrentDC] = useState(dcList?.[0]?.$key)
 
   const onDCchange = $key => {
@@ -55,7 +59,7 @@ export default function CreateInstancePage() {
       )
     }
 
-    if (tariffs && !osList) {
+    if (tariffs && (!osList || !sshList)) {
       dispatch(
         cloudVpsOperations.getOsList({
           signal,
@@ -182,7 +186,7 @@ export default function CreateInstancePage() {
       </section>
 
       <Formik
-        enableReinitialize
+        // enableReinitialize
         initialValues={{
           instances_os: osList?.[0]?.$key || '',
           tariff_id: '',
@@ -191,6 +195,8 @@ export default function CreateInstancePage() {
           connectionType: '',
           ssh_keys: '',
           password: '',
+          servername: '',
+          order_count: '',
         }}
         // validationSchema={validationSchema}
         // onSubmit={onFormSubmit}
@@ -199,17 +205,9 @@ export default function CreateInstancePage() {
           const onOSchange = value => {
             setFieldValue('instances_os', value)
           }
-
+          console.log(values.instances_os)
           const onTariffChange = id => {
             setFieldValue('tariff_id', id)
-            dispatch(
-              cloudVpsOperations.getTariffParams({
-                signal,
-                id,
-                setIsLoading,
-                setSshList,
-              }),
-            )
           }
 
           const isItWindows = osList
@@ -296,11 +294,11 @@ export default function CreateInstancePage() {
                 </ul>
               </section>
 
-              {values.tariff_id && (
-                <>
-                  <section className={s.section}>
-                    <h3 className={s.section_title}>Choose Authentication Method</h3>
-                  </section>
+              <section className={s.section}>
+                <h3 className={s.section_title}>Choose Authentication Method</h3>
+                {isItWindows ? (
+                  <WarningMessage>{t('windows_password_warning')}</WarningMessage>
+                ) : (
                   <ConnectMethod
                     connectionType={values.connectionType}
                     sshKey={values.ssh_keys}
@@ -314,99 +312,105 @@ export default function CreateInstancePage() {
                       value: el.$key,
                     }))}
                   />
-                </>
-              )}
-              {/* <div className={cn(s.buying_panel, { [s.opened]: parametersInfo })}>
-                  {widerThanMobile && (
-                    <div className={s.buying_panel_item}>
-                      <p>{t('amount')}:</p>
+                )}
+              </section>
 
-                      <div className={s.increment_wrapper}>
-                        <button
-                          className={cn(s.count_btn, s.decrement)}
-                          type="button"
-                          onClick={() => {
-                            setCount(+count - 1)
-                            setFieldValue(
-                              'finalTotalPrice',
-                              roundToDecimal(+(values.totalPrice * (+count - 1))),
-                            )
-                          }}
-                          disabled={+count <= 1}
-                        ></button>
-                        <div className={s.input_wrapper_border}>
-                          <div className={s.input_wrapper_bg}>
-                            <div className={s.input_wrapper}>
-                              <input
-                                className={cn(s.count_input, s.amount_digit)}
-                                value={count}
-                                onChange={event => {
-                                  const value =
-                                    event.target.value.length > 1
-                                      ? event.target.value?.replace(/^0/, '')
-                                      : event.target.value
+              <section className={s.section}>
+                <h3 className={s.section_title}>{t('Server name')}</h3>
+                <InputField name="serverName" placeholder={t('serverName')} isShadow />
+              </section>
 
-                                  setCount(+event.target.value > 35 ? 35 : value)
-                                }}
-                                onBlur={event => {
-                                  if (event.target.value < 1) setCount(1)
-                                }}
-                                type="number"
-                                min={1}
-                                max={35}
-                              />
-                            </div>
+              {/* <div className={cn(s.buying_panel, { [s.opened]: values.tariff_id })}>
+                {widerThanMobile && (
+                  <div className={s.buying_panel_item}>
+                    <p>{t('amount')}:</p>
+
+                    <div className={s.increment_wrapper}>
+                      <button
+                        className={cn(s.count_btn, s.decrement)}
+                        type="button"
+                        onClick={() => {
+                          setCount(+count - 1)
+                          setFieldValue(
+                            'finalTotalPrice',
+                            roundToDecimal(+(values.totalPrice * (+count - 1))),
+                          )
+                        }}
+                        disabled={+count <= 1}
+                      ></button>
+
+                      <div className={s.input_wrapper_border}>
+                        <div className={s.input_wrapper_bg}>
+                          <div className={s.input_wrapper}>
+                            <input
+                              className={cn(s.count_input, s.amount_digit)}
+                              value={count}
+                              onChange={event => {
+                                const value =
+                                  event.target.value.length > 1
+                                    ? event.target.value?.replace(/^0/, '')
+                                    : event.target.value
+
+                                setCount(+event.target.value > 35 ? 35 : value)
+                              }}
+                              onBlur={event => {
+                                if (event.target.value < 1) setCount(1)
+                              }}
+                              type="number"
+                              min={1}
+                              max={35}
+                            />
                           </div>
                         </div>
-                        <button
-                          className={cn(s.count_btn, s.increment)}
-                          type="button"
-                          onClick={() => {
-                            setCount(+count + 1)
-                            setFieldValue(
-                              'finalTotalPrice',
-                              roundToDecimal(+(values.totalPrice * (+count + 1))),
-                            )
-                          }}
-                          disabled={+count >= 35}
-                        ></button>
                       </div>
+                      <button
+                        className={cn(s.count_btn, s.increment)}
+                        type="button"
+                        onClick={() => {
+                          setCount(+count + 1)
+                          setFieldValue(
+                            'finalTotalPrice',
+                            roundToDecimal(+(values.totalPrice * (+count + 1))),
+                          )
+                        }}
+                        disabled={+count >= 35}
+                      ></button>
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {widerThanMobile ? (
-                    <p className={s.buying_panel_item}>
-                      {t('topay', { ns: 'dedicated_servers' })}:
-                      <span className={s.tablet_price_sentence}>
-                        <span className={s.tablet_price}>
-                          {roundToDecimal(values.finalTotalPrice - checkSaleMemory())} EUR
-                        </span>
-                        {` ${translatePeriodName(period, t)}`}
-                      </span>
-                    </p>
-                  ) : (
-                    <p className={s.price_wrapper}>
-                      <span className={s.price}>
-                        €{roundToDecimal(values.finalTotalPrice - checkSaleMemory())}
+                {widerThanMobile ? (
+                  <p className={s.buying_panel_item}>
+                    {t('topay', { ns: 'dedicated_servers' })}:
+                    <span className={s.tablet_price_sentence}>
+                      <span className={s.tablet_price}>
+                        {roundToDecimal(values.finalTotalPrice - checkSaleMemory())} EUR
                       </span>
                       {` ${translatePeriodName(period, t)}`}
-                      
-                    </p>
-                  )}
+                    </span>
+                  </p>
+                ) : (
+                  <p className={s.price_wrapper}>
+                    <span className={s.price}>
+                      €{roundToDecimal(values.finalTotalPrice - checkSaleMemory())}
+                    </span>
+                    {` ${translatePeriodName(period, t)}`}
+                  </p>
+                )}
 
-                  <Button
-                    className={s.btn_buy}
-                    label={t('buy', { ns: 'other' })}
-                    type="submit"
-                    isShadow
-                    onClick={() => {
-                      values.agreement === 'off' &&
-                        agreementEl.current.scrollIntoView({
-                          behavior: 'smooth',
-                        })
-                    }}
-                  />
-                </div> */}
+                <Button
+                  className={s.btn_buy}
+                  label={t('buy', { ns: 'other' })}
+                  type="submit"
+                  isShadow
+                  // onClick={() => {
+                  //   values.agreement === 'off' &&
+                  //     agreementEl.current.scrollIntoView({
+                  //       behavior: 'smooth',
+                  //     })
+                  // }}
+                />
+              </div> */}
             </Form>
           )
         }}
