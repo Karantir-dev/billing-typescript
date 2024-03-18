@@ -35,6 +35,9 @@ rules:
     verbs:
       - get
       - create
+      - patch
+      - bind
+      - escalate
   - apiGroups: [ networking.k8s.io ]
     resources:
       - ingresses
