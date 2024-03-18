@@ -63,10 +63,10 @@ jobs:
           
           # перевірка, чи гілка має корректу назву. Якщо має - сформувати назву
           if [[ $BRANCH =~ ^[0-9]+ ]]; then 
-              echo "value=${BASH_REMATCH[0]}-${{ env.BRANCH }}" >> $GITHUB_OUTPUT
+              echo "value=branch-${BASH_REMATCH[0]}" >> $GITHUB_OUTPUT
               exit 0
           else
-              echo "::error title=Назва гілки, не є валідною::Назва гілки повинна починатися з цифр. Переназвіть гілку, або заповність поле inputs.prefix, в форматі branch-<number>. Наприклад - <branch-123>"
+              echo "::error title=Назва гілки, не є валідною::Назва гілки повинна починатися з цифр. Переназвіть гілку, або заповніть поле inputs.prefix, в форматі branch-<number>. Наприклад - <branch-123>"
               exit 1
           fi
 
@@ -75,7 +75,7 @@ jobs:
         id: dynamic
         run: |
           echo "NAMESPACE=${{ vars.NAMESPACE_PREFIX }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
-          echo "PREFIX=version-${{ github.run_number }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
+          echo "PREFIX=${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
           echo "environment=${{ steps._tmp_environment.outputs.value }}" >> "$GITHUB_OUTPUT"
   
 
@@ -123,6 +123,8 @@ jobs:
     needs: [ vars, create_basic ]
     name: Create main component
     runs-on: ubuntu-latest
+    outputs:
+      k8s_config: ${{ steps.deploy_config.outputs.value }}
     steps:
       - uses: actions/checkout@v4
 
@@ -146,7 +148,9 @@ jobs:
 
       - name: Apply k8s manifest
         working-directory: deployment/infrastructure
-        run: kubectl apply -f main
+        run: |
+          kubectl apply -f main
+          kubectl apply -f main/ci-ci-deploy
 
       - name: Generation config in base64
         id: deploy_config
@@ -162,7 +166,14 @@ jobs:
       - name: Write domain
         run: echo "::notice title=Назва домену::http://${{ steps.domain.outputs.value }}"
 
+  run_workflow:
+    needs: [ vars, create_main ]
+    name: Run workflow
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Run deploy workflow
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run deploy.yaml --ref ${{ github.ref_name }} -f environment=${{ needs.vars.outputs.environment }} -f prefix=${{ needs.vars.outputs.prefix }} -f KUBECONFIG=${{ steps.deploy_config.outputs.value }}
+        run: gh workflow run deploy.yaml -F environment=${{ needs.vars.outputs.environment }} -F prefix=${{ needs.vars.outputs.prefix }} -F KUBECONFIG=${{ needs.create_main.outputs.k8s_config }}

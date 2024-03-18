@@ -16,13 +16,19 @@ rules:
     verbs:
       - create
       - get
+  - apiGroups: [ "" ]
+    resources:
+      - secrets
+    verbs:
+      - create
+      - get
   - apiGroups: [ networking.k8s.io ]
     resources:
       - ingresses
     verbs:
       - create
       - get
-
+      - patch
 
 ---
 kind: RoleBinding
