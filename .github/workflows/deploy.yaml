@@ -7,7 +7,7 @@ on:
     inputs:
       environment:
         required: false
-        type: string
+        type: environment
         description: "Яку environment github використовується"
       prefix:
         required: false
@@ -233,16 +233,16 @@ jobs:
       - name: Update Version
         working-directory: deployment
         run: |
-          sed -i "s|{{ IMAGE }}|${{ needs.build_and_push.outputs.image_tag }}|g" deployment.yml
-          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" deployment.yml
+          sed -i "s|{{ IMAGE }}|${{ needs.build_and_push.outputs.image_tag }}|g" deployment.yaml
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" deployment.yaml
 
       - name: Check
         working-directory: deployment
-        run: cat deployment.yml
+        run: cat deployment.yaml
 
       - name: Deploy to DigitalOcean Kubernetes
         working-directory: deployment
-        run: kubectl apply -f deployment.yml
+        run: kubectl apply -f deployment.yaml
 
       - name: Verify deployment
         working-directory: deployment

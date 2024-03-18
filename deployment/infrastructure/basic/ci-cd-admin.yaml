@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-ci-cd-admin
+  namespace: {{ NAMESPACE }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: role-ci-cd-admin
+  namespace: {{ NAMESPACE }}
+rules:
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+    verbs:
+      - create
+      - watch
+      - get
+      - patch
+      - list
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: role-binding-ci-cd-admin
+  namespace: {{ NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: sa-ci-cd-admin
+    namespace: {{ NAMESPACE }}
+roleRef:
+  kind: Role
+  name: role-ci-cd-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+  name: ci-cd-admin-secret
+  namespace: {{ NAMESPACE }}
+  annotations:
+    kubernetes.io/service-account.name: sa-ci-cd-admin

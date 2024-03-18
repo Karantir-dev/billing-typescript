@@ -31,4 +31,4 @@ jobs:
 
       - name: Run workflow
         run: |
-          gh workflow run deploy.yml --ref ${{ matrix.base }}
+          gh workflow run deploy.yaml --ref ${{ matrix.base }}
