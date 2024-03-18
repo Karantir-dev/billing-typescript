@@ -13,7 +13,7 @@ on:
         description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
 
 permissions:
-  contents: read # This is required for actions/checkout
+  contents: write # This is required for actions/checkout
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
