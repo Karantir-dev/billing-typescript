@@ -69,6 +69,7 @@ export default function ConnectMethod({
               isRequired
               autoComplete="off"
               onChange={e => setPassword(e.target.value)}
+              generatePasswordValue={value => setPassword(value)}
             />
           </div>
         )}

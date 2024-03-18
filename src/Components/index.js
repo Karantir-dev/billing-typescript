@@ -229,5 +229,6 @@ export { default as OrderTariff } from './OrderTariff/OrderTariff'
 
 export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
 export { default as ConnectMethod } from './Services/Instances/ConnectMethod/ConnectMethod'
+export { default as InstancesOptions } from './Services/Instances/InstancesOptions/InstancesOptions'
 export { InstanceFiltersModal } from './Services/Instances/Modals'
 export { default as TariffCard } from './Services/cloud/TariffCard/TariffCard'

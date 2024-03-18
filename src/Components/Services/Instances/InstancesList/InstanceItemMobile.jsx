@@ -2,117 +2,18 @@
 import { useRef } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { Icon, Options } from '@components'
+import { HintWrapper, Icon, InstancesOptions, Options } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName } from '@utils'
-import { cloudVpsActions, cloudVpsOperations } from '@redux'
-import { useDispatch } from 'react-redux'
+import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
 import formatCountryName from '../ExternalFunc/formatCountryName'
-import { useTranslation } from 'react-i18next'
 
 export default function InstanceItemMobile({ item }) {
-  const { t } = useTranslation(['cloud_vps', 'vds', 'countries'])
-
   const optionsBlock = useRef()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
-  const isNotActive =
-    item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
+  const { isResized, displayStatus, displayName } = getInstanceMainInfo(item)
 
-  const isStopped = item.item_status.$orig === '2_2_16'
-
-  const options = [
-    {
-      label: t(isStopped ? 'Start' : 'Shut down'),
-      icon: 'Shutdown',
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
-          }),
-        ),
-      disabled: isNotActive,
-    },
-    {
-      label: t('Console'),
-      icon: 'Console',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsOperations.openConsole({ elid: item.id.$ })),
-    },
-    {
-      label: t('Reboot'),
-      icon: 'Reboot',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: 'reboot' },
-          }),
-        ),
-    },
-    {
-      label: t('Resize'),
-      icon: 'Resize',
-      disabled: isNotActive || item.change_pricelist?.$ === 'off',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
-    },
-
-    {
-      label: t('Change password'),
-      icon: 'ChangePassword',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
-    },
-    {
-      label: t('Rescue'),
-      icon: 'Rescue',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            rebuild: { ...item, rebuild_action: 'bootimage' },
-          }),
-        ),
-    },
-    {
-      label: t('Instructions'),
-      icon: 'Instruction',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
-    },
-    {
-      label: t('Rebuild'),
-      icon: 'Rebuild',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            rebuild: { ...item, rebuild_action: 'rebuild' },
-          }),
-        ),
-    },
-    {
-      label: t('Create ticket'),
-      icon: 'Headphone',
-      onClick: () =>
-        navigate(`${route.SUPPORT}/requests`, {
-          state: { id: item.id.$, openModal: true },
-        }),
-    },
-    {
-      label: t('Rename'),
-      icon: 'Rename',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
-    },
-    {
-      label: t('Delete'),
-      icon: 'Remove',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
-      isDelete: true,
-    },
-  ]
   return (
     <div
       className={s.mobile_item}
@@ -126,7 +27,7 @@ export default function InstanceItemMobile({ item }) {
     >
       <div className={s.mobile_item__header}>
         <div className={s.mobile_item__header_name}>
-          <p className={s.mobile_item__name}>{item.servername?.$ || item.name?.$}</p>
+          <p className={s.mobile_item__name}>{displayName}</p>
           <p
             className={cn(
               s.status,
@@ -136,11 +37,12 @@ export default function InstanceItemMobile({ item }) {
               ],
             )}
           >
-            {item.fotbo_status?.$?.replaceAll('_', ' ') || item.item_status?.$}
+            {displayStatus}
+            {isResized && <Icon name="Attention" />}
           </p>
         </div>
         <div ref={optionsBlock}>
-          <Options options={options} />
+          <InstancesOptions item={item} isMobile />
         </div>
       </div>
       <div className={s.mobile_item__body}>

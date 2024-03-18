@@ -5,9 +5,11 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import cn from 'classnames'
+import { getInstanceMainInfo } from '@utils'
 
 export const EditNameModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
     servername: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -19,7 +21,7 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
         <p>{t('Rename')}</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
-          {item.servername?.$ || item.id.$}
+          {displayName}
         </p>
       </Modal.Header>
       <Modal.Body>
