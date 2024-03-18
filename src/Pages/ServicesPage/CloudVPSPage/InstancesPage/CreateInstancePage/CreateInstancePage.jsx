@@ -11,6 +11,8 @@ import {
   InputField,
   WarningMessage,
   Button,
+  Incrementer,
+  FixedFooter,
 } from '@components'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -307,7 +309,7 @@ export default function CreateInstancePage() {
                     setPassword={value => setFieldValue('password', value)}
                     errors={errors}
                     touched={touched}
-                    sshList={sshList.map(el => ({
+                    sshList={sshList?.map(el => ({
                       label: el.$,
                       value: el.$key,
                     }))}
@@ -320,66 +322,15 @@ export default function CreateInstancePage() {
                 <InputField name="serverName" placeholder={t('serverName')} isShadow />
               </section>
 
-              {/* <div className={cn(s.buying_panel, { [s.opened]: values.tariff_id })}>
-                {widerThanMobile && (
+              <FixedFooter isShown={values.tariff_id}>
+                {/* {widerThanMobile && (
                   <div className={s.buying_panel_item}>
                     <p>{t('amount')}:</p>
-
-                    <div className={s.increment_wrapper}>
-                      <button
-                        className={cn(s.count_btn, s.decrement)}
-                        type="button"
-                        onClick={() => {
-                          setCount(+count - 1)
-                          setFieldValue(
-                            'finalTotalPrice',
-                            roundToDecimal(+(values.totalPrice * (+count - 1))),
-                          )
-                        }}
-                        disabled={+count <= 1}
-                      ></button>
-
-                      <div className={s.input_wrapper_border}>
-                        <div className={s.input_wrapper_bg}>
-                          <div className={s.input_wrapper}>
-                            <input
-                              className={cn(s.count_input, s.amount_digit)}
-                              value={count}
-                              onChange={event => {
-                                const value =
-                                  event.target.value.length > 1
-                                    ? event.target.value?.replace(/^0/, '')
-                                    : event.target.value
-
-                                setCount(+event.target.value > 35 ? 35 : value)
-                              }}
-                              onBlur={event => {
-                                if (event.target.value < 1) setCount(1)
-                              }}
-                              type="number"
-                              min={1}
-                              max={35}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        className={cn(s.count_btn, s.increment)}
-                        type="button"
-                        onClick={() => {
-                          setCount(+count + 1)
-                          setFieldValue(
-                            'finalTotalPrice',
-                            roundToDecimal(+(values.totalPrice * (+count + 1))),
-                          )
-                        }}
-                        disabled={+count >= 35}
-                      ></button>
-                    </div>
                   </div>
-                )}
+                )} */}
+                <Incrementer />
 
-                {widerThanMobile ? (
+                {/* {widerThanMobile ? (
                   <p className={s.buying_panel_item}>
                     {t('topay', { ns: 'dedicated_servers' })}:
                     <span className={s.tablet_price_sentence}>
@@ -396,7 +347,7 @@ export default function CreateInstancePage() {
                     </span>
                     {` ${translatePeriodName(period, t)}`}
                   </p>
-                )}
+                )} */}
 
                 <Button
                   className={s.btn_buy}
@@ -410,7 +361,7 @@ export default function CreateInstancePage() {
                   //     })
                   // }}
                 />
-              </div> */}
+              </FixedFooter>
             </Form>
           )
         }}
