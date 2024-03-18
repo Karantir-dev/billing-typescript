@@ -176,4 +176,4 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run deploy workflow
-        run: gh workflow run deploy.yaml -F environment=${{ needs.vars.outputs.environment }} -F prefix=${{ needs.vars.outputs.prefix }} -F KUBECONFIG=${{ needs.create_main.outputs.k8s_config }}
+        run: gh workflow run deploy.yaml --ref ${{ github.ref_name }} -F environment=${{ needs.vars.outputs.environment }} -F prefix=${{ needs.vars.outputs.prefix }} -F KUBECONFIG=${{ needs.create_main.outputs.k8s_config }}
