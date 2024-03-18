@@ -13,7 +13,8 @@ on:
         description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
 
 permissions:
-  contents: write # This is required for actions/checkout
+  contents: read # This is required for actions/checkout
+  actions: write # For run action
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -123,6 +124,7 @@ jobs:
     needs: [ vars, create_basic ]
     name: Create main component
     runs-on: ubuntu-latest
+    environment: up-infrastructure
     outputs:
       k8s_config: ${{ steps.deploy_config.outputs.value }}
     steps:
@@ -141,16 +143,32 @@ jobs:
       - name: Update basic manifest for admin
         working-directory: deployment/infrastructure/main
         run: |
-          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ci-cd-deploy/ci-cd-deploy.yaml
           sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" service.yaml
           sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ingress.yaml
           sed -i "s|{{ DOMAIN }}|${{ steps.domain.outputs.value }}|g" ingress.yaml
+
+      - name: Update service manifest for admin
+        working-directory: deployment/infrastructure/main/ci-cd-deploy
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ci-cd-deploy.yaml
+
+      - name: Update manifest-ecr-helper manifest for admin
+        working-directory: deployment/infrastructure/main/manifest-ecr-helper
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" manifest-ecr-helper.yaml
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" manifest-ecr-helper-creds.yaml
+          sed -i "s|{{ AWS_ACCESS_KEY_ID }}|${{ secrets.AWS_ACCESS_KEY_ID }}|g" manifest-ecr-helper-creds.yaml
+          sed -i "s|{{ AWS_SECRET_ACCESS_KEY }}|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" manifest-ecr-helper-creds.yaml
+          sed -i "s|{{ AWS_ACCOUNT }}|${{ secrets.AWS_ACCOUNT }}|g" manifest-ecr-helper-creds.yaml
+          sed -i "s|{{ AWS_REGION }}|${{ vars.AWS_REGION }}|g" manifest-ecr-helper-creds.yaml
+                    
 
       - name: Apply k8s manifest
         working-directory: deployment/infrastructure
         run: |
           kubectl apply -f main
           kubectl apply -f main/ci-cd-deploy
+          kubectl apply -f main/manifest-ecr-helper
 
       - name: Generation config in base64
         id: deploy_config

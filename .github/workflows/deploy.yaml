@@ -7,7 +7,7 @@ on:
     inputs:
       environment:
         required: false
-        type: environment
+        type: string
         description: "Яку environment github використовується"
       prefix:
         required: false

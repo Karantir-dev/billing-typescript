@@ -1,0 +1,106 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ecr-registry-helper-init
+  namespace: {{ NAMESPACE }}
+spec:
+  ttlSecondsAfterFinished: 30
+  backoffLimit: 0
+  template:
+    spec:
+      serviceAccountName: sa-ecr-registry-helper
+      containers:
+        - name: ecr-registry-helper
+          image: textadi/aws-kubectl:2.15.2-1.29.0
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: ecr-registry-helper-secrets
+            - configMapRef:
+                name: ecr-registry-helper-cm
+          command:
+            - /bin/sh
+            - -c
+            - |-
+              ECR_TOKEN=`aws ecr get-login-password --region ${AWS_REGION}`
+              kubectl delete secret --ignore-not-found "${DOCKER_SECRET_NAME}" -n "${NAMESPACE_NAME}"
+              kubectl create secret docker-registry "${DOCKER_SECRET_NAME}" \
+              --docker-server=https://${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com \
+              --docker-username=AWS \
+              --docker-password=${ECR_TOKEN} \
+              --namespace=${NAMESPACE_NAME}
+              echo "Secret was successfully updated at $(date)"
+      restartPolicy: Never
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: ecr-registry-helper
+  namespace: {{ NAMESPACE }}
+spec:
+  schedule: "0 */1 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  suspend: false # дозволяє включати та вимикати cronjob
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: sa-ecr-registry-helper
+          containers:
+            - name: ecr-registry-helper
+              image: textadi/aws-kubectl:2.15.2-1.29.0
+              imagePullPolicy: Always
+              envFrom:
+                - secretRef:
+                    name: ecr-registry-helper-secrets
+                - configMapRef:
+                    name: ecr-registry-helper-cm
+              command:
+                - /bin/sh
+                - -c
+                - |-
+                  ECR_TOKEN=`aws ecr get-login-password --region ${AWS_REGION}`
+                  kubectl delete secret --ignore-not-found "${DOCKER_SECRET_NAME}" -n "${NAMESPACE_NAME}"
+                  kubectl create secret docker-registry "${DOCKER_SECRET_NAME}" \
+                  --docker-server=https://${AWS_ACCOUNT}.dkr.ecr.${AWS_REGION}.amazonaws.com \
+                  --docker-username=AWS \
+                  --docker-password=${ECR_TOKEN} \
+                  --namespace=${NAMESPACE_NAME}
+                  echo "Secret was successfully updated at $(date)"
+          restartPolicy: Never
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-ecr-registry-helper
+  namespace: {{ NAMESPACE }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: role-ecr-registry-helper
+  namespace: {{ NAMESPACE }}
+rules:
+  - apiGroups: [ "" ]
+    resources: [ "secrets" ]
+    resourceNames: [ "regcred" ]
+    verbs: [ "delete" ]
+  - apiGroups: [ "" ]
+    resources: [ "secrets" ]
+    verbs: [ "create" ]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: role-binding-ecr-registry-helper
+  namespace: {{ NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: sa-ecr-registry-helper
+    namespace: {{ NAMESPACE }}
+roleRef:
+  kind: Role
+  name: role-ecr-registry-helper
+  apiGroup: rbac.authorization.k8s.io
+---

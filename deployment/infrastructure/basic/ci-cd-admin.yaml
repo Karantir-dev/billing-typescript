@@ -13,22 +13,21 @@ rules:
   - apiGroups: [ "" ]
     resources:
       - services
-    verbs:
-      - create
-      - get
-  - apiGroups: [ "" ]
-    resources:
       - secrets
-    verbs:
-      - create
-      - get
-  - apiGroups: [ "" ]
-    resources:
       - serviceaccounts
+      - configmaps
     verbs:
       - create
       - get
-  - apiGroups: [rbac.authorization.k8s.io]
+      - patch
+  - apiGroups: [ batch ]
+    resources:
+      - jobs
+      - cronjobs
+    verbs:
+      - get
+      - create
+  - apiGroups: [ rbac.authorization.k8s.io ]
     resources:
       - roles
       - rolebindings
