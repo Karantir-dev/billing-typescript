@@ -6,7 +6,7 @@ import { useEffect, useReducer, useState } from 'react'
 import { InstanceFiltersModal } from '@components/Services/Instances/Modals'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
-import { useCancelRequest } from '@src/utils'
+import { useCancelRequest } from '@utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
@@ -117,56 +117,93 @@ export default function InstancesPage() {
     })
   }
 
-  const deleteInstanceSubmit = () => {
-    dispatch(
-      cloudVpsOperations.deleteInstance({
-        elid: itemForModals.delete.id.$,
-        closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
-        ...loadingParams,
-        successCallback: () => setPagination({ p_num: 1 }),
-      }),
-    )
-  }
+  // const deleteInstanceSubmit = () => {
+  //   dispatch(
+  //     cloudVpsOperations.deleteInstance({
+  //       elid: itemForModals.delete.id.$,
+  //       closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
+  //       ...loadingParams,
+  //       successCallback: () => setPagination({ p_num: 1 }),
+  //     }),
+  //   )
+  // }
 
-  const confirmInstanceSubmit = (action, elid) => {
-    dispatch(
-      cloudVpsOperations.changeInstanceState({
-        action,
-        elid,
-        closeModal: () => dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-        ...loadingParams,
-        ...pagination,
-      }),
-    )
-  }
+  // const confirmInstanceSubmit = (action, elid) => {
+  //   if (action.includes('resize_')) {
+  //     return dispatch(
+  //       cloudVpsOperations.changeTariffConfirm({
+  //         action: action.replace('resize_', ''),
+  //         elid,
+  //         closeModal: () =>
+  //           dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
+  //         ...loadingParams,
+  //         ...pagination,
+  //       }),
+  //     )
+  //   } else if (action === 'unrescue') {
+  //     return dispatch(
+  //       cloudVpsOperations.rebuildInstance({
+  //         action: itemForModals.confirm.confirm_action,
+  //         elid: itemForModals.confirm.id.$,
+  //         successCallback: () => {
+  //           dispatch(cloudVpsActions.setItemForModals({ confirm: false }))
+  //           getInstances()
+  //         },
+  //       }),
+  //     )
+  //   } else {
+  //     return dispatch(
+  //       cloudVpsOperations.changeInstanceState({
+  //         action,
+  //         elid,
+  //         closeModal: () =>
+  //           dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
+  //         ...loadingParams,
+  //         ...pagination,
+  //       }),
+  //     )
+  //   }
+  // }
 
-  const changeInstancePasswordSubmit = password => {
-    dispatch(
-      cloudVpsOperations.changeInstancePassword({
-        password,
-        elid: itemForModals.change_pass.id.$,
-        closeModal: () =>
-          dispatch(cloudVpsActions.setItemForModals({ change_pass: false })),
-        signal,
-        setIsLoading,
-      }),
-    )
-  }
+  // const changeInstancePasswordSubmit = password => {
+  //   dispatch(
+  //     cloudVpsOperations.changeInstancePassword({
+  //       password,
+  //       elid: itemForModals.change_pass.id.$,
+  //       closeModal: () =>
+  //         dispatch(cloudVpsActions.setItemForModals({ change_pass: false })),
+  //       signal,
+  //       setIsLoading,
+  //     }),
+  //   )
+  // }
 
-  const rebuildSubmit = values => {
-    dispatch(cloudVpsActions.setItemForModals({ rebuild: false }))
+  // const rebuildSubmit = values => {
+  //   dispatch(cloudVpsActions.setItemForModals({ rebuild: false }))
 
-    dispatch(
-      cloudVpsOperations.rebuildInstance({
-        action: itemForModals.rebuild.rebuild_action,
-        elid: itemForModals.rebuild.id.$,
-        sok: 'ok',
-        clicked_button: 'ok',
-        ...values,
-        successCallback: () => getInstances(),
-      }),
-    )
-  }
+  //   dispatch(
+  //     cloudVpsOperations.rebuildInstance({
+  //       action: itemForModals.rebuild.rebuild_action,
+  //       elid: itemForModals.rebuild.id.$,
+  //       sok: 'ok',
+  //       clicked_button: 'ok',
+  //       ...values,
+  //       successCallback: () => getInstances(),
+  //     }),
+  //   )
+  // }
+  // const resizeSubmit = values => {
+  //   dispatch(
+  //     cloudVpsOperations.changeTariff({
+  //       elid: itemForModals.resize.id.$,
+  //       pricelist: values.pricelist,
+  //       successCallback: () =>
+  //         dispatch(cloudVpsActions.setItemForModals({ resize: false })),
+  //       ...loadingParams,
+  //       ...pagination,
+  //     }),
+  //   )
+  // }
 
   return (
     <>
@@ -228,13 +265,16 @@ export default function InstancesPage() {
         />
       )}
       <Modals
-        deleteInstanceSubmit={deleteInstanceSubmit}
-        changeInstancePasswordSubmit={changeInstancePasswordSubmit}
+        // deleteInstanceSubmit={deleteInstanceSubmit}
+        // changeInstancePasswordSubmit={changeInstancePasswordSubmit}
         editNameSubmit={editNameSubmit}
-        confirmSubmit={confirmInstanceSubmit}
-        resizeSubmit={() => {}}
-        rebuildSubmit={rebuildSubmit}
+        // confirmSubmit={confirmInstanceSubmit}
+        // resizeSubmit={resizeSubmit}
+        // rebuildSubmit={rebuildSubmit}
         loadingParams={loadingParams}
+        pagination={pagination}
+        setPagination={setPagination}
+        getInstances={getInstances}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>

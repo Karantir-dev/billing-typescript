@@ -17,10 +17,13 @@ import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
+import { generatePassword, getInstanceMainInfo } from '@utils'
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
   const dispatch = useDispatch()
+  const { displayName } = getInstanceMainInfo(item)
+
   const [data, setData] = useState()
 
   const [state, setState] = useReducer((state, action) => {
@@ -157,7 +160,12 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
             }
             if (isWindowsOS) {
-              submitData.password = 'QQQqqq111Hello'
+              submitData.password = generatePassword({
+                length: 10,
+                includeLowerCase: true,
+                includeNumber: true,
+                includeUpperCase: true,
+              })
             }
             onSubmit(submitData)
           }}
@@ -213,6 +221,8 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                           touched={!!touched.password}
                           isRequired
                           autoComplete="off"
+                          onChange={e => setState({ password: e.target.value })}
+                          generatePasswordValue={value => setState({ password: value })}
                         />
                       )}
                     </>

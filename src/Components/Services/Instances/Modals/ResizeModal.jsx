@@ -8,12 +8,14 @@ import cn from 'classnames'
 import { useEffect, useState, Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsSelectors } from '@redux'
+import { getInstanceMainInfo } from '@utils'
 
 export const ResizeModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
   const dispatch = useDispatch()
   const [tariffs, setTariffs] = useState()
   const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
+  const { displayName } = getInstanceMainInfo(item)
 
   useEffect(() => {
     dispatch(cloudVpsOperations.getTariffsListToChange(item.id.$, setTariffs, closeModal))
@@ -25,22 +27,11 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         <p> {t('choose_flavor')}</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
-          {item.id.$}
+          {displayName}
         </p>
       </Modal.Header>
       <Modal.Body>
-        <Formik
-          initialValues={{ pricelist: '' }}
-          onSubmit={values =>
-            dispatch(
-              cloudVpsOperations.changeTariff({
-                elid: item.id.$,
-                pricelist: values.pricelist,
-                successCallback: closeModal,
-              }),
-            )
-          }
-        >
+        <Formik initialValues={{ pricelist: '' }} onSubmit={onSubmit}>
           {({ values, setFieldValue }) => {
             return (
               <Form id={'resize'}>
