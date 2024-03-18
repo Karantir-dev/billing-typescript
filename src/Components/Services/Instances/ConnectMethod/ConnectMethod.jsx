@@ -11,7 +11,7 @@ export default function ConnectMethod({
   setSSHkey,
   setPassword,
   sshList,
-  values,
+  sshKey,
   errors,
   touched,
 }) {
@@ -38,7 +38,7 @@ export default function ConnectMethod({
               itemsList={sshList}
               placeholder={t('ssh_key')}
               getElement={setSSHkey}
-              value={values.ssh_keys}
+              value={sshKey}
               error={errors.ssh_keys}
             />
           </div>
@@ -78,7 +78,10 @@ export default function ConnectMethod({
 }
 
 ConnectMethod.propTypes = {
+  connectionType: PropTypes.string,
+  sshKey: PropTypes.string,
   onChangeType: PropTypes.func,
   setSSHkey: PropTypes.func,
   setPassword: PropTypes.func,
+  sshList: PropTypes.array,
 }

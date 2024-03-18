@@ -546,12 +546,26 @@ const getAllTariffsInfo =
   }
 
 const getTariffParams =
-  ({ signal, id }) =>
+  ({ signal, id, setIsLoading, setSshList }) =>
   dispatch => {
-    dispatch(getTariffParamsRequest({ signal, id })).then(({ data }) => {
-      console.log(data.doc)
-      renameAddonFields(data.doc, { isNewFunc: true })
-    })
+    setIsLoading(true)
+
+    dispatch(getTariffParamsRequest({ signal, id }))
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        console.log(data.doc)
+        const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
+        setSshList(sshList)
+        renameAddonFields(data.doc, { isNewFunc: true })
+      })
+      .then(() => {
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+      })
   }
 
 const getTariffParamsRequest =

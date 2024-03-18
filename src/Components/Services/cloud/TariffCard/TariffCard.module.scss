@@ -4,6 +4,10 @@
   border-radius: 3px;
   background-color: var(--forms_bgc_1);
   box-shadow: var(--shadow_cards_static);
+
+  &.active {
+    outline: 1px solid var(--accent-color-light);
+  }
 }
 
 .tariff_btn {

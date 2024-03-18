@@ -37,6 +37,7 @@ export default function CreateInstancePage() {
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const osList = useSelector(cloudVpsSelectors.getOsList)
 
+  const [sshList, setSshList] = useState([])
   const [currentDC, setCurrentDC] = useState(dcList?.[0]?.$key)
 
   const onDCchange = $key => {
@@ -187,18 +188,28 @@ export default function CreateInstancePage() {
           tariff_id: '',
           period: 30,
           network_ipv6: false,
+          connectionType: '',
+          ssh_keys: '',
+          password: '',
         }}
         // validationSchema={validationSchema}
         // onSubmit={onFormSubmit}
       >
-        {({ values, setFieldValue }) => {
+        {({ values, setFieldValue, errors, touched }) => {
           const onOSchange = value => {
             setFieldValue('instances_os', value)
           }
 
           const onTariffChange = id => {
             setFieldValue('tariff_id', id)
-            dispatch(cloudVpsOperations.getTariffParams({ signal, id }))
+            dispatch(
+              cloudVpsOperations.getTariffParams({
+                signal,
+                id,
+                setIsLoading,
+                setSshList,
+              }),
+            )
           }
 
           const isItWindows = osList
@@ -276,18 +287,35 @@ export default function CreateInstancePage() {
                       <TariffCard
                         key={tariff.id.$}
                         tariff={tariff}
-                        onClick={onTariffChange}
+                        onClick={() => onTariffChange(tariff.id.$)}
                         price={price}
+                        active={values.tariff_id === tariff.id.$}
                       />
                     )
                   })}
                 </ul>
               </section>
 
-              <section className={s.section}>
-                <h3 className={s.section_title}>Choose Authentication Method</h3>
-              </section>
-              <ConnectMethod />
+              {values.tariff_id && (
+                <>
+                  <section className={s.section}>
+                    <h3 className={s.section_title}>Choose Authentication Method</h3>
+                  </section>
+                  <ConnectMethod
+                    connectionType={values.connectionType}
+                    sshKey={values.ssh_keys}
+                    onChangeType={type => setFieldValue('connectionType', type)}
+                    setSSHkey={value => setFieldValue('ssh_keys', value)}
+                    setPassword={value => setFieldValue('password', value)}
+                    errors={errors}
+                    touched={touched}
+                    sshList={sshList.map(el => ({
+                      label: el.$,
+                      value: el.$key,
+                    }))}
+                  />
+                </>
+              )}
               {/* <div className={cn(s.buying_panel, { [s.opened]: parametersInfo })}>
                   {widerThanMobile && (
                     <div className={s.buying_panel_item}>

@@ -196,7 +196,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                               label: el.$,
                               value: el.$key,
                             }))}
-                            values={values}
+                            sshKey={values.ssh_keys}
                           />
                           <ErrorMessage
                             className={s.error_message}
