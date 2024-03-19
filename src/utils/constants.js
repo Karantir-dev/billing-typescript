@@ -19,6 +19,8 @@ export const URL_REGEX =
 export const ADDRESS_REGEX = /^(?=.*\p{L})(?=.*[0-9]).*$/u
 export const ADDRESS_SPECIAL_CHARACTERS_REGEX = /^[^!$%^&\]~}[{=?<>+]+$/g
 
+export const CNP_REGEX = /^\d{13}$/
+
 export const SOFTWARE_ICONS_LIST = [
   'almalinux',
   'bitrix',

@@ -4,7 +4,12 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import s from '../OrderTariff.module.scss'
 import cn from 'classnames'
-import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
+import {
+  QIWI_PHONE_COUNTRIES,
+  SBER_PHONE_COUNTRIES,
+  OFFER_FIELD,
+  CNP_REGEX,
+} from '@utils/constants'
 import {
   cartActions,
   cartOperations,
@@ -159,6 +164,13 @@ export default function FourthStep({
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
     [OFFER_FIELD]: Yup.bool().oneOf([true]),
+    cnp:
+      payersSelectedFields?.profiletype === '1' &&
+      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
+        ? Yup.string()
+            .required(t('Is a required field', { ns: 'other' }))
+            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
+        : null,
   })
 
   const setPromocodeToCart = promocode => {
@@ -173,6 +185,7 @@ export default function FourthStep({
     const data = {
       postcode_physical: payersData?.selectedPayerFields?.postcode_physical,
       eu_vat: payersData?.selectedPayerFields?.eu_vat,
+      cnp: payersData?.selectedPayerFields?.cnp || payersSelectedFields?.cnp || '',
       city_legal: payersData?.selectedPayerFields?.city_physical,
       city_physical: payersData?.selectedPayerFields?.city_physical,
       address_legal: payersData?.selectedPayerFields?.address_physical,
