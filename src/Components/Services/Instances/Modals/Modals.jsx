@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   ChangePasswordModal,
   DeleteModal,
@@ -17,12 +16,7 @@ import { InstructionModal } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const Modals = ({
-  // deleteInstanceSubmit,
-  // changeInstancePasswordSubmit,
   editNameSubmit,
-  // confirmSubmit,
-  // resizeSubmit,
-  // rebuildSubmit,
   loadingParams = {},
   pagination,
   setPagination = () => {},

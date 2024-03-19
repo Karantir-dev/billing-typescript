@@ -167,3 +167,37 @@ export const RUS_LANG_COUNTRIES = [
 export const FIRST_MONTH_HOSTING_DISCOUNT_ID = '6041'
 
 export const DC_ID_IN = { poland: 13, netherlands: 12 }
+
+export const cloudSortList = [
+  { label: 'Name', isSort: true, value: 'servername' },
+  { label: 'Status', isSort: true, value: 'fotbo_status' },
+  { label: 'Flavor', isSort: true, value: 'pricelist' },
+  { label: 'Price', isSort: true, value: 'cost' },
+  { label: 'Region', isSort: true, value: 'datacentername' },
+  { label: 'Created at', isSort: true, value: 'createdate' },
+  { label: 'OS', isSort: true, value: 'instances_os' },
+  { label: 'Access IP', isSort: false, value: 'ip' },
+]
+
+export const fotboStatuesList = [
+  {
+    $key: '',
+    $: 'Not selected',
+  },
+  {
+    $key: 'active',
+    $: 'Active',
+  },
+  {
+    $key: 'stopped',
+    $: 'Stopped',
+  },
+  {
+    $key: 'verify_resize',
+    $: 'Verify Resize',
+  },
+  {
+    $key: 'suspended',
+    $: 'Suspended',
+  },
+]

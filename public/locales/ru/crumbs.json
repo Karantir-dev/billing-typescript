@@ -25,6 +25,8 @@
   "vpn_order": "Заказ VPN",
   "dedicated": "Выделенные серверы",
   "wordpress": "Wordpress хостинг",
-  "wordpress_order": "Заказ Wordpress хостинга"
-
+  "wordpress_order": "Заказ Wordpress хостинга",
+  "cloud_vps": "Cloud VPS",
+  "ssh_keys": "SSH ключи",
+  "create_instance": "Создать сервер VPS"
 }

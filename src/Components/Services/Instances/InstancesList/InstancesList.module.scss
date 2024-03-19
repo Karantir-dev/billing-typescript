@@ -92,6 +92,13 @@
   align-items: center;
   gap: 6px;
   line-height: 1;
+
+  @media (max-width: 1549px) {
+    pointer-events: none;
+    svg {
+      display: none;
+    }
+  }
 }
 
 .sort_active {
@@ -169,16 +176,14 @@
 }
 
 .mobile__list {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 8px 15px;
 }
 
 .mobile_item {
   padding: 24px 20px;
   box-shadow: var(--forms2_shadow);
-  width: 260px;
   border-radius: 3px;
   text-align: left;
   background: var(--elements-bgc);
