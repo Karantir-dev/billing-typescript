@@ -18,23 +18,25 @@ import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { cloudVpsOperations, cloudVpsSelectors } from '@src/Redux'
+import { cloudVpsOperations, cloudVpsSelectors, userOperations } from '@src/Redux'
 import { getFlagFromCountryName, useCancelRequest } from '@src/utils'
 import cn from 'classnames'
 import { Form, Formik } from 'formik'
 
 import s from './CreateInstancePage.module.scss'
 
-const periodList = [
+const PERIODS_LIST = [
   { value: 30, label: 'month' },
   { value: 1, label: 'day' },
   { value: 0.0416, label: 'hour' },
 ]
 
+const IPv4_DAILY_COST = 1 / 30
+
 export default function CreateInstancePage() {
   const location = useLocation()
   const dispatch = useDispatch()
-  const { t } = useTranslation(['cloud_vps'])
+  const { t } = useTranslation(['cloud_vps', 'vds'])
 
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
@@ -43,7 +45,7 @@ export default function CreateInstancePage() {
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const osList = useSelector(cloudVpsSelectors.getOsList)
   const sshList = useSelector(cloudVpsSelectors.getSshList)
-  console.log(windowsTag)
+
   const [currentDC, setCurrentDC] = useState(dcList?.[0]?.$key)
 
   const onDCchange = $key => {
@@ -149,6 +151,29 @@ export default function CreateInstancePage() {
     })
   }
 
+  const onFormSubmit = values => {
+    const { servername, password, instances_os, order_count, instances_ssh_keys } = values
+
+    const orderData = {
+      use_ssh_key: values.connectionType === 'ssh' ? 'on' : 'off',
+      pricelist: values.tariff_id,
+      servername,
+      password,
+      instances_os,
+      order_count,
+      instances_ssh_keys,
+    }
+
+    dispatch(
+      userOperations.cleanBsketHandler(
+        () =>
+          dispatch(cloudVpsOperations.setOrderData({ signal, setIsLoading, orderData })),
+        signal,
+        setIsLoading,
+      ),
+    )
+  }
+
   return (
     <div>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -192,24 +217,26 @@ export default function CreateInstancePage() {
         initialValues={{
           instances_os: osList?.[0]?.$key || '',
           tariff_id: '',
+          tariffData: null,
           period: 30,
           network_ipv6: false,
           connectionType: '',
-          ssh_keys: '',
+          instances_ssh_keys: '',
           password: '',
           servername: '',
-          order_count: '',
+          order_count: '1',
         }}
         // validationSchema={validationSchema}
-        // onSubmit={onFormSubmit}
+        onSubmit={onFormSubmit}
       >
         {({ values, setFieldValue, errors, touched }) => {
           const onOSchange = value => {
             setFieldValue('instances_os', value)
           }
-          console.log(values.instances_os)
-          const onTariffChange = id => {
-            setFieldValue('tariff_id', id)
+
+          const onTariffChange = tariff => {
+            setFieldValue('tariff_id', tariff.id.$)
+            setFieldValue('tariffData', tariff)
           }
 
           const isItWindows = osList
@@ -226,6 +253,23 @@ export default function CreateInstancePage() {
                 }
               })
             : tariffs?.[currentDC]
+
+          const calculatePrice = (tariff, values, period = null, count = 1) => {
+            const dailyCost = tariff?.prices.price.cost.$
+
+            period = period ? period : values.period
+            let price
+            if (values.network_ipv6) price = dailyCost - IPv4_DAILY_COST
+
+            price = dailyCost * period * count
+
+            if (price < 0.01) {
+              price = price.toFixed(3)
+            } else {
+              price = price.toFixed(2)
+            }
+            return price
+          }
 
           return (
             <Form>
@@ -261,7 +305,7 @@ export default function CreateInstancePage() {
                   </label>
 
                   <RadioTypeButton
-                    list={periodList}
+                    list={PERIODS_LIST}
                     value={values.period}
                     onClick={value => setFieldValue('period', value)}
                   />
@@ -269,25 +313,13 @@ export default function CreateInstancePage() {
 
                 <ul className={s.tariffs_list}>
                   {filteredTariffsList?.map(tariff => {
-                    const calculatePrice = () => {
-                      const dailyCost = tariff.prices.price.cost.$
-                      const ipDailyDiscount = values.network_ipv6 ? 1 / 30 : 0
-                      let price = (dailyCost - ipDailyDiscount) * values.period
-                      if (price < 0.01) {
-                        price = price.toFixed(3)
-                      } else {
-                        price = price.toFixed(2)
-                      }
-                      return price
-                    }
-
-                    const price = calculatePrice()
+                    const price = calculatePrice(tariff, values)
 
                     return (
                       <TariffCard
                         key={tariff.id.$}
                         tariff={tariff}
-                        onClick={() => onTariffChange(tariff.id.$)}
+                        onClick={() => onTariffChange(tariff)}
                         price={price}
                         active={values.tariff_id === tariff.id.$}
                       />
@@ -303,9 +335,12 @@ export default function CreateInstancePage() {
                 ) : (
                   <ConnectMethod
                     connectionType={values.connectionType}
-                    sshKey={values.ssh_keys}
+                    sshKey={values.instances_ssh_keys}
                     onChangeType={type => setFieldValue('connectionType', type)}
-                    setSSHkey={value => setFieldValue('ssh_keys', value)}
+                    setSSHkey={value => {
+                      console.log(value)
+                      setFieldValue('instances_ssh_keys', value)
+                    }}
                     setPassword={value => setFieldValue('password', value)}
                     errors={errors}
                     touched={touched}
@@ -319,18 +354,47 @@ export default function CreateInstancePage() {
 
               <section className={s.section}>
                 <h3 className={s.section_title}>{t('Server name')}</h3>
-                <InputField name="serverName" placeholder={t('serverName')} isShadow />
+                <InputField name="servername" placeholder={t('serverName')} isShadow />
               </section>
 
               <FixedFooter isShown={values.tariff_id}>
-                {/* {widerThanMobile && (
-                  <div className={s.buying_panel_item}>
-                    <p>{t('amount')}:</p>
-                  </div>
-                )} */}
-                <Incrementer />
+                <div className={s.footer_container}>
+                  <div className={s.footer_row}>
+                    <div className={s.footer_parameters}></div>
+                    <div>
+                      <p className={s.label}>{t('amount', { ns: 'vds' })}:</p>
+                      <Incrementer
+                        count={values.order_count}
+                        setCount={value => setFieldValue('order_count', value)}
+                        max={35}
+                      />
+                    </div>
 
-                {/* {widerThanMobile ? (
+                    <div>
+                      <p className={s.label}>{t('summary', { ns: 'vds' })}:</p>
+                      <p className={s.footer_price}>
+                        €
+                        {calculatePrice(
+                          values.tariffData,
+                          values,
+                          PERIODS_LIST.find(el => el.label === 'day').value,
+                          values.order_count,
+                        )}
+                        /<span className={s.price_period}>{t('day')}</span>
+                      </p>
+                      <p className={s.footer_hour_price}>
+                        (€
+                        {calculatePrice(
+                          values.tariffData,
+                          values,
+                          PERIODS_LIST.find(el => el.label === 'hour').value,
+                          values.order_count,
+                        )}
+                        /{t('hour')})
+                      </p>
+                    </div>
+                  </div>
+                  {/* {widerThanMobile ? (
                   <p className={s.buying_panel_item}>
                     {t('topay', { ns: 'dedicated_servers' })}:
                     <span className={s.tablet_price_sentence}>
@@ -349,18 +413,19 @@ export default function CreateInstancePage() {
                   </p>
                 )} */}
 
-                <Button
-                  className={s.btn_buy}
-                  label={t('buy', { ns: 'other' })}
-                  type="submit"
-                  isShadow
-                  // onClick={() => {
-                  //   values.agreement === 'off' &&
-                  //     agreementEl.current.scrollIntoView({
-                  //       behavior: 'smooth',
-                  //     })
-                  // }}
-                />
+                  <Button
+                    className={s.btn_buy}
+                    label={t('buy', { ns: 'other' })}
+                    type="submit"
+                    isShadow
+                    // onClick={() => {
+                    //   values.agreement === 'off' &&
+                    //     agreementEl.current.scrollIntoView({
+                    //       behavior: 'smooth',
+                    //     })
+                    // }}
+                  />
+                </div>
               </FixedFooter>
             </Form>
           )

@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'
 import { t } from 'i18next'
 import { userActions, cartOperations, actions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 
 const userInfo = (data, dispatch) => {
   try {
@@ -350,8 +350,8 @@ const verifyMainEmail = (key, username) => (dispatch, getState) => {
     .finally(() => dispatch(actions.hideLoader()))
 }
 
-const cleanBsketHandler = func => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const cleanBsketHandler = (func, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
@@ -366,6 +366,7 @@ const cleanBsketHandler = func => (dispatch, getState) => {
         lang: 'en',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -376,10 +377,8 @@ const cleanBsketHandler = func => (dispatch, getState) => {
     })
     .then(() => func && func())
     .catch(error => {
-      dispatch(actions.hideLoader())
-      toast.error(t('unknown_error'), {
-        position: 'bottom-right',
-      })
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+
       checkIfTokenAlive(error.message, dispatch)
     })
 }

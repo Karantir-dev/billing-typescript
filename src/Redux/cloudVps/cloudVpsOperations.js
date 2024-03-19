@@ -1,10 +1,18 @@
+/* eslint-disable no-unused-vars */
 import qs from 'qs'
-import { actions, authSelectors, cloudVpsActions, cloudVpsSelectors } from '@redux'
+import {
+  actions,
+  authSelectors,
+  cartActions,
+  cloudVpsActions,
+  cloudVpsSelectors,
+} from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
 import { t } from 'i18next'
 import { DC_ID_IN } from '@src/utils/constants'
+import * as routes from '@src/routes'
 
 const getInstances =
   ({ p_cnt, p_num, p_col, signal, setIsLoading }) =>
@@ -596,28 +604,26 @@ const getAllTariffsInfo =
       })
   }
 
-const getTariffParams =
-  ({ signal, id, setIsLoading, setSshList }) =>
-  dispatch => {
-    setIsLoading(true)
+// const getTariffParams =
+//   ({ signal, id, setIsLoading }) =>
+//   dispatch => {
+//     setIsLoading(true)
 
-    dispatch(getTariffParamsRequest({ signal, id }))
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+//     dispatch(getTariffParamsRequest({ signal, id }))
+//       .then(({ data }) => {
+//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
-        const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
-        setSshList(sshList)
-        renameAddonFields(data.doc, { isNewFunc: true })
-      })
-      .then(() => {
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-      })
-      .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        handleLoadersClosing(err?.message, dispatch, setIsLoading)
-      })
-  }
+//         renameAddonFields(data.doc, { isNewFunc: true })
+//         console.log(data.doc)
+//       })
+//       .then(() => {
+//         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+//       })
+//       .catch(err => {
+//         checkIfTokenAlive(err.message, dispatch)
+//         handleLoadersClosing(err?.message, dispatch, setIsLoading)
+//       })
+//   }
 
 const getTariffParamsRequest =
   ({ signal, id }) =>
@@ -639,6 +645,45 @@ const getTariffParamsRequest =
     )
   }
 
+const setOrderData =
+  ({ signal, setIsLoading, orderData }) =>
+  (dispatch, getState) => {
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'v2.instances.order.param',
+          auth: sessionId,
+          out: 'json',
+          sok: 'ok',
+          lang: 'en',
+          order_period: '-50',
+
+          ...orderData,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        console.log(data.doc)
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: routes.CLOUD_VPS,
+          }),
+        )
+      })
+      .then(() => {
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -653,6 +698,7 @@ export default {
   getInstanceInfo,
   openConsole,
   getAllTariffsInfo,
-  getTariffParams,
+  // getTariffParams,
   getOsList,
+  setOrderData,
 }

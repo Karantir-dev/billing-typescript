@@ -39,7 +39,7 @@ export default function TariffCard({ tariff, onClick, price, active }) {
             </span>
           </div>
         </div>
-        <p className={s.tariff_price}>{price}€</p>
+        <p className={s.tariff_price}>€{price}</p>
       </button>
     </li>
   )
