@@ -87,6 +87,7 @@ jobs:
     environment: up-infrastructure
     outputs:
       k8s_admin_config: ${{ steps.admin_config.outputs.value }}
+      namespaces_uid: ${{ steps.namespaces.outputs.UID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -97,13 +98,28 @@ jobs:
 
       - name: Update basic manifest for admin
         working-directory: deployment/infrastructure/basic
+        env:
+          NAMESPACE: ${{ needs.vars.outputs.namespace }}
         run: |
-          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" namespace.yaml
-          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ci-cd-admin.yaml
+          sed -i "s|{{ NAMESPACE }}|${{ env.NAMESPACE }}|g" namespace.yaml
 
       - name: Apply namespace
         working-directory: deployment/infrastructure/basic
         run: kubectl apply -f namespace.yaml
+
+      - name: Get UID namespace
+        id: namespaces
+        env:
+          NAMESPACE: ${{ needs.vars.outputs.namespace }}
+        run: |
+          uid=$(kubectl get ns ${{ env.NAMESPACE }} -o jsonpath='{.metadata.uid}')
+          echo "UID=$uid" >> "$GITHUB_OUTPUT"
+
+      - name: Update basic ci-cd admin manifest for admin
+        working-directory: deployment/infrastructure/basic
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ci-cd-admin.yaml
+          sed -i "s|{{ NAMESPACE_UID }}|${{ steps.namespaces.outputs.UID }}|g" ci-cd-admin.yaml
 
       - name: Apply admin k8s manifest
         working-directory: deployment/infrastructure
@@ -161,7 +177,13 @@ jobs:
           sed -i "s|{{ AWS_SECRET_ACCESS_KEY }}|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" manifest-ecr-helper-creds.yaml
           sed -i "s|{{ AWS_ACCOUNT }}|${{ secrets.AWS_ACCOUNT }}|g" manifest-ecr-helper-creds.yaml
           sed -i "s|{{ AWS_REGION }}|${{ vars.AWS_REGION }}|g" manifest-ecr-helper-creds.yaml
-                    
+
+      - name: Update manifest-cleaner-helper manifest for admin
+        working-directory: deployment/infrastructure/main/manifest-cleaner-helper
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" manifest-cleaner-helper.yaml
+          sed -i "s|{{ NAMESPACE_UID }}|${{ needs.create_basic.outputs.namespaces_uid }}|g" manifest-cleaner-helper.yaml
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" manifest-cleaner-helper-creds.yaml                    
 
       - name: Apply k8s manifest
         working-directory: deployment/infrastructure
@@ -169,6 +191,13 @@ jobs:
           kubectl apply -f main
           kubectl apply -f main/ci-cd-deploy
           kubectl apply -f main/manifest-ecr-helper
+          kubectl apply -f main/manifest-cleaner-helper
+
+      - name: Run manual job with update creds aws
+        env:
+          NAMESPACE: ${{ needs.vars.outputs.namespace }}
+        run:
+          kubectl create job --from=cronjob/ecr-registry-helper manual-job -n ${{ env.NAMESPACE }}
 
       - name: Generation config in base64
         id: deploy_config
