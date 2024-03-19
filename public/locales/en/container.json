@@ -29,9 +29,10 @@
         "wetsite_care": "Website care",
         "forex_server": "Forex server",
         "wordpress_hosting": "Wordpress hosting",
-        "cloud_vps": "Virtual servers",
+        "cloud_vps": "Cloud VPS",
         "instances": "instances",
-        "ssh_keys": "ssh_keys"
+        "ssh_keys": "SSH keys",
+        "create_cloud_vps": "Create virtual server"
       }
     },
     "ref_program": {

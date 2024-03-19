@@ -359,9 +359,9 @@
   border: 1px solid #fa4bb4;
 }
 
-.tariff_list {
+.tariffs_list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 10px;
 }
 
@@ -403,6 +403,10 @@
 
 .rebuild_modal {
   max-width: 1000px;
+}
+
+.resize_modal {
+  max-width: 700px;
 }
 
 .rebuild_modal__body {

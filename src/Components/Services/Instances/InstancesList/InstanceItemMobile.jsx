@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { useRef } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { HintWrapper, Icon, InstancesOptions, Options } from '@components'
+import { Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'

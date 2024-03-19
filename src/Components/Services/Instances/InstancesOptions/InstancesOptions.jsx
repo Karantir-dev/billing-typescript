@@ -11,7 +11,7 @@ export default function InstancesOptions({ item, isMobile }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { isNotActive, isStopped, isResized, isRescued, restartInProgress } =
+  const { isDisabled, isProcessing, isStopped, isResized, isRescued } =
     getInstanceMainInfo(item)
 
   const isHideMostItems = isResized || isRescued
@@ -21,6 +21,7 @@ export default function InstancesOptions({ item, isMobile }) {
       label: t('Unrescue'),
       icon: 'Wrench',
       hidden: !isRescued,
+      disabled: isDisabled,
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
@@ -32,6 +33,7 @@ export default function InstancesOptions({ item, isMobile }) {
       label: t('Confirm Resize'),
       icon: 'Check_square',
       hidden: !isResized,
+      disabled: isDisabled,
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
@@ -43,6 +45,7 @@ export default function InstancesOptions({ item, isMobile }) {
       label: t('Revert Resize'),
       icon: 'Close_square',
       hidden: !isResized,
+      disabled: isDisabled,
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
@@ -54,99 +57,100 @@ export default function InstancesOptions({ item, isMobile }) {
     {
       label: t(isStopped ? 'Start' : 'Shut down'),
       icon: 'Shutdown',
+      disabled: isDisabled,
+      hidden: isHideMostItems,
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
             confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
           }),
         ),
-      disabled: isNotActive || restartInProgress,
-      hidden: isHideMostItems,
     },
     {
       label: t('Console'),
       icon: 'Console',
-      disabled: isNotActive,
+      disabled: isDisabled || isStopped,
       onClick: () => dispatch(cloudVpsOperations.openConsole({ elid: item.id.$ })),
     },
     {
       label: t('Reboot'),
       icon: 'Reboot',
-      disabled: isNotActive,
+      disabled: isDisabled || isStopped,
+      hidden: isHideMostItems,
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
             confirm: { ...item, confirm_action: 'reboot' },
           }),
         ),
-      hidden: isHideMostItems,
     },
     {
       label: t('Resize'),
       icon: 'Resize',
-      disabled: isNotActive || item.change_pricelist?.$ === 'off',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
+      disabled: isDisabled || item.change_pricelist?.$ === 'off',
       hidden: isHideMostItems,
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
     },
-
     {
       label: t('Change password'),
       icon: 'ChangePassword',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
+      disabled: isDisabled || isStopped,
       hidden: isHideMostItems,
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
     },
     {
       label: t('Rescue'),
       icon: 'Rescue',
-      disabled: isNotActive,
+      disabled: isDisabled,
+      hidden: isHideMostItems,
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
             rebuild: { ...item, rebuild_action: 'bootimage' },
           }),
         ),
-      hidden: isHideMostItems,
     },
     {
       label: t('Instructions'),
       icon: 'Instruction',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
+      disabled: isDisabled,
       hidden: isHideMostItems,
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
     {
       label: t('Rebuild'),
       icon: 'Rebuild',
-      disabled: isNotActive,
+      disabled: isDisabled,
+      hidden: isHideMostItems,
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
             rebuild: { ...item, rebuild_action: 'rebuild' },
           }),
         ),
-      hidden: isHideMostItems,
     },
     {
       label: t('Create ticket'),
       icon: 'Headphone',
+      hidden: isHideMostItems,
       onClick: () =>
         navigate(`${route.SUPPORT}/requests`, {
           state: { id: item.id.$, openModal: true },
         }),
-      hidden: isHideMostItems,
     },
     {
       label: t('Rename'),
       icon: 'Rename',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
+      disabled: isDisabled,
       hidden: isHideMostItems,
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
       label: t('Delete'),
       icon: 'Remove',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
+      disabled: isProcessing,
       isDelete: true,
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
     },
   ]
 
