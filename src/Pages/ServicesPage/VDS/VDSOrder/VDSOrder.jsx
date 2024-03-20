@@ -26,9 +26,11 @@ import {
 } from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
+import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
 
 import s from './VDSOrder.module.scss'
-import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
+
+const MAX_ORDER_COUNT = 35
 
 export default function VDSOrder() {
   const location = useLocation()
@@ -489,14 +491,18 @@ export default function VDSOrder() {
                                             ? event.target.value.replace(/^0/, '')
                                             : event.target.value
 
-                                        setCount(+event.target.value > 35 ? 35 : value)
+                                        setCount(
+                                          +event.target.value > MAX_ORDER_COUNT
+                                            ? MAX_ORDER_COUNT
+                                            : value,
+                                        )
                                       }}
                                       onBlur={event => {
                                         if (event.target.value < 1) setCount(1)
                                       }}
                                       type="number"
                                       min={1}
-                                      max={35}
+                                      max={MAX_ORDER_COUNT}
                                     />
                                   </div>
                                 </div>
@@ -511,7 +517,7 @@ export default function VDSOrder() {
                                     roundToDecimal(+(values.totalPrice * (+count + 1))),
                                   )
                                 }}
-                                disabled={+count >= 35}
+                                disabled={+count >= MAX_ORDER_COUNT}
                               ></button>
                             </div>
                           )}
@@ -734,14 +740,18 @@ export default function VDSOrder() {
                                       ? event.target.value?.replace(/^0/, '')
                                       : event.target.value
 
-                                  setCount(+event.target.value > 35 ? 35 : value)
+                                  setCount(
+                                    +event.target.value > MAX_ORDER_COUNT
+                                      ? MAX_ORDER_COUNT
+                                      : value,
+                                  )
                                 }}
                                 onBlur={event => {
                                   if (event.target.value < 1) setCount(1)
                                 }}
                                 type="number"
                                 min={1}
-                                max={35}
+                                max={MAX_ORDER_COUNT}
                               />
                             </div>
                           </div>
@@ -756,7 +766,7 @@ export default function VDSOrder() {
                               roundToDecimal(+(values.totalPrice * (+count + 1))),
                             )
                           }}
-                          disabled={+count >= 35}
+                          disabled={+count >= MAX_ORDER_COUNT}
                         ></button>
                       </div>
                     </div>

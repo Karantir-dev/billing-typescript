@@ -1,9 +1,17 @@
+/* eslint-disable no-unused-vars */
 import qs from 'qs'
-import { actions, authSelectors, cloudVpsActions, cloudVpsSelectors } from '@redux'
+import {
+  actions,
+  authSelectors,
+  cartActions,
+  cloudVpsActions,
+  cloudVpsSelectors,
+} from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
 import { t } from 'i18next'
+import * as routes from '@src/routes'
 import { DC_ID_IN, FOTBO_STATUSES_LIST } from '@utils/constants'
 
 const getInstances =
@@ -485,23 +493,27 @@ const writeTariffsWithDC = data => {
 }
 
 const getOsList =
-  ({ signal, setIsLoading, lastTariffID, closeLoader }) =>
+  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter }) =>
   (dispatch, getState) => {
     setIsLoading(true)
 
     if (!lastTariffID) {
       const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
-      const tariffsArray = tariffs[Object.keys(tariffs)[0]]
+      const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
       lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
     }
 
-    dispatch(getTariffParamsRequest({ signal, id: lastTariffID }))
+    dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
+        console.log(data.doc)
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+        const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
 
-        dispatch(cloudVpsActions.setOsList(osList))
+        const operationSystems = { [data.doc.datacenter.$]: osList }
+        console.log(operationSystems)
+        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
+        dispatch(cloudVpsActions.setSshList(sshList))
 
         closeLoader && closeLoader()
       })
@@ -545,26 +557,30 @@ const getAllTariffsInfo =
         if (netherlandsData.doc?.error) throw new Error(netherlandsData.doc.error.msg.$)
         if (polandData.doc?.error) throw new Error(polandData.doc.error.msg.$)
 
+        const allTariffs = {
+          ...writeTariffsWithDC(netherlandsData),
+          ...writeTariffsWithDC(polandData),
+        }
         const DClist = netherlandsData.doc.slist.find(el => el.$name === 'datacenter').val
+
+        /** it is important to get lastTariff ID from the first DC in the list,
+         * as it will be selected in the UI,
+         * because then we will get OS list with this tariff (OS IDs differs between DC) */
+        const firstDCid = DClist[0].$key
+        const firstDCtariffs = allTariffs[firstDCid]
+        const lastTariffID = firstDCtariffs[firstDCtariffs.length - 1].id.$
 
         const windowsTag = netherlandsData.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
 
-        const tariffs = polandData.doc.list.find(el => el.$name === 'pricelist').elem
-
-        const lastTariffID = tariffs[tariffs.length - 1].id.$
-
         if (needOsList) {
-          await dispatch(getOsList({ signal, setIsLoading, lastTariffID }))
+          await dispatch(
+            getOsList({ signal, setIsLoading, lastTariffID, datacenter: firstDCid }),
+          )
         }
 
-        dispatch(
-          cloudVpsActions.setInstancesTariffs({
-            ...writeTariffsWithDC(netherlandsData),
-            ...writeTariffsWithDC(polandData),
-          }),
-        )
+        dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
         dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
       })
@@ -577,31 +593,29 @@ const getAllTariffsInfo =
       })
   }
 
-const getTariffParams =
-  ({ signal, id, setIsLoading, setSshList }) =>
-  dispatch => {
-    setIsLoading(true)
+// const getTariffParams =
+//   ({ signal, id, setIsLoading }) =>
+//   dispatch => {
+//     setIsLoading(true)
 
-    dispatch(getTariffParamsRequest({ signal, id }))
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+//     dispatch(getTariffParamsRequest({ signal, id }))
+//       .then(({ data }) => {
+//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        console.log(data.doc)
-        const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
-        setSshList(sshList)
-        renameAddonFields(data.doc, { isNewFunc: true })
-      })
-      .then(() => {
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-      })
-      .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
-        handleLoadersClosing(err?.message, dispatch, setIsLoading)
-      })
-  }
+//         renameAddonFields(data.doc, { isNewFunc: true })
+//         console.log(data.doc)
+//       })
+//       .then(() => {
+//         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+//       })
+//       .catch(err => {
+//         checkIfTokenAlive(err.message, dispatch)
+//         handleLoadersClosing(err?.message, dispatch, setIsLoading)
+//       })
+//   }
 
 const getTariffParamsRequest =
-  ({ signal, id }) =>
+  ({ signal, id, datacenter }) =>
   (_, getState) => {
     const sessionId = authSelectors.getSessionId(getState())
     const specialTariffFieldName = `period_${id}`
@@ -614,10 +628,50 @@ const getTariffParamsRequest =
         auth: sessionId,
         lang: 'en',
         pricelist: id,
+        datacenter,
         [specialTariffFieldName]: '-50',
       }),
       { signal },
     )
+  }
+
+const setOrderData =
+  ({ signal, setIsLoading, orderData }) =>
+  (dispatch, getState) => {
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'v2.instances.order.param',
+          auth: sessionId,
+          out: 'json',
+          sok: 'ok',
+          lang: 'en',
+          order_period: '-50',
+
+          ...orderData,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        console.log(data.doc)
+        dispatch(
+          cartActions.setCartIsOpenedState({
+            isOpened: true,
+            redirectPath: routes.CLOUD_VPS,
+          }),
+        )
+      })
+      .then(() => {
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+      })
   }
 
 export default {
@@ -634,6 +688,7 @@ export default {
   getInstanceInfo,
   openConsole,
   getAllTariffsInfo,
-  getTariffParams,
+  // getTariffParams,
   getOsList,
+  setOrderData,
 }
