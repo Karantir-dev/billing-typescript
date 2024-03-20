@@ -9,7 +9,7 @@ import {
 } from '@components'
 import s from './InstancesPage.module.scss'
 import cn from 'classnames'
-import { Fragment, useEffect, useReducer, useState } from 'react'
+import { Fragment, useEffect, useReducer, useRef, useState } from 'react'
 import { InstanceFiltersModal } from '@components/Services/Instances/Modals'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
@@ -25,6 +25,8 @@ export default function InstancesPage() {
   const navigate = useNavigate()
   const { t } = useTranslation(['cloud_vps'])
   const lessThan1550 = useMediaQuery({ query: '(max-width: 1549px)' })
+
+  const interval = useRef()
 
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
@@ -49,13 +51,13 @@ export default function InstancesPage() {
       return getInstanceMainInfo(item).isProcessing
     })
 
-    const interval =
+    interval.current =
       isProcessing &&
       setInterval(() => {
         getInstances({ isLoader: false })
-      }, 5000)
+      }, 10000)
     return () => {
-      clearInterval(interval)
+      clearInterval(interval.current)
     }
   }, [instances])
 
@@ -83,12 +85,13 @@ export default function InstancesPage() {
     }
   }, [])
 
-  const getInstances = ({ p_col, isLoader } = {}) => {
+  const getInstances = ({ p_col, p_num, p_cnt, isLoader } = {}) => {
     dispatch(
       cloudVpsOperations.getInstances({
         ...loadingParams,
-        ...pagination,
         p_col,
+        p_cnt: p_cnt ?? pagination.p_cnt,
+        p_num: p_num ?? pagination.p_num,
         isLoader,
       }),
     )
@@ -107,9 +110,9 @@ export default function InstancesPage() {
       cloudVpsOperations.setInstancesFilter({
         values,
         ...loadingParams,
-        p_num: 1,
-        p_cnt: pagination.p_cnt,
-        p_col: sortBy,
+        successCallback: () => {
+          getInstances({ p_col: sortBy, p_num: 1, p_cnt: pagination.p_cnt })
+        },
       }),
     )
 
@@ -131,6 +134,7 @@ export default function InstancesPage() {
         elid,
         errorCallback,
         closeModal,
+        successCallback: () => getInstances(),
         ...loadingParams,
       }),
     )
@@ -188,7 +192,7 @@ export default function InstancesPage() {
               />
 
               {filterKeys && (
-                <div className={s.filter__clouds}>
+                <ul className={s.filter__clouds}>
                   {filterKeys.map(key => {
                     const value =
                       (filters.filtersList[key] &&
@@ -199,7 +203,7 @@ export default function InstancesPage() {
                     return (
                       <Fragment key={key}>
                         {filters.active[key] && (
-                          <div className={s.filter__cloud}>
+                          <li className={s.filter__cloud}>
                             <span className={s.filter__cloud_name}>{t(key)}:</span>
                             <span className={s.filter__cloud_value}>
                               {t(value.trim())}
@@ -212,12 +216,12 @@ export default function InstancesPage() {
                             >
                               <Icon name="Cross" />
                             </button>
-                          </div>
+                          </li>
                         )}
                       </Fragment>
                     )
                   })}
-                </div>
+                </ul>
               )}
 
               {isFiltersOpened && (

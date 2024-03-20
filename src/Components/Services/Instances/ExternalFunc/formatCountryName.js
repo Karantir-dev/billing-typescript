@@ -4,5 +4,5 @@ export default function formatCountryName(item) {
     country = item?.datacentername?.$
   }
 
-  return country.replace('Fotbo ', '')
+  return country?.replace('Fotbo ', '')
 }

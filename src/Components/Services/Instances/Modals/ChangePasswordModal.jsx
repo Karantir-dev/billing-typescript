@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { Button, InputField, Modal, WarningMessage } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
-import cn from 'classnames'
 import { getInstanceMainInfo } from '@utils'
 
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
@@ -40,7 +38,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
             onSubmit={values => onSubmit(values.password)}
             validationSchema={validationSchema}
           >
-            {({ values, errors, touched, setFieldValue }) => {
+            {({ errors, touched, setFieldValue }) => {
               return (
                 <Form id={'change_pass'}>
                   <div>

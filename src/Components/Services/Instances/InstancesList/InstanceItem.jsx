@@ -18,7 +18,7 @@ export default function InstanceItem({ item, editInstance }) {
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
-  const { isResized, displayStatus } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, isNotActive } = getInstanceMainInfo(item)
 
   const editServerName = value => {
     editInstance({
@@ -37,12 +37,13 @@ export default function InstanceItem({ item, editInstance }) {
 
   return (
     <tr
-      className={s.tr}
+      className={cn(s.tr, { [s.disabled]: isNotActive })}
       onClick={e => {
         if (
           optionsCell.current.contains(e.target) ||
           // checkboxCell.current.contains(e.target) ||
-          servernameCell.current.contains(e.target)
+          servernameCell.current.contains(e.target) ||
+          isNotActive
         )
           return
         navigate(`${route.CLOUD_VPS}/${item.id.$}`, { state: item })

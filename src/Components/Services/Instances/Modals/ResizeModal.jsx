@@ -1,11 +1,8 @@
-/* eslint-disable no-unused-vars */
-import { Button, Icon, InputField, Modal, WarningMessage, TariffCard } from '@components'
+import { Button, Modal, WarningMessage, TariffCard } from '@components'
 import { Form, Formik } from 'formik'
-import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
-import cn from 'classnames'
-import { useEffect, useState, Fragment } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { getInstanceMainInfo } from '@utils'

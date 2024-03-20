@@ -179,7 +179,7 @@ export const cloudSortList = [
   { label: 'Access IP', isSort: false, value: 'ip' },
 ]
 
-export const fotboStatuesList = [
+export const FOTBO_STATUSES_LIST = [
   {
     $key: '',
     $: 'Not selected',
@@ -197,7 +197,7 @@ export const fotboStatuesList = [
     $: 'Verify Resize',
   },
   {
-    $key: 'suspended',
+    $key: 'suspend',
     $: 'Suspended',
   },
 ]
