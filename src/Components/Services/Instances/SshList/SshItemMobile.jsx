@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
+
 import { useRef } from 'react'
 import s from './SshList.module.scss'
-import cn from 'classnames'
-import { Icon, Options } from '@components'
-import { cloudVpsActions, cloudVpsOperations } from '@redux'
+import { Options } from '@components'
+import { cloudVpsActions } from '@redux'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 

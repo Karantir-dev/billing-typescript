@@ -1,13 +1,13 @@
-/* eslint-disable no-unused-vars */
 import { Button, InputField, Modal } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
-import cn from 'classnames'
+import { getInstanceMainInfo } from '@utils'
 
 export const EditNameModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
     servername: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -19,7 +19,7 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
         <p>{t('Rename')}</p>
         <p className={s.modal__subtitle}>
           <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
-          {item.servername?.$ || item.id.$}
+          {displayName}
         </p>
       </Modal.Header>
       <Modal.Body>
@@ -54,14 +54,14 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('edit', { ns: 'other' })}
+          label={t('Confirm')}
           size={'large'}
           type="submit"
           form={'edit_name'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

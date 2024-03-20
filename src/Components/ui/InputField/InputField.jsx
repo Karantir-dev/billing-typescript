@@ -5,6 +5,7 @@ import cn from 'classnames'
 import PropTypes from 'prop-types'
 import { Icon } from '@components'
 import s from './InputField.module.scss'
+import { generatePassword } from '@utils'
 
 const InputField = function InputField(props) {
   const {
@@ -30,6 +31,7 @@ const InputField = function InputField(props) {
     inputAuth,
     onPlusClick,
     infoText,
+    generatePasswordValue,
     ...anotherProps
   } = props
 
@@ -64,22 +66,43 @@ const InputField = function InputField(props) {
     }
   }
 
+  const generatePasswordHandler = () =>
+    generatePasswordValue(
+      generatePassword({
+        length: 10,
+        includeLowerCase: true,
+        includeNumber: true,
+        includeUpperCase: true,
+      }),
+    )
+
   const renderPasswordShown = type => {
     return (
       type === 'password' && (
-        <button
-          className={cn({
-            [s.pass_show_btn]: true,
-          })}
-          type="button"
-          onClick={() => setPassShown(!passShown)}
-        >
-          {passShown ? (
-            <Icon name="Eye" className={s.icon_eye} />
-          ) : (
-            <Icon name="EyeClosed" className={s.icon_eye} />
+        <>
+          {generatePasswordValue && (
+            <button
+              className={s.generate_pass_btn}
+              type="button"
+              onClick={generatePasswordHandler}
+            >
+              <Icon name="Cube" />
+            </button>
           )}
-        </button>
+          <button
+            className={cn({
+              [s.pass_show_btn]: true,
+            })}
+            type="button"
+            onClick={() => setPassShown(!passShown)}
+          >
+            {passShown ? (
+              <Icon name="Eye" className={s.icon_eye} />
+            ) : (
+              <Icon name="EyeClosed" className={s.icon_eye} />
+            )}
+          </button>
+        </>
       )
     )
   }
@@ -112,6 +135,7 @@ const InputField = function InputField(props) {
             [s.disabled]: disabled,
             [s.number]: type === 'number',
             [inputClassName]: inputClassName,
+            [s.icon_generate]: !!generatePassword,
           })}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}

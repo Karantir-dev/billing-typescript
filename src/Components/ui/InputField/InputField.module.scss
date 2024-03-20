@@ -1,4 +1,4 @@
-@import '../../../scss/placeholders.scss';
+@import '@scss/placeholders.scss';
 
 .field_wrapper {
   width: 100%;
@@ -71,6 +71,9 @@
   }
   &.iconRight {
     padding-right: 40px;
+    &.icon_generate {
+      padding-right: 65px;
+    }
   }
   &.disabled {
     opacity: 1;
@@ -111,7 +114,8 @@
   }
 }
 
-.pass_show_btn {
+.pass_show_btn,
+.generate_pass_btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -122,6 +126,10 @@
   transform: translateY(-50%);
   z-index: 1;
   cursor: pointer;
+}
+
+.generate_pass_btn {
+  right: 40px;
 }
 
 .icon_eye {

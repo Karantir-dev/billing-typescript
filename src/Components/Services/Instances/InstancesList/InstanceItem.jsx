@@ -1,31 +1,24 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { CheckBox, EditCell, HintWrapper, Icon, Options } from '@components'
+import { EditCell, HintWrapper, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName } from '@utils'
+import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
 import { useTranslation } from 'react-i18next'
-import { cloudVpsActions, cloudVpsOperations } from '@redux'
-import { useDispatch } from 'react-redux'
 import formatCountryName from '../ExternalFunc/formatCountryName'
 
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['cloud_vps', 'vds', 'countries'])
 
   const optionsCell = useRef()
-  const checkboxCell = useRef()
+  // const checkboxCell = useRef()
   const servernameCell = useRef()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
-  const isNotActive =
-    item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
-
-  const isStopped = item.item_status.$orig === '2_2_16'
+  const { isResized, displayStatus, isNotActive } = getInstanceMainInfo(item)
 
   const editServerName = value => {
     editInstance({
@@ -40,107 +33,17 @@ export default function InstanceItem({ item, editInstance }) {
     setServerName(item.servername?.$ || '')
   }, [item.servername?.$])
 
-  const options = [
-    {
-      label: t(isStopped ? 'Start' : 'Shut down'),
-      icon: 'Shutdown',
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: isStopped ? 'start' : 'stop' },
-          }),
-        ),
-      disabled: isNotActive,
-    },
-    {
-      label: t('Console'),
-      icon: 'Console',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsOperations.openConsole({ elid: item.id.$ })),
-    },
-    {
-      label: t('Reboot'),
-      icon: 'Reboot',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            confirm: { ...item, confirm_action: 'reboot' },
-          }),
-        ),
-    },
-    {
-      label: t('Resize'),
-      icon: 'Resize',
-      disabled: isNotActive || item.change_pricelist?.$ === 'off',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
-    },
-
-    {
-      label: t('Change password'),
-      icon: 'ChangePassword',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
-    },
-    {
-      label: t('Rescue'),
-      icon: 'Rescue',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            rebuild: { ...item, rebuild_action: 'bootimage' },
-          }),
-        ),
-    },
-    {
-      label: t('Instructions'),
-      icon: 'Instruction',
-      disabled: isNotActive,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
-    },
-    {
-      label: t('Rebuild'),
-      icon: 'Rebuild',
-      disabled: isNotActive,
-      onClick: () =>
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            rebuild: { ...item, rebuild_action: 'rebuild' },
-          }),
-        ),
-    },
-    {
-      label: t('Create ticket'),
-      icon: 'Headphone',
-      onClick: () =>
-        navigate(`${route.SUPPORT}/requests`, {
-          state: { id: item.id.$, openModal: true },
-        }),
-    },
-    {
-      label: t('Rename'),
-      icon: 'Rename',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
-    },
-    {
-      label: t('Delete'),
-      icon: 'Remove',
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
-      isDelete: true,
-    },
-  ]
-
   const itemCountry = formatCountryName(item)
 
   return (
     <tr
-      className={s.tr}
+      className={cn(s.tr, { [s.disabled]: isNotActive })}
       onClick={e => {
         if (
           optionsCell.current.contains(e.target) ||
           // checkboxCell.current.contains(e.target) ||
-          servernameCell.current.contains(e.target)
+          servernameCell.current.contains(e.target) ||
+          isNotActive
         )
           return
         navigate(`${route.CLOUD_VPS}/${item.id.$}`, { state: item })
@@ -169,7 +72,16 @@ export default function InstanceItem({ item, editInstance }) {
             ],
           )}
         >
-          {item.fotbo_status?.$?.replaceAll('_', ' ') || item.item_status?.$}
+          {displayStatus}
+          {isResized && (
+            <HintWrapper
+              popupClassName={s.popup}
+              wrapperClassName={s.popup__wrapper}
+              label={t('resize_popup_text')}
+            >
+              <Icon name="Attention" />
+            </HintWrapper>
+          )}
         </span>
       </td>
       <td className={s.td}>{item.pricelist.$}</td>
@@ -202,7 +114,7 @@ export default function InstanceItem({ item, editInstance }) {
       </td>
       <td className={cn(s.td, s.ip_cell)}>{item.ip?.$}</td>
       <td className={s.td} ref={optionsCell}>
-        <Options options={options} columns={2} />
+        <InstancesOptions item={item} />
       </td>
     </tr>
   )

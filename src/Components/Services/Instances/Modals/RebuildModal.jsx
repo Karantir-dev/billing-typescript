@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
 import {
   Button,
-  Icon,
   InputField,
   Modal,
-  PasswordMethod,
+  ConnectMethod,
   SoftwareOSBtn,
   SoftwareOSSelect,
   WarningMessage,
@@ -12,15 +10,18 @@ import {
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import s from './Modals.module.scss'
-import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
+import { generatePassword } from '@utils'
+
+import s from './Modals.module.scss'
+import { PASS_REGEX } from '@src/utils/constants'
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
   const dispatch = useDispatch()
+
   const [data, setData] = useState()
 
   const [state, setState] = useReducer((state, action) => {
@@ -112,7 +113,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
         .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .matches(
-          /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
+          PASS_REGEX,
           t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }),
         )
         .required(t('warnings.password_required', { ns: 'auth' })),
@@ -157,7 +158,12 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
             }
             if (isWindowsOS) {
-              submitData.password = 'QQQqqq111Hello'
+              submitData.password = generatePassword({
+                length: 10,
+                includeLowerCase: true,
+                includeNumber: true,
+                includeUpperCase: true,
+              })
             }
             onSubmit(submitData)
           }}
@@ -184,16 +190,18 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     <>
                       {isRebuild ? (
                         <div>
-                          <PasswordMethod
-                            state={state}
-                            setState={setState}
+                          <ConnectMethod
+                            connectionType={state.passwordType}
+                            onChangeType={type => setState({ passwordType: type })}
+                            setSSHkey={value => setState({ ssh_keys: value })}
+                            setPassword={value => setState({ password: value })}
                             errors={errors}
                             touched={touched}
                             sshList={sshList.map(el => ({
                               label: el.$,
                               value: el.$key,
                             }))}
-                            values={values}
+                            sshKey={values.ssh_keys}
                           />
                           <ErrorMessage
                             className={s.error_message}
@@ -213,6 +221,8 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                           touched={!!touched.password}
                           isRequired
                           autoComplete="off"
+                          onChange={e => setState({ password: e.target.value })}
+                          generatePasswordValue={value => setState({ password: value })}
                         />
                       )}
                     </>
@@ -225,14 +235,14 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t(isRebuild ? 'Rebuild' : 'Rescue')}
+          label={t('Confirm')}
           size="small"
           type="submit"
           form={'rebuild'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

@@ -39,7 +39,12 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn, useFormFraudCheckData, roundToDecimal } from '@utils'
-import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
+import {
+  QIWI_PHONE_COUNTRIES,
+  SBER_PHONE_COUNTRIES,
+  OFFER_FIELD,
+  CNP_REGEX,
+} from '@utils/constants'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -162,6 +167,13 @@ export default function Component() {
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
     [OFFER_FIELD]: Yup.bool().oneOf([true]),
+    cnp:
+      payersSelectedFields?.profiletype === '1' &&
+      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
+        ? Yup.string()
+            .required(t('Is a required field', { ns: 'other' }))
+            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
+        : null,
   })
 
   const setPromocodeToCart = promocode => {
@@ -184,6 +196,7 @@ export default function Component() {
     const data = {
       postcode_physical: values?.postcode_physical,
       eu_vat: values?.eu_vat,
+      cnp: values?.cnp,
       city_legal: values?.city_physical,
       city_physical: values?.city_physical,
       address_legal: values?.address_physical,
@@ -297,13 +310,14 @@ export default function Component() {
     const vhostList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'vhost',
     )
-
     const siteCareList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'zabota-o-servere',
     )
-
     const vpnList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'vpn',
+    )
+    const cloudList = state.cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'instances',
     )
 
     const filteredVdsList = []
@@ -417,6 +431,21 @@ export default function Component() {
       }
     })
 
+    const filteredCloudList = []
+
+    cloudList?.forEach(elem => {
+      if (
+        filteredCloudList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredCloudList?.push({
+          ...elem,
+          count: cloudList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
     const maxItemsToShow = screenWidth < 768 ? 1 : 3
     let displayedItems = []
 
@@ -463,6 +492,11 @@ export default function Component() {
         displayedItems = state.showAllItems
           ? filteredForexList
           : filteredForexList.slice(0, maxItemsToShow)
+        break
+      case filteredCloudList?.length > 0:
+        displayedItems = state.showAllItems
+          ? filteredCloudList
+          : filteredCloudList.slice(0, maxItemsToShow)
         break
       default:
         console.error('Error: Product was not selected')
@@ -797,6 +831,33 @@ export default function Component() {
               showMoreButton(filteredForexList?.length)}
           </div>
         )}
+        {filteredCloudList?.length > 0 && (
+          <div className={s.vds_wrapper}>
+            <div className={cn(s.formBlockTitle, s.padding)}>
+              {t('services.cloud_vps', { ns: 'other' })}:
+            </div>
+
+            <div className={s.padding}>
+              <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
+                {displayedItems?.map(el => {
+                  return (
+                    <VdsItem
+                      key={el?.id?.$}
+                      el={el}
+                      deleteItemHandler={
+                        filteredCloudList?.length > 1
+                          ? () => deleteBasketItemHandler(el?.id?.$)
+                          : null
+                      }
+                    />
+                  )
+                })}
+              </div>
+              {shouldRenderButton(filteredCloudList.length) &&
+                showMoreButton(filteredCloudList?.length)}
+            </div>
+          </div>
+        )}
       </>
     )
   }
@@ -962,6 +1023,7 @@ export default function Component() {
                   payersSelectedFields?.profiletype,
                 eu_vat:
                   payersData.state?.euVat || payersData.selectedPayerFields?.eu_vat || '',
+                cnp: payersData.state?.cnp || payersData.selectedPayerFields?.cnp || '',
                 [OFFER_FIELD]: state.isPolicyChecked || false,
 
                 selectedPayMethod: state.selectedPayMethod || undefined,

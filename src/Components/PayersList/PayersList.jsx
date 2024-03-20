@@ -186,6 +186,27 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
           />
         )}
 
+        {payersSelectedFields?.profiletype === '1' &&
+        (payersSelectedFields?.country || payersSelectedFields?.country_physical) ===
+          '181' ? (
+          <>
+            <InputField
+              inputWrapperClass={s.inputHeight}
+              name="cnp"
+              label={`${t('CNP')}:`}
+              placeholder={t('Enter data', { ns: 'other' })}
+              isShadow
+              className={s.inputBig}
+              error={!!errors.cnp}
+              touched={!!touched.cnp}
+              value={values.cnp}
+              onChange={e => setState({ cnp: e.target.value })}
+              onBlur={e => setState({ cnp: e.target.value })}
+              isRequired
+            />
+          </>
+        ) : null}
+
         {(values?.profiletype === '3' || values?.profiletype === '2') &&
         !selectedPayerFields?.name ? (
           <InputField

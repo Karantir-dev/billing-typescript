@@ -82,6 +82,7 @@
   "instruction_title": "Virtual server activation",
   "no_servers_yet": "You don`t have a server yet.",
   "no_servers_yet_desc": "VPS is the best low-cost offer with powerful processors, premium internet, fast RAM, DDOs protection, which is suitable for any task. With all our VPS plans you get 24/7 live support, unlimited bandwidth & traffic.",
+  "no_servers_yet_filtered": "There are no servers for the specified parameters",
   "The resource has been changed": "The resource '{{value}}' has been changed",
   "Memory": "Memory",
   "The tariff plan has been changed": "The tariff plan has been changed",

@@ -83,6 +83,7 @@
   "Passport": "Паспорт",
   "Series and passport number": "Серия и номер паспорта",
   "Is a required field": "Обязательное поле",
+  "cnp_validation": "CNP должен содержать 13 цифр",
   "error_type": "Страница не найдена",
   "error_text": "Похоже, что-то пошло не так. Приносим извинения за неудобства",
   "Active": "Активный",
