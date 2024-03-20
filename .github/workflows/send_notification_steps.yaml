@@ -17,13 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
-      - name: Send fail in Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ github.event.workflow_run.conclusion }}
-          fields: all
-          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
-          channel: 'github-actions'
-          if_mention: always
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+          SLACK_CHANNEL: general
+          SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+          SLACK_ICON: https://github.com/rtCamp.png?size=48
+          SLACK_MESSAGE: |
+            Please check <${{ github.event.workflow_run.html_url }}|action>
+            ${{ vars.STACK_DEVOPS_TRIGGER }}
+          SLACK_TITLE: Fail complete workflow
+          SLACK_USERNAME: Check workflow
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
