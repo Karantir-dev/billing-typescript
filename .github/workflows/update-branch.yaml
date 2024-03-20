@@ -39,4 +39,5 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}-run_manual
       cancel-in-progress: true
-
+    secrets:
+      KUBECONFIG: ${{ secrets.KUBECONFIG }}
