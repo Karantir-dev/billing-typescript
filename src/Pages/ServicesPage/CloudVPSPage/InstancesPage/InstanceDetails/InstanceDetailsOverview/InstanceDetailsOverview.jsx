@@ -69,7 +69,7 @@ export default function InstanceDetailsOverview() {
 
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Virtual CPUs')}</p>
-                <p className={s.item_info}>{instanceInfo?.CPU}</p>
+                <p className={s.item_info}>{instanceInfo?.CPU_count}</p>
               </div>
 
               <div className={s.info_block_item}>
