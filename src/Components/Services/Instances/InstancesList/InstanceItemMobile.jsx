@@ -11,13 +11,13 @@ export default function InstanceItemMobile({ item }) {
   const optionsBlock = useRef()
   const navigate = useNavigate()
 
-  const { isResized, displayStatus, displayName } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, displayName, isNotActive } = getInstanceMainInfo(item)
 
   return (
     <div
       className={s.mobile_item}
       onClick={e => {
-        if (optionsBlock.current.contains(e.target)) return
+        if (optionsBlock.current.contains(e.target) || isNotActive) return
         navigate(`${route.CLOUD_VPS}/${item.id.$}`, { state: item })
       }}
       tabIndex={0}

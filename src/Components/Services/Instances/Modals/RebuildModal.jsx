@@ -234,14 +234,14 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t(isRebuild ? 'Rebuild' : 'Rescue')}
+          label={t('Confirm')}
           size="small"
           type="submit"
           form={'rebuild'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

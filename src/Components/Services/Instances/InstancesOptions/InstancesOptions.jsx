@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-export default function InstancesOptions({ item, isMobile }) {
+export default function InstancesOptions({ item, isMobile, buttonClassName }) {
   const { t } = useTranslation(['cloud_vps'])
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -156,5 +156,5 @@ export default function InstancesOptions({ item, isMobile }) {
 
   const optionsColumns = isMobile ? 1 : options.filter(el => !el.hidden).length > 5 && 2
 
-  return <Options options={options} columns={optionsColumns} />
+  return <Options options={options} columns={optionsColumns} buttonClassName={buttonClassName} />
 }

@@ -66,6 +66,8 @@
   "enabled": "Включено",
   "disabled": "Выключено",
   "ip": "IP-адрес",
+  "Cancel": "Отмена",
+  "Confirm": "Подтвердить",
 
   "confirm": {
     "title": {

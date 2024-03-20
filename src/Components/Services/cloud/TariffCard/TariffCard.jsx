@@ -3,7 +3,7 @@ import s from './TariffCard.module.scss'
 import cn from 'classnames'
 
 export default function TariffCard({ tariff, onClick, price, active }) {
-  const cpu = tariff.detail.find(el => el.name.$.toLowerCase() === 'cpu').value.$
+  const cpu = tariff.detail.find(el => el.name.$.toLowerCase() === 'cpu')?.value.$
   const memory = tariff.detail
     .find(el => el.name.$.toLowerCase() === 'memory')
     .value.$.replace('.', '')
