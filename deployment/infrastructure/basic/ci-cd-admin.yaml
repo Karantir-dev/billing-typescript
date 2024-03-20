@@ -27,6 +27,7 @@ rules:
     verbs:
       - get
       - create
+      - patch
   - apiGroups: [ rbac.authorization.k8s.io ]
     resources:
       - roles
@@ -68,3 +69,52 @@ metadata:
   namespace: {{ NAMESPACE }}
   annotations:
     kubernetes.io/service-account.name: sa-ci-cd-admin
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-role-binding-ci-cd-admin-{{ NAMESPACE }}
+  ownerReferences:
+    - apiVersion: v1
+      kind: Namespace
+      name: {{ NAMESPACE }}
+      uid: {{ NAMESPACE_UID }}
+      blockOwnerDeletion: false
+rules:
+  - apiGroups: [ "" ]
+    resources:
+      - namespaces
+    verbs:
+      - get
+      - list
+  - apiGroups: [ rbac.authorization.k8s.io ]
+    resources:
+      - clusterroles
+      - clusterrolebindings
+    verbs:
+      - get
+      - create
+      - patch
+      - bind
+      - escalate
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-role-binding-ci-cd-admin-{{ NAMESPACE }}
+  ownerReferences:
+    - apiVersion: v1
+      kind: Namespace
+      name: {{ NAMESPACE }}
+      uid: {{ NAMESPACE_UID }}
+      blockOwnerDeletion: false
+subjects:
+  - kind: ServiceAccount
+    name: sa-ci-cd-admin
+    namespace: {{ NAMESPACE }}
+roleRef:
+  kind: ClusterRole
+  name: cluster-role-binding-ci-cd-admin-{{ NAMESPACE }}
+  apiGroup: rbac.authorization.k8s.io

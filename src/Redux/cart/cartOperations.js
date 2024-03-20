@@ -41,7 +41,7 @@ const getBasket =
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
-
+        console.log('cart', data.doc)
         const cartData = {
           total_sum: data.doc?.total_sum?.$,
           tax: data.doc?.tax?.$,
@@ -170,6 +170,7 @@ const clearBasket = id => (dispatch, getState) => {
     .post(
       '/',
       qs.stringify({
+        /** func: 'cart.empty' for new API (the only required field) */
         func: 'basket',
         out: 'json',
         lang: 'en',

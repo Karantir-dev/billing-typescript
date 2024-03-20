@@ -15,7 +15,7 @@ import { OFERTA_URL } from '@config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'
-import { OFFER_FIELD } from '@utils/constants'
+import { OFFER_FIELD, CNP_REGEX } from '@utils/constants'
 
 export default function AutoPaymentForm(props) {
   const dispatch = useDispatch()
@@ -95,6 +95,13 @@ export default function AutoPaymentForm(props) {
     [OFFER_FIELD]: payersData.selectedPayerFields?.offer_field
       ? Yup.bool().oneOf([true])
       : null,
+    cnp:
+      payersSelectedFields?.profiletype === '1' &&
+      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
+        ? Yup.string()
+            .required(t('Is a required field', { ns: 'other' }))
+            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
+        : null,
   })
 
   const createAutoPaymentMethodHandler = values => {
@@ -105,6 +112,7 @@ export default function AutoPaymentForm(props) {
       country:
         payersSelectedFields?.country || payersSelectedFields?.country_physical || '',
       eu_vat: values?.eu_vat,
+      cnp: values?.cnp,
       postcode_physical: values?.postcode_physical,
       city_legal: values?.city_physical,
       city_physical: values?.city_physical,
@@ -214,6 +222,7 @@ export default function AutoPaymentForm(props) {
             payersData.selectedPayerFields?.profiletype ||
             payersSelectedFields?.profiletype,
           eu_vat: payersData.state?.euVat || payersData.selectedPayerFields?.eu_vat || '',
+          cnp: payersData.state?.cnp || payersData.selectedPayerFields?.cnp || '',
           [OFFER_FIELD]: state.isPolicyChecked || false,
         }}
         onSubmit={createAutoPaymentMethodHandler}

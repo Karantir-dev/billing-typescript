@@ -1,0 +1,111 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cleaner-registry-helper
+  namespace: {{ NAMESPACE }}
+spec:
+  schedule: "0 0 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  suspend: false # дозволяє включати та вимикати cronjob
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: sa-cleaner-registry-helper
+          containers:
+            - name: cleaner-registry-helper
+              image: textadi/aws-kubectl:2.15.2-1.29.0
+              imagePullPolicy: Always
+              envFrom:
+                - configMapRef:
+                    name: cleaner-registry-helper-cm
+              command:
+                - /bin/sh
+                - -c
+                - |-
+                  TIMESTAMP_NOW=$(date +%s)
+                  TIMESTAMP_CREATE=$(kubectl get namespaces ${NAMESPACE_NAME} -o jsonpath='{.metadata.creationTimestamp}')
+                  SPECIFIED_TIMESTAMP_CREATE=$(date -d "$TIMESTAMP_CREATE" +%s)
+                  TIME_DIFFERENCE=$(( $TIMESTAMP_NOW - $SPECIFIED_TIMESTAMP_CREATE ))
+                  if [ "$TIME_DIFFERENCE" -gt $AGE ]; then
+                    echo "Deleting namespace..."
+                    kubectl delete ns ${NAMESPACE_NAME}
+                  else
+                    echo "Check was successful. It is still have to live"
+                  fi
+          restartPolicy: Never
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: sa-cleaner-registry-helper
+  namespace: {{ NAMESPACE }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: role-cleaner-registry-helper
+  namespace: {{ NAMESPACE }}
+rules:
+  - apiGroups: [ "" ]
+    resources:
+      - namespaces
+    verbs:
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-role-cleaner-registry-helper
+  ownerReferences:
+    - apiVersion: v1
+      kind: Namespace
+      name: {{ NAMESPACE }}
+      uid: {{ NAMESPACE_UID }}
+      blockOwnerDeletion: false
+rules:
+  - apiGroups: [ "" ]
+    resources:
+      - namespaces
+    verbs:
+      - list
+      - get
+---
+
+
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: role-binding-cleaner-registry-helper
+  namespace: {{ NAMESPACE }}
+subjects:
+  - kind: ServiceAccount
+    name: sa-cleaner-registry-helper
+    namespace: {{ NAMESPACE }}
+roleRef:
+  kind: Role
+  name: role-cleaner-registry-helper
+  apiGroup: rbac.authorization.k8s.io
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-role-binding-cleaner-registry-helper-{{ NAMESPACE }}
+  ownerReferences:
+    - apiVersion: v1
+      kind: Namespace
+      name: {{ NAMESPACE }}
+      uid: {{ NAMESPACE_UID }}
+      blockOwnerDeletion: false
+subjects:
+  - kind: ServiceAccount
+    name: sa-cleaner-registry-helper
+    namespace: {{ NAMESPACE }}
+roleRef:
+  kind: ClusterRole
+  name: cluster-role-cleaner-registry-helper
+  apiGroup: rbac.authorization.k8s.io
+---

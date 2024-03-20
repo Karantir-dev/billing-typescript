@@ -263,6 +263,7 @@ const getPayerModalInfo =
           offer_field: linkName || '',
           passport_field: passportField,
           eu_vat_field: euVatField,
+          cnp: data.doc?.cnp?.$ || '',
           // I got an error once with this value 'new'
           // so probably it needs to be replaced with 'add_new'
           profile: newPayer ? 'new' : null,
@@ -411,6 +412,7 @@ const getPayerEditInfo =
           phone: data.doc?.phone?.$ || '',
           name: data.doc?.name?.$ || '',
           eu_vat: data.doc?.eu_vat?.$ || '',
+          cnp: data.doc?.cnp?.$ || '',
           postcode_physical: data.doc?.postcode_physical?.$ || '',
           passport: data.doc?.passport?.$ || '',
           passport_field: passportField,
