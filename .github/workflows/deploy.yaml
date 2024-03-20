@@ -78,7 +78,6 @@ jobs:
         id: basic
         run: |
           echo "static_version=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
-          exit 1
 
   test:
     needs: [ vars ]

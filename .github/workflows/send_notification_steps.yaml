@@ -19,7 +19,7 @@ jobs:
       - name: Send fail in Slack
         uses: 8398a7/action-slack@v3
         with:
-          status: ${{ job.status }}
+          status: ${{ github.event.workflow_run.conclusion }}
           fields: all
           mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
           channel: 'github-actions'
