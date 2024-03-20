@@ -7,7 +7,8 @@ const initialState = {
   instances: null,
   instancesCount: 0,
   instancesFilters: {},
-  instancesTariffs: null
+  instancesTariffs: null,
+  sshList: null,
 }
 
 const itemForModalsReducer = createReducer(initialState.itemForModalsReducer, {
@@ -28,12 +29,17 @@ const instancesTariffs = createReducer(initialState.instancesTariffs, {
   [cloudVpsActions.setInstancesTariffs]: (_, { payload }) => payload,
 })
 
+const sshList = createReducer(initialState.sshList, {
+  [cloudVpsActions.setSshList]: (_, { payload }) => payload,
+})
+
 const cloudVpsReducer = combineReducers({
   itemForModalsReducer,
   instances,
   instancesCount,
   instancesFilters,
-  instancesTariffs
+  instancesTariffs,
+  sshList,
 })
 
 export default cloudVpsReducer

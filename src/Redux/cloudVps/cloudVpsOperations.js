@@ -525,7 +525,6 @@ const getSshKeys =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        console.log('data from sshkeys request: ', data)
         setSshItems(data.doc.elem || [])
         setTotalElems(data.doc.p_elems.$)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
@@ -577,8 +576,8 @@ const setSshKey =
             setIsLoading,
           }),
         )
-        closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        closeModal()
         toast.success(t('Saved successfully', { ns: 'other' }))
       })
       .catch(error => {
@@ -630,13 +629,62 @@ const editSsh =
             setIsLoading,
           }),
         )
-        closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        closeModal()
         toast.success(t('Changes saved successfully', { ns: 'other' }))
       })
       .catch(error => {
         errorCallback()
         closeModal()
+      })
+  }
+
+const deleteSsh =
+  ({
+    elid,
+    closeModal,
+    setSshItems,
+    setTotalElems,
+    successCallback,
+    signal,
+    setIsLoading,
+  }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys.delete',
+          auth: sessionId,
+          elid,
+          out: 'json',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        return dispatch(
+          getSshKeys({
+            setSshItems,
+            setTotalElems,
+            signal,
+            setIsLoading,
+          }),
+        )
+      })
+      .then(() => {
+        successCallback && successCallback()
+        closeModal()
+        toast.success(t('server_deleted_success', { ns: 'other', id: `#${elid}` }))
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        closeModal()
+        dispatch(actions.hideLoader())
       })
   }
 
@@ -653,6 +701,7 @@ export default {
   getSshKeys,
   setSshKey,
   editSsh,
+  deleteSsh,
   getInstanceInfo,
   openConsole,
   getAllTariffsInfo,

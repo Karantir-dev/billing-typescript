@@ -6,7 +6,8 @@ import {
   ConfirmModal,
   ResizeModal,
   RebuildModal,
-  // AddSshKeyModal,
+  DeleteSshModal,
+  RenameSshModal,
 } from '.'
 import { cloudVpsActions, cloudVpsSelectors, dedicOperations } from '@redux'
 import { InstructionModal } from '@components'
@@ -19,6 +20,8 @@ export const Modals = ({
   confirmSubmit,
   resizeSubmit,
   rebuildSubmit,
+  deleteSshSubmit,
+  renameSshSubmit,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -93,15 +96,24 @@ export const Modals = ({
           }
         />
       )}
-      {/* {!!itemForModals.publicKey && (
-        <AddSshKeyModal
-          item={itemForModals.publicKey}
-          closeModal={() =>
-            dispatch(cloudVpsActions.setItemForModals({ publicKey: false }))
-          }
-          onSubmit={addSsh}
+
+      {!!itemForModals?.ssh_delete && (
+        <DeleteSshModal
+          item={itemForModals?.ssh_delete}
+          closeModal={() => dispatch(cloudVpsActions.setItemForModals({ ssh_delete: false }))}
+          onSubmit={deleteSshSubmit}
         />
-      )} */}
+      )}
+
+      {!!itemForModals?.ssh_rename && (
+        <RenameSshModal
+          item={itemForModals?.ssh_rename}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false }))
+          }
+          onSubmit={renameSshSubmit}
+        />
+      )}
     </>
   )
 }

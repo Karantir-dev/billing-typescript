@@ -6,4 +6,6 @@ export { ConfirmModal } from './ConfirmModal'
 export { ResizeModal } from './ResizeModal'
 export { RebuildModal } from './RebuildModal'
 export { AddSshKeyModal } from './AddSshKeyModal'
+export { DeleteSshModal } from './DeleteSshModal'
+export { RenameSshModal } from './RenameSshModal'
 

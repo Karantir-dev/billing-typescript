@@ -162,7 +162,7 @@ export default function InstanceItemMobile({ item }) {
           />
         </p>
 
-        <p className={s.mobile_item__param}>Created at</p>
+        <p className={s.mobile_item__param}>{t('Created at')}</p>
         <p className={s.mobile_item__value}>{item.createdate.$}</p>
 
         <p className={s.mobile_item__param}>OS</p>

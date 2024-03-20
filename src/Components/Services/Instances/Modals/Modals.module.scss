@@ -21,6 +21,28 @@
   font-size: 14px;
 }
 
+.sshForm {
+  display: grid;
+  @media screen and (min-width: 768px) {
+    gap: 20px;
+  }
+}
+
+.sshModal_headBlock {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  @media screen and (min-width: 768px) {
+    gap: 12px;
+  }
+}
+
+.sshAreaInput {
+  overflow: unset;
+  min-height: 80px;
+}
+
 .filter_backdrop {
   position: fixed;
   top: 0;

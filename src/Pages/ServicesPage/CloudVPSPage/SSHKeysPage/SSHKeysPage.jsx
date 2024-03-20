@@ -8,15 +8,14 @@ import { AddSshKeyModal } from '@components/Services/Instances/Modals'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { useCancelRequest } from '@src/utils'
-import * as route from '@src/routes'
-import { useNavigate } from 'react-router-dom'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
+import { useTranslation } from 'react-i18next'
 
 export default function SSHKeysPage() {
-  const navigate = useNavigate()
+  const { t } = useTranslation(['cloud_vps'])
+
 
   const [isAddModalOpened, setIsAddModalOpened] = useState(false)
-  const [isFiltered, setIsFiltered] = useState(false)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
   const [sshItems, setSshItems] = useState()
@@ -46,7 +45,6 @@ export default function SSHKeysPage() {
   const [isPaginationChanged, setIsPaginationChanged] = useState(false)
   const [isFirstRender, setIsFirstRender] = useState(true)
 
-  // change this to get ssh keys that exist
   const getSshRequiredParams = {
     setSshItems,
     setTotalElems: value => setPagination({ totalElems: value }),
@@ -55,11 +53,11 @@ export default function SSHKeysPage() {
   }
 
   useEffect(() => {
-    getInstances()
+    getSsh()
     setIsFirstRender(false)
   }, [])
 
-  const getInstances = () => {
+  const getSsh = () => {
     dispatch(
       cloudVpsOperations.getSshKeys({
         ...getSshRequiredParams,
@@ -73,34 +71,18 @@ export default function SSHKeysPage() {
 
   useEffect(() => {
     if (!isFirstRender) {
-      getInstances()
+      getSsh()
     }
   }, [isPaginationChanged])
 
-  // const setFiltersHandler = values => {
-  //   setPagination({ p_num: 1 })
-
-  //   dispatch(
-  //     cloudVpsOperations.setInstancesFilter({
-  //       values,
-  //       ...getInstancesRequiredParams,
-  //       p_num: 1,
-  //       p_cnt: pagination.p_cnt,
-  //       p_col: sortBy,
-  //     }),
-  //   )
-  //   // setIsFiltersOpened(false)
-  //   setIsFiltered(!!values)
-  // }
-
   const setSortValue = value => {
     setSortBy(value)
-    getInstances(value)
+    getSsh(value)
   }
 
-  const editInstanceHandler = ({ values, elid, closeModal, errorCallback }) => {
+  const editSshHandler = ({ values, elid, closeModal, errorCallback }) => {
     dispatch(
-      cloudVpsOperations.editInstance({
+      cloudVpsOperations.editSsh({
         values,
         elid,
         errorCallback,
@@ -111,7 +93,7 @@ export default function SSHKeysPage() {
   }
 
   const editNameSubmit = ({ value, elid, closeModal, errorCallback }) => {
-    editInstanceHandler({
+    editSshHandler({
       values: { comment: value },
       elid,
       closeModal,
@@ -119,12 +101,13 @@ export default function SSHKeysPage() {
     })
   }
 
-  const deleteInstanceSubmit = () => {
+  const deleteSshSubmit = () => {
     setPagination({ p_num: 1 })
     dispatch(
-      cloudVpsOperations.deleteInstance({
-        elid: itemForModals.delete.id.$,
-        closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
+      cloudVpsOperations.deleteSsh({
+        elid: itemForModals?.ssh_delete.elid.$,
+        closeModal: () =>
+          dispatch(cloudVpsActions.setItemForModals({ ssh_delete: false })),
         ...getSshRequiredParams,
       }),
     )
@@ -132,41 +115,34 @@ export default function SSHKeysPage() {
 
   return (
     <>
-      <Button
-        label="Create new SSH Key"
-        size="large"
-        isShadow
-        onClick={() => {
-          setIsAddModalOpened(true)
-          dispatch(cloudVpsActions.setItemForModals({ publicKey: '' }))
-        }}
-      />
-      {/* isOpened
-                      closeFn={() => {
-                        setIsFiltersOpened(false)
-                      }} */}
-      <div>SSHKeys page will be here</div>
-      {console.log('isAddModalOpened: ', isAddModalOpened)}
-      {isAddModalOpened && (
-        <AddSshKeyModal
-          isAddModalOpened
-          closeModal={() => {
-            setIsAddModalOpened(false)
+      <div className={s.sshPage_wrapper}>
+        <Button
+          label={t('Add new SSH Key')}
+          size="large"
+          className={s.ssh_purchase_btn}
+          isShadow
+          onClick={() => {
+            setIsAddModalOpened(true)
+            dispatch(cloudVpsActions.setItemForModals({ publicKey: '' }))
           }}
-          // filters={filters.active}
-          // filtersList={filters.filtersList}
-          // resetFilterHandler={() => setFiltersHandler()}
-          onSubmit={setNewSshKey}
         />
-      )}
-      {/* {isAddModalOpened && (
-      )} */}
-      <SshList
-        ssh={sshItems}
-        setSortHandler={setSortValue}
-        sortBy={sortBy}
-        editInstance={editNameSubmit}
-      />
+        {isAddModalOpened && (
+          <AddSshKeyModal
+            isAddModalOpened
+            closeModal={() => {
+              setIsAddModalOpened(false)
+            }}
+            onSubmit={setNewSshKey}
+          />
+        )}
+        <SshList
+          ssh={sshItems}
+          setSortHandler={setSortValue}
+          sortBy={sortBy}
+          editSsh={editNameSubmit}
+        />
+      </div>
+
       {pagination.totalElems > 5 && (
         <Pagination
           className={s.pagination}
@@ -182,7 +158,7 @@ export default function SSHKeysPage() {
           }}
         />
       )}
-      <Modals deleteInstanceSubmit={deleteInstanceSubmit} />
+      <Modals deleteSshSubmit={deleteSshSubmit} renameSshSubmit={editNameSubmit} />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )

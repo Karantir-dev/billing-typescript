@@ -1,28 +1,20 @@
-/* eslint-disable no-unused-vars */
 import { useMediaQuery } from 'react-responsive'
-import s from '../InstancesList/InstancesList.module.scss'
+import s from './SshList.module.scss'
 import cn from 'classnames'
-import { useNavigate } from 'react-router-dom'
 import SshItem from './SshItem'
-// import InstanceItemMobile from './InstanceItemMobile'
-import { useState } from 'react'
-import { CheckBox, Icon } from '@components'
-import { Modals } from '../Modals/Modals'
+import SshItemMobile from './SshItemMobile'
+import { Icon } from '@components'
 import no_vds from '@images/services/no_vds.png'
 import { useTranslation } from 'react-i18next'
-const headCells = [
-  { name: 'Name', isSort: true, key: 'comment' },
-  { name: 'Created at', isSort: true, key: 'cdate' },
-  { name: 'Fingerprint', isSort: false, key: 'fingerprint' },
-]
 
-export default function SshList({
-  ssh,
-  setSortHandler,
-  sortBy,
-  editInstance,
-}) {
-  const { t } = useTranslation(['vds', 'other'])
+export default function SshList({ ssh, setSortHandler, sortBy, editSsh }) {
+  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const headCells = [
+    { name: t('Name'), isSort: false, key: 'comment' },
+    { name: t('Created at'), isSort: false, key: 'cdate' },
+    { name: t('Fingerprint'), isSort: false, key: 'fingerprint' },
+  ]
+
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
 
   const renderHeadCells = () =>
@@ -40,7 +32,7 @@ export default function SshList({
       const isDesc = isActiveSort && sortBy[0] === '+'
 
       return (
-        <th key={cell.name}>
+        <th key={cell.name} className={s.th}>
           {cell.isSort ? (
             <button
               className={cn(s.sort, { [s.sort_active]: isActiveSort })}
@@ -67,35 +59,27 @@ export default function SshList({
   return (
     <>
       {widerThan768 ? (
-        <table>
-          <thead>
-            <tr>
+        <table className={s.table}>
+          <thead className={s.thead}>
+            <tr className={s.tr}>
               {/* <th>
                 <CheckBox />
               </th> */}
               {renderHeadCells()}
-              <th></th>
+              <th className={s.th}></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className={s.tbody}>
             {ssh.map(item => (
-              <SshItem
-                key={item.elid.$}
-                item={item}
-                editInstance={editInstance}
-              />
+              <SshItem key={item.elid.$} item={item} editSsh={editSsh} />
             ))}
           </tbody>
         </table>
       ) : (
         <div className={s.mobile__list}>
-          {/* {ssh.map(item => (
-            <InstanceItemMobile
-              key={item.elid.$}
-              item={item}
-            />
-          ))} */}
-          here going to be mobile component
+          {ssh.map(item => (
+            <SshItemMobile key={item.elid.$} item={item} />
+          ))}
         </div>
       )}
     </>
