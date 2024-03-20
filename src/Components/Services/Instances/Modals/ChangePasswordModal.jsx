@@ -6,7 +6,7 @@ import s from './Modals.module.scss'
 import { getInstanceMainInfo } from '@utils'
 
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation(['cloud_vps', 'vps', 'auth', 'other'])
+  const { t } = useTranslation(['cloud_vps', 'auth'])
   const { isWindows, displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
@@ -64,7 +64,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('Change password')}
+          label={t('Confirm')}
           size={'large'}
           type="submit"
           form={'change_pass'}
@@ -72,7 +72,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
           disabled={isWindows}
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

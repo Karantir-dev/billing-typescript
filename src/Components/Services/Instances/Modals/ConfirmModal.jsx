@@ -21,13 +21,13 @@ export const ConfirmModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('Yes')}
+          label={t('Confirm')}
           size={'small'}
           onClick={() => onSubmit(item.confirm_action, item.id.$)}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('No')}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

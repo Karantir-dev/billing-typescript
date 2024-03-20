@@ -66,6 +66,8 @@
   "enabled": "Увімкнено",
   "disabled": "Вимкнено",
   "ip": "IP-адреса",
+  "Cancel": "Скасування",
+  "Confirm": "Підтвердити",
 
   "confirm": {
     "title": {

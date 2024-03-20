@@ -6,7 +6,7 @@ import s from './Modals.module.scss'
 import { getInstanceMainInfo } from '@utils'
 
 export const DeleteModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const { t } = useTranslation(['cloud_vps', 'other'])
   const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
@@ -54,14 +54,14 @@ export const DeleteModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('delete', { ns: 'other' })}
+          label={t('Confirm')}
           size="small"
           type="submit"
           form={'delete'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

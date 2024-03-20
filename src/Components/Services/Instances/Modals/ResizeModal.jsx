@@ -8,7 +8,7 @@ import { cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { getInstanceMainInfo } from '@utils'
 
 export const ResizeModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
   const [tariffs, setTariffs] = useState()
   const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
@@ -63,9 +63,15 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         </Formik>
       </Modal.Body>
       <Modal.Footer>
-        <Button label={t('Resize')} size="small" type="submit" form={'resize'} isShadow />
+        <Button
+          label={t('Confirm')}
+          size="small"
+          type="submit"
+          form={'resize'}
+          isShadow
+        />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

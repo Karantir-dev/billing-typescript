@@ -54,14 +54,14 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('edit', { ns: 'other' })}
+          label={t('Confirm')}
           size={'large'}
           type="submit"
           form={'edit_name'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

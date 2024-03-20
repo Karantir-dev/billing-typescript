@@ -1,7 +1,7 @@
 export default function getInstanceMainInfo(item) {
   const isStopped = item.fotbo_status?.$ === 'stopped'
   const isResized = item.fotbo_status?.$ === 'resized'
-  const isRescued = item.fotbo_status?.$ === 'booted_from_iso'
+  const isRescued = item.fotbo_status?.$ === 'rescued'
   const isWindows = item.instances_os?.$.includes('Windows')
 
   const isNotActive =

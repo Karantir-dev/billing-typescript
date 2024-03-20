@@ -66,6 +66,8 @@
   "enabled": "Enabled",
   "disabled": "Disabled",
   "ip": "IP address",
+  "Cancel": "Cancel",
+  "Confirm": "Confirm",
 
   "confirm": {
     "title": {
