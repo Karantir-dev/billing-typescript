@@ -1,14 +1,12 @@
-/* eslint-disable no-unused-vars */
-import { Button, Icon, InputField, Modal, WarningMessage } from '@components'
+import { Button, InputField, Modal, WarningMessage } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
-import cn from 'classnames'
 import { getInstanceMainInfo } from '@utils'
 
 export const DeleteModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const { t } = useTranslation(['cloud_vps', 'other'])
   const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
@@ -56,14 +54,14 @@ export const DeleteModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('delete', { ns: 'other' })}
+          label={t('Confirm')}
           size="small"
           type="submit"
           form={'delete'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

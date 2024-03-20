@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
 import {
   Button,
-  Icon,
   InputField,
   Modal,
   ConnectMethod,
@@ -12,11 +10,10 @@ import {
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
-import { generatePassword, getInstanceMainInfo } from '@utils'
+import { generatePassword } from '@utils'
 
 import s from './Modals.module.scss'
 import { PASS_REGEX } from '@src/utils/constants'
@@ -24,7 +21,6 @@ import { PASS_REGEX } from '@src/utils/constants'
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
   const dispatch = useDispatch()
-  const { displayName } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
 
@@ -239,14 +235,14 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t(isRebuild ? 'Rebuild' : 'Rescue')}
+          label={t('Confirm')}
           size="small"
           type="submit"
           form={'rebuild'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

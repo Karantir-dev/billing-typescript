@@ -19,6 +19,8 @@ export const URL_REGEX =
 export const ADDRESS_REGEX = /^(?=.*\p{L})(?=.*[0-9]).*$/u
 export const ADDRESS_SPECIAL_CHARACTERS_REGEX = /^[^!$%^&\]~}[{=?<>+]+$/g
 
+export const CNP_REGEX = /^\d{13}$/
+
 export const SOFTWARE_ICONS_LIST = [
   'almalinux',
   'bitrix',
@@ -167,3 +169,37 @@ export const RUS_LANG_COUNTRIES = [
 export const FIRST_MONTH_HOSTING_DISCOUNT_ID = '6041'
 
 export const DC_ID_IN = { poland: 13, netherlands: 12 }
+
+export const cloudSortList = [
+  { label: 'Name', isSort: true, value: 'servername' },
+  { label: 'Status', isSort: true, value: 'fotbo_status' },
+  { label: 'Flavor', isSort: true, value: 'pricelist' },
+  { label: 'Price', isSort: true, value: 'cost' },
+  { label: 'Region', isSort: true, value: 'datacentername' },
+  { label: 'Created at', isSort: true, value: 'createdate' },
+  { label: 'OS', isSort: true, value: 'instances_os' },
+  { label: 'Access IP', isSort: false, value: 'ip' },
+]
+
+export const FOTBO_STATUSES_LIST = [
+  {
+    $key: '',
+    $: 'Not selected',
+  },
+  {
+    $key: 'active',
+    $: 'Active',
+  },
+  {
+    $key: 'stopped',
+    $: 'Stopped',
+  },
+  {
+    $key: 'verify_resize',
+    $: 'Verify Resize',
+  },
+  {
+    $key: 'suspend',
+    $: 'Suspended',
+  },
+]

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useRef, useState } from 'react'
 import { Icon } from '..'
 import s from './Options.module.scss'

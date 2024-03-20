@@ -11,13 +11,21 @@ import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
 import { t } from 'i18next'
-import { DC_ID_IN } from '@src/utils/constants'
 import * as routes from '@src/routes'
+import { DC_ID_IN, FOTBO_STATUSES_LIST } from '@utils/constants'
 
 const getInstances =
-  ({ p_cnt, p_num, p_col, signal, setIsLoading }) =>
+  ({
+    p_cnt,
+    p_num,
+    p_col,
+    signal,
+    setIsLoading,
+    isLoader = true,
+    setLocalInstancesItems,
+  }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    isLoader && (setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader()))
     const sessionId = authSelectors.getSessionId(getState())
 
     return axiosInstance
@@ -36,8 +44,15 @@ const getInstances =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        dispatch(cloudVpsActions.setInstancesList(data.doc.elem || []))
-        dispatch(cloudVpsActions.setInstancesCount(data.doc.p_elems.$))
+
+        const elemsList = data.doc.elem || []
+
+        if (setLocalInstancesItems) {
+          setLocalInstancesItems(elemsList)
+        } else {
+          dispatch(cloudVpsActions.setInstancesList(elemsList))
+          dispatch(cloudVpsActions.setInstancesCount(data.doc.p_elems.$))
+        }
 
         return axiosInstance.post(
           '/',
@@ -61,8 +76,20 @@ const getInstances =
           datacenter: data.doc?.slist?.find(el => el.$name === 'datacenter')?.val,
           period: data.doc?.slist?.find(el => el.$name === 'period')?.val,
           pricelist: data.doc?.slist?.find(el => el.$name === 'pricelist')?.val,
+          fotbo_status: FOTBO_STATUSES_LIST,
         }
-        dispatch(cloudVpsActions.setInstancesFilters({ active: data.doc, filtersList }))
+        const active = {
+          id: data.doc?.id?.$ || '',
+          ip: data.doc?.ip?.$ || '',
+          pricelist: data.doc?.pricelist?.$ || '',
+          fotbo_status: data.doc?.fotbo_status?.$ || '',
+          orderdatefrom: data.doc?.orderdatefrom?.$ || '',
+          orderdateto: data.doc?.orderdateto?.$ || '',
+          cost_from: data.doc?.cost_from?.$ || '',
+          cost_to: data.doc?.cost_to?.$ || '',
+          datacenter: data.doc?.datacenter?.$ || '',
+        }
+        dispatch(cloudVpsActions.setInstancesFilters({ active, filtersList }))
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -72,7 +99,7 @@ const getInstances =
   }
 
 const setInstancesFilter =
-  ({ values, p_cnt, p_num, signal, setIsLoading, p_col }) =>
+  ({ values, signal, setIsLoading, successCallback }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -99,21 +126,13 @@ const setInstancesFilter =
           orderdateto: values?.orderdateto || '',
           period: values?.period || '',
           pricelist: values?.pricelist || '',
-          status: values?.status || '',
+          fotbo_status: values?.fotbo_status || '',
         }),
         { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        return dispatch(
-          getInstances({
-            p_cnt,
-            p_num,
-            signal,
-            setIsLoading,
-            p_col,
-          }),
-        )
+        successCallback()
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
@@ -127,6 +146,7 @@ const editInstance =
     elid,
     errorCallback = () => {},
     closeModal = () => {},
+    successCallback,
     setIsLoading,
     signal,
   }) =>
@@ -151,13 +171,7 @@ const editInstance =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-        dispatch(
-          getInstances({
-            signal,
-            setIsLoading,
-          }),
-        )
+        successCallback()
         closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         toast.success(t('Changes saved successfully', { ns: 'other' }))
@@ -171,7 +185,7 @@ const editInstance =
   }
 
 const deleteInstance =
-  ({ elid, closeModal, successCallback, signal, setIsLoading }) =>
+  ({ elid, closeModal, successCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -189,15 +203,7 @@ const deleteInstance =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        return dispatch(
-          getInstances({
-            signal,
-            setIsLoading,
-          }),
-        )
-      })
-      .then(() => {
-        successCallback && successCallback()
+        successCallback()
         closeModal()
         toast.success(t('server_deleted_success', { ns: 'other', id: `#${elid}` }))
         dispatch(actions.hideLoader())
@@ -224,7 +230,7 @@ const serviceActionRequest = ({ elid, action, sessionId, ...params }) => {
 }
 
 const changeInstanceState =
-  ({ action, elid, closeModal, signal, setIsLoading, p_num, p_cnt }) =>
+  ({ action, elid, closeModal, successCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -233,14 +239,7 @@ const changeInstanceState =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        dispatch(
-          getInstances({
-            signal,
-            setIsLoading,
-            p_num,
-            p_cnt,
-          }),
-        )
+        successCallback()
         closeModal()
         toast.success(`Server ${action}ed`)
         dispatch(actions.hideLoader())
@@ -269,7 +268,7 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
     })
 }
 const changeTariff =
-  ({ elid, pricelist, successCallback, signal, setIsLoading, p_num, p_cnt }) =>
+  ({ elid, pricelist, successCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -284,15 +283,7 @@ const changeTariff =
     })
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        successCallback && successCallback()
-        dispatch(
-          getInstances({
-            signal,
-            setIsLoading,
-            p_num,
-            p_cnt,
-          }),
-        )
+        successCallback()
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
@@ -301,7 +292,7 @@ const changeTariff =
   }
 
 const changeTariffConfirm =
-  ({ action, elid, closeModal, signal, setIsLoading, p_num, p_cnt }) =>
+  ({ action, elid, closeModal, successCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -322,15 +313,7 @@ const changeTariffConfirm =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-        dispatch(
-          getInstances({
-            signal,
-            setIsLoading,
-            p_num,
-            p_cnt,
-          }),
-        )
+        successCallback()
         closeModal()
         toast.success(`${action} success`)
         dispatch(actions.hideLoader())

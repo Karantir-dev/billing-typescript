@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { useRef } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { HintWrapper, Icon, InstancesOptions, Options } from '@components'
+import { Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
@@ -12,13 +11,13 @@ export default function InstanceItemMobile({ item }) {
   const optionsBlock = useRef()
   const navigate = useNavigate()
 
-  const { isResized, displayStatus, displayName } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, displayName, isNotActive } = getInstanceMainInfo(item)
 
   return (
     <div
       className={s.mobile_item}
       onClick={e => {
-        if (optionsBlock.current.contains(e.target)) return
+        if (optionsBlock.current.contains(e.target) || isNotActive) return
         navigate(`${route.CLOUD_VPS}/${item.id.$}`, { state: item })
       }}
       tabIndex={0}

@@ -26,6 +26,7 @@
     &.disabled {
       color: var(--transparent-color);
       cursor: default;
+      pointer-events: none;
     }
   }
 }

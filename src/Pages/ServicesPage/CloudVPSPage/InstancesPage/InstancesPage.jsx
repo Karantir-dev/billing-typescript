@@ -1,20 +1,32 @@
-/* eslint-disable no-unused-vars */
-import { Button, IconButton, InstancesList, Loader, Pagination } from '@components'
+import {
+  Button,
+  Icon,
+  IconButton,
+  InstancesList,
+  Loader,
+  Pagination,
+  Select,
+} from '@components'
 import s from './InstancesPage.module.scss'
 import cn from 'classnames'
-import { useEffect, useReducer, useState } from 'react'
+import { Fragment, useEffect, useReducer, useRef, useState } from 'react'
 import { InstanceFiltersModal } from '@components/Services/Instances/Modals'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
-import { useCancelRequest } from '@utils'
+import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 import { useTranslation } from 'react-i18next'
+import { useMediaQuery } from 'react-responsive'
+import { cloudSortList } from '@utils/constants'
 
 export default function InstancesPage() {
   const navigate = useNavigate()
   const { t } = useTranslation(['cloud_vps'])
+  const lessThan1550 = useMediaQuery({ query: '(max-width: 1549px)' })
+
+  const interval = useRef()
 
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
@@ -22,7 +34,6 @@ export default function InstancesPage() {
   const dispatch = useDispatch()
   const [sortBy, setSortBy] = useState('+id')
 
-  const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
   const instances = useSelector(cloudVpsSelectors.getInstancesList)
   const instancesCount = useSelector(cloudVpsSelectors.getInstancesCount)
   const filters = useSelector(cloudVpsSelectors.getInstancesFilters)
@@ -35,6 +46,20 @@ export default function InstancesPage() {
     },
     { p_num: 1, p_cnt: '10' },
   )
+  useEffect(() => {
+    const isProcessing = instances?.find(item => {
+      return getInstanceMainInfo(item).isProcessing
+    })
+
+    interval.current =
+      isProcessing &&
+      setInterval(() => {
+        getInstances({ isLoader: false })
+      }, 10000)
+    return () => {
+      clearInterval(interval.current)
+    }
+  }, [instances])
 
   /* crutch for paginations */
   const [isPaginationChanged, setIsPaginationChanged] = useState(false)
@@ -56,15 +81,18 @@ export default function InstancesPage() {
     return () => {
       dispatch(cloudVpsActions.setInstancesCount(0))
       dispatch(cloudVpsActions.setInstancesList(null))
+      dispatch(cloudVpsActions.setInstancesFilters({}))
     }
   }, [])
 
-  const getInstances = p_col => {
+  const getInstances = ({ p_col, p_num, p_cnt, isLoader } = {}) => {
     dispatch(
       cloudVpsOperations.getInstances({
         ...loadingParams,
-        ...pagination,
         p_col,
+        p_cnt: p_cnt ?? pagination.p_cnt,
+        p_num: p_num ?? pagination.p_num,
+        isLoader,
       }),
     )
   }
@@ -82,18 +110,21 @@ export default function InstancesPage() {
       cloudVpsOperations.setInstancesFilter({
         values,
         ...loadingParams,
-        p_num: 1,
-        p_cnt: pagination.p_cnt,
-        p_col: sortBy,
+        successCallback: () => {
+          getInstances({ p_col: sortBy, p_num: 1, p_cnt: pagination.p_cnt })
+        },
       }),
     )
+
+    const isFiltered = !!(values ? Object.values(values) : []).filter(el => el).length
+
     setIsFiltersOpened(false)
-    setIsFiltered(!!values)
+    setIsFiltered(isFiltered)
   }
 
-  const setSortValue = value => {
-    setSortBy(value)
-    getInstances(value)
+  const setSortValue = p_col => {
+    setSortBy(p_col)
+    getInstances({ p_col })
   }
 
   const editInstanceHandler = ({ values, elid, closeModal, errorCallback }) => {
@@ -103,6 +134,7 @@ export default function InstancesPage() {
         elid,
         errorCallback,
         closeModal,
+        successCallback: () => getInstances(),
         ...loadingParams,
       }),
     )
@@ -117,135 +149,126 @@ export default function InstancesPage() {
     })
   }
 
-  // const deleteInstanceSubmit = () => {
-  //   dispatch(
-  //     cloudVpsOperations.deleteInstance({
-  //       elid: itemForModals.delete.id.$,
-  //       closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
-  //       ...loadingParams,
-  //       successCallback: () => setPagination({ p_num: 1 }),
-  //     }),
-  //   )
-  // }
+  const checkSortItem = value => {
+    const isActive = sortBy?.replace(/[+-]/g, '') === value
+    const isAsc = isActive ? sortBy[0] === '-' : true
+    const icon = `Sort_${isAsc ? 'a_z' : 'z_a'}`
+    return {
+      isActive,
+      isAsc,
+      icon,
+    }
+  }
 
-  // const confirmInstanceSubmit = (action, elid) => {
-  //   if (action.includes('resize_')) {
-  //     return dispatch(
-  //       cloudVpsOperations.changeTariffConfirm({
-  //         action: action.replace('resize_', ''),
-  //         elid,
-  //         closeModal: () =>
-  //           dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-  //         ...loadingParams,
-  //         ...pagination,
-  //       }),
-  //     )
-  //   } else if (action === 'unrescue') {
-  //     return dispatch(
-  //       cloudVpsOperations.rebuildInstance({
-  //         action: itemForModals.confirm.confirm_action,
-  //         elid: itemForModals.confirm.id.$,
-  //         successCallback: () => {
-  //           dispatch(cloudVpsActions.setItemForModals({ confirm: false }))
-  //           getInstances()
-  //         },
-  //       }),
-  //     )
-  //   } else {
-  //     return dispatch(
-  //       cloudVpsOperations.changeInstanceState({
-  //         action,
-  //         elid,
-  //         closeModal: () =>
-  //           dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-  //         ...loadingParams,
-  //         ...pagination,
-  //       }),
-  //     )
-  //   }
-  // }
+  const changeSort = value => {
+    const { isActive, isAsc } = checkSortItem(value)
 
-  // const changeInstancePasswordSubmit = password => {
-  //   dispatch(
-  //     cloudVpsOperations.changeInstancePassword({
-  //       password,
-  //       elid: itemForModals.change_pass.id.$,
-  //       closeModal: () =>
-  //         dispatch(cloudVpsActions.setItemForModals({ change_pass: false })),
-  //       signal,
-  //       setIsLoading,
-  //     }),
-  //   )
-  // }
+    if (isActive && isAsc) {
+      setSortValue(`+${value}`)
+    } else {
+      setSortValue(`-${value}`)
+    }
+  }
 
-  // const rebuildSubmit = values => {
-  //   dispatch(cloudVpsActions.setItemForModals({ rebuild: false }))
-
-  //   dispatch(
-  //     cloudVpsOperations.rebuildInstance({
-  //       action: itemForModals.rebuild.rebuild_action,
-  //       elid: itemForModals.rebuild.id.$,
-  //       sok: 'ok',
-  //       clicked_button: 'ok',
-  //       ...values,
-  //       successCallback: () => getInstances(),
-  //     }),
-  //   )
-  // }
-  // const resizeSubmit = values => {
-  //   dispatch(
-  //     cloudVpsOperations.changeTariff({
-  //       elid: itemForModals.resize.id.$,
-  //       pricelist: values.pricelist,
-  //       successCallback: () =>
-  //         dispatch(cloudVpsActions.setItemForModals({ resize: false })),
-  //       ...loadingParams,
-  //       ...pagination,
-  //     }),
-  //   )
-  // }
+  const filterKeys = filters?.active && Object.keys(filters.active)
 
   return (
     <>
       {instances && (
         <>
           <div className={s.options}>
-            <div className={s.filter__wrapper}>
-              <div className={s.filter}>
-                <IconButton
-                  className={cn(s.filter__icon, { [s.filtered]: isFiltered })}
-                  onClick={() => setIsFiltersOpened(true)}
-                  icon="filter"
-                />
-
-                {isFiltersOpened && (
-                  <>
-                    <InstanceFiltersModal
-                      isOpened
-                      closeFn={() => {
-                        setIsFiltersOpened(false)
-                      }}
-                      filters={filters.active}
-                      filtersList={filters.filtersList}
-                      resetFilterHandler={() => setFiltersHandler()}
-                      handleSubmit={setFiltersHandler}
-                    />
-                  </>
-                )}
-              </div>
-            </div>
             <Button
               label={t('create_instance_btn')}
               size="large"
               isShadow
               onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}
             />
+            <div className={s.filter}>
+              <IconButton
+                className={cn(s.filter__icon, { [s.filtered]: isFiltered })}
+                onClick={() => setIsFiltersOpened(true)}
+                icon="filter"
+                disabled={!instances.length && !isFiltered}
+              />
+
+              {filterKeys && (
+                <ul className={s.filter__clouds}>
+                  {filterKeys.map(key => {
+                    const value =
+                      (filters.filtersList[key] &&
+                        filters.filtersList[key]?.find(
+                          el => el.$key === filters.active[key],
+                        )?.$) ||
+                      filters.active[key]
+                    return (
+                      <Fragment key={key}>
+                        {filters.active[key] && (
+                          <li className={s.filter__cloud}>
+                            <span className={s.filter__cloud_name}>{t(key)}:</span>
+                            <span className={s.filter__cloud_value}>
+                              {t(value.trim())}
+                            </span>
+                            <button
+                              className={s.filter__cloud_btn}
+                              onClick={() => {
+                                setFiltersHandler({ ...filters.active, [key]: '' })
+                              }}
+                            >
+                              <Icon name="Cross" />
+                            </button>
+                          </li>
+                        )}
+                      </Fragment>
+                    )
+                  })}
+                </ul>
+              )}
+
+              {isFiltersOpened && (
+                <>
+                  <InstanceFiltersModal
+                    isOpened
+                    closeFn={() => {
+                      setIsFiltersOpened(false)
+                    }}
+                    filters={filters.active}
+                    filtersList={filters.filtersList}
+                    resetFilterHandler={() => setFiltersHandler()}
+                    handleSubmit={setFiltersHandler}
+                  />
+                </>
+              )}
+            </div>
           </div>
+          {lessThan1550 && (
+            <Select
+              className={s.sort_select}
+              placeholder={t('sort')}
+              label={`${t('sort')}:`}
+              isShadow
+              itemsList={cloudSortList
+                .filter(el => el.isSort)
+                .map(el => {
+                  const { icon } = checkSortItem(el.value)
+                  return {
+                    ...el,
+                    label: t(el.label),
+                    icon,
+                  }
+                })}
+              itemIcon
+              getElement={value => changeSort(value)}
+              value={sortBy?.replace(/[+-]/g, '')}
+              disableClickActive={false}
+            />
+          )}
           <InstancesList
             instances={instances}
-            setSortHandler={setSortValue}
             sortBy={sortBy}
             editInstance={editNameSubmit}
+            changeSort={changeSort}
+            checkSortItem={checkSortItem}
+            isFiltered={isFiltered}
           />
         </>
       )}
@@ -265,12 +288,7 @@ export default function InstancesPage() {
         />
       )}
       <Modals
-        // deleteInstanceSubmit={deleteInstanceSubmit}
-        // changeInstancePasswordSubmit={changeInstancePasswordSubmit}
         editNameSubmit={editNameSubmit}
-        // confirmSubmit={confirmInstanceSubmit}
-        // resizeSubmit={resizeSubmit}
-        // rebuildSubmit={rebuildSubmit}
         loadingParams={loadingParams}
         pagination={pagination}
         setPagination={setPagination}

@@ -1,14 +1,12 @@
-/* eslint-disable no-unused-vars */
 import { Button, InputField, Modal, WarningMessage } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
-import cn from 'classnames'
 import { getInstanceMainInfo } from '@utils'
 
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation(['cloud_vps', 'vps', 'auth', 'other'])
+  const { t } = useTranslation(['cloud_vps', 'auth'])
   const { isWindows, displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
@@ -40,7 +38,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
             onSubmit={values => onSubmit(values.password)}
             validationSchema={validationSchema}
           >
-            {({ values, errors, touched, setFieldValue }) => {
+            {({ errors, touched, setFieldValue }) => {
               return (
                 <Form id={'change_pass'}>
                   <div>
@@ -66,7 +64,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('Change password')}
+          label={t('Confirm')}
           size={'large'}
           type="submit"
           form={'change_pass'}
@@ -74,7 +72,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
           disabled={isWindows}
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

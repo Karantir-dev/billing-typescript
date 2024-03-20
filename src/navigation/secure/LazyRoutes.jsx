@@ -470,7 +470,7 @@ export const CloudVPSPageLazy = () => {
 export const CloudVPSInstancesPageLazy = () => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+    { value: 'burger_menu.services.services_list.cloud_vps', ns: 'container' },
   ]
 
   return (
@@ -482,7 +482,7 @@ export const CloudVPSInstancesPageLazy = () => {
 export const CreateInstancePageLazy = () => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+    { value: 'burger_menu.services.services_list.create_cloud_vps', ns: 'container' },
   ]
 
   return (
@@ -494,7 +494,7 @@ export const CreateInstancePageLazy = () => {
 export const CloudVPSSSHKeysPageLazy = () => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'burger_menu.services.services_list.ssh_key', ns: 'container' },
+    { value: 'burger_menu.services.services_list.ssh_keys', ns: 'container' },
   ]
 
   return (

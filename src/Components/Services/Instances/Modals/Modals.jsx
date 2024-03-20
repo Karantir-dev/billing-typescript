@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   ChangePasswordModal,
   DeleteModal,
@@ -17,16 +16,12 @@ import { InstructionModal } from '@components'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const Modals = ({
-  // deleteInstanceSubmit,
-  // changeInstancePasswordSubmit,
   editNameSubmit,
-  // confirmSubmit,
-  // resizeSubmit,
-  // rebuildSubmit,
   loadingParams = {},
-  pagination,
+  pagination = {},
   setPagination = () => {},
   getInstances = () => {},
+  redirectCallback = () => {},
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -37,7 +32,11 @@ export const Modals = ({
         elid: itemForModals.delete.id.$,
         closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
         ...loadingParams,
-        successCallback: () => setPagination({ p_num: 1 }),
+        successCallback: () => {
+          getInstances({ p_num: 1 })
+          setPagination({ p_num: 1 })
+          redirectCallback()
+        },
       }),
     )
   }
@@ -50,8 +49,7 @@ export const Modals = ({
           elid,
           closeModal: () =>
             dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-          ...loadingParams,
-          ...pagination,
+          successCallback: () => getInstances({ ...loadingParams, ...pagination }),
         }),
       )
     } else if (action === 'unrescue') {
@@ -72,8 +70,7 @@ export const Modals = ({
           elid,
           closeModal: () =>
             dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-          ...loadingParams,
-          ...pagination,
+          successCallback: () => getInstances({ ...loadingParams, ...pagination }),
         }),
       )
     }
@@ -84,10 +81,10 @@ export const Modals = ({
       cloudVpsOperations.changeTariff({
         elid: itemForModals.resize.id.$,
         pricelist: values.pricelist,
-        successCallback: () =>
-          dispatch(cloudVpsActions.setItemForModals({ resize: false })),
-        ...loadingParams,
-        ...pagination,
+        successCallback: () => {
+          dispatch(cloudVpsActions.setItemForModals({ resize: false }))
+          getInstances({ ...loadingParams, ...pagination })
+        },
       }),
     )
   }

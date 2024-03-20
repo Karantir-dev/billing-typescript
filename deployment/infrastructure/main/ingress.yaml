@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bill-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/server-snippet: |
+        location ~ /billmgr {
+          rewrite /billmgr /services$1 permanent;
+        }
+        more_set_headers "X-Frame-Options SAMEORIGIN";
+  namespace: {{ NAMESPACE }}
+
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: {{ DOMAIN }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: bill-service
+            port:
+              number: 80

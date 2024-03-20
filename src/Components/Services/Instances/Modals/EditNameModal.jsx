@@ -1,10 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { Button, InputField, Modal } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
-import cn from 'classnames'
 import { getInstanceMainInfo } from '@utils'
 
 export const EditNameModal = ({ item, closeModal, onSubmit }) => {
@@ -56,14 +54,14 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('edit', { ns: 'other' })}
+          label={t('Confirm')}
           size={'large'}
           type="submit"
           form={'edit_name'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('Cancel', { ns: 'other' })}
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>

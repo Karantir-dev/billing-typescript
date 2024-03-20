@@ -49,6 +49,15 @@ export default function ServicesList() {
 
   const servicesMenuList = [
     {
+      name: t('burger_menu.services.services_list.cloud_vps'),
+      id: 11,
+      routeName: routes.CLOUD_VPS,
+      allowedToRender: true,
+      icon_name: 'cloud_vps',
+      icon_width: '131',
+      icon_height: '100',
+    },
+    {
       name: t('burger_menu.services.services_list.domains'),
       id: 1,
       routeName: routes.DOMAINS,
@@ -57,15 +66,7 @@ export default function ServicesList() {
       icon_width: '97',
       icon_height: '117',
     },
-    {
-      name: t('burger_menu.services.services_list.cloud_vps'),
-      id: 11,
-      routeName: routes.CLOUD_VPS,
-      allowedToRender: true,
-      icon_name: 'vds',
-      icon_width: '131',
-      icon_height: '100',
-    },
+
     {
       name: t('burger_menu.services.services_list.virtual_servers'),
       id: 2,

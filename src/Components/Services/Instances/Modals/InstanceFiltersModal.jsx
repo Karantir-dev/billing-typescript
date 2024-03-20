@@ -14,7 +14,13 @@ export const InstanceFiltersModal = ({
   resetFilterHandler,
   handleSubmit,
 }) => {
-  const { t } = useTranslation(['domains', 'dedicated_servers', 'other', 'vds'])
+  const { t } = useTranslation([
+    'domains',
+    'dedicated_servers',
+    'other',
+    'vds',
+    'cloud_vps',
+  ])
   const [isOpenedCalendar, setIsOpenedCalendar] = useState(false)
 
   const dropdownCalendar = useRef(null)
@@ -29,31 +35,19 @@ export const InstanceFiltersModal = ({
       <Formik
         enableReinitialize
         initialValues={{
-          id: filters?.id?.$ || '',
-          domain: filters?.domain?.$ || '',
-          ip: filters?.ip?.$ || '',
-          pricelist: filters?.pricelist?.$ || '',
-          period: filters?.period?.$ || '',
-          status: filters?.status?.$ || '',
-          opendate: filters?.opendate?.$ || '',
-          expiredate: filters?.expiredate?.$ || '',
-          orderdatefrom: filters?.orderdatefrom?.$ || '',
-          orderdateto: filters?.orderdateto?.$ || '',
-          cost_from: filters?.cost_from?.$ || '',
-          cost_to: filters?.cost_to?.$ || '',
-          autoprolong: filters?.autoprolong?.$ || '',
-          datacenter: filters?.datacenter?.$ || '',
+          id: filters?.id || '',
+          ip: filters?.ip || '',
+          pricelist: filters?.pricelist || '',
+          fotbo_status: filters?.fotbo_status || '',
+          orderdatefrom: filters?.orderdatefrom || '',
+          orderdateto: filters?.orderdateto || '',
+          cost_from: filters?.cost_from || '',
+          cost_to: filters?.cost_to || '',
+          datacenter: filters?.datacenter || '',
         }}
         onSubmit={handleSubmit}
       >
         {({ setFieldValue, setValues, values, errors, touched }) => {
-          let dates = null
-          if (values.opendate && values.expiredate) {
-            dates = [new Date(values.opendate), new Date(values.expiredate)]
-          } else if (values.opendate) {
-            dates = new Date(values.opendate)
-          }
-
           let datesOrdered = null
           if (values.orderdatefrom && values.orderdateto) {
             datesOrdered = [new Date(values.orderdatefrom), new Date(values.orderdateto)]
@@ -79,18 +73,6 @@ export const InstanceFiltersModal = ({
                     className={s.input}
                     error={!!errors.id}
                     touched={!!touched.id}
-                  />
-
-                  <InputField
-                    inputWrapperClass={s.inputHeight}
-                    inputClassName={s.input_bgc}
-                    name="domain"
-                    label={`${t('Domain name')}:`}
-                    placeholder={t('Enter domain name')}
-                    isShadow
-                    className={s.input}
-                    error={!!errors.domain}
-                    touched={!!touched.domain}
                   />
 
                   <InputField
@@ -125,28 +107,13 @@ export const InstanceFiltersModal = ({
                   <Select
                     dropdownClass={s.input_bgc}
                     inputClassName={s.input_bgc}
-                    label={`${t('Period', { ns: 'other' })}:`}
-                    placeholder={t('Not selected', { ns: 'other' })}
-                    value={values.period}
-                    getElement={item => setFieldValue('period', item)}
-                    isShadow
-                    itemsList={filtersList?.period?.map(({ $key, $ }) => ({
-                      label: t($.trim(), { ns: 'other' }),
-                      value: $key,
-                    }))}
-                    className={s.select}
-                  />
-
-                  <Select
-                    dropdownClass={s.input_bgc}
-                    inputClassName={s.input_bgc}
                     label={`${t('status', { ns: 'other' })}:`}
                     placeholder={t('Not selected', { ns: 'other' })}
-                    value={values.status}
-                    getElement={item => setFieldValue('status', item)}
+                    value={values.fotbo_status}
+                    getElement={item => setFieldValue('fotbo_status', item)}
                     isShadow
-                    itemsList={filtersList?.status?.map(({ $key, $ }) => ({
-                      label: t($.trim(), { ns: 'other' }),
+                    itemsList={filtersList?.fotbo_status?.map(({ $key, $ }) => ({
+                      label: t($.trim(), { ns: 'cloud_vps' }),
                       value: $key,
                     }))}
                     className={s.select}
@@ -171,21 +138,6 @@ export const InstanceFiltersModal = ({
                     className={s.select}
                   />
 
-                  <Select
-                    dropdownClass={s.input_bgc}
-                    inputClassName={s.input_bgc}
-                    label={`${t('Auto renewal')}:`}
-                    placeholder={t('Not selected', { ns: 'other' })}
-                    value={values.autoprolong}
-                    getElement={item => setFieldValue('autoprolong', item)}
-                    isShadow
-                    itemsList={filtersList?.autoprolong?.map(({ $key, $ }) => ({
-                      label: t($.trim()),
-                      value: $key,
-                    }))}
-                    className={s.select}
-                  />
-
                   <DoubleInputField
                     inputWrapperClass={cn(s.inputHeight, s.input_bgc)}
                     className={s.input}
@@ -202,25 +154,6 @@ export const InstanceFiltersModal = ({
                     textRight="EUR"
                     maxLengthLeft={5}
                     maxLengthRight={5}
-                    isShadow
-                  />
-
-                  <DoubleInputField
-                    inputWrapperClass={cn(s.inputHeightExpire, s.input_bgc)}
-                    className={s.input}
-                    nameLeft="opendate"
-                    nameRight="expiredate"
-                    valueLeft={values?.opendate}
-                    onChangeLeft={() => null}
-                    valueRight={values?.expiredate}
-                    onChangeRight={() => null}
-                    label={`${t('Valid (from/to)', { ns: 'other' })}:`}
-                    placeholderLeft="00/00/00"
-                    placeholderRight="00/00/00"
-                    isCalendar
-                    dates={dates}
-                    range={values.opendate?.length !== 0}
-                    setFieldValue={setFieldValue}
                     isShadow
                   />
 
