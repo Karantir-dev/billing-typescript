@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { Icon, InstancesOptions } from '@components'
+import { CopyText, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
@@ -9,6 +9,7 @@ import formatCountryName from '../ExternalFunc/formatCountryName'
 
 export default function InstanceItemMobile({ item }) {
   const optionsBlock = useRef()
+  const ipCell = useRef()
   const navigate = useNavigate()
 
   const { isResized, displayStatus, displayName, isNotActive } = getInstanceMainInfo(item)
@@ -17,7 +18,12 @@ export default function InstanceItemMobile({ item }) {
     <div
       className={s.mobile_item}
       onClick={e => {
-        if (optionsBlock.current.contains(e.target) || isNotActive) return
+        if (
+          optionsBlock.current.contains(e.target) ||
+          ipCell.current.contains(e.target) ||
+          isNotActive
+        )
+          return
         navigate(`${route.CLOUD_VPS}/${item.id.$}`, { state: item })
       }}
       tabIndex={0}
@@ -72,7 +78,11 @@ export default function InstanceItemMobile({ item }) {
         </p>
 
         <p className={s.mobile_item__param}>Access IP</p>
-        <p className={s.mobile_item__value}>{item.ip?.$}</p>
+        <p className={s.mobile_item__value} ref={ipCell}>
+          <div className={s.ip_cell}>
+            <span>{item.ip?.$}</span> {item.ip?.$ && <CopyText text={item.ip?.$} />}
+          </div>
+        </p>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { EditCell, HintWrapper, Icon, InstancesOptions } from '@components'
+import { CopyText, EditCell, HintWrapper, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
@@ -14,6 +14,7 @@ export default function InstanceItem({ item, editInstance }) {
   const optionsCell = useRef()
   // const checkboxCell = useRef()
   const servernameCell = useRef()
+  const ipCell = useRef()
   const navigate = useNavigate()
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
@@ -43,6 +44,7 @@ export default function InstanceItem({ item, editInstance }) {
           optionsCell.current.contains(e.target) ||
           // checkboxCell.current.contains(e.target) ||
           servernameCell.current.contains(e.target) ||
+          ipCell.current.contains(e.target) ||
           isNotActive
         )
           return
@@ -112,7 +114,12 @@ export default function InstanceItem({ item, editInstance }) {
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </HintWrapper>
       </td>
-      <td className={cn(s.td, s.ip_cell)}>{item.ip?.$}</td>
+      <td ref={ipCell} className={cn(s.td, s.ip_cell)}>
+        <div className={s.ip_cell}>
+          {item.ip?.$ && <CopyText text={item.ip?.$} />}
+          <span>{item.ip?.$}</span>
+        </div>
+      </td>
       <td className={s.td} ref={optionsCell}>
         <InstancesOptions item={item} />
       </td>
