@@ -9,7 +9,6 @@ on:
       KUBECONFIG:
         required: true
         description: "Kubeconfig in base64"
-
     inputs:
       environment:
         required: false
@@ -20,13 +19,14 @@ on:
         type: string
         description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
 
+
 permissions:
   id-token: write # This is required for requesting the JWT
   contents: read # This is required for actions/checkout
 
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: Deployment-${{ github.ref }}
   cancel-in-progress: true
 
 
@@ -78,7 +78,7 @@ jobs:
         id: basic
         run: |
           echo "static_version=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
-  
+          exit 1
 
   test:
     needs: [ vars ]
@@ -111,17 +111,6 @@ jobs:
           REACT_APP_TRANSLATION_VERSION: ${{ needs.vars.outputs.static_version }}
           REACT_APP_SITE_URL: ${{ vars.SITE_URL }}
         run: npm run ${{ matrix.command }}
-      - name: Send fail start in Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: failure()
 
   build_and_push:
     needs: [ vars, test ]
@@ -187,18 +176,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Push status
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()
-
   deploy_on_server:
     needs: [ vars, build_and_push ]
     name: Deploy version on k8s
@@ -236,15 +213,3 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_TOKEN }}" \
           -H "Content-Type:application/json" \
           --data "{\"purge_everything\":true}"
-
-      - name: Deploy status
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()

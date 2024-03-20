@@ -15,7 +15,6 @@ on:
 
 permissions:
   contents: read # This is required for actions/checkout
-  actions: write # For run action
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -198,7 +197,7 @@ jobs:
         env:
           NAMESPACE: ${{ needs.vars.outputs.namespace }}
         run:
-          kubectl create job --from=cronjob/ecr-registry-helper manual-job -n ${{ env.NAMESPACE }}
+          kubectl create job --from=cronjob/ecr-registry-helper manual-job-${{ github.run_number }} -n ${{ env.NAMESPACE }}
 
       - name: Generation config in base64
         id: deploy_config
@@ -216,7 +215,10 @@ jobs:
 
   run_workflow:
     needs: [ vars, create_main ]
-    name: Run workflow
+    name: Run workflow - deployment
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
     uses: ./.github/workflows/deploy.yaml
     with:
       environment: ${{ needs.vars.outputs.environment }}

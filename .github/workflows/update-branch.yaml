@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  createPullRequest:
+  create_pull_request:
     name: Update branch
     runs-on: ubuntu-latest
     strategy:
@@ -29,6 +29,11 @@ jobs:
         run: |
           git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }} 
 
-      - name: Run workflow
-        run: |
-          gh workflow run deploy.yaml --ref ${{ matrix.base }}
+  run_workflow:
+    needs: [ create_pull_request ]
+    name: Run workflow - deployment
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+    uses: ./.github/workflows/deploy.yaml
+
