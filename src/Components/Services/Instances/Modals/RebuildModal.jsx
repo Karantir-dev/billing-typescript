@@ -19,6 +19,7 @@ import { cloudVpsOperations } from '@redux'
 import { generatePassword, getInstanceMainInfo } from '@utils'
 
 import s from './Modals.module.scss'
+import { PASS_REGEX } from '@src/utils/constants'
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
@@ -116,7 +117,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
         .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .matches(
-          /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
+          PASS_REGEX,
           t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }),
         )
         .required(t('warnings.password_required', { ns: 'auth' })),

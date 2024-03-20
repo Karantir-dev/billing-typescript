@@ -62,7 +62,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const portSpeedCountText = el?.desc?.$?.match(
     /(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/,
   )
-
+  console.log(el)
   return (
     <div className={s.items_wrapper}>
       <div className={s.server_item}>
@@ -85,8 +85,13 @@ export default function VdsItem({ el, deleteItemHandler }) {
             <p className={s.tariff_name}>{tariffName} </p>
             <div className={s.periodInfo}>
               <span>
-                {t('Period', { ns: 'other' })}: {el['item.period']?.$}{' '}
-                {translatePeriodToMonths(el['item.period']?.$)}
+                {t('Period', { ns: 'other' })}:
+                {/* For cloud VPS we set default period - a day */}
+                {el['item.type']?.$ === 'instances'
+                  ? ' Day'
+                  : ` ${el['item.period']?.$} ${translatePeriodToMonths(
+                      el['item.period']?.$,
+                    )}`}
               </span>
               <span>
                 {t('amount', { ns: 'vds' })}: {el?.count} {t('pcs.', { ns: 'vds' })}

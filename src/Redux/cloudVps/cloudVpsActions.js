@@ -7,7 +7,7 @@ const setInstancesFilters = createAction('SET_INSTANCES_FILTERS')
 const setInstancesTariffs = createAction('SET_INSTANCES_TARIFFS')
 const setInstancesDCList = createAction('SET_INSTANCES_DC_LIST')
 const setWindowsTag = createAction('SET_WINDOWS_TAG')
-const setOsList = createAction('SET_OS_LIST')
+const setOperationSystems = createAction('SET_OS_LIST')
 const setSshList = createAction('SET_SSH_LIST')
 
 export default {
@@ -18,6 +18,6 @@ export default {
   setInstancesTariffs,
   setInstancesDCList,
   setWindowsTag,
-  setOsList,
+  setOperationSystems,
   setSshList,
 }

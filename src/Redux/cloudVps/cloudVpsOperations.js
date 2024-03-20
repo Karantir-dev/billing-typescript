@@ -510,24 +510,26 @@ const writeTariffsWithDC = data => {
 }
 
 const getOsList =
-  ({ signal, setIsLoading, lastTariffID, closeLoader }) =>
+  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter }) =>
   (dispatch, getState) => {
     setIsLoading(true)
 
     if (!lastTariffID) {
       const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
-      const tariffsArray = tariffs[Object.keys(tariffs)[0]]
+      const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
       lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
     }
 
-    dispatch(getTariffParamsRequest({ signal, id: lastTariffID }))
+    dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         console.log(data.doc)
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
         const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
 
-        dispatch(cloudVpsActions.setOsList(osList))
+        const operationSystems = { [data.doc.datacenter.$]: osList }
+        console.log(operationSystems)
+        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
         dispatch(cloudVpsActions.setSshList(sshList))
 
         closeLoader && closeLoader()
@@ -572,26 +574,30 @@ const getAllTariffsInfo =
         if (netherlandsData.doc?.error) throw new Error(netherlandsData.doc.error.msg.$)
         if (polandData.doc?.error) throw new Error(polandData.doc.error.msg.$)
 
+        const allTariffs = {
+          ...writeTariffsWithDC(netherlandsData),
+          ...writeTariffsWithDC(polandData),
+        }
         const DClist = netherlandsData.doc.slist.find(el => el.$name === 'datacenter').val
+
+        /** it is important to get lastTariff ID from the first DC in the list,
+         * as it will be selected in the UI,
+         * because then we will get OS list with this tariff (OS IDs differs between DC) */
+        const firstDCid = DClist[0].$key
+        const firstDCtariffs = allTariffs[firstDCid]
+        const lastTariffID = firstDCtariffs[firstDCtariffs.length - 1].id.$
 
         const windowsTag = netherlandsData.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
 
-        const tariffs = polandData.doc.list.find(el => el.$name === 'pricelist').elem
-
-        const lastTariffID = tariffs[tariffs.length - 1].id.$
-
         if (needOsList) {
-          await dispatch(getOsList({ signal, setIsLoading, lastTariffID }))
+          await dispatch(
+            getOsList({ signal, setIsLoading, lastTariffID, datacenter: firstDCid }),
+          )
         }
 
-        dispatch(
-          cloudVpsActions.setInstancesTariffs({
-            ...writeTariffsWithDC(netherlandsData),
-            ...writeTariffsWithDC(polandData),
-          }),
-        )
+        dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
         dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
       })
@@ -626,7 +632,7 @@ const getAllTariffsInfo =
 //   }
 
 const getTariffParamsRequest =
-  ({ signal, id }) =>
+  ({ signal, id, datacenter }) =>
   (_, getState) => {
     const sessionId = authSelectors.getSessionId(getState())
     const specialTariffFieldName = `period_${id}`
@@ -639,6 +645,7 @@ const getTariffParamsRequest =
         auth: sessionId,
         lang: 'en',
         pricelist: id,
+        datacenter,
         [specialTariffFieldName]: '-50',
       }),
       { signal },

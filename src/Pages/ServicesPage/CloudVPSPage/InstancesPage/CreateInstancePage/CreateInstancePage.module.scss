@@ -76,6 +76,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  width: fit-content;
   font-weight: 400;
   font-size: 16px;
   line-height: 125%;
@@ -152,4 +153,11 @@
 
 .footer_parameters {
   display: none;
+}
+
+.error_message {
+  margin-left: 2px;
+  color: var(--error-color);
+  font-size: 13px;
+  line-height: 1.2;
 }
