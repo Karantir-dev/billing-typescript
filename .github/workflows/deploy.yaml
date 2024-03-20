@@ -7,7 +7,7 @@ on:
   workflow_call:
     secrets:
       KUBECONFIG:
-        required: true
+        required: false
         description: "Kubeconfig in base64"
     inputs:
       environment:
