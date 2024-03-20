@@ -2,8 +2,14 @@ name: Deployment
 on:
   push:
     branches: [ prod, dev, prod-biz, update ]
-
   workflow_dispatch:
+
+  workflow_call:
+    secrets:
+      KUBECONFIG:
+        required: true
+        description: "Kubeconfig in base64"
+
     inputs:
       environment:
         required: false
@@ -13,10 +19,6 @@ on:
         required: false
         type: string
         description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
-      KUBECONFIG:
-        required: false
-        type: string
-        description: "Kubeconfig in base64"
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -37,7 +39,6 @@ jobs:
 
       namespace: ${{ steps.dynamic.outputs.NAMESPACE }}
       prefix: ${{ steps.dynamic.outputs.PREFIX }}
-      kubeconfig_version: ${{ steps.dynamic.outputs.KUBECONFIG_VERSION }}
       environment: ${{ steps.dynamic.outputs.environment }}
     steps:
       # Logic
@@ -65,17 +66,6 @@ jobs:
             echo "value=${{ env.DEFAULT }}" >> $GITHUB_OUTPUT
           fi
 
-      - name: Set environments KUBECONFIG
-        env:
-          VALUE: ${{ inputs.KUBECONFIG }}
-        id: _tmp_KUBECONFIG_VERSION
-        run: |
-          if [[ -n "$VALUE" ]]; then
-            echo "value=$( echo "inputs" )" >> $GITHUB_OUTPUT
-          else
-            echo "value=$( echo "secrets" )" >> $GITHUB_OUTPUT
-          fi
-
       # Set
       - name: Create dynamic vars
         id: dynamic
@@ -83,8 +73,6 @@ jobs:
           echo "NAMESPACE=${{ vars.NAMESPACE_PREFIX }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
           echo "PREFIX=version-${{ github.run_number }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
           echo "environment=${{ steps._tmp_environment.outputs.value }}" >> "$GITHUB_OUTPUT"
-          
-          echo "KUBECONFIG_VERSION=${{ steps._tmp_KUBECONFIG_VERSION.outputs.value }}" >> "$GITHUB_OUTPUT"
 
       - name: Create basic vars
         id: basic
@@ -219,16 +207,10 @@ jobs:
       name: ${{ needs.vars.outputs.environment }}
     steps:
       - uses: actions/checkout@v4
-      - name: Import kubeconfig from secrets
-        if: ${{ needs.vars.outputs.kubeconfig_version == 'secrets' }}
+      - name: Import kubeconfig
         uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBECONFIG }}
-      - name: Import kubeconfig from inputs
-        if: ${{ needs.vars.outputs.kubeconfig_version == 'inputs' }}
-        uses: tale/kubectl-action@v1
-        with:
-          base64-kube-config: ${{ inputs.KUBECONFIG }}
 
       - name: Update Version
         working-directory: deployment

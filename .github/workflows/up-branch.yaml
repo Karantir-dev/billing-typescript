@@ -12,6 +12,7 @@ on:
         type: string
         description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
 
+
 permissions:
   contents: read # This is required for actions/checkout
   actions: write # For run action
@@ -216,11 +217,9 @@ jobs:
   run_workflow:
     needs: [ vars, create_main ]
     name: Run workflow
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Run deploy workflow
-        run: gh workflow run deploy.yaml --ref ${{ github.ref_name }} -F environment=${{ needs.vars.outputs.environment }} -F prefix=${{ needs.vars.outputs.prefix }} -F KUBECONFIG=${{ needs.create_main.outputs.k8s_config }}
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      environment: ${{ needs.vars.outputs.environment }}
+      prefix: ${{ needs.vars.outputs.prefix }}
+    secrets:
+      KUBECONFIG: ${{ needs.create_main.outputs.k8s_config }}
