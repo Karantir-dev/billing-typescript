@@ -13,36 +13,39 @@ export default function ConnectMethod({
   sshKey,
   errors,
   touched,
+  isWindows,
 }) {
   const { t } = useTranslation(['cloud_vps'])
   return (
     <div className={s.list}>
-      <div className={s.item}>
-        <div className={s.item__description}>
-          <CheckBox
-            type="radio"
-            onClick={() => onChangeType('ssh')}
-            value={connectionType === 'ssh'}
-          />
-          <div className={s.item__text_wrapper}>
-            <p className={s.item__name}>{t('ssh_key')}</p>
-            <p className={s.item__text}>{t('pass_method_ssh')}</p>
-          </div>
-          <Icon name="Ssh_keys" />
-        </div>
-        {connectionType === 'ssh' && (
-          <div className={s.item__field}>
-            <Select
-              isShadow
-              itemsList={sshList}
-              placeholder={t('ssh_key')}
-              getElement={setSSHkey}
-              value={sshKey}
-              error={errors.ssh_keys}
+      {!isWindows && (
+        <div className={s.item}>
+          <div className={s.item__description}>
+            <CheckBox
+              type="radio"
+              onClick={() => onChangeType('ssh')}
+              value={connectionType === 'ssh'}
             />
+            <div className={s.item__text_wrapper}>
+              <p className={s.item__name}>{t('ssh_key')}</p>
+              <p className={s.item__text}>{t('pass_method_ssh')}</p>
+            </div>
+            <Icon name="Ssh_keys" />
           </div>
-        )}
-      </div>
+          {connectionType === 'ssh' && (
+            <div className={s.item__field}>
+              <Select
+                isShadow
+                itemsList={sshList}
+                placeholder={t('ssh_key')}
+                getElement={setSSHkey}
+                value={sshKey}
+                error={errors.ssh_keys}
+              />
+            </div>
+          )}
+        </div>
+      )}
       <div className={s.item}>
         <div className={s.item__description}>
           <CheckBox

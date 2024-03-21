@@ -65,6 +65,7 @@ export { default as InstructionModal } from './ui/InstructionModal/InstructionMo
 export { default as InputRange } from './ui/InputRange/InputRange'
 export { default as WarningMessage } from './ui/WarningMessage/WarningMessage'
 export { default as RadioTypeButton } from './ui/RadioTypeButton/RadioTypeButton'
+export { default as CopyText } from './ui/CopyText/CopyText'
 export { default as Incrementer } from './ui/Incrementer/Incrementer'
 export { default as FixedFooter } from './ui/FixedFooter/FixedFooter'
 

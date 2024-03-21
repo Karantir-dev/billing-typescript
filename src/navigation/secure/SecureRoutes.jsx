@@ -177,6 +177,10 @@ const Component = ({ fromPromotionLink }) => {
         return navigate(route.DEDICATED_SERVERS_ORDER, {
           replace: true,
         })
+      } else if (funcName === 'v2.instances.order.param') {
+        return navigate(route.CLOUD_VPS_CREATE_INSTANCE, {
+          replace: true,
+        })
       }
     }
   }, [])
@@ -277,10 +281,7 @@ const Component = ({ fromPromotionLink }) => {
             path={route.CLOUD_VPS_CREATE_INSTANCE}
             element={<CreateInstancePageLazy />}
           />
-          <Route
-            path={`${route.CLOUD_VPS}/:id`}
-            element={<CloudInstanceItemPageLazy />}
-          >
+          <Route path={`${route.CLOUD_VPS}/:id`} element={<CloudInstanceItemPageLazy />}>
             <Route index element={<InstanceDetailsOverviewLazy />} />
           </Route>
 

@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
-import { cloudSortList } from '@utils/constants'
+import { CLOUD_SORT_LIST } from '@utils/constants'
 
 export default function InstancesPage() {
   const navigate = useNavigate()
@@ -246,7 +246,7 @@ export default function InstancesPage() {
               placeholder={t('sort')}
               label={`${t('sort')}:`}
               isShadow
-              itemsList={cloudSortList
+              itemsList={CLOUD_SORT_LIST
                 .filter(el => el.isSort)
                 .map(el => {
                   const { icon } = checkSortItem(el.value)
