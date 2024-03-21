@@ -36,4 +36,4 @@ jobs:
       - name: Run workflow
         run: |
           # need use this bad use for manual run workflow in specific branch 
-          gh workflow run deploy.yml --ref ${{ matrix.base }} -f KUBECONFIG=${{ secrets.KUBECONFIG }}
+          gh workflow run deploy.yaml --ref ${{ matrix.base }} -f KUBECONFIG=${{ secrets.KUBECONFIG }}
