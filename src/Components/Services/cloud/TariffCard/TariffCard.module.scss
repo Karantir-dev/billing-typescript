@@ -20,6 +20,7 @@
 }
 
 .tariff_title {
+  text-align: start;
   font-weight: 700;
   font-size: 16px;
   line-height: 100%;
@@ -62,4 +63,27 @@
   font-weight: 700;
   font-size: 16px;
   line-height: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .tariff_btn {
+    gap: 16px;
+  }
+
+  .tariff_title {
+    font-size: 25px;
+    line-height: 1.28;
+  }
+
+  .parameter_label {
+    font-size: 14px;
+  }
+
+  .parameter_value {
+    font-size: 16px;
+  }
+
+  .tariff_price {
+    font-size: 30px;
+  }
 }

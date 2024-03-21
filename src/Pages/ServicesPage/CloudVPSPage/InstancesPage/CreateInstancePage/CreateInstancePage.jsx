@@ -49,11 +49,11 @@ export default function CreateInstancePage() {
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
   const sshList = useSelector(cloudVpsSelectors.getSshList)
 
-  const [currentDC, setCurrentDC] = useState(dcList?.[0]?.$key)
+  const [currentDC, setCurrentDC] = useState(dcList?.[0])
 
   useEffect(() => {
-    if (!currentDC && dcList) {
-      setCurrentDC(dcList?.[0]?.$key)
+    if (!currentDC.$key && dcList) {
+      setCurrentDC(dcList?.[0])
     }
   }, [dcList])
 
@@ -74,7 +74,7 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           closeLoader: () => setIsLoading(false),
-          datacenter: currentDC,
+          datacenter: currentDC.$key,
         }),
       )
     }
@@ -169,7 +169,7 @@ export default function CreateInstancePage() {
         cloudVpsOperations.getTariffParams({
           signal,
           id: tariff_id,
-          datacenter: currentDC,
+          datacenter: currentDC.$key,
           setIsLoading,
         }),
       )
@@ -197,7 +197,7 @@ export default function CreateInstancePage() {
   }
 
   const checkIsItWindows = currentOS => {
-    return operationSystems?.[currentDC]
+    return operationSystems?.[currentDC.$key]
       ?.find(el => el.$key === currentOS)
       ?.$.toLowerCase()
       .includes('windows')
@@ -228,7 +228,9 @@ export default function CreateInstancePage() {
   return (
     <div>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
+
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
+
       {tariffs && operationSystems && (
         <Formik
           initialValues={{
@@ -293,9 +295,9 @@ export default function CreateInstancePage() {
               }
 
               if (tariffHasWindows) {
-                return operationSystems?.[currentDC]
+                return operationSystems?.[currentDC.$key]
               } else {
-                return operationSystems?.[currentDC]?.filter(
+                return operationSystems?.[currentDC.$key]?.filter(
                   el => !el.$.toLowerCase().includes('windows'),
                 )
               }
@@ -306,18 +308,18 @@ export default function CreateInstancePage() {
 
             /** if we have selected OS Windows - we don`t show tariffs that don`t support this OS */
             const filteredTariffsList = isItWindows
-              ? tariffs?.[currentDC].filter(tariff => {
+              ? tariffs?.[currentDC.$key].filter(tariff => {
                   if (Array.isArray(tariff.flabel.tag)) {
                     return tariff.flabel.tag.some(el => el.$ === windowsTag)
                   } else {
                     tariff.flabel.tag.$ === windowsTag
                   }
                 })
-              : tariffs?.[currentDC]
+              : tariffs?.[currentDC.$key]
 
             /** data initializing (sets default values) */
-            if (!values.instances_os && operationSystems?.[currentDC]?.[0]?.$key) {
-              setFieldValue('instances_os', operationSystems?.[currentDC]?.[0]?.$key)
+            if (!values.instances_os && operationSystems?.[currentDC.$key]?.[0]?.$key) {
+              setFieldValue('instances_os', operationSystems?.[currentDC.$key]?.[0]?.$key)
             }
             if (!values.instances_ssh_keys && sshList?.[0]?.value) {
               setFieldValue('instances_ssh_keys', sshList?.[0]?.value)
@@ -351,29 +353,30 @@ export default function CreateInstancePage() {
                   <h3 className={s.section_title}>{t('server_location')}</h3>
 
                   <ul className={s.categories_list}>
-                    {dcList?.map(({ $key, $ }) => {
+                    {dcList?.map(dc => {
+                      console.log(dc.$)
                       return (
                         <li
                           className={cn(s.category_item, {
-                            [s.selected]: currentDC === $key,
+                            [s.selected]: currentDC.$key === dc.$key,
                           })}
-                          key={$key}
+                          key={dc.$key}
                         >
                           <button
                             className={cn(s.category_btn)}
                             type="button"
-                            onClick={() => onDCchange($key)}
+                            onClick={() => onDCchange(dc)}
                           >
                             <img
                               className={s.flag}
                               src={require(`@images/countryFlags/${getFlagFromCountryName(
-                                $.replace('Fotbo ', ''),
+                                dc.$,
                               )}.png`)}
                               width={20}
                               height={14}
-                              alt={$.replace('Fotbo ', '')}
+                              alt={dc.$}
                             />
-                            {t($)}
+                            {t(dc.$)}
                           </button>
                         </li>
                       )
@@ -459,13 +462,39 @@ export default function CreateInstancePage() {
 
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('Server name')}</h3>
-                  <InputField name="servername" placeholder={t('serverName')} isShadow />
+                  <InputField
+                    inputWrapperClass={s.input_wrapper}
+                    inputClassName={s.input}
+                    name="servername"
+                    placeholder={t('serverName')}
+                    isShadow
+                  />
                 </section>
 
                 <FixedFooter isShown={values.tariff_id}>
                   <div className={s.footer_container}>
                     <div className={s.footer_row}>
-                      <div className={s.footer_parameters}></div>
+                      <div className={s.footer_parameters}>
+                        <div className={s.footer_params_row}>
+                          <span className={s.footer_params_label}>Location</span>
+                          <img
+                            className={s.flag}
+                            src={require(`@images/countryFlags/${getFlagFromCountryName(
+                              currentDC.$,
+                            )}.png`)}
+                            width={20}
+                            height={14}
+                            alt={currentDC.$}
+                          />
+                          {t(currentDC.$)}
+                        </div>
+                        <div className={s.footer_params_row}>
+                          <span className={s.footer_params_label}>CPU</span>
+                        </div>
+                        <div className={s.footer_params_row}>
+                          <span className={s.footer_params_label}>NVMe</span>
+                        </div>
+                      </div>
                       <div>
                         <p className={s.label}>{t('amount', { ns: 'vds' })}:</p>
                         <Incrementer
