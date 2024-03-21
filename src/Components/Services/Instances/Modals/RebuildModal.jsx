@@ -55,7 +55,10 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   }, [])
 
   const renderSoftwareOSFields = (fieldName, current, depends) => {
-    const changeOSHandler = value => setState({ [fieldName]: value })
+    const changeOSHandler = value => {
+      setState({ passwordType: '' })
+      setState({ [fieldName]: value })
+    }
 
     let dataArr = data?.slist?.find(el => el.$name === fieldName)?.val
 
@@ -107,17 +110,15 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
 
   const validationSchema = Yup.object().shape({
     password:
-      (!isRebuild || state.passwordType === 'password') &&
-      !isWindowsOS &&
+      ((!isRebuild && !isWindowsOS) ||
+        (isRebuild && (state.passwordType === 'password' || isWindowsOS))) &&
       Yup.string()
         .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .matches(PASS_REGEX, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .required(t('warnings.password_required', { ns: 'auth' })),
     password_type:
-      isRebuild &&
-      !isWindowsOS &&
-      Yup.string().required(t('Is a required field', { ns: 'other' })),
+      isRebuild && Yup.string().required(t('Is a required field', { ns: 'other' })),
     ssh_keys:
       state.passwordType === 'ssh' &&
       Yup.string()
@@ -154,7 +155,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
             if (isRebuild) {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
             }
-            if (isWindowsOS) {
+            if (isWindowsOS && !isRebuild) {
               submitData.password = generatePassword({
                 length: 10,
                 includeLowerCase: true,
@@ -181,48 +182,45 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     {renderSoftwareOSFields(select, values[select], depends)}
                   </div>
 
-                  {isWindowsOS ? (
+                  {isRebuild ? (
+                    <div>
+                      <ConnectMethod
+                        connectionType={state.passwordType}
+                        onChangeType={type => setState({ passwordType: type })}
+                        setSSHkey={value => setState({ ssh_keys: value })}
+                        setPassword={value => setState({ password: value })}
+                        errors={errors}
+                        touched={touched}
+                        sshList={sshList.map(el => ({
+                          label: el.$,
+                          value: el.$key,
+                        }))}
+                        sshKey={values.ssh_keys}
+                        isWindows={isWindowsOS}
+                      />
+                      <ErrorMessage
+                        className={s.error_message}
+                        name="password_type"
+                        component="span"
+                      />
+                    </div>
+                  ) : isWindowsOS ? (
                     <WarningMessage>{t('windows_password_warning')}</WarningMessage>
                   ) : (
-                    <>
-                      {isRebuild ? (
-                        <div>
-                          <ConnectMethod
-                            connectionType={state.passwordType}
-                            onChangeType={type => setState({ passwordType: type })}
-                            setSSHkey={value => setState({ ssh_keys: value })}
-                            setPassword={value => setState({ password: value })}
-                            errors={errors}
-                            touched={touched}
-                            sshList={sshList.map(el => ({
-                              label: el.$,
-                              value: el.$key,
-                            }))}
-                            sshKey={values.ssh_keys}
-                          />
-                          <ErrorMessage
-                            className={s.error_message}
-                            name="password_type"
-                            component="span"
-                          />
-                        </div>
-                      ) : (
-                        <InputField
-                          inputClassName={s.input}
-                          name="password"
-                          isShadow
-                          type="password"
-                          label={`${t('new_password', { ns: 'vds' })}:`}
-                          placeholder={t('new_password_placeholder', { ns: 'vds' })}
-                          error={!!errors.password}
-                          touched={!!touched.password}
-                          isRequired
-                          autoComplete="off"
-                          onChange={e => setState({ password: e.target.value })}
-                          generatePasswordValue={value => setState({ password: value })}
-                        />
-                      )}
-                    </>
+                    <InputField
+                      inputClassName={s.input}
+                      name="password"
+                      isShadow
+                      type="password"
+                      label={`${t('new_password', { ns: 'vds' })}:`}
+                      placeholder={t('new_password_placeholder', { ns: 'vds' })}
+                      error={!!errors.password}
+                      touched={!!touched.password}
+                      isRequired
+                      autoComplete="off"
+                      onChange={e => setState({ password: e.target.value })}
+                      generatePasswordValue={value => setState({ password: value })}
+                    />
                   )}
                 </div>
               </Form>
