@@ -4,9 +4,8 @@ import cn from 'classnames'
 import { CopyText, EditCell, HintWrapper, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
+import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
 import { useTranslation } from 'react-i18next'
-import formatCountryName from '../ExternalFunc/formatCountryName'
 
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['cloud_vps', 'vds', 'countries'])

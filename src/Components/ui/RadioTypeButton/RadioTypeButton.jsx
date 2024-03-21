@@ -23,6 +23,6 @@ export default function RadioTypeButton({ list, value, onClick }) {
 
 RadioTypeButton.propTypes = {
   list: PropTypes.array,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   onClick: PropTypes.func,
 }

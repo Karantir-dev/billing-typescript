@@ -4,8 +4,7 @@ import cn from 'classnames'
 import { CopyText, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
-import formatCountryName from '../ExternalFunc/formatCountryName'
+import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
 
 export default function InstanceItemMobile({ item }) {
   const optionsBlock = useRef()

@@ -21,12 +21,12 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsSelectors, userOperations } from '@src/Redux'
-import { getFlagFromCountryName, useCancelRequest } from '@src/utils'
+import { formatCountryName, getFlagFromCountryName, useCancelRequest } from '@utils'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
+import { PASS_REGEX } from '@utils/constants'
 
 import s from './CreateInstancePage.module.scss'
-import { PASS_REGEX } from '@src/utils/constants'
 
 const PERIODS_LIST = [
   { value: 30, label: 'month' },
@@ -52,7 +52,7 @@ export default function CreateInstancePage() {
   const [currentDC, setCurrentDC] = useState(dcList?.[0])
 
   useEffect(() => {
-    if (!currentDC.$key && dcList) {
+    if (!currentDC?.$key && dcList) {
       setCurrentDC(dcList?.[0])
     }
   }, [dcList])
@@ -74,7 +74,7 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           closeLoader: () => setIsLoading(false),
-          datacenter: currentDC.$key,
+          datacenter: currentDC?.$key,
         }),
       )
     }
@@ -169,7 +169,7 @@ export default function CreateInstancePage() {
         cloudVpsOperations.getTariffParams({
           signal,
           id: tariff_id,
-          datacenter: currentDC.$key,
+          datacenter: currentDC?.$key,
           setIsLoading,
         }),
       )
@@ -197,7 +197,7 @@ export default function CreateInstancePage() {
   }
 
   const checkIsItWindows = currentOS => {
-    return operationSystems?.[currentDC.$key]
+    return operationSystems?.[currentDC?.$key]
       ?.find(el => el.$key === currentOS)
       ?.$.toLowerCase()
       .includes('windows')
@@ -249,18 +249,18 @@ export default function CreateInstancePage() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
-            const onDCchange = $key => {
-              setCurrentDC($key)
+            const onDCchange = dc => {
+              setCurrentDC(dc)
               setFieldValue('tariff_id', null)
               setFieldValue('instances_os', null)
 
-              if (!operationSystems[$key]) {
+              if (!operationSystems[dc.$key]) {
                 dispatch(
                   cloudVpsOperations.getOsList({
                     signal,
                     setIsLoading,
                     closeLoader: () => setIsLoading(false),
-                    datacenter: $key,
+                    datacenter: dc.$key,
                   }),
                 )
               }
@@ -295,9 +295,9 @@ export default function CreateInstancePage() {
               }
 
               if (tariffHasWindows) {
-                return operationSystems?.[currentDC.$key]
+                return operationSystems?.[currentDC?.$key]
               } else {
-                return operationSystems?.[currentDC.$key]?.filter(
+                return operationSystems?.[currentDC?.$key]?.filter(
                   el => !el.$.toLowerCase().includes('windows'),
                 )
               }
@@ -308,18 +308,21 @@ export default function CreateInstancePage() {
 
             /** if we have selected OS Windows - we don`t show tariffs that don`t support this OS */
             const filteredTariffsList = isItWindows
-              ? tariffs?.[currentDC.$key].filter(tariff => {
+              ? tariffs?.[currentDC?.$key].filter(tariff => {
                   if (Array.isArray(tariff.flabel.tag)) {
                     return tariff.flabel.tag.some(el => el.$ === windowsTag)
                   } else {
                     tariff.flabel.tag.$ === windowsTag
                   }
                 })
-              : tariffs?.[currentDC.$key]
+              : tariffs?.[currentDC?.$key]
 
             /** data initializing (sets default values) */
-            if (!values.instances_os && operationSystems?.[currentDC.$key]?.[0]?.$key) {
-              setFieldValue('instances_os', operationSystems?.[currentDC.$key]?.[0]?.$key)
+            if (!values.instances_os && operationSystems?.[currentDC?.$key]?.[0]?.$key) {
+              setFieldValue(
+                'instances_os',
+                operationSystems?.[currentDC?.$key]?.[0]?.$key,
+              )
             }
             if (!values.instances_ssh_keys && sshList?.[0]?.value) {
               setFieldValue('instances_ssh_keys', sshList?.[0]?.value)
@@ -346,6 +349,13 @@ export default function CreateInstancePage() {
               return price
             }
 
+            const currentCpu = values.tariffData?.detail.find(el =>
+              el.name.$.toLowerCase().includes('cpu'),
+            )?.value.$
+            const currentDisk = values.tariffData?.detail
+              .find(el => el.name.$.toLowerCase() === 'disk space')
+              .value.$.replace('.', '')
+
             return (
               <Form>
                 <ScrollToFieldError />
@@ -354,11 +364,10 @@ export default function CreateInstancePage() {
 
                   <ul className={s.categories_list}>
                     {dcList?.map(dc => {
-                      console.log(dc.$)
                       return (
                         <li
                           className={cn(s.category_item, {
-                            [s.selected]: currentDC.$key === dc.$key,
+                            [s.selected]: currentDC?.$key === dc.$key,
                           })}
                           key={dc.$key}
                         >
@@ -370,13 +379,13 @@ export default function CreateInstancePage() {
                             <img
                               className={s.flag}
                               src={require(`@images/countryFlags/${getFlagFromCountryName(
-                                dc.$,
+                                formatCountryName(dc.$),
                               )}.png`)}
                               width={20}
                               height={14}
-                              alt={dc.$}
+                              alt={formatCountryName(dc.$)}
                             />
-                            {t(dc.$)}
+                            {t(formatCountryName(dc.$))}
                           </button>
                         </li>
                       )
@@ -473,64 +482,65 @@ export default function CreateInstancePage() {
 
                 <FixedFooter isShown={values.tariff_id}>
                   <div className={s.footer_container}>
-                    <div className={s.footer_row}>
-                      <div className={s.footer_parameters}>
-                        <div className={s.footer_params_row}>
-                          <span className={s.footer_params_label}>Location</span>
-                          <img
-                            className={s.flag}
-                            src={require(`@images/countryFlags/${getFlagFromCountryName(
-                              currentDC.$,
-                            )}.png`)}
-                            width={20}
-                            height={14}
-                            alt={currentDC.$}
-                          />
-                          {t(currentDC.$)}
-                        </div>
-                        <div className={s.footer_params_row}>
-                          <span className={s.footer_params_label}>CPU</span>
-                        </div>
-                        <div className={s.footer_params_row}>
-                          <span className={s.footer_params_label}>NVMe</span>
-                        </div>
-                      </div>
-                      <div>
-                        <p className={s.label}>{t('amount', { ns: 'vds' })}:</p>
-                        <Incrementer
-                          count={values.order_count}
-                          setCount={value => setFieldValue('order_count', value)}
-                          max={35}
+                    <div className={cn(s.footer_parameters, s.footer_item)}>
+                      <div className={s.footer_params_row}>
+                        <span className={s.footer_params_label}>Location</span>
+                        <img
+                          className={s.flag}
+                          src={require(`@images/countryFlags/${getFlagFromCountryName(
+                            formatCountryName(currentDC?.$),
+                          )}.png`)}
+                          width={20}
+                          height={14}
+                          alt={formatCountryName(currentDC?.$)}
                         />
+                        {t(formatCountryName(currentDC?.$))}
                       </div>
-
-                      <div>
-                        <p className={s.label}>{t('summary', { ns: 'vds' })}:</p>
-                        <p className={s.footer_price}>
-                          €
-                          {calculatePrice(
-                            values.tariffData,
-                            values,
-                            PERIODS_LIST.find(el => el.label === 'day').value,
-                            values.order_count,
-                          )}
-                          /<span className={s.price_period}>{t('day')}</span>
-                        </p>
-                        <p className={s.footer_hour_price}>
-                          (€
-                          {calculatePrice(
-                            values.tariffData,
-                            values,
-                            PERIODS_LIST.find(el => el.label === 'hour').value,
-                            values.order_count,
-                          )}
-                          /{t('hour')})
-                        </p>
+                      <div className={s.footer_params_row}>
+                        <span className={s.footer_params_label}>CPU</span>
+                        {currentCpu}
+                      </div>
+                      <div className={s.footer_params_row}>
+                        <span className={s.footer_params_label}>NVMe</span>
+                        {currentDisk}
                       </div>
                     </div>
 
+                    <div className={s.footer_item}>
+                      <p className={s.label}>{t('amount', { ns: 'vds' })}:</p>
+                      <Incrementer
+                        count={values.order_count}
+                        setCount={value => setFieldValue('order_count', value)}
+                        max={35}
+                      />
+                    </div>
+
+                    <div className={s.footer_item}>
+                      <p className={s.label}>{t('summary', { ns: 'vds' })}:</p>
+                      <p className={s.footer_price}>
+                        €
+                        {calculatePrice(
+                          values.tariffData,
+                          values,
+                          PERIODS_LIST.find(el => el.label === 'day').value,
+                          values.order_count,
+                        )}
+                        /<span className={s.price_period}>{t('day')}</span>
+                      </p>
+                      <p className={s.footer_hour_price}>
+                        (€
+                        {calculatePrice(
+                          values.tariffData,
+                          values,
+                          PERIODS_LIST.find(el => el.label === 'hour').value,
+                          values.order_count,
+                        )}
+                        /{t('hour')})
+                      </p>
+                    </div>
+
                     <Button
-                      className={s.btn_buy}
+                      className={s.footer_item}
                       label={t('buy', { ns: 'other' })}
                       type="submit"
                       isShadow
