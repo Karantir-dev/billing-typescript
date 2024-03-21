@@ -43,6 +43,7 @@
   "choose_flavor": "Choose a flavor",
   "resize_warning": "Warning: instance resize will cause downtime. The instance will shutdown and the disk image will be copied to a new disk. This may take a while, depending on the disk size.",
   "resize_notes": "Notes: you can only select flavors larger than your current flavor. After the resize is completed, the instance will have the state \"VERIFY RESIZE\". Check if everything is ok with your data and then click on \"Confirm resize\" in the instance menu.",
+  "no_ssh_yet": "No SSH keys",
   "ssh_key": "SSH Key",
   "Add new SSH Key": "Add new SSH Key",
   "Name can have no more than": "The name can have no more than 32 characters",

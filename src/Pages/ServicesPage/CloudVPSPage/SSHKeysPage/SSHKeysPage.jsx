@@ -15,8 +15,9 @@ export default function SSHKeysPage() {
   const [isAddModalOpened, setIsAddModalOpened] = useState(false)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
-  const [sshItems, setSshItems] = useState()
   const [sortBy, setSortBy] = useState('+id')
+
+  const sshItems = useSelector(cloudVpsSelectors.getSshList)
 
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
 
@@ -43,7 +44,6 @@ export default function SSHKeysPage() {
   const [isFirstRender, setIsFirstRender] = useState(true)
 
   const getSshRequiredParams = {
-    setSshItems,
     setTotalElems: value => setPagination({ totalElems: value }),
     signal,
     setIsLoading,
@@ -54,14 +54,14 @@ export default function SSHKeysPage() {
     setIsFirstRender(false)
   }, [])
 
-  const getSsh = () => {
+  const getSsh = ({ p_col, p_num, p_cnt, isLoader } = {}) => {
     dispatch(
       cloudVpsOperations.getSshKeys({
+        p_col,
+        p_cnt: p_cnt ?? pagination.p_cnt,
+        p_num: p_num ?? pagination.p_num,
         ...getSshRequiredParams,
-        ...pagination,
-        p_num: 1,
-        p_cnt: pagination.p_cnt,
-        p_col: sortBy,
+        isLoader,
       }),
     )
   }
@@ -112,33 +112,35 @@ export default function SSHKeysPage() {
 
   return (
     <>
-      <div className={s.sshPage_wrapper}>
-        <Button
-          label={t('Add new SSH Key')}
-          size="large"
-          className={s.ssh_purchase_btn}
-          isShadow
-          onClick={() => {
-            setIsAddModalOpened(true)
-            dispatch(cloudVpsActions.setItemForModals({ publicKey: '' }))
-          }}
-        />
-        {isAddModalOpened && (
-          <AddSshKeyModal
-            isAddModalOpened
-            closeModal={() => {
-              setIsAddModalOpened(false)
+      {sshItems && (
+        <div className={s.sshPage_wrapper}>
+          <Button
+            label={t('Add new SSH Key')}
+            size="large"
+            className={s.ssh_purchase_btn}
+            isShadow
+            onClick={() => {
+              setIsAddModalOpened(true)
+              dispatch(cloudVpsActions.setItemForModals({ publicKey: '' }))
             }}
-            onSubmit={setNewSshKey}
           />
-        )}
-        <SshList
-          ssh={sshItems}
-          setSortHandler={setSortValue}
-          sortBy={sortBy}
-          editSsh={editNameSubmit}
-        />
-      </div>
+          {isAddModalOpened && (
+            <AddSshKeyModal
+              isAddModalOpened
+              closeModal={() => {
+                setIsAddModalOpened(false)
+              }}
+              onSubmit={setNewSshKey}
+            />
+          )}
+          <SshList
+            ssh={sshItems}
+            setSortHandler={setSortValue}
+            sortBy={sortBy}
+            editSsh={editNameSubmit}
+          />
+        </div>
+      )}
 
       {pagination.totalElems > 5 && (
         <Pagination

@@ -8,7 +8,7 @@ import no_vds from '@images/services/no_vds.png'
 import { useTranslation } from 'react-i18next'
 
 export default function SshList({ ssh, setSortHandler, sortBy, editSsh }) {
-  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const { t } = useTranslation(['cloud_vps'])
   const headCells = [
     { name: t('Name'), isSort: false, key: 'comment' },
     { name: t('Created at'), isSort: false, key: 'cdate' },
@@ -50,8 +50,8 @@ export default function SshList({ ssh, setSortHandler, sortBy, editSsh }) {
   if (!ssh?.length) {
     return (
       <div className={s.no_vds_wrapper}>
-        <img className={s.no_vds} src={no_vds} alt="no_vds" />
-        <p className={s.no_vds_title}>{t('no_servers_yet')}</p>
+        <img className={s.no_vds} src={no_vds} alt={t('no_ssh_yet')} />
+        <p className={s.no_vds_title}>{t('no_ssh_yet')}</p>
       </div>
     )
   }

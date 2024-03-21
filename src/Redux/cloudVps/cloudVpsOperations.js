@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import {
   actions,
@@ -682,9 +681,10 @@ const setOrderData =
   }
 
 const getSshKeys =
-  ({ setSshItems, setTotalElems, p_cnt, p_num, signal, setIsLoading, p_col }) =>
+  ({ p_col, p_cnt, p_num, setTotalElems, signal, setIsLoading, isLoader = true }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    isLoader && (setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader()))
+
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -704,8 +704,10 @@ const getSshKeys =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        setSshItems(data.doc.elem || [])
-        setTotalElems(data.doc.p_elems.$)
+        const sshList = data.doc.elem || []
+
+        dispatch(cloudVpsActions.setSshList(sshList))
+        setTotalElems(data?.doc?.p_elems.$)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -719,7 +721,6 @@ const setSshKey =
     values,
     closeModal = () => {},
     errorCallback = () => {},
-    setSshItems,
     setTotalElems,
     setIsLoading,
     signal,
@@ -749,7 +750,6 @@ const setSshKey =
 
         dispatch(
           getSshKeys({
-            setSshItems,
             setTotalElems,
             signal,
             setIsLoading,
@@ -815,6 +815,8 @@ const editSsh =
       .catch(error => {
         errorCallback()
         closeModal()
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
       })
   }
 
@@ -861,8 +863,8 @@ const deleteSsh =
         dispatch(actions.hideLoader())
       })
       .catch(err => {
-        checkIfTokenAlive(err.message, dispatch)
         closeModal()
+        checkIfTokenAlive(err.message, dispatch)
         dispatch(actions.hideLoader())
       })
   }
