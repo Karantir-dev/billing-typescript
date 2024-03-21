@@ -112,10 +112,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       Yup.string()
         .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-        .matches(
-          PASS_REGEX,
-          t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }),
-        )
+        .matches(PASS_REGEX, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .required(t('warnings.password_required', { ns: 'auth' })),
     password_type:
       isRebuild &&

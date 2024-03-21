@@ -13,6 +13,7 @@ import {
   Button,
   Incrementer,
   FixedFooter,
+  ScrollToFieldError,
 } from '@components'
 import * as Yup from 'yup'
 import { useLocation } from 'react-router-dom'
@@ -150,17 +151,39 @@ export default function CreateInstancePage() {
     })
   }
 
-  const onFormSubmit = values => {
-    const { servername, password, instances_os, order_count, instances_ssh_keys } = values
-
-    const orderData = {
-      use_ssh_key: values.connectionType === 'ssh' ? 'on' : 'off',
-      pricelist: values.tariff_id,
+  const onFormSubmit = async values => {
+    const {
       servername,
       password,
       instances_os,
       order_count,
       instances_ssh_keys,
+      network_ipv6,
+      tariff_id,
+      connectionType,
+    } = values
+
+    let ipv6_parametr
+    if (network_ipv6) {
+      ipv6_parametr = await dispatch(
+        cloudVpsOperations.getTariffParams({
+          signal,
+          id: tariff_id,
+          datacenter: currentDC,
+          setIsLoading,
+        }),
+      )
+    }
+
+    const orderData = {
+      use_ssh_key: connectionType === 'ssh' ? 'on' : 'off',
+      pricelist: tariff_id,
+      servername,
+      password,
+      instances_os,
+      order_count,
+      instances_ssh_keys,
+      ...ipv6_parametr,
     }
 
     dispatch(
@@ -180,32 +203,26 @@ export default function CreateInstancePage() {
       .includes('windows')
   }
 
-  const test = Yup => {
-    // console.log(Yup.ref('connectionType'))
-    return Yup.ref('connectionType') === 'password'
-  }
-
   const validationSchema = Yup.object().shape({
-    password:
-      test(Yup) &&
-      !checkIsItWindows(Yup.ref('instances_os')) &&
-      Yup.string()
+    password: Yup.string().when('connectionType', {
+      is: type => type === 'password',
+      then: Yup.string()
         .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .matches(PASS_REGEX, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
         .required(t('warnings.password_required', { ns: 'auth' })),
-    connectionType:
-      !checkIsItWindows(Yup.ref('instances_os')) &&
-      Yup.string().required(t('Is a required field', { ns: 'other' })),
-    instances_ssh_keys:
-      Yup.ref('connectionType') === 'ssh' &&
-      Yup.string()
+    }),
+    connectionType: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    instances_ssh_keys: Yup.string().when('connectionType', {
+      is: type => type === 'ssh',
+      then: Yup.string()
         .required(t('Is a required field', { ns: 'other' }))
         .test(
           'ssh_validate',
           t('Is a required field', { ns: 'other' }),
           value => value !== 'none',
         ),
+    }),
   })
 
   return (
@@ -230,8 +247,6 @@ export default function CreateInstancePage() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
-            console.log(errors)
-            console.log(values)
             const onDCchange = $key => {
               setCurrentDC($key)
               setFieldValue('tariff_id', null)
@@ -300,10 +315,13 @@ export default function CreateInstancePage() {
                 })
               : tariffs?.[currentDC]
 
+            /** data initializing (sets default values) */
             if (!values.instances_os && operationSystems?.[currentDC]?.[0]?.$key) {
               setFieldValue('instances_os', operationSystems?.[currentDC]?.[0]?.$key)
             }
-
+            if (!values.instances_ssh_keys && sshList?.[0]?.value) {
+              setFieldValue('instances_ssh_keys', sshList?.[0]?.value)
+            }
             if (!values.tariff_id && filteredTariffsList?.[0]?.id.$) {
               setFieldValue('tariff_id', filteredTariffsList?.[0]?.id.$)
               setFieldValue('tariffData', filteredTariffsList?.[0])
@@ -328,6 +346,7 @@ export default function CreateInstancePage() {
 
             return (
               <Form>
+                <ScrollToFieldError />
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('server_location')}</h3>
 
@@ -419,30 +438,23 @@ export default function CreateInstancePage() {
 
                 <section className={s.section}>
                   <h3 className={s.section_title}>Choose Authentication Method</h3>
-                  {isItWindows ? (
-                    <WarningMessage>{t('windows_password_warning')}</WarningMessage>
-                  ) : (
-                    <>
-                      <ConnectMethod
-                        connectionType={values.connectionType}
-                        sshKey={values.instances_ssh_keys}
-                        onChangeType={type => setFieldValue('connectionType', type)}
-                        setSSHkey={value => setFieldValue('instances_ssh_keys', value)}
-                        setPassword={value => setFieldValue('password', value)}
-                        errors={errors}
-                        touched={touched}
-                        sshList={sshList?.map(el => ({
-                          label: el.$,
-                          value: el.$key,
-                        }))}
-                      />
-                      <ErrorMessage
-                        className={s.error_message}
-                        name="connectionType"
-                        component="span"
-                      />
-                    </>
-                  )}
+
+                  <ConnectMethod
+                    connectionType={values.connectionType}
+                    sshKey={values.instances_ssh_keys}
+                    onChangeType={type => setFieldValue('connectionType', type)}
+                    setSSHkey={value => setFieldValue('instances_ssh_keys', value)}
+                    setPassword={value => setFieldValue('password', value)}
+                    errors={errors}
+                    touched={touched}
+                    sshList={sshList}
+                    isWindows={isItWindows}
+                  />
+                  <ErrorMessage
+                    className={s.error_message}
+                    name="connectionType"
+                    component="span"
+                  />
                 </section>
 
                 <section className={s.section}>
