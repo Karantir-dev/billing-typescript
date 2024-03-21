@@ -1,8 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useReducer, useState } from 'react'
 import { SshList, Button, Loader, Pagination } from '@components'
 import s from './SSHKeysPage.module.scss'
-import cn from 'classnames'
 
 import { AddSshKeyModal } from '@components/Services/Instances/Modals'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 
 export default function SSHKeysPage() {
   const { t } = useTranslation(['cloud_vps'])
-
 
   const [isAddModalOpened, setIsAddModalOpened] = useState(false)
   const { signal, isLoading, setIsLoading } = useCancelRequest()

@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { Button, InputField, Modal, Icon, MessageInput } from '@components'
 import { SSH_KEY_NAME_REGEX } from '@utils/constants'
 

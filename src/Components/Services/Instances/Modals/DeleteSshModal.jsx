@@ -1,11 +1,8 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Form, Formik } from 'formik'
-import { Button, Modal, WarningMessage } from '@components'
+import { Button, Modal } from '@components'
 
 import s from './Modals.module.scss'
-import cn from 'classnames'
 
 export const DeleteSshModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'other'])
@@ -20,27 +17,22 @@ export const DeleteSshModal = ({ item, closeModal, onSubmit }) => {
         </p>
       </Modal.Header>
       <Modal.Body>
-        <Formik initialValues={{ comfirm: '' }} onSubmit={onSubmit}>
-          {() => {
-            return (
-              <Form id={'ssh_delete'}>
-                <div>
-                  <p className={s.body__text}>{t('delete_ssh_key_text')}</p>
-                </div>
-              </Form>
-            )
-          }}
+        <Formik onSubmit={onSubmit}>
+          <Form id={'ssh_delete'}>
+            <p className={s.body__text}>{t('delete_ssh_key_text')}</p>
+          </Form>
         </Formik>
       </Modal.Body>
       <Modal.Footer>
         <Button
-          label={t('Yes')}
+          label={t('Confirm', { ns: 'other' })}
           size={'small'}
-          onClick={() => onSubmit(item?.elid?.$)}
+          type="submit"
+          form={'ssh_delete'}
           isShadow
         />
         <button type="button" onClick={closeModal}>
-          {t('No')}
+          {t('Cancel', { ns: 'other' })}
         </button>
       </Modal.Footer>
     </Modal>

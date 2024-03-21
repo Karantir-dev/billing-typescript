@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import s from './SshList.module.scss'
 import cn from 'classnames'
-import { CheckBox, EditCell, Icon } from '@components'
+import { EditCell, Icon } from '@components'
 import { useTranslation } from 'react-i18next'
 import { cloudVpsActions } from '@redux'
 import { useDispatch } from 'react-redux'
