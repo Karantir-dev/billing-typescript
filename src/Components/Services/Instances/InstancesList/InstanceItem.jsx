@@ -114,10 +114,14 @@ export default function InstanceItem({ item, editInstance }) {
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </HintWrapper>
       </td>
-      <td ref={ipCell} className={cn(s.td, s.ip_cell)}>
+      <td ref={ipCell} className={s.td}>
         <div className={s.ip_cell}>
-          {item.ip?.$ && <CopyText text={item.ip?.$} />}
           <span>{item.ip?.$}</span>
+          {item.ip?.$ && (
+            <div className={s.fade_in}>
+              <CopyText text={item.ip?.$} />
+            </div>
+          )}
         </div>
       </td>
       <td className={s.td} ref={optionsCell}>
