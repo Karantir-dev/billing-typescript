@@ -6,8 +6,10 @@ import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo } from '@utils'
 import formatCountryName from '../ExternalFunc/formatCountryName'
+import { useTranslation } from 'react-i18next'
 
 export default function InstanceItemMobile({ item }) {
+  const { t } = useTranslation(['cloud_vps'])
   const optionsBlock = useRef()
   const ipCell = useRef()
   const navigate = useNavigate()
@@ -69,7 +71,7 @@ export default function InstanceItemMobile({ item }) {
           />
         </p>
 
-        <p className={s.mobile_item__param}>Created at</p>
+        <p className={s.mobile_item__param}>{t('Created at')}</p>
         <p className={s.mobile_item__value}>{item.createdate.$}</p>
 
         <p className={s.mobile_item__param}>OS</p>

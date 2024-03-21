@@ -5,6 +5,8 @@ import {
   ConfirmModal,
   ResizeModal,
   RebuildModal,
+  DeleteSshModal,
+  RenameSshModal,
 } from '.'
 import {
   cloudVpsActions,
@@ -17,6 +19,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 export const Modals = ({
   editNameSubmit,
+  deleteSshSubmit,
+  renameSshSubmit,
   loadingParams = {},
   pagination = {},
   setPagination = () => {},
@@ -184,6 +188,24 @@ export const Modals = ({
               ),
             )
           }
+        />
+      )}
+
+      {!!itemForModals?.ssh_delete && (
+        <DeleteSshModal
+          item={itemForModals?.ssh_delete}
+          closeModal={() => dispatch(cloudVpsActions.setItemForModals({ ssh_delete: false }))}
+          onSubmit={deleteSshSubmit}
+        />
+      )}
+
+      {!!itemForModals?.ssh_rename && (
+        <RenameSshModal
+          item={itemForModals?.ssh_rename}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false }))
+          }
+          onSubmit={renameSshSubmit}
         />
       )}
     </>
