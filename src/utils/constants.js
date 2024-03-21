@@ -170,7 +170,7 @@ export const FIRST_MONTH_HOSTING_DISCOUNT_ID = '6041'
 
 export const DC_ID_IN = { poland: 13, netherlands: 12 }
 
-export const cloudSortList = [
+export const CLOUD_SORT_LIST = [
   { label: 'Name', isSort: true, value: 'servername' },
   { label: 'Status', isSort: true, value: 'fotbo_status' },
   { label: 'Flavor', isSort: true, value: 'pricelist' },
@@ -178,7 +178,7 @@ export const cloudSortList = [
   { label: 'Region', isSort: true, value: 'datacentername' },
   { label: 'Created at', isSort: true, value: 'createdate' },
   { label: 'OS', isSort: true, value: 'instances_os' },
-  { label: 'Access IP', isSort: false, value: 'ip' },
+  { label: 'Access IP', isSort: true, value: 'ip' },
 ]
 
 export const FOTBO_STATUSES_LIST = [

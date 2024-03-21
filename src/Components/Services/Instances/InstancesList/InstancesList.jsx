@@ -6,7 +6,7 @@ import InstanceItemMobile from './InstanceItemMobile'
 import { Icon } from '@components'
 import no_vds from '@images/services/no_vds.png'
 import { useTranslation } from 'react-i18next'
-import { cloudSortList } from '@utils/constants'
+import { CLOUD_SORT_LIST } from '@utils/constants'
 
 export default function InstancesList({
   instances,
@@ -19,7 +19,7 @@ export default function InstancesList({
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
 
   const renderHeadCells = () =>
-    cloudSortList.map(cell => {
+    CLOUD_SORT_LIST.map(cell => {
       const { isActive, icon } = checkSortItem(cell.value)
       const changeSortHandler = () => changeSort(cell.value)
 
