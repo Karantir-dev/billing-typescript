@@ -13,6 +13,7 @@ import {
   Button,
   Incrementer,
   FixedFooter,
+  ScrollToFieldError,
 } from '@components'
 import * as Yup from 'yup'
 import { useLocation } from 'react-router-dom'
@@ -150,17 +151,39 @@ export default function CreateInstancePage() {
     })
   }
 
-  const onFormSubmit = values => {
-    const { servername, password, instances_os, order_count, instances_ssh_keys } = values
-
-    const orderData = {
-      use_ssh_key: values.connectionType === 'ssh' ? 'on' : 'off',
-      pricelist: values.tariff_id,
+  const onFormSubmit = async values => {
+    const {
       servername,
       password,
       instances_os,
       order_count,
       instances_ssh_keys,
+      network_ipv6,
+      tariff_id,
+      connectionType,
+    } = values
+
+    let ipv6_parametr
+    if (network_ipv6) {
+      ipv6_parametr = await dispatch(
+        cloudVpsOperations.getTariffParams({
+          signal,
+          id: tariff_id,
+          datacenter: currentDC,
+          setIsLoading,
+        }),
+      )
+    }
+
+    const orderData = {
+      use_ssh_key: connectionType === 'ssh' ? 'on' : 'off',
+      pricelist: tariff_id,
+      servername,
+      password,
+      instances_os,
+      order_count,
+      instances_ssh_keys,
+      ...ipv6_parametr,
     }
 
     dispatch(
@@ -224,8 +247,6 @@ export default function CreateInstancePage() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
-            console.log(errors)
-            console.log(values)
             const onDCchange = $key => {
               setCurrentDC($key)
               setFieldValue('tariff_id', null)
@@ -325,6 +346,7 @@ export default function CreateInstancePage() {
 
             return (
               <Form>
+                <ScrollToFieldError />
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('server_location')}</h3>
 

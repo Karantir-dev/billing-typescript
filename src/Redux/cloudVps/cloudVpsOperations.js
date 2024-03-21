@@ -516,7 +516,7 @@ const getOsList =
           }))
 
         const operationSystems = { [data.doc.datacenter.$]: osList }
-        console.log(operationSystems)
+
         dispatch(cloudVpsActions.setOperationSystems(operationSystems))
         dispatch(cloudVpsActions.setSshList(sshList))
 
@@ -598,26 +598,29 @@ const getAllTariffsInfo =
       })
   }
 
-// const getTariffParams =
-//   ({ signal, id, setIsLoading }) =>
-//   dispatch => {
-//     setIsLoading(true)
+const getTariffParams =
+  ({ signal, id, datacenter, setIsLoading }) =>
+  dispatch => {
+    setIsLoading(true)
 
-//     dispatch(getTariffParamsRequest({ signal, id }))
-//       .then(({ data }) => {
-//         if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    return dispatch(getTariffParamsRequest({ signal, id, datacenter }))
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-//         renameAddonFields(data.doc, { isNewFunc: true })
-//         console.log(data.doc)
-//       })
-//       .then(() => {
-//         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-//       })
-//       .catch(err => {
-//         checkIfTokenAlive(err.message, dispatch)
-//         handleLoadersClosing(err?.message, dispatch, setIsLoading)
-//       })
-//   }
+        renameAddonFields(data.doc, { isNewFunc: true })
+
+        const networkOptions = data.doc.slist.find(el => el.$name === 'network').val
+        const ipv6_id = networkOptions.find(el => el.$.includes('v6')).$key
+        const addon_name = data.doc.register.network
+        const ipv6_parametr = { [addon_name]: ipv6_id }
+
+        return ipv6_parametr
+      })
+      .catch(err => {
+        checkIfTokenAlive(err.message, dispatch)
+        handleLoadersClosing(err?.message, dispatch, setIsLoading)
+      })
+  }
 
 const getTariffParamsRequest =
   ({ signal, id, datacenter }) =>
@@ -693,7 +696,8 @@ export default {
   getInstanceInfo,
   openConsole,
   getAllTariffsInfo,
-  // getTariffParams,
+  getTariffParams,
   getOsList,
   setOrderData,
+  getTariffParamsRequest,
 }

@@ -62,7 +62,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const portSpeedCountText = el?.desc?.$?.match(
     /(Port speed|Outgoing traffic)(.+?)(?=<br\/>|$)/,
   )
-  console.log(el)
+
   return (
     <div className={s.items_wrapper}>
       <div className={s.server_item}>
@@ -166,6 +166,12 @@ export default function VdsItem({ el, deleteItemHandler }) {
             {el?.desc?.$.includes('Service limits') && (
               <span className={s.value}>
                 <b>{t('Service limits')}:</b> {t('port_speed_limits')} &nbsp;
+              </span>
+            )}
+
+            {el?.desc?.$.includes('public-v4') && (
+              <span className={s.value}>
+                <b>IPv4</b> &nbsp;
               </span>
             )}
           </div>
