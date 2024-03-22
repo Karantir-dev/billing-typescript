@@ -9,7 +9,6 @@ import {
   TariffCard,
   ConnectMethod,
   InputField,
-  WarningMessage,
   Button,
   Incrementer,
   FixedFooter,
@@ -66,6 +65,7 @@ export default function CreateInstancePage() {
           needOsList: !operationSystems,
         }),
       )
+      console.log('1')
     }
 
     if (tariffs && (!operationSystems || !sshList)) {
@@ -77,6 +77,7 @@ export default function CreateInstancePage() {
           datacenter: currentDC?.$key,
         }),
       )
+      console.log('2')
     }
   }, [])
 
@@ -178,6 +179,7 @@ export default function CreateInstancePage() {
     const orderData = {
       use_ssh_key: connectionType === 'ssh' ? 'on' : 'off',
       pricelist: tariff_id,
+      datacenter: currentDC?.$key,
       servername,
       password,
       instances_os,
@@ -307,15 +309,16 @@ export default function CreateInstancePage() {
             const filteredOSlist = filterOSlist()
 
             /** if we have selected OS Windows - we don`t show tariffs that don`t support this OS */
-            const filteredTariffsList = isItWindows
-              ? tariffs?.[currentDC?.$key].filter(tariff => {
-                  if (Array.isArray(tariff.flabel.tag)) {
-                    return tariff.flabel.tag.some(el => el.$ === windowsTag)
-                  } else {
-                    tariff.flabel.tag.$ === windowsTag
-                  }
-                })
-              : tariffs?.[currentDC?.$key]
+            const filteredTariffsList = tariffs?.[currentDC?.$key]
+            // isItWindows
+            // ? tariffs?.[currentDC?.$key].filter(tariff => {
+            // if (Array.isArray(tariff.flabel.tag)) {
+            // return tariff.flabel.tag.some(el => el.$ === windowsTag)
+            // } else {
+            // tariff.flabel.tag.$ === windowsTag
+            // }
+            // })
+            // : tariffs?.[currentDC?.$key]
 
             /** data initializing (sets default values) */
             if (!values.instances_os && operationSystems?.[currentDC?.$key]?.[0]?.$key) {
