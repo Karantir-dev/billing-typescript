@@ -89,20 +89,22 @@ export default function InstanceItem({ item, editInstance }) {
       <td className={s.td}>{item.pricelist.$}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('Day'))}</td>
       <td className={s.td}>
-        <HintWrapper
-          popupClassName={s.popup}
-          wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
-          label={itemCountry}
-        >
-          <img
-            src={require(`@images/countryFlags/${getFlagFromCountryName(
-              item.datacentername.$.split(' ')[1],
-            )}.png`)}
-            width={20}
-            height={14}
-            alt={itemCountry}
-          />
-        </HintWrapper>
+        {item?.datacentername && (
+          <HintWrapper
+            popupClassName={s.popup}
+            wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
+            label={itemCountry}
+          >
+            <img
+              src={require(`@images/countryFlags/${getFlagFromCountryName(
+                item.datacentername.$.split(' ')[1],
+              )}.png`)}
+              width={20}
+              height={14}
+              alt={itemCountry}
+            />
+          </HintWrapper>
+        )}
       </td>
       <td className={s.td}>{item.createdate.$}</td>
       <td className={s.td}>

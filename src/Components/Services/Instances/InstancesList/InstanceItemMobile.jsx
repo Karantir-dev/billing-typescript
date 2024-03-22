@@ -61,14 +61,16 @@ export default function InstanceItemMobile({ item }) {
 
         <p className={s.mobile_item__param}>Region</p>
         <p className={s.mobile_item__value}>
-          <img
-            src={require(`@images/countryFlags/${getFlagFromCountryName(
-              item.datacentername.$.split(' ')[1],
-            )}.png`)}
-            width={20}
-            height={14}
-            alt={formatCountryName(item?.datacentername?.$)}
-          />
+          {item?.datacentername && (
+            <img
+              src={require(`@images/countryFlags/${getFlagFromCountryName(
+                item.datacentername.$.split(' ')[1],
+              )}.png`)}
+              width={20}
+              height={14}
+              alt={formatCountryName(item?.datacentername?.$)}
+            />
+          )}
         </p>
 
         <p className={s.mobile_item__param}>{t('Created at')}</p>
