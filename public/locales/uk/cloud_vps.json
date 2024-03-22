@@ -10,7 +10,7 @@
   "Created at": "Створено",
   "Region": "Регіон",
   "Network Details": "Інформація про мережу",
-  "Fingerprint":"Відбиток ключа",
+  "Fingerprint": "Відбиток ключа",
 
   "Start": "Почати",
   "Shut down": "Вимкнути",
@@ -75,6 +75,7 @@
   "ip": "IP-адреса",
   "Cancel": "Скасування",
   "Confirm": "Підтвердити",
+  "request_sent": "Запит надіслано",
 
   "confirm": {
     "title": {
