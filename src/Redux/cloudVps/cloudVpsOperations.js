@@ -173,7 +173,7 @@ const editInstance =
         successCallback()
         closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('Changes saved successfully', { ns: 'other' }))
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
       })
       .catch(error => {
         errorCallback()
@@ -240,7 +240,7 @@ const changeInstanceState =
 
         successCallback()
         closeModal()
-        toast.success(`Server ${action}ed`)
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
         dispatch(actions.hideLoader())
       })
       .catch(err => {
@@ -314,7 +314,7 @@ const changeTariffConfirm =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         successCallback()
         closeModal()
-        toast.success(`${action} success`)
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
         dispatch(actions.hideLoader())
       })
       .catch(err => {
@@ -347,7 +347,7 @@ const changeInstancePassword =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        toast.success(t('Password changed', { ns: 'other' }))
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {

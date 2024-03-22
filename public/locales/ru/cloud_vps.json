@@ -75,6 +75,7 @@
   "ip": "IP-адрес",
   "Cancel": "Отмена",
   "Confirm": "Подтвердить",
+  "request_sent": "Запрос отправлен",
 
   "confirm": {
     "title": {
