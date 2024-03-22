@@ -97,7 +97,7 @@ export default function InstanceItem({ item, editInstance }) {
           >
             <img
               src={require(`@images/countryFlags/${getFlagFromCountryName(
-                item.datacentername.$.split(' ')[1],
+                itemCountry,
               )}.png`)}
               width={20}
               height={14}

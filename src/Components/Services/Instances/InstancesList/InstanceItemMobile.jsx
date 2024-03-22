@@ -16,6 +16,8 @@ export default function InstanceItemMobile({ item }) {
 
   const { isResized, displayStatus, displayName, isNotActive } = getInstanceMainInfo(item)
 
+  const itemCountry = formatCountryName(item)
+
   return (
     <div
       className={s.mobile_item}
@@ -64,11 +66,11 @@ export default function InstanceItemMobile({ item }) {
           {item?.datacentername && (
             <img
               src={require(`@images/countryFlags/${getFlagFromCountryName(
-                item.datacentername.$.split(' ')[1],
+                itemCountry,
               )}.png`)}
               width={20}
               height={14}
-              alt={formatCountryName(item?.datacentername?.$)}
+              alt={itemCountry}
             />
           )}
         </p>
@@ -83,9 +85,9 @@ export default function InstanceItemMobile({ item }) {
 
         <p className={s.mobile_item__param}>Access IP</p>
         <p className={s.mobile_item__value} ref={ipCell}>
-          <div className={s.ip_cell}>
+          <span className={s.ip_cell}>
             <span>{item.ip?.$}</span> {item.ip?.$ && <CopyText text={item.ip?.$} />}
-          </div>
+          </span>
         </p>
       </div>
     </div>
