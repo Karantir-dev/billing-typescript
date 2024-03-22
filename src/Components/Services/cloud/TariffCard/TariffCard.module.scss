@@ -8,6 +8,11 @@
   &.active {
     outline: 1px solid var(--accent-color-light);
   }
+
+  &.disabled {
+    pointer-events: none;
+    filter: opacity(0.6);
+  }
 }
 
 .tariff_btn {

@@ -578,18 +578,14 @@ const getAllTariffsInfo =
         ).$key
 
         if (needOsList) {
-          const qwe = await dispatch(
-            getOsList({ signal, lastTariffID, datacenter: firstDCid }),
-          )
-          console.log(qwe)
+          await dispatch(getOsList({ signal, lastTariffID, datacenter: firstDCid }))
         }
-        console.log(DClist)
+
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
         dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
       })
       .then(() => {
-        console.log('then')
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(err => {

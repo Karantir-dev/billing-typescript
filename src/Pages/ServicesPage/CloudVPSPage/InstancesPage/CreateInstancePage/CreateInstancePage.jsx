@@ -65,7 +65,6 @@ export default function CreateInstancePage() {
           needOsList: !operationSystems,
         }),
       )
-      console.log('1')
     }
 
     if (tariffs && (!operationSystems || !sshList)) {
@@ -77,27 +76,18 @@ export default function CreateInstancePage() {
           datacenter: currentDC?.$key,
         }),
       )
-      console.log('2')
     }
   }, [])
 
   const renderSoftwareOSFields = ({
     fieldName,
     value,
-    // eslint-disable-next-line no-unused-vars
-    ostempl,
     list,
     onOSchange,
     onRecipeChange,
     OSfieldName,
   }) => {
-    // let dataArr = parametersInfo.slist.find(el => el.$name === fieldName)?.val
-
     const elemsData = {}
-    // if (fieldName === 'recipe') {
-    //   list = list?.filter(el => el.$depend === ostempl && el.$key !== 'null')
-    //   elemsData.null = [{ $key: 'null', $: t('without_software') }]
-    // }
 
     list?.forEach(element => {
       const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
@@ -119,6 +109,7 @@ export default function CreateInstancePage() {
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
+            disabled={el[0].disabled}
             iconName={name.toLowerCase()}
             itemsList={optionsList}
             state={value}
@@ -233,7 +224,7 @@ export default function CreateInstancePage() {
 
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
 
-      {tariffs && operationSystems && (
+      {tariffs && operationSystems && currentDC && (
         <Formik
           initialValues={{
             instances_os: null,
@@ -297,35 +288,43 @@ export default function CreateInstancePage() {
               }
 
               if (tariffHasWindows) {
-                return operationSystems?.[currentDC?.$key]
+                return operationSystems[currentDC.$key]
               } else {
-                return operationSystems?.[currentDC?.$key]?.filter(
-                  el => !el.$.toLowerCase().includes('windows'),
-                )
+                const osList = operationSystems[currentDC.$key]?.map(el => {
+                  let newEl = { ...el }
+                  if (el.$.toLowerCase().includes('windows')) {
+                    newEl.disabled = true
+                  }
+
+                  return newEl
+                })
+
+                return osList
               }
             }
 
-            /** if we have selected tariff without Windows - we don`t show this OS */
+            /** if we have selected tariff without Windows - we disable this OS */
             const filteredOSlist = filterOSlist()
 
-            /** if we have selected OS Windows - we don`t show tariffs that don`t support this OS */
-            const filteredTariffsList = tariffs?.[currentDC?.$key]
-            // isItWindows
-            // ? tariffs?.[currentDC?.$key].filter(tariff => {
-            // if (Array.isArray(tariff.flabel.tag)) {
-            // return tariff.flabel.tag.some(el => el.$ === windowsTag)
-            // } else {
-            // tariff.flabel.tag.$ === windowsTag
-            // }
-            // })
-            // : tariffs?.[currentDC?.$key]
+            /** if we have selected OS Windows - we disable tariffs that don`t support this OS */
+            const filteredTariffsList = isItWindows
+              ? tariffs[currentDC.$key].map(tariff => {
+                  const newTariff = { ...tariff }
+                  let supportsWindows
+                  if (Array.isArray(tariff.flabel.tag)) {
+                    supportsWindows = tariff.flabel.tag.some(el => el.$ === windowsTag)
+                  } else {
+                    supportsWindows = tariff.flabel.tag.$ === windowsTag
+                  }
+
+                  newTariff.disabled = !supportsWindows
+                  return newTariff
+                })
+              : tariffs[currentDC.$key]
 
             /** data initializing (sets default values) */
-            if (!values.instances_os && operationSystems?.[currentDC?.$key]?.[0]?.$key) {
-              setFieldValue(
-                'instances_os',
-                operationSystems?.[currentDC?.$key]?.[0]?.$key,
-              )
+            if (!values.instances_os && operationSystems[currentDC.$key]?.[0]?.$key) {
+              setFieldValue('instances_os', operationSystems[currentDC.$key]?.[0]?.$key)
             }
             if (!values.instances_ssh_keys && sshList?.[0]?.value) {
               setFieldValue('instances_ssh_keys', sshList?.[0]?.value)
@@ -358,6 +357,7 @@ export default function CreateInstancePage() {
             const currentDisk = values.tariffData?.detail
               .find(el => el.name.$.toLowerCase() === 'disk space')
               .value.$.replace('.', '')
+            const currentCountryName = formatCountryName(currentDC.$)
 
             return (
               <Form>
@@ -370,7 +370,7 @@ export default function CreateInstancePage() {
                       return (
                         <li
                           className={cn(s.category_item, {
-                            [s.selected]: currentDC?.$key === dc.$key,
+                            [s.selected]: currentDC.$key === dc.$key,
                           })}
                           key={dc.$key}
                         >
@@ -445,6 +445,7 @@ export default function CreateInstancePage() {
                           onClick={() => onTariffChange(tariff)}
                           price={price}
                           active={values.tariff_id === tariff.id.$}
+                          disabled={tariff.disabled}
                         />
                       )
                     })}
@@ -493,13 +494,13 @@ export default function CreateInstancePage() {
                         <img
                           className={s.flag}
                           src={require(`@images/countryFlags/${getFlagFromCountryName(
-                            formatCountryName(currentDC?.$),
+                            currentCountryName,
                           )}.png`)}
                           width={20}
                           height={14}
-                          alt={formatCountryName(currentDC?.$)}
+                          alt={currentCountryName}
                         />
-                        {t(formatCountryName(currentDC?.$))}
+                        {t(currentCountryName)}
                       </div>
                       <div className={s.footer_params_row}>
                         <span className={s.footer_params_label}>CPU</span>
