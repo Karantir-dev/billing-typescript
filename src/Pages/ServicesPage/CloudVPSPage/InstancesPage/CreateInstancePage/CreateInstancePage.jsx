@@ -226,7 +226,7 @@ export default function CreateInstancePage() {
   })
 
   return (
-    <div>
+    <div className={s.page_padding}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
@@ -362,7 +362,7 @@ export default function CreateInstancePage() {
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('server_location')}</h3>
 
-                  <ul className={s.categories_list}>
+                  <ul className={s.grid}>
                     {dcList?.map(dc => {
                       return (
                         <li
@@ -431,7 +431,7 @@ export default function CreateInstancePage() {
                     />
                   </div>
 
-                  <ul className={s.tariffs_list}>
+                  <ul className={s.grid}>
                     {filteredTariffsList?.map(tariff => {
                       const price = calculatePrice(tariff, values)
 
@@ -471,13 +471,15 @@ export default function CreateInstancePage() {
 
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('Server name')}</h3>
-                  <InputField
-                    inputWrapperClass={s.input_wrapper}
-                    inputClassName={s.input}
-                    name="servername"
-                    placeholder={t('serverName')}
-                    isShadow
-                  />
+                  <div className={s.grid}>
+                    <InputField
+                      inputWrapperClass={s.input_wrapper}
+                      inputClassName={s.input}
+                      name="servername"
+                      placeholder={t('serverName')}
+                      isShadow
+                    />
+                  </div>
                 </section>
 
                 <FixedFooter isShown={values.tariff_id}>
@@ -540,8 +542,8 @@ export default function CreateInstancePage() {
                     </div>
 
                     <Button
-                      className={s.footer_item}
-                      label={t('buy', { ns: 'other' })}
+                      className={cn(s.btn_buy, s.footer_item)}
+                      label={t('create instanse', { ns: 'other' })}
                       type="submit"
                       isShadow
                       // onClick={() => {
