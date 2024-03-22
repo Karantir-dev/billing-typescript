@@ -231,6 +231,8 @@ export { default as OrderTariff } from './OrderTariff/OrderTariff'
 //==========================================Instances==========================================//
 
 export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
+export { default as SshList } from './Services/Instances/SshList/SshList'
+
 export { default as ConnectMethod } from './Services/Instances/ConnectMethod/ConnectMethod'
 export { default as InstancesOptions } from './Services/Instances/InstancesOptions/InstancesOptions'
 export { InstanceFiltersModal } from './Services/Instances/Modals'

@@ -5,13 +5,17 @@ import { CopyText, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
+import { useTranslation } from 'react-i18next'
 
 export default function InstanceItemMobile({ item }) {
+  const { t } = useTranslation(['cloud_vps'])
   const optionsBlock = useRef()
   const ipCell = useRef()
   const navigate = useNavigate()
 
   const { isResized, displayStatus, displayName, isNotActive } = getInstanceMainInfo(item)
+
+  const itemCountry = formatCountryName(item)
 
   return (
     <div
@@ -58,17 +62,19 @@ export default function InstanceItemMobile({ item }) {
 
         <p className={s.mobile_item__param}>Region</p>
         <p className={s.mobile_item__value}>
-          <img
-            src={require(`@images/countryFlags/${getFlagFromCountryName(
-              item.datacentername.$.split(' ')[1],
-            )}.png`)}
-            width={20}
-            height={14}
-            alt={formatCountryName(item?.datacentername?.$)}
-          />
+          {item?.datacentername && (
+            <img
+              src={require(`@images/countryFlags/${getFlagFromCountryName(
+                itemCountry,
+              )}.png`)}
+              width={20}
+              height={14}
+              alt={itemCountry}
+            />
+          )}
         </p>
 
-        <p className={s.mobile_item__param}>Created at</p>
+        <p className={s.mobile_item__param}>{t('Created at')}</p>
         <p className={s.mobile_item__value}>{item.createdate.$}</p>
 
         <p className={s.mobile_item__param}>OS</p>
@@ -78,9 +84,9 @@ export default function InstanceItemMobile({ item }) {
 
         <p className={s.mobile_item__param}>Access IP</p>
         <p className={s.mobile_item__value} ref={ipCell}>
-          <div className={s.ip_cell}>
+          <span className={s.ip_cell}>
             <span>{item.ip?.$}</span> {item.ip?.$ && <CopyText text={item.ip?.$} />}
-          </div>
+          </span>
         </p>
       </div>
     </div>

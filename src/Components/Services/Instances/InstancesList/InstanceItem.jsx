@@ -88,20 +88,22 @@ export default function InstanceItem({ item, editInstance }) {
       <td className={s.td}>{item.pricelist.$}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('Day'))}</td>
       <td className={s.td}>
-        <HintWrapper
-          popupClassName={s.popup}
-          wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
-          label={itemCountry}
-        >
-          <img
-            src={require(`@images/countryFlags/${getFlagFromCountryName(
-              item.datacentername.$.split(' ')[1],
-            )}.png`)}
-            width={20}
-            height={14}
-            alt={itemCountry}
-          />
-        </HintWrapper>
+        {item?.datacentername && (
+          <HintWrapper
+            popupClassName={s.popup}
+            wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
+            label={itemCountry}
+          >
+            <img
+              src={require(`@images/countryFlags/${getFlagFromCountryName(
+                itemCountry,
+              )}.png`)}
+              width={20}
+              height={14}
+              alt={itemCountry}
+            />
+          </HintWrapper>
+        )}
       </td>
       <td className={s.td}>{item.createdate.$}</td>
       <td className={s.td}>
@@ -113,10 +115,14 @@ export default function InstanceItem({ item, editInstance }) {
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </HintWrapper>
       </td>
-      <td ref={ipCell} className={cn(s.td, s.ip_cell)}>
+      <td ref={ipCell} className={s.td}>
         <div className={s.ip_cell}>
-          {item.ip?.$ && <CopyText text={item.ip?.$} />}
           <span>{item.ip?.$}</span>
+          {item.ip?.$ && (
+            <div className={s.fade_in}>
+              <CopyText text={item.ip?.$} />
+            </div>
+          )}
         </div>
       </td>
       <td className={s.td} ref={optionsCell}>

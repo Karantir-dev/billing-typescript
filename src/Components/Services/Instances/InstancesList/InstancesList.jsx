@@ -39,7 +39,7 @@ export default function InstancesList({
       )
     })
 
-  if (!instances.length) {
+  if (!instances?.length) {
     return (
       <div className={s.no_vds_wrapper}>
         <img className={s.no_vds} src={no_vds} alt="no_vds" />

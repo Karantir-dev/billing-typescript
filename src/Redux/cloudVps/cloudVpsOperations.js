@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import {
   actions,
@@ -174,7 +173,7 @@ const editInstance =
         successCallback()
         closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('Changes saved successfully', { ns: 'other' }))
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
       })
       .catch(error => {
         errorCallback()
@@ -241,7 +240,7 @@ const changeInstanceState =
 
         successCallback()
         closeModal()
-        toast.success(`Server ${action}ed`)
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
         dispatch(actions.hideLoader())
       })
       .catch(err => {
@@ -315,7 +314,7 @@ const changeTariffConfirm =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         successCallback()
         closeModal()
-        toast.success(`${action} success`)
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
         dispatch(actions.hideLoader())
       })
       .catch(err => {
@@ -348,7 +347,7 @@ const changeInstancePassword =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        toast.success(t('Password changed', { ns: 'other' }))
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -533,7 +532,6 @@ const getAllTariffsInfo =
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
-
     Promise.all([
       axiosInstance.post(
         '/',
@@ -684,6 +682,195 @@ const setOrderData =
       })
   }
 
+const getSshKeys =
+  ({ p_col, p_cnt, p_num, setTotalElems, signal, setIsLoading, isLoader = true }) =>
+  (dispatch, getState) => {
+    isLoader && (setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader()))
+
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys',
+          out: 'json',
+          auth: sessionId,
+          p_num,
+          p_cnt,
+          p_col,
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        const sshList = data.doc.elem || []
+
+        dispatch(cloudVpsActions.setSshList(sshList))
+        setTotalElems(data?.doc?.p_elems.$)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
+const setSshKey =
+  ({
+    values,
+    closeModal = () => {},
+    errorCallback = () => {},
+    setTotalElems,
+    setIsLoading,
+    signal,
+  }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys.edit',
+          out: 'json',
+          sok: 'ok',
+          processingmodules: '234' /* 233 - Poland, 234 - Netherlands */,
+          auth: sessionId,
+
+          lang: 'en',
+          clicked_button: 'ok',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(
+          getSshKeys({
+            setTotalElems,
+            signal,
+            setIsLoading,
+          }),
+        )
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        closeModal()
+        toast.success(t('Saved successfully', { ns: 'other' }))
+      })
+      .catch(error => {
+        errorCallback()
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
+/* Below being request for changing data of ssh keys */
+const editSsh =
+  ({
+    values,
+    elid,
+    errorCallback = () => {},
+    closeModal = () => {},
+    setSshItems,
+    setTotalElems,
+    setIsLoading,
+    signal,
+  }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys.edit',
+          out: 'json',
+          sok: 'ok',
+          auth: sessionId,
+          elid,
+          lang: 'en',
+          clicked_button: 'ok',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        dispatch(
+          getSshKeys({
+            setSshItems,
+            setTotalElems,
+            signal,
+            setIsLoading,
+          }),
+        )
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        closeModal()
+        toast.success(t('Changes saved successfully', { ns: 'other' }))
+      })
+      .catch(error => {
+        errorCallback()
+        closeModal()
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
+const deleteSsh =
+  ({
+    elid,
+    closeModal,
+    setSshItems,
+    setTotalElems,
+    successCallback,
+    signal,
+    setIsLoading,
+  }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys.delete',
+          auth: sessionId,
+          elid,
+          out: 'json',
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        return dispatch(
+          getSshKeys({
+            setSshItems,
+            setTotalElems,
+            signal,
+            setIsLoading,
+          }),
+        )
+      })
+      .then(() => {
+        successCallback && successCallback()
+        closeModal()
+        toast.success(t('server_deleted_success', { ns: 'other', id: `#${elid}` }))
+        dispatch(actions.hideLoader())
+      })
+      .catch(err => {
+        closeModal()
+        checkIfTokenAlive(err.message, dispatch)
+        dispatch(actions.hideLoader())
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -695,6 +882,10 @@ export default {
   changeTariff,
   changeTariffConfirm,
   rebuildInstance,
+  getSshKeys,
+  setSshKey,
+  editSsh,
+  deleteSsh,
   getInstanceInfo,
   openConsole,
   getAllTariffsInfo,
