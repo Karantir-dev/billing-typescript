@@ -18,6 +18,10 @@ export const SshKeyModal = ({ item, isAddModalOpened, closeModal, onSubmit }) =>
   const validationSchema = Yup.object().shape({
     comment: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
+      .test('trim', t('Name cannot consist spaces'), value => {
+        const trimmedValue = value.trim()
+        return trimmedValue.length > 0
+      })
       .max(32, t('Name can have no more than'))
       .matches(SSH_KEY_NAME_REGEX, t('Name can only contain'))
       .test('unique', t('This name is already in use'), value => {
@@ -66,7 +70,8 @@ export const SshKeyModal = ({ item, isAddModalOpened, closeModal, onSubmit }) =>
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            onSubmit({ values, closeModal })
+            const trimmedValue = values.comment.trim()
+            onSubmit({ values: { comment: trimmedValue, ...values }, closeModal })
           }}
         >
           {({ values, errors, touched }) => {
