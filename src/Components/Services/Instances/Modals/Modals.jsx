@@ -6,7 +6,7 @@ import {
   ResizeModal,
   RebuildModal,
   DeleteSshModal,
-  RenameSshModal,
+  SshKeyModal,
 } from '.'
 import {
   cloudVpsActions,
@@ -200,7 +200,7 @@ export const Modals = ({
       )}
 
       {!!itemForModals?.ssh_rename && (
-        <RenameSshModal
+        <SshKeyModal
           item={itemForModals?.ssh_rename}
           closeModal={() =>
             dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false }))

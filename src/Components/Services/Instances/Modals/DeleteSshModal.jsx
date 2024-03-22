@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import { Form, Formik } from 'formik'
 import { Button, Modal } from '@components'
 
 import s from './Modals.module.scss'
@@ -17,17 +16,13 @@ export const DeleteSshModal = ({ item, closeModal, onSubmit }) => {
         </p>
       </Modal.Header>
       <Modal.Body>
-        <Formik onSubmit={onSubmit}>
-          <Form id={'ssh_delete'}>
-            <p className={s.body__text}>{t('delete_ssh_key_text')}</p>
-          </Form>
-        </Formik>
+        <p className={s.body__text}>{t('delete_ssh_key_text')}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button
           label={t('Confirm', { ns: 'other' })}
           size={'small'}
-          type="submit"
+          onClick={() => onSubmit()}
           form={'ssh_delete'}
           isShadow
         />

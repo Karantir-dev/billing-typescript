@@ -7,33 +7,40 @@ import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import cn from 'classnames'
 
-export const AddSshKeyModal = ({ isAddModalOpened, closeModal, onSubmit }) => {
+export const SshKeyModal = ({ item, isAddModalOpened, closeModal, onSubmit }) => {
   const { t } = useTranslation('cloud_vps', 'other', 'user_settings')
 
   const validationSchema = Yup.object().shape({
     comment: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
       .max(32, t('Name can have no more than'))
-      .matches(
-        SSH_KEY_NAME_REGEX,
-        t('Name can only contain'),
-      ),
+      .matches(SSH_KEY_NAME_REGEX, t('Name can only contain')),
     publicKey: Yup.string().required(t('Is a required field', { ns: 'other' })),
   })
 
   return (
-    <Modal isOpen={isAddModalOpened} closeModal={closeModal} isClickOutside>
+    <Modal isOpen={!!item || isAddModalOpened} closeModal={closeModal} isClickOutside>
       <Modal.Header>
         <div className={s.sshModal_headBlock}>
           <Icon name="Ssh_keys" />
-          <p>{t('Add new SSH Key')}</p>
+          {item?.publicKey ? (
+            <div>
+              <p>{t('Rename')}</p>
+              <p className={s.modal__subtitle}>
+                <span className={s.modal__subtitle_transparent}>{t('ssh_key')}:</span>{' '}
+                {item?.comment?.$ || item?.fingerprint?.$}
+              </p>
+            </div>
+          ) : (
+            <p>{t('Add new SSH Key')}</p>
+          )}
         </div>
       </Modal.Header>
       <Modal.Body>
         <Formik
           initialValues={{
-            comment: '',
-            publicKey: '',
+            comment: item?.comment?.$ || '',
+            publicKey: item?.publicKey?.$ || '',
           }}
           validationSchema={validationSchema}
           onSubmit={values => {

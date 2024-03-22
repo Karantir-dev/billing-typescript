@@ -11,6 +11,7 @@ import cn from 'classnames'
 import * as route from '@src/routes'
 import { useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
+import { useTranslation } from 'react-i18next'
 
 export default function CloudInstanceItemPage() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
@@ -25,6 +26,10 @@ export default function CloudInstanceItemPage() {
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [item, setItem] = useState(instanceItem)
+
+  const { isResized, displayStatus } = getInstanceMainInfo(item)
+
+  const { t } = useTranslation(['cloud_vps'])
 
   const setItemData = ([item]) => {
     setItem(item)
@@ -164,16 +169,26 @@ export default function CloudInstanceItemPage() {
           </div>
 
           <span
-            className={cn(
-              s.status,
-              s[
-                item.fotbo_status?.$.trim().toLowerCase() ||
-                  item.item_status?.$.trim().toLowerCase()
-              ],
-            )}
-          >
-            {item.fotbo_status?.$?.replaceAll('_', ' ') || item.item_status?.$}
-          </span>
+          className={cn(
+            s.status,
+            s[
+              item.fotbo_status?.$.trim().toLowerCase() ||
+                item.item_status?.$.trim().toLowerCase()
+            ],
+          )}
+        >
+          {displayStatus}
+          {isResized && (
+            <HintWrapper
+              popupClassName={s.popup}
+              wrapperClassName={s.popup__wrapper}
+              label={t('resize_popup_text')}
+            >
+              <Icon name="Attention" />
+            </HintWrapper>
+          )}
+        </span>
+
         </div>
 
         {/* Commented until only one tab exist: */}

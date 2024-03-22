@@ -15,10 +15,6 @@
       white-space: normal;
       word-break: break-all;
     }
-    &.servername_cell {
-      width: 250px;
-      max-width: 250px;
-    }
   }
   .td,
   .th {
@@ -26,9 +22,14 @@
       padding-left: 32px;
     }
     &:last-child {
+      text-align: end;
       padding-right: 32px;
     }
     padding: 13px 10px;
+
+    &:not(:first-child):not(:last-child) {
+      width: 30%;
+    }
   }
 }
 
@@ -52,6 +53,12 @@
           border-radius: 3px;
         }
       }
+    }
+
+    .td:last-child {
+      display: flex;
+      gap: 16px;
+      justify-content: flex-end;
     }
   }
 }

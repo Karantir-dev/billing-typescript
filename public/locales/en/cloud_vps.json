@@ -45,7 +45,7 @@
   "resize_notes": "Notes: you can only select flavors larger than your current flavor. After the resize is completed, the instance will have the state \"VERIFY RESIZE\". Check if everything is ok with your data and then click on \"Confirm resize\" in the instance menu.",
   "no_ssh_yet": "No SSH keys",
   "ssh_key": "SSH Key",
-  "Add new SSH Key": "Add new SSH Key",
+  "Add new SSH Key": "Add SSH Key",
   "Name can have no more than": "The name can have no more than 32 characters",
   "Enter your SSH key": "Enter your SSH key",
   "Name can only contain": "The name must contain only valid characters: Latin letters, numbers, spaces, dashes or underscores",

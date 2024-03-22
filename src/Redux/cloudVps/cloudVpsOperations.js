@@ -681,9 +681,9 @@ const setOrderData =
   }
 
 const getSshKeys =
-  ({ p_col, p_cnt, p_num, setTotalElems, signal, setIsLoading, isLoader = true }) =>
+  ({ p_col, p_cnt, p_num, setTotalElems, signal, setIsLoading }) =>
   (dispatch, getState) => {
-    isLoader && (setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader()))
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -716,55 +716,6 @@ const getSshKeys =
       })
   }
 
-const setSshKey =
-  ({
-    values,
-    closeModal = () => {},
-    errorCallback = () => {},
-    setTotalElems,
-    setIsLoading,
-    signal,
-  }) =>
-  (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
-    const sessionId = authSelectors.getSessionId(getState())
-
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'sshkeys.edit',
-          out: 'json',
-          sok: 'ok',
-          processingmodules: '234' /* 233 - Poland, 234 - Netherlands */,
-          auth: sessionId,
-
-          lang: 'en',
-          clicked_button: 'ok',
-          ...values,
-        }),
-        { signal },
-      )
-      .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-        dispatch(
-          getSshKeys({
-            setTotalElems,
-            signal,
-            setIsLoading,
-          }),
-        )
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        closeModal()
-        toast.success(t('Saved successfully', { ns: 'other' }))
-      })
-      .catch(error => {
-        errorCallback()
-        checkIfTokenAlive(error.message, dispatch)
-        handleLoadersClosing(error?.message, dispatch, setIsLoading)
-      })
-  }
 
 /* Below being request for changing data of ssh keys */
 const editSsh =
@@ -773,7 +724,6 @@ const editSsh =
     elid,
     errorCallback = () => {},
     closeModal = () => {},
-    setSshItems,
     setTotalElems,
     setIsLoading,
     signal,
@@ -793,6 +743,7 @@ const editSsh =
           elid,
           lang: 'en',
           clicked_button: 'ok',
+          processingmodulegroup: '1',
           ...values,
         }),
         { signal },
@@ -802,14 +753,13 @@ const editSsh =
 
         dispatch(
           getSshKeys({
-            setSshItems,
             setTotalElems,
             signal,
             setIsLoading,
           }),
         )
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         closeModal()
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         toast.success(t('Changes saved successfully', { ns: 'other' }))
       })
       .catch(error => {
@@ -823,8 +773,8 @@ const editSsh =
 const deleteSsh =
   ({
     elid,
+    item,
     closeModal,
-    setSshItems,
     setTotalElems,
     successCallback,
     signal,
@@ -849,7 +799,6 @@ const deleteSsh =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         return dispatch(
           getSshKeys({
-            setSshItems,
             setTotalElems,
             signal,
             setIsLoading,
@@ -859,7 +808,7 @@ const deleteSsh =
       .then(() => {
         successCallback && successCallback()
         closeModal()
-        toast.success(t('server_deleted_success', { ns: 'other', id: `#${elid}` }))
+        toast.success(t('server_deleted_success', { ns: 'other', id: `${item?.comment?.$}` }))
         dispatch(actions.hideLoader())
       })
       .catch(err => {
@@ -881,7 +830,6 @@ export default {
   changeTariffConfirm,
   rebuildInstance,
   getSshKeys,
-  setSshKey,
   editSsh,
   deleteSsh,
   getInstanceInfo,
