@@ -47,6 +47,7 @@
   "ssh_key": "SSH Key",
   "Add new SSH Key": "Add SSH Key",
   "Name can have no more than": "The name can have no more than 32 characters",
+  "This name is already in use": "This name is already in use",
   "Enter your SSH key": "Enter your SSH key",
   "Name can only contain": "The name must contain only valid characters: Latin letters, numbers, spaces, dashes or underscores",
   "pass_method_ssh": "Connect to your instance using SSH key pair",

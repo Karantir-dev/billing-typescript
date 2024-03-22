@@ -1,6 +1,9 @@
 import { Button, InputField, Modal, Icon, MessageInput } from '@components'
 import { SSH_KEY_NAME_REGEX } from '@utils/constants'
 
+import { useSelector } from 'react-redux'
+import { cloudVpsSelectors } from '@redux'
+
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
@@ -10,11 +13,30 @@ import cn from 'classnames'
 export const SshKeyModal = ({ item, isAddModalOpened, closeModal, onSubmit }) => {
   const { t } = useTranslation('cloud_vps', 'other', 'user_settings')
 
+  const sshItems = useSelector(cloudVpsSelectors.getSshList)
+
   const validationSchema = Yup.object().shape({
     comment: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
       .max(32, t('Name can have no more than'))
-      .matches(SSH_KEY_NAME_REGEX, t('Name can only contain')),
+      .matches(SSH_KEY_NAME_REGEX, t('Name can only contain'))
+      .test('unique', t('This name is already in use'), value => {
+        const mode = item ? 'edit' : 'add'
+        const id = item?.elid.$
+
+        if (mode === 'add') {
+          return !sshItems.some(item => item.comment.$ === value)
+        }
+
+        if (mode === 'edit') {
+          const editedItem = sshItems.find(item => item.elid.$ === id)
+          return (
+            editedItem.comment.$ === value ||
+            !sshItems.some(item => item.comment.$ === value)
+          )
+        }
+        return true
+      }),
     publicKey: Yup.string().required(t('Is a required field', { ns: 'other' })),
   })
 
