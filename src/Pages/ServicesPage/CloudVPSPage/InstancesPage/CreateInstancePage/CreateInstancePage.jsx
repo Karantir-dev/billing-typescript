@@ -126,6 +126,7 @@ export default function CreateInstancePage() {
         return (
           <SoftwareOSBtn
             key={el[0].$key}
+            disabled={el[0].disabled}
             value={el[0].$key}
             state={value}
             iconName={name.toLowerCase()}
@@ -262,19 +263,18 @@ export default function CreateInstancePage() {
             const onOSchange = value => {
               setFieldValue('instances_os', value)
 
-              if (checkIsItWindows(values.instances_os)) {
-                setFieldValue('password', null)
-                setFieldValue('connectionType', null)
-                setFieldValue('instances_ssh_keys', null)
+              if (checkIsItWindows(value)) {
+                setFieldValue('password', '')
+                setFieldValue('connectionType', '')
+                setFieldValue('instances_ssh_keys', '')
               }
             }
 
+            const isItWindows = checkIsItWindows(values.instances_os)
             const onTariffChange = tariff => {
               setFieldValue('tariff_id', tariff.id.$)
               setFieldValue('tariffData', tariff)
             }
-
-            const isItWindows = checkIsItWindows(values.instances_os)
 
             const filterOSlist = () => {
               let tariffHasWindows
@@ -457,6 +457,7 @@ export default function CreateInstancePage() {
 
                   <ConnectMethod
                     connectionType={values.connectionType}
+                    name="connectionType"
                     sshKey={values.instances_ssh_keys}
                     onChangeType={type => setFieldValue('connectionType', type)}
                     setSSHkey={value => setFieldValue('instances_ssh_keys', value)}
