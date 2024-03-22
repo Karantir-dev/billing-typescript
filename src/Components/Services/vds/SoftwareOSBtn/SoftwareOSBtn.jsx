@@ -14,6 +14,7 @@ export default function SoftwareOSBtn({
   state,
   onClick,
   svgIcon,
+  disabled,
 }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
@@ -37,7 +38,7 @@ export default function SoftwareOSBtn({
   }
 
   return (
-    <div className={cn(s.bg, { [s.selected]: value === state })}>
+    <div className={cn(s.bg, { [s.selected]: value === state, [s.disabled]: disabled })}>
       <button className={s.btn} onClick={() => onClick(value)} type="button">
         {svgIcon ? (
           <Icon name={svgIcon} />

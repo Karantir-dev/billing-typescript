@@ -494,7 +494,7 @@ const writeTariffsWithDC = data => {
 const getOsList =
   ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter }) =>
   (dispatch, getState) => {
-    setIsLoading(true)
+    setIsLoading && setIsLoading(true)
 
     if (!lastTariffID) {
       const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
@@ -502,7 +502,7 @@ const getOsList =
       lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
     }
 
-    dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
+    return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         console.log(data.doc)
@@ -578,9 +578,7 @@ const getAllTariffsInfo =
         ).$key
 
         if (needOsList) {
-          await dispatch(
-            getOsList({ signal, setIsLoading, lastTariffID, datacenter: firstDCid }),
-          )
+          await dispatch(getOsList({ signal, lastTariffID, datacenter: firstDCid }))
         }
 
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))

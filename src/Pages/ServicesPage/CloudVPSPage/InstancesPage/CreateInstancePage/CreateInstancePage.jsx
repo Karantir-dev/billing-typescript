@@ -9,7 +9,6 @@ import {
   TariffCard,
   ConnectMethod,
   InputField,
-  WarningMessage,
   Button,
   Incrementer,
   FixedFooter,
@@ -21,12 +20,12 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsSelectors, userOperations } from '@src/Redux'
-import { getFlagFromCountryName, useCancelRequest } from '@src/utils'
+import { formatCountryName, getFlagFromCountryName, useCancelRequest } from '@utils'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
+import { PASS_REGEX } from '@utils/constants'
 
 import s from './CreateInstancePage.module.scss'
-import { PASS_REGEX } from '@src/utils/constants'
 
 const PERIODS_LIST = [
   { value: 30, label: 'month' },
@@ -49,11 +48,11 @@ export default function CreateInstancePage() {
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
   const sshList = useSelector(cloudVpsSelectors.getSshList)
 
-  const [currentDC, setCurrentDC] = useState(dcList?.[0]?.$key)
+  const [currentDC, setCurrentDC] = useState(dcList?.[0])
 
   useEffect(() => {
-    if (!currentDC && dcList) {
-      setCurrentDC(dcList?.[0]?.$key)
+    if (!currentDC?.$key && dcList) {
+      setCurrentDC(dcList?.[0])
     }
   }, [dcList])
 
@@ -74,7 +73,7 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           closeLoader: () => setIsLoading(false),
-          datacenter: currentDC,
+          datacenter: currentDC?.$key,
         }),
       )
     }
@@ -83,20 +82,12 @@ export default function CreateInstancePage() {
   const renderSoftwareOSFields = ({
     fieldName,
     value,
-    // eslint-disable-next-line no-unused-vars
-    ostempl,
     list,
     onOSchange,
     onRecipeChange,
     OSfieldName,
   }) => {
-    // let dataArr = parametersInfo.slist.find(el => el.$name === fieldName)?.val
-
     const elemsData = {}
-    // if (fieldName === 'recipe') {
-    //   list = list?.filter(el => el.$depend === ostempl && el.$key !== 'null')
-    //   elemsData.null = [{ $key: 'null', $: t('without_software') }]
-    // }
 
     list?.forEach(element => {
       const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
@@ -118,6 +109,7 @@ export default function CreateInstancePage() {
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
+            disabled={el[0].disabled}
             iconName={name.toLowerCase()}
             itemsList={optionsList}
             state={value}
@@ -134,6 +126,7 @@ export default function CreateInstancePage() {
         return (
           <SoftwareOSBtn
             key={el[0].$key}
+            disabled={el[0].disabled}
             value={el[0].$key}
             state={value}
             iconName={name.toLowerCase()}
@@ -169,7 +162,7 @@ export default function CreateInstancePage() {
         cloudVpsOperations.getTariffParams({
           signal,
           id: tariff_id,
-          datacenter: currentDC,
+          datacenter: currentDC?.$key,
           setIsLoading,
         }),
       )
@@ -178,6 +171,7 @@ export default function CreateInstancePage() {
     const orderData = {
       use_ssh_key: connectionType === 'ssh' ? 'on' : 'off',
       pricelist: tariff_id,
+      datacenter: currentDC?.$key,
       servername,
       password,
       instances_os,
@@ -197,7 +191,7 @@ export default function CreateInstancePage() {
   }
 
   const checkIsItWindows = currentOS => {
-    return operationSystems?.[currentDC]
+    return operationSystems?.[currentDC?.$key]
       ?.find(el => el.$key === currentOS)
       ?.$.toLowerCase()
       .includes('windows')
@@ -226,10 +220,12 @@ export default function CreateInstancePage() {
   })
 
   return (
-    <div>
+    <div className={s.page_padding}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
+
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
-      {tariffs && operationSystems && (
+
+      {tariffs && operationSystems && currentDC && (
         <Formik
           initialValues={{
             instances_os: null,
@@ -247,18 +243,18 @@ export default function CreateInstancePage() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
-            const onDCchange = $key => {
-              setCurrentDC($key)
+            const onDCchange = dc => {
+              setCurrentDC(dc)
               setFieldValue('tariff_id', null)
               setFieldValue('instances_os', null)
 
-              if (!operationSystems[$key]) {
+              if (!operationSystems[dc.$key]) {
                 dispatch(
                   cloudVpsOperations.getOsList({
                     signal,
                     setIsLoading,
                     closeLoader: () => setIsLoading(false),
-                    datacenter: $key,
+                    datacenter: dc.$key,
                   }),
                 )
               }
@@ -267,19 +263,18 @@ export default function CreateInstancePage() {
             const onOSchange = value => {
               setFieldValue('instances_os', value)
 
-              if (checkIsItWindows(values.instances_os)) {
-                setFieldValue('password', null)
-                setFieldValue('connectionType', null)
-                setFieldValue('instances_ssh_keys', null)
+              if (checkIsItWindows(value)) {
+                setFieldValue('password', '')
+                setFieldValue('connectionType', '')
+                setFieldValue('instances_ssh_keys', '')
               }
             }
 
+            const isItWindows = checkIsItWindows(values.instances_os)
             const onTariffChange = tariff => {
               setFieldValue('tariff_id', tariff.id.$)
               setFieldValue('tariffData', tariff)
             }
-
-            const isItWindows = checkIsItWindows(values.instances_os)
 
             const filterOSlist = () => {
               let tariffHasWindows
@@ -293,31 +288,43 @@ export default function CreateInstancePage() {
               }
 
               if (tariffHasWindows) {
-                return operationSystems?.[currentDC]
+                return operationSystems[currentDC.$key]
               } else {
-                return operationSystems?.[currentDC]?.filter(
-                  el => !el.$.toLowerCase().includes('windows'),
-                )
+                const osList = operationSystems[currentDC.$key]?.map(el => {
+                  let newEl = { ...el }
+                  if (el.$.toLowerCase().includes('windows')) {
+                    newEl.disabled = true
+                  }
+
+                  return newEl
+                })
+
+                return osList
               }
             }
 
-            /** if we have selected tariff without Windows - we don`t show this OS */
+            /** if we have selected tariff without Windows - we disable this OS */
             const filteredOSlist = filterOSlist()
 
-            /** if we have selected OS Windows - we don`t show tariffs that don`t support this OS */
+            /** if we have selected OS Windows - we disable tariffs that don`t support this OS */
             const filteredTariffsList = isItWindows
-              ? tariffs?.[currentDC].filter(tariff => {
+              ? tariffs[currentDC.$key].map(tariff => {
+                  const newTariff = { ...tariff }
+                  let supportsWindows
                   if (Array.isArray(tariff.flabel.tag)) {
-                    return tariff.flabel.tag.some(el => el.$ === windowsTag)
+                    supportsWindows = tariff.flabel.tag.some(el => el.$ === windowsTag)
                   } else {
-                    tariff.flabel.tag.$ === windowsTag
+                    supportsWindows = tariff.flabel.tag.$ === windowsTag
                   }
+
+                  newTariff.disabled = !supportsWindows
+                  return newTariff
                 })
-              : tariffs?.[currentDC]
+              : tariffs[currentDC.$key]
 
             /** data initializing (sets default values) */
-            if (!values.instances_os && operationSystems?.[currentDC]?.[0]?.$key) {
-              setFieldValue('instances_os', operationSystems?.[currentDC]?.[0]?.$key)
+            if (!values.instances_os && operationSystems[currentDC.$key]?.[0]?.$key) {
+              setFieldValue('instances_os', operationSystems[currentDC.$key]?.[0]?.$key)
             }
             if (!values.instances_ssh_keys && sshList?.[0]?.value) {
               setFieldValue('instances_ssh_keys', sshList?.[0]?.value)
@@ -344,36 +351,44 @@ export default function CreateInstancePage() {
               return price
             }
 
+            const currentCpu = values.tariffData?.detail.find(el =>
+              el.name.$.toLowerCase().includes('cpu'),
+            )?.value.$
+            const currentDisk = values.tariffData?.detail
+              .find(el => el.name.$.toLowerCase() === 'disk space')
+              .value.$.replace('.', '')
+            const currentCountryName = formatCountryName(currentDC.$)
+
             return (
               <Form>
                 <ScrollToFieldError />
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('server_location')}</h3>
 
-                  <ul className={s.categories_list}>
-                    {dcList?.map(({ $key, $ }) => {
+                  <ul className={s.grid}>
+                    {dcList?.map(dc => {
                       return (
                         <li
                           className={cn(s.category_item, {
-                            [s.selected]: currentDC === $key,
+                            [s.selected]: currentDC.$key === dc.$key,
                           })}
-                          key={$key}
+                          key={dc.$key}
                         >
                           <button
                             className={cn(s.category_btn)}
                             type="button"
-                            onClick={() => onDCchange($key)}
+                            onClick={() => onDCchange(dc)}
                           >
                             <img
                               className={s.flag}
                               src={require(`@images/countryFlags/${getFlagFromCountryName(
-                                $.replace('Fotbo ', ''),
+                                formatCountryName(dc.$),
                               )}.png`)}
                               width={20}
                               height={14}
-                              alt={$.replace('Fotbo ', '')}
+                              alt={formatCountryName(dc.$)}
                             />
-                            {t($)}
+                            {t(formatCountryName(dc.$))}
                           </button>
                         </li>
                       )
@@ -419,7 +434,7 @@ export default function CreateInstancePage() {
                     />
                   </div>
 
-                  <ul className={s.tariffs_list}>
+                  <ul className={s.grid}>
                     {filteredTariffsList?.map(tariff => {
                       const price = calculatePrice(tariff, values)
 
@@ -430,6 +445,7 @@ export default function CreateInstancePage() {
                           onClick={() => onTariffChange(tariff)}
                           price={price}
                           active={values.tariff_id === tariff.id.$}
+                          disabled={tariff.disabled}
                         />
                       )
                     })}
@@ -441,6 +457,7 @@ export default function CreateInstancePage() {
 
                   <ConnectMethod
                     connectionType={values.connectionType}
+                    name="connectionType"
                     sshKey={values.instances_ssh_keys}
                     onChangeType={type => setFieldValue('connectionType', type)}
                     setSSHkey={value => setFieldValue('instances_ssh_keys', value)}
@@ -459,50 +476,79 @@ export default function CreateInstancePage() {
 
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('Server name')}</h3>
-                  <InputField name="servername" placeholder={t('serverName')} isShadow />
+                  <div className={s.grid}>
+                    <InputField
+                      inputWrapperClass={s.input_wrapper}
+                      inputClassName={s.input}
+                      name="servername"
+                      placeholder={t('serverName')}
+                      isShadow
+                    />
+                  </div>
                 </section>
 
                 <FixedFooter isShown={values.tariff_id}>
                   <div className={s.footer_container}>
-                    <div className={s.footer_row}>
-                      <div className={s.footer_parameters}></div>
-                      <div>
-                        <p className={s.label}>{t('amount', { ns: 'vds' })}:</p>
-                        <Incrementer
-                          count={values.order_count}
-                          setCount={value => setFieldValue('order_count', value)}
-                          max={35}
+                    <div className={cn(s.footer_parameters, s.footer_item)}>
+                      <div className={s.footer_params_row}>
+                        <span className={s.footer_params_label}>Location</span>
+                        <img
+                          className={s.flag}
+                          src={require(`@images/countryFlags/${getFlagFromCountryName(
+                            currentCountryName,
+                          )}.png`)}
+                          width={20}
+                          height={14}
+                          alt={currentCountryName}
                         />
+                        {t(currentCountryName)}
                       </div>
-
-                      <div>
-                        <p className={s.label}>{t('summary', { ns: 'vds' })}:</p>
-                        <p className={s.footer_price}>
-                          €
-                          {calculatePrice(
-                            values.tariffData,
-                            values,
-                            PERIODS_LIST.find(el => el.label === 'day').value,
-                            values.order_count,
-                          )}
-                          /<span className={s.price_period}>{t('day')}</span>
-                        </p>
-                        <p className={s.footer_hour_price}>
-                          (€
-                          {calculatePrice(
-                            values.tariffData,
-                            values,
-                            PERIODS_LIST.find(el => el.label === 'hour').value,
-                            values.order_count,
-                          )}
-                          /{t('hour')})
-                        </p>
+                      <div className={s.footer_params_row}>
+                        <span className={s.footer_params_label}>CPU</span>
+                        {currentCpu}
+                      </div>
+                      <div className={s.footer_params_row}>
+                        <span className={s.footer_params_label}>NVMe</span>
+                        {currentDisk}
                       </div>
                     </div>
 
+                    <div className={s.footer_item}>
+                      <p className={s.label}>{t('amount', { ns: 'vds' })}:</p>
+                      <Incrementer
+                        count={values.order_count}
+                        setCount={value => setFieldValue('order_count', value)}
+                        max={35}
+                      />
+                    </div>
+
+                    <div className={s.footer_item}>
+                      <p className={s.label}>{t('summary', { ns: 'vds' })}:</p>
+                      <p className={s.footer_price}>
+                        €
+                        {calculatePrice(
+                          values.tariffData,
+                          values,
+                          PERIODS_LIST.find(el => el.label === 'day').value,
+                          values.order_count,
+                        )}
+                        /<span className={s.price_period}>{t('day')}</span>
+                      </p>
+                      <p className={s.footer_hour_price}>
+                        (€
+                        {calculatePrice(
+                          values.tariffData,
+                          values,
+                          PERIODS_LIST.find(el => el.label === 'hour').value,
+                          values.order_count,
+                        )}
+                        /{t('hour')})
+                      </p>
+                    </div>
+
                     <Button
-                      className={s.btn_buy}
-                      label={t('buy', { ns: 'other' })}
+                      className={cn(s.btn_buy, s.footer_item)}
+                      label={t('create instanse', { ns: 'other' })}
                       type="submit"
                       isShadow
                       // onClick={() => {

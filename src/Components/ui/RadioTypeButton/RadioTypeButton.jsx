@@ -1,4 +1,5 @@
 import cn from 'classnames'
+import PropTypes from 'prop-types'
 import s from './RadioTypeButton.module.scss'
 
 export default function RadioTypeButton({ list, value, onClick }) {
@@ -18,4 +19,10 @@ export default function RadioTypeButton({ list, value, onClick }) {
       })}
     </div>
   )
+}
+
+RadioTypeButton.propTypes = {
+  list: PropTypes.array,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onClick: PropTypes.func,
 }

@@ -1,14 +1,11 @@
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
 import dayjs from 'dayjs'
-
 import { Loader } from '@components'
-import { getFlagFromCountryName, useCancelRequest } from '@utils'
-import formatCountryName from '@components/Services/Instances/ExternalFunc/formatCountryName'
+import { getFlagFromCountryName, useCancelRequest, formatCountryName } from '@utils'
 
 import s from './InstanceDetailsOverview.module.scss'
 
