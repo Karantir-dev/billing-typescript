@@ -5,7 +5,7 @@ export default function ScrollToFieldError({
   scrollBehavior = { behavior: 'smooth', block: 'center' },
 }) {
   const { submitCount, isValid, errors } = useFormikContext()
-  console.log(errors)
+
   const getFieldErrorNames = formikErrors => {
     const transformObjectToDotNotation = (obj, prefix = '', result = []) => {
       Object.keys(obj).forEach(key => {
@@ -30,11 +30,11 @@ export default function ScrollToFieldError({
     if (isValid) return
 
     const fieldErrorNames = getFieldErrorNames(errors)
-    console.log(fieldErrorNames)
+
     if (fieldErrorNames.length <= 0) return
 
     const element = document.querySelector(`[name='${fieldErrorNames[0]}']`)
-    console.log(element)
+
     if (!element) return
 
     // Scroll to first known error into view
