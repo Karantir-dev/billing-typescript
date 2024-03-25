@@ -336,12 +336,12 @@ export default function CreateInstancePage() {
 
             const calculatePrice = (tariff, values, period = null, count = 1) => {
               const dailyCost = tariff?.prices.price.cost.$
-
+              console.log(values.period)
               period = period ? period : values.period
-              let price
-              if (values.network_ipv6) price = dailyCost - IPv4_DAILY_COST
+              let price = dailyCost
+              if (values.network_ipv6) price -= IPv4_DAILY_COST
 
-              price = dailyCost * period * count
+              price = price * period * count
 
               if (price < 0.01) {
                 price = price.toFixed(3)
@@ -437,7 +437,7 @@ export default function CreateInstancePage() {
                   <ul className={s.grid}>
                     {filteredTariffsList?.map(tariff => {
                       const price = calculatePrice(tariff, values)
-
+                      console.log(values)
                       return (
                         <TariffCard
                           key={tariff.id.$}
