@@ -13,6 +13,8 @@ import {
   Incrementer,
   FixedFooter,
   ScrollToFieldError,
+  Icon,
+  HintWrapper,
 } from '@components'
 import * as Yup from 'yup'
 import { useLocation } from 'react-router-dom'
@@ -26,6 +28,7 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { PASS_REGEX } from '@utils/constants'
 
 import s from './CreateInstancePage.module.scss'
+import { useMediaQuery } from 'react-responsive'
 
 const PERIODS_LIST = [
   { value: 30, label: 'month' },
@@ -40,6 +43,7 @@ export default function CreateInstancePage() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other'])
 
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const tariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
@@ -49,6 +53,7 @@ export default function CreateInstancePage() {
   const sshList = useSelector(cloudVpsSelectors.getSshList)
 
   const [currentDC, setCurrentDC] = useState(dcList?.[0])
+  const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
 
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
@@ -107,20 +112,26 @@ export default function CreateInstancePage() {
         }))
 
         return (
-          <SoftwareOSSelect
+          <HintWrapper
+            label={t('Windows is available with other tariffs')}
             key={optionsList[0].value}
-            disabled={el[0].disabled}
-            iconName={name.toLowerCase()}
-            itemsList={optionsList}
-            state={value}
-            getElement={value => {
-              if (fieldName === OSfieldName) {
-                onOSchange(value)
-              } else {
-                onRecipeChange(value)
-              }
-            }}
-          />
+            disabled={!el[0].disabled}
+            hintDelay={200}
+          >
+            <SoftwareOSSelect
+              disabled={el[0].disabled}
+              iconName={name.toLowerCase()}
+              itemsList={optionsList}
+              state={value}
+              getElement={value => {
+                if (fieldName === OSfieldName) {
+                  onOSchange(value)
+                } else {
+                  onRecipeChange(value)
+                }
+              }}
+            />
+          </HintWrapper>
         )
       } else {
         return (
@@ -336,7 +347,7 @@ export default function CreateInstancePage() {
 
             const calculatePrice = (tariff, values, period = null, count = 1) => {
               const dailyCost = tariff?.prices.price.cost.$
-              console.log(values.period)
+
               period = period ? period : values.period
               let price = dailyCost
               if (values.network_ipv6) price -= IPv4_DAILY_COST
@@ -428,16 +439,33 @@ export default function CreateInstancePage() {
                     </label>
 
                     <RadioTypeButton
+                      withCaption
+                      label={t('price_by')}
                       list={PERIODS_LIST}
                       value={values.period}
                       onClick={value => setFieldValue('period', value)}
                     />
                   </div>
+                  <button
+                    className={cn(s.period_description, {
+                      [s.truncated]: !periodCaptionShown,
+                    })}
+                    type="button"
+                    onClick={() => setPeriodCaptionShown(value => !value)}
+                    disabled={widerThan1550}
+                  >
+                    <Icon className={s.caption_icon} name={'HintHelp'} />
+                    Оплата за услугу списывается с баланса в личном кабинете сразу за 24
+                    часа, независимо от времени заказа. Деньги за неиспользованные часы
+                    возвращаются на баланс, если сервер не был удален до 01:00 дня,
+                    следующего за днем заказа. В противном случае, перерасчет и возврат
+                    средств не происходит
+                  </button>
 
                   <ul className={s.grid}>
                     {filteredTariffsList?.map(tariff => {
                       const price = calculatePrice(tariff, values)
-                      console.log(values)
+
                       return (
                         <TariffCard
                           key={tariff.id.$}
