@@ -30,18 +30,18 @@ import { PASS_REGEX } from '@utils/constants'
 import s from './CreateInstancePage.module.scss'
 import { useMediaQuery } from 'react-responsive'
 
-const PERIODS_LIST = [
-  { value: 30, label: 'month' },
-  { value: 1, label: 'day' },
-  { value: 0.0416, label: 'hour' },
-]
-
 const IPv4_DAILY_COST = 1 / 30
 
 export default function CreateInstancePage() {
   const location = useLocation()
   const dispatch = useDispatch()
-  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other'])
+  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
+
+  const PERIODS_LIST = [
+    { id: 'month', value: 30, label: t('month', { ns: 'other' }) },
+    { id: 'day', value: 1, label: t('day', { ns: 'cloud_vps' }) },
+    { id: 'hour', value: 0.0416, label: t('hour', { ns: 'cloud_vps' }) },
+  ]
 
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const { signal, isLoading, setIsLoading } = useCancelRequest()
@@ -113,7 +113,7 @@ export default function CreateInstancePage() {
 
         return (
           <HintWrapper
-            label={t('Windows is available with other tariffs')}
+            label={t('windows_disabled')}
             key={optionsList[0].value}
             disabled={!el[0].disabled}
             hintDelay={200}
@@ -399,7 +399,7 @@ export default function CreateInstancePage() {
                               height={14}
                               alt={formatCountryName(dc.$)}
                             />
-                            {t(formatCountryName(dc.$))}
+                            {t(formatCountryName(dc.$), { ns: 'countries' })}
                           </button>
                         </li>
                       )
@@ -422,7 +422,7 @@ export default function CreateInstancePage() {
                 </section>
 
                 <section className={s.section}>
-                  <h3 className={s.section_title}>{t('Server size')}</h3>
+                  <h3 className={s.section_title}>{t('server_size')}</h3>
 
                   <div className={s.period_bar}>
                     <label className={s.ip_checkbox} htmlFor="ipv6">
@@ -434,13 +434,15 @@ export default function CreateInstancePage() {
                           setFieldValue('network_ipv6', !values.network_ipv6)
                         }}
                       />
-                      Enable only IPv6
-                      <span className={s.ip_discount}>-1€/mon</span>
+                      {t('cloud_ipv6')}
+                      <span className={s.ip_discount}>
+                        -1€/{t('short_month', { ns: 'other' })}
+                      </span>
                     </label>
 
                     <RadioTypeButton
                       withCaption
-                      label={t('price_by')}
+                      label={t('price_per')}
                       list={PERIODS_LIST}
                       value={values.period}
                       onClick={value => setFieldValue('period', value)}
@@ -455,11 +457,7 @@ export default function CreateInstancePage() {
                     disabled={widerThan1550}
                   >
                     <Icon className={s.caption_icon} name={'HintHelp'} />
-                    Оплата за услугу списывается с баланса в личном кабинете сразу за 24
-                    часа, независимо от времени заказа. Деньги за неиспользованные часы
-                    возвращаются на баланс, если сервер не был удален до 01:00 дня,
-                    следующего за днем заказа. В противном случае, перерасчет и возврат
-                    средств не происходит
+                    {t('period_description')}
                   </button>
 
                   <ul className={s.grid}>
@@ -481,7 +479,7 @@ export default function CreateInstancePage() {
                 </section>
 
                 <section className={s.section}>
-                  <h3 className={s.section_title}>Choose Authentication Method</h3>
+                  <h3 className={s.section_title}>{t('authentication_method')}</h3>
 
                   <ConnectMethod
                     connectionType={values.connectionType}
@@ -503,13 +501,13 @@ export default function CreateInstancePage() {
                 </section>
 
                 <section className={s.section}>
-                  <h3 className={s.section_title}>{t('Server name')}</h3>
+                  <h3 className={s.section_title}>{t('server_name', { ns: 'vds' })}</h3>
                   <div className={s.grid}>
                     <InputField
                       inputWrapperClass={s.input_wrapper}
                       inputClassName={s.input}
                       name="servername"
-                      placeholder={t('serverName')}
+                      placeholder={t('server_name', { ns: 'vds' })}
                       isShadow
                     />
                   </div>
@@ -519,7 +517,9 @@ export default function CreateInstancePage() {
                   <div className={s.footer_container}>
                     <div className={cn(s.footer_parameters, s.footer_item)}>
                       <div className={s.footer_params_row}>
-                        <span className={s.footer_params_label}>Location</span>
+                        <span className={s.footer_params_label}>
+                          {t('location', { ns: 'cloud_vps' })}
+                        </span>
                         <img
                           className={s.flag}
                           src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -542,7 +542,7 @@ export default function CreateInstancePage() {
                     </div>
 
                     <div className={s.footer_item}>
-                      <p className={s.label}>{t('amount', { ns: 'vds' })}:</p>
+                      <p className={s.label}>{t('amount', { ns: 'vds' })}</p>
                       <Incrementer
                         count={values.order_count}
                         setCount={value => setFieldValue('order_count', value)}
@@ -551,13 +551,13 @@ export default function CreateInstancePage() {
                     </div>
 
                     <div className={s.footer_item}>
-                      <p className={s.label}>{t('summary', { ns: 'vds' })}:</p>
+                      <p className={s.label}>{t('Sum', { ns: 'other' })}</p>
                       <p className={s.footer_price}>
                         €
                         {calculatePrice(
                           values.tariffData,
                           values,
-                          PERIODS_LIST.find(el => el.label === 'day').value,
+                          PERIODS_LIST.find(el => el.id === 'day').value,
                           values.order_count,
                         )}
                         /<span className={s.price_period}>{t('day')}</span>
@@ -567,7 +567,7 @@ export default function CreateInstancePage() {
                         {calculatePrice(
                           values.tariffData,
                           values,
-                          PERIODS_LIST.find(el => el.label === 'hour').value,
+                          PERIODS_LIST.find(el => el.id === 'hour').value,
                           values.order_count,
                         )}
                         /{t('hour')})
@@ -576,7 +576,7 @@ export default function CreateInstancePage() {
 
                     <Button
                       className={cn(s.btn_buy, s.footer_item)}
-                      label={t('create instanse', { ns: 'other' })}
+                      label={t('create_instance', { ns: 'cloud_vps' })}
                       type="submit"
                       isShadow
                       // onClick={() => {
