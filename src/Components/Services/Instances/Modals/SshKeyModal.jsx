@@ -1,8 +1,10 @@
 import { Button, InputField, Modal, Icon, MessageInput } from '@components'
 import { SSH_KEY_NAME_REGEX } from '@utils/constants'
 
-import { useSelector } from 'react-redux'
-import { cloudVpsSelectors } from '@redux'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { cloudVpsOperations, cloudVpsSelectors } from '@redux'
+import { useCancelRequest } from '@src/utils'
 
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -12,7 +14,22 @@ import cn from 'classnames'
 
 export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation('cloud_vps', 'other', 'user_settings')
+  const { signal, setIsLoading } = useCancelRequest()
+  const dispatch = useDispatch()
+
   const mode = typeof item === 'object' ? 'edit' : 'add'
+
+  /* Dispatching 200 user ssh keys to check it names before sending request */
+
+  useEffect(() => {
+    dispatch(
+      cloudVpsOperations.getSshKeys({
+        p_cnt: 200,
+        signal,
+        setIsLoading,
+      }),
+    )
+  }, [])
 
   const sshItems = useSelector(cloudVpsSelectors.getSshList)
 

@@ -703,7 +703,7 @@ const getSshKeys =
         const sshList = data.doc.elem || []
 
         dispatch(cloudVpsActions.setSshList(sshList))
-        setTotalElems(data?.doc?.p_elems.$)
+        setTotalElems && setTotalElems(data?.doc?.p_elems.$)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
