@@ -10,7 +10,7 @@
   "Created at": "Created at",
   "Region": "Region",
   "Network Details": "Network Details",
-  "Fingerprint":"Fingerprint",
+  "Fingerprint": "Fingerprint",
 
   "Start": "Start",
   "Shut down": "Shut down",
@@ -29,7 +29,7 @@
   "Price": "Price",
   "Access IP": "Access IP",
   "OS": "OS",
-  "create_instance_btn": "Create new Instance",
+  "create_instance_btn": "Order",
   "Day": "Day",
   "Yes": "Yes",
   "No": "No",
@@ -78,6 +78,9 @@
   "Cancel": "Cancel",
   "Confirm": "Confirm",
   "request_sent": "Request sent",
+  "Unrescue": "Unrescue",
+  "Confirm Resize": "Confirm Resize",
+  "Revert Resize": "Revert Resize",
 
   "confirm": {
     "title": {

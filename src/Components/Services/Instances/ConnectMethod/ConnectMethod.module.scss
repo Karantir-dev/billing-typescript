@@ -1,6 +1,7 @@
 .list {
   display: grid;
   gap: 10px;
+  max-width: 1480px;
 
   @media (min-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
@@ -12,6 +13,7 @@
   padding: 16px;
   box-shadow: var(--forms3_shadow);
   border-radius: 3px;
+  background-color: var(--forms_bgc_1);
 }
 
 .item__description {

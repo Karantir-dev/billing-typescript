@@ -16,6 +16,7 @@ export default function SoftwareOSSelect({
   state,
   getElement,
   svgIcon,
+  disabled,
 }) {
   const dropdown = useRef(null)
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
@@ -47,7 +48,12 @@ export default function SoftwareOSSelect({
 
   return (
     <div className={cn(s.bg, { [s.selected]: selectedItem.value === state })}>
-      <button className={s.btn} type="button" onClick={() => setIsOpened(true)}>
+      <button
+        className={s.btn}
+        type="button"
+        disabled={disabled}
+        onClick={() => setIsOpened(true)}
+      >
         {svgIcon ? (
           <Icon name={svgIcon} />
         ) : (

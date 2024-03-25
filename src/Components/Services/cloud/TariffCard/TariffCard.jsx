@@ -2,7 +2,7 @@ import { Infinity } from '@src/images'
 import s from './TariffCard.module.scss'
 import cn from 'classnames'
 
-export default function TariffCard({ tariff, onClick, price, active }) {
+export default function TariffCard({ tariff, onClick, price, active, disabled }) {
   const cpu = tariff.detail.find(el => el.name.$.toLowerCase().includes('cpu'))?.value.$
   const memory = tariff.detail
     .find(el => el.name.$.toLowerCase() === 'memory')
@@ -12,7 +12,7 @@ export default function TariffCard({ tariff, onClick, price, active }) {
     .value.$.replace('.', '')
 
   return (
-    <li className={cn(s.tariff_item, { [s.active]: active })}>
+    <li className={cn(s.tariff_item, { [s.active]: active, [s.disabled]: disabled })}>
       <button className={s.tariff_btn} type="button" onClick={() => onClick(tariff.id.$)}>
         <p className={s.tariff_title}>{tariff.title.main.$}</p>
         <div className={s.tariff_parameters}>

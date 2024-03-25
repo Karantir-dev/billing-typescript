@@ -14,10 +14,11 @@ export default function ConnectMethod({
   errors,
   touched,
   isWindows,
+  name,
 }) {
   const { t } = useTranslation(['cloud_vps'])
   return (
-    <div className={s.list}>
+    <div className={s.list} name={name}>
       {!isWindows && (
         <div className={s.item}>
           <div className={s.item__description}>
