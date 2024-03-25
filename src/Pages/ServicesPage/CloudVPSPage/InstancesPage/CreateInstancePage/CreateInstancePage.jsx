@@ -23,7 +23,7 @@ import { cloudVpsOperations, cloudVpsSelectors, userOperations } from '@src/Redu
 import { formatCountryName, getFlagFromCountryName, useCancelRequest } from '@utils'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { PASS_REGEX } from '@utils/constants'
+import { PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
 
 import s from './CreateInstancePage.module.scss'
 
@@ -201,9 +201,10 @@ export default function CreateInstancePage() {
     password: Yup.string().when('connectionType', {
       is: type => type === 'password',
       then: Yup.string()
-        .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-        .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-        .matches(PASS_REGEX, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
+        .min(8, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
+        .max(48, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
+        .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
+        .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
     connectionType: Yup.string().required(t('Is a required field', { ns: 'other' })),

@@ -16,7 +16,7 @@ import { cloudVpsOperations } from '@redux'
 import { generatePassword } from '@utils'
 
 import s from './Modals.module.scss'
-import { PASS_REGEX } from '@src/utils/constants'
+import { PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
@@ -113,9 +113,10 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       ((!isRebuild && !isWindowsOS) ||
         (isRebuild && (state.passwordType === 'password' || isWindowsOS))) &&
       Yup.string()
-        .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-        .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-        .matches(PASS_REGEX, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
+        .min(8, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
+        .max(48, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
+        .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
+        .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .required(t('warnings.password_required', { ns: 'auth' })),
     password_type:
       isRebuild && Yup.string().required(t('Is a required field', { ns: 'other' })),
