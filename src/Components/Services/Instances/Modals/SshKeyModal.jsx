@@ -10,8 +10,9 @@ import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import cn from 'classnames'
 
-export const SshKeyModal = ({ item, isAddModalOpened, closeModal, onSubmit }) => {
+export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation('cloud_vps', 'other', 'user_settings')
+  const mode = typeof item === 'object' ? 'edit' : 'add'
 
   const sshItems = useSelector(cloudVpsSelectors.getSshList)
 
@@ -19,20 +20,22 @@ export const SshKeyModal = ({ item, isAddModalOpened, closeModal, onSubmit }) =>
     comment: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
       .test('trim', t('Name cannot consist spaces'), value => {
-        const trimmedValue = value.trim()
-        return trimmedValue.length > 0
+        if (value) {
+          const trimmedValue = value.trim()
+          return trimmedValue.length > 0
+        }
+
+        return true
       })
       .max(32, t('Name can have no more than'))
       .matches(SSH_KEY_NAME_REGEX, t('Name can only contain'))
       .test('unique', t('This name is already in use'), value => {
-        const mode = item ? 'edit' : 'add'
-        const id = item?.elid.$
-
         if (mode === 'add') {
           return !sshItems.some(item => item.comment.$ === value)
         }
 
         if (mode === 'edit') {
+          const id = item?.elid?.$
           const editedItem = sshItems.find(item => item.elid.$ === id)
           return (
             editedItem.comment.$ === value ||
@@ -45,16 +48,16 @@ export const SshKeyModal = ({ item, isAddModalOpened, closeModal, onSubmit }) =>
   })
 
   return (
-    <Modal isOpen={!!item || isAddModalOpened} closeModal={closeModal} isClickOutside>
+    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
       <Modal.Header>
         <div className={s.sshModal_headBlock}>
           <Icon name="Ssh_keys" />
-          {item?.publicKey ? (
+          {mode === 'edit' ? (
             <div>
               <p>{t('Rename')}</p>
               <p className={s.modal__subtitle}>
                 <span className={s.modal__subtitle_transparent}>{t('ssh_key')}:</span>{' '}
-                {item?.comment?.$ || item?.fingerprint?.$}
+                {item?.comment?.$}
               </p>
             </div>
           ) : (

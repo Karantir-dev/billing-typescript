@@ -22,7 +22,7 @@ export const DeleteSshModal = ({ item, closeModal, onSubmit }) => {
         <Button
           label={t('Confirm', { ns: 'other' })}
           size={'small'}
-          onClick={() => onSubmit()}
+          onClick={onSubmit}
           form={'ssh_delete'}
           isShadow
         />

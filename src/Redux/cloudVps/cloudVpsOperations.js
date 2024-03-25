@@ -505,7 +505,6 @@ const getOsList =
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
         const sshList = data.doc.slist
           .find(el => el.$name === 'instances_ssh_keys')
@@ -661,7 +660,6 @@ const setOrderData =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
@@ -714,7 +712,6 @@ const getSshKeys =
       })
   }
 
-
 /* Below being request for changing data of ssh keys */
 const editSsh =
   ({
@@ -725,9 +722,13 @@ const editSsh =
     setTotalElems,
     setIsLoading,
     signal,
+    p_col,
+    p_num,
+    p_cnt,
   }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    closeModal()
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -747,37 +748,44 @@ const editSsh =
         { signal },
       )
       .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc?.error) {
+          /* Get and parse errors */
+          const errorObject = JSON.parse(data.doc.error.msg.$)
+          /* Get the first key */
+          const firstKey = Object.keys(errorObject)[0]
+          if (firstKey) {
+            const errorMessage = errorObject[firstKey]
+            throw new Error(errorMessage)
+          }
+        } else if (typeof data === 'string') {
+          /* if long request - throw Error */
+          toast.error(t('Invalid SSH public key', { ns: 'other' }))
+          throw new Error('Request in process, please wait')
+        }
 
         dispatch(
           getSshKeys({
+            p_col,
+            p_num,
+            p_cnt,
             setTotalElems,
             signal,
             setIsLoading,
           }),
         )
-        closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         toast.success(t('Changes saved successfully', { ns: 'other' }))
       })
       .catch(error => {
-        errorCallback()
         closeModal()
-        checkIfTokenAlive(error.message, dispatch)
+        errorCallback()
+        checkIfTokenAlive(error?.message, dispatch)
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
       })
   }
 
 const deleteSsh =
-  ({
-    elid,
-    item,
-    closeModal,
-    setTotalElems,
-    successCallback,
-    signal,
-    setIsLoading,
-  }) =>
+  ({ elid, item, closeModal, setTotalElems, successCallback, signal, setIsLoading }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -806,7 +814,9 @@ const deleteSsh =
       .then(() => {
         successCallback && successCallback()
         closeModal()
-        toast.success(t('server_deleted_success', { ns: 'other', id: `${item?.comment?.$}` }))
+        toast.success(
+          t('server_deleted_success', { ns: 'other', id: `${item?.comment?.$}` }),
+        )
         dispatch(actions.hideLoader())
       })
       .catch(err => {

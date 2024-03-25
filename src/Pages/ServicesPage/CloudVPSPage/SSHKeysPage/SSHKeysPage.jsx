@@ -2,7 +2,6 @@ import { useEffect, useReducer, useState } from 'react'
 import { SshList, Button, Loader, Pagination } from '@components'
 import s from './SSHKeysPage.module.scss'
 
-import { SshKeyModal } from '@components/Services/Instances/Modals'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { useCancelRequest } from '@src/utils'
@@ -12,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 export default function SSHKeysPage() {
   const { t } = useTranslation(['cloud_vps'])
 
-  const [isAddModalOpened, setIsAddModalOpened] = useState(false)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
 
@@ -24,8 +22,9 @@ export default function SSHKeysPage() {
     dispatch(
       cloudVpsOperations.editSsh({
         ...values,
-        setIsAddModalOpened,
         ...getSshRequiredParams,
+        closeModal: () =>
+          dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false })),
       }),
       setPagination({ p_num: 1 }),
     )
@@ -70,7 +69,15 @@ export default function SSHKeysPage() {
     }
   }, [isPaginationChanged])
 
-  const editSshHandler = ({ values, elid, closeModal, errorCallback }) => {
+  const editSshHandler = ({
+    values,
+    elid,
+    closeModal,
+    errorCallback,
+    p_col,
+    p_num,
+    p_cnt,
+  }) => {
     dispatch(
       cloudVpsOperations.editSsh({
         values,
@@ -78,16 +85,27 @@ export default function SSHKeysPage() {
         errorCallback,
         closeModal,
         ...getSshRequiredParams,
+        p_col,
+        p_num,
+        p_cnt,
       }),
     )
   }
 
-  const editNameSubmit = ({ values, closeModal, errorCallback }) => {
+  const editNameSubmit = ({ values, closeModal, errorCallback, p_col, p_num, p_cnt }) => {
+    setPagination({
+      p_num: p_num ?? pagination.p_num,
+      p_cnt: p_cnt ?? pagination.p_cnt,
+      p_col,
+    })
     editSshHandler({
       values,
       elid: itemForModals?.ssh_rename?.elid?.$,
       closeModal,
       errorCallback,
+      p_col,
+      p_cnt: p_cnt ?? pagination.p_cnt,
+      p_num: p_num ?? pagination.p_num,
     })
   }
 
@@ -114,19 +132,9 @@ export default function SSHKeysPage() {
             className={s.ssh_purchase_btn}
             isShadow
             onClick={() => {
-              setIsAddModalOpened(true)
-              dispatch(cloudVpsActions.setItemForModals({ publicKey: '' }))
+              dispatch(cloudVpsActions.setItemForModals({ ssh_rename: true }))
             }}
           />
-          {isAddModalOpened && (
-            <SshKeyModal
-              isAddModalOpened
-              closeModal={() => {
-                setIsAddModalOpened(false)
-              }}
-              onSubmit={setNewSshKey}
-            />
-          )}
           <SshList ssh={sshItems} />
         </div>
       )}
@@ -146,7 +154,11 @@ export default function SSHKeysPage() {
           }}
         />
       )}
-      <Modals deleteSshSubmit={deleteSshSubmit} renameSshSubmit={editNameSubmit} />
+      <Modals
+        deleteSshSubmit={deleteSshSubmit}
+        addNewSshSubmit={setNewSshKey}
+        renameSshSubmit={editNameSubmit}
+      />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )

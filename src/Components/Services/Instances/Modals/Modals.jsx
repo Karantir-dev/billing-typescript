@@ -21,6 +21,7 @@ export const Modals = ({
   editNameSubmit,
   deleteSshSubmit,
   renameSshSubmit,
+  addNewSshSubmit,
   loadingParams = {},
   pagination = {},
   setPagination = () => {},
@@ -194,7 +195,9 @@ export const Modals = ({
       {!!itemForModals?.ssh_delete && (
         <DeleteSshModal
           item={itemForModals?.ssh_delete}
-          closeModal={() => dispatch(cloudVpsActions.setItemForModals({ ssh_delete: false }))}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ ssh_delete: false }))
+          }
           onSubmit={deleteSshSubmit}
         />
       )}
@@ -205,7 +208,11 @@ export const Modals = ({
           closeModal={() =>
             dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false }))
           }
-          onSubmit={renameSshSubmit}
+          onSubmit={
+            typeof itemForModals?.ssh_rename === 'object'
+              ? renameSshSubmit
+              : addNewSshSubmit
+          }
         />
       )}
     </>

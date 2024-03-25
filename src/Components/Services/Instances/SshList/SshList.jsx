@@ -48,7 +48,7 @@ export default function SshList({ ssh }) {
           </thead>
           <tbody className={s.tbody}>
             {ssh.map(item => (
-              <SshItem key={item.elid.$} item={item} />
+              <SshItem key={item?.elid?.$} item={item} />
             ))}
           </tbody>
         </table>
