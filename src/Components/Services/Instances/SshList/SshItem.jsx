@@ -23,6 +23,7 @@ export default function InstanceItem({ item }) {
       <td className={s.td}>
         <button
           type="button"
+          className={s.table_el_button}
           onClick={() => {
             dispatch(cloudVpsActions.setItemForModals({ ssh_rename: item }))
           }}

@@ -55,10 +55,8 @@
       }
     }
 
-    .td:last-child {
-      display: flex;
-      gap: 16px;
-      justify-content: flex-end;
+    .td > .table_el_button {
+      margin-right: 16px;
     }
   }
 }
