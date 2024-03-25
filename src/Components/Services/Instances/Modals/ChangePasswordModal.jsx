@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import { getInstanceMainInfo } from '@utils'
+import { PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
 
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth'])
@@ -11,12 +12,10 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
 
   const validationSchema = Yup.object().shape({
     password: Yup.string()
-      .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-      .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-      .matches(
-        /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
-        t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }),
-      )
+      .min(8, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
+      .max(48, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
+      .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
+      .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
       .required(t('warnings.password_required', { ns: 'auth' })),
   })
 
