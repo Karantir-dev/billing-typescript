@@ -8,7 +8,7 @@ export default function getInstanceMainInfo(item) {
     item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
 
   const isProcessing =
-    item.fotbo_status?.$ === 'stoping' ||
+    item.fotbo_status?.$ === 'stopping' ||
     item.fotbo_status?.$ === 'starting' ||
     item.fotbo_status?.$ === 'creating' ||
     item.fotbo_status?.$ === 'building' ||
