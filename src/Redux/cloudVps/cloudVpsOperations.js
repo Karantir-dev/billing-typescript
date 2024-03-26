@@ -764,7 +764,6 @@ const editSsh =
           }
         } else if (typeof data === 'string') {
           /* if long request - throw Error */
-          toast.error(t('Invalid SSH public key', { ns: 'other' }))
           throw new Error('Request in process, please wait')
         }
 
