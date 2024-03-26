@@ -677,7 +677,7 @@ const setOrderData =
   }
 
 const getSshKeys =
-  ({ p_col, p_cnt, p_num, getAllKeys, setTotalElems, signal, setIsLoading }) =>
+  ({ p_col, p_cnt, p_num, setAllSshItems, setTotalElems, signal, setIsLoading }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
@@ -704,8 +704,8 @@ const getSshKeys =
 
         dispatch(cloudVpsActions.setSshCount(Number(data?.doc?.p_elems?.$)))
 
-        getAllKeys
-          ? dispatch(cloudVpsActions.setAllSshList(sshList))
+        setAllSshItems
+          ? setAllSshItems(sshList)
           : dispatch(cloudVpsActions.setSshList(sshList))
 
         setTotalElems && setTotalElems(data?.doc?.p_elems.$)

@@ -10,7 +10,6 @@ const setWindowsTag = createAction('SET_WINDOWS_TAG')
 const setOperationSystems = createAction('SET_OS_LIST')
 const setSshList = createAction('SET_SSH_LIST')
 const setSshCount = createAction('SET_SSH_COUNT')
-const setAllSshList = createAction('SET_ALL_SSH_LIST')
 
 export default {
   setItemForModals,
@@ -23,5 +22,4 @@ export default {
   setOperationSystems,
   setSshList,
   setSshCount,
-  setAllSshList,
 }

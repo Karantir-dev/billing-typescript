@@ -1,7 +1,7 @@
 import { Button, InputField, Modal, Icon, MessageInput } from '@components'
 import { SSH_KEY_NAME_REGEX, CYRILLIC_ALPHABET_PROHIBITED } from '@utils/constants'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsSelectors } from '@redux'
 
@@ -12,6 +12,8 @@ import s from './Modals.module.scss'
 import cn from 'classnames'
 
 export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
+
+  const [allSshItems, setAllSshItems] = useState([])
   const { t } = useTranslation('cloud_vps', 'other', 'user_settings', 'auth')
   const dispatch = useDispatch()
 
@@ -21,16 +23,14 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
 
   /* Dispatching all user ssh keys to check it names before sending request */
   useEffect(() => {
-    const getAllKeys = true
     dispatch(
       cloudVpsOperations.getSshKeys({
         p_cnt: allSshCount,
-        getAllKeys,
+        setAllSshItems,
       }),
     )
   }, [])
 
-  const allSshItems = useSelector(cloudVpsSelectors.getAllSshList)
 
   const validationSchema = Yup.object().shape({
     comment: Yup.string()

@@ -56,10 +56,6 @@ const sshCount = createReducer(initialState.sshCount, {
   [cloudVpsActions.setSshCount]: (_, { payload }) => payload,
 })
 
-const allSshList = createReducer(initialState.allSshList, {
-  [cloudVpsActions.setAllSshList]: (_, { payload }) => payload,
-})
-
 const cloudVpsReducer = combineReducers({
   itemForModalsReducer,
   instances,
@@ -71,7 +67,6 @@ const cloudVpsReducer = combineReducers({
   operationSystems,
   sshList,
   sshCount,
-  allSshList,
 })
 
 export default cloudVpsReducer
