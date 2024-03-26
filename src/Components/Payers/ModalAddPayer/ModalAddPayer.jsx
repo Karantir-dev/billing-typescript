@@ -123,6 +123,11 @@ export default function ModalAddPayer(props) {
     dispatch(payersOperations.getPayerEditInfo(data, true, closeAddModalHandler))
   }
 
+  const validateCnp = value => {
+    const cnpRegex = /^[0-9]+$/
+    return (cnpRegex.test(value) && value.length <= 13) || value === ''
+  }
+
   return (
     <Modal isOpen closeModal={closeAddModalHandler}>
       <Modal.Header>
@@ -212,7 +217,17 @@ export default function ModalAddPayer(props) {
                         touched={!!touched.name}
                         isRequired
                         inputClassName={s.field}
-                        onBlur={e => setFieldValue('cnp', e.target.value.trim())}
+                        onChange={e => {
+                          const value = e.target.value
+                          const isValid = validateCnp(value)
+
+                          if (!isValid) {
+                            return
+                          }
+
+                          setFieldValue('cnp', value)
+                        }}
+                        onBlur={e => setFieldValue('cnp', e.target.value)}
                       />
                     ) : null}
 
