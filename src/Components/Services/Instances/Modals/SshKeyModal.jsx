@@ -1,10 +1,9 @@
 import { Button, InputField, Modal, Icon, MessageInput } from '@components'
-import { SSH_KEY_NAME_REGEX } from '@utils/constants'
+import { SSH_KEY_NAME_REGEX, CYRILLIC_ALPHABET_PROHIBITED } from '@utils/constants'
 
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsSelectors } from '@redux'
-import { useCancelRequest } from '@src/utils'
 
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -13,25 +12,25 @@ import s from './Modals.module.scss'
 import cn from 'classnames'
 
 export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
-  const { t } = useTranslation('cloud_vps', 'other', 'user_settings')
-  const { signal, setIsLoading } = useCancelRequest()
+  const { t } = useTranslation('cloud_vps', 'other', 'user_settings', 'auth')
   const dispatch = useDispatch()
 
   const mode = typeof item === 'object' ? 'edit' : 'add'
 
-  /* Dispatching 200 user ssh keys to check it names before sending request */
+  const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
 
+  /* Dispatching all user ssh keys to check it names before sending request */
   useEffect(() => {
+    const getAllKeys = true
     dispatch(
       cloudVpsOperations.getSshKeys({
-        p_cnt: 200,
-        signal,
-        setIsLoading,
+        p_cnt: allSshCount,
+        getAllKeys,
       }),
     )
   }, [])
 
-  const sshItems = useSelector(cloudVpsSelectors.getSshList)
+  const allSshItems = useSelector(cloudVpsSelectors.getAllSshList)
 
   const validationSchema = Yup.object().shape({
     comment: Yup.string()
@@ -48,20 +47,25 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
       .matches(SSH_KEY_NAME_REGEX, t('Name can only contain'))
       .test('unique', t('This name is already in use'), value => {
         if (mode === 'add') {
-          return !sshItems.some(item => item.comment.$ === value)
+          return !allSshItems.some(item => item.comment.$ === value)
         }
 
         if (mode === 'edit') {
           const id = item?.elid?.$
-          const editedItem = sshItems.find(item => item.elid.$ === id)
+          const editedItem = allSshItems.find(item => item.elid.$ === id)
           return (
             editedItem.comment.$ === value ||
-            !sshItems.some(item => item.comment.$ === value)
+            !allSshItems.some(item => item.comment.$ === value)
           )
         }
         return true
       }),
-    publicKey: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    publicKey: Yup.string()
+      .required(t('Is a required field', { ns: 'other' }))
+      .matches(
+        CYRILLIC_ALPHABET_PROHIBITED,
+        t('warnings.cyrillic_prohibited', { ns: 'auth' }),
+      ),
   })
 
   return (

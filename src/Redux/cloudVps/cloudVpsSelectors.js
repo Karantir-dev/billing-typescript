@@ -7,6 +7,8 @@ const getDClist = state => state.cloudVps.instancesDcList
 const getWindowsTag = state => state.cloudVps.windowsTag
 const getOperationSystems = state => state.cloudVps.operationSystems
 const getSshList = state => state.cloudVps.sshList
+const getSshCount = state => state.cloudVps.sshCount
+const getAllSshList = state => state.cloudVps.allSshList
 
 export default {
   getItemForModals,
@@ -18,4 +20,6 @@ export default {
   getWindowsTag,
   getOperationSystems,
   getSshList,
+  getSshCount,
+  getAllSshList,
 }
