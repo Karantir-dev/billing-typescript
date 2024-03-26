@@ -84,7 +84,7 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           closeLoader: () => setIsLoading(false),
-          datacenter: currentDC?.$key,
+          datacenter: dcList?.[0]?.$key,
         }),
       )
     }

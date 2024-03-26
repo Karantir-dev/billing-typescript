@@ -501,7 +501,7 @@ const getOsList =
       const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
       lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
     }
-
+    console.log(datacenter)
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
