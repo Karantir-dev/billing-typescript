@@ -62,6 +62,7 @@
   &.resized {
     display: inline-flex;
     align-items: center;
+    cursor: pointer;
     gap: 7px;
     padding-right: 20px;
     .popup {
@@ -70,6 +71,7 @@
       white-space: normal;
       text-align: left;
       font-size: 13px;
+      color: var(--transparent-color_2);
     }
     .popup__wrapper {
       position: absolute;

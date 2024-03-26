@@ -505,7 +505,6 @@ const getOsList =
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
         const sshList = data.doc.slist
           .find(el => el.$name === 'instances_ssh_keys')
@@ -664,7 +663,6 @@ const setOrderData =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data.doc)
         dispatch(
           cartActions.setCartIsOpenedState({
             isOpened: true,
@@ -682,9 +680,9 @@ const setOrderData =
   }
 
 const getSshKeys =
-  ({ p_col, p_cnt, p_num, setTotalElems, signal, setIsLoading, isLoader = true }) =>
+  ({ p_col, p_cnt, p_num, setAllSshItems, setTotalElems, signal, setIsLoading }) =>
   (dispatch, getState) => {
-    isLoader && (setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader()))
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -707,61 +705,16 @@ const getSshKeys =
 
         const sshList = data.doc.elem || []
 
-        dispatch(cloudVpsActions.setSshList(sshList))
-        setTotalElems(data?.doc?.p_elems.$)
+        dispatch(cloudVpsActions.setSshCount(Number(data?.doc?.p_elems?.$)))
+
+        setAllSshItems
+          ? setAllSshItems(sshList)
+          : dispatch(cloudVpsActions.setSshList(sshList))
+
+        setTotalElems && setTotalElems(data?.doc?.p_elems.$)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        handleLoadersClosing(error?.message, dispatch, setIsLoading)
-      })
-  }
-
-const setSshKey =
-  ({
-    values,
-    closeModal = () => {},
-    errorCallback = () => {},
-    setTotalElems,
-    setIsLoading,
-    signal,
-  }) =>
-  (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
-    const sessionId = authSelectors.getSessionId(getState())
-
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'sshkeys.edit',
-          out: 'json',
-          sok: 'ok',
-          processingmodules: '234' /* 233 - Poland, 234 - Netherlands */,
-          auth: sessionId,
-
-          lang: 'en',
-          clicked_button: 'ok',
-          ...values,
-        }),
-        { signal },
-      )
-      .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-
-        dispatch(
-          getSshKeys({
-            setTotalElems,
-            signal,
-            setIsLoading,
-          }),
-        )
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        closeModal()
-        toast.success(t('Saved successfully', { ns: 'other' }))
-      })
-      .catch(error => {
-        errorCallback()
         checkIfTokenAlive(error.message, dispatch)
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
       })
@@ -774,13 +727,16 @@ const editSsh =
     elid,
     errorCallback = () => {},
     closeModal = () => {},
-    setSshItems,
     setTotalElems,
     setIsLoading,
     signal,
+    p_col,
+    p_num,
+    p_cnt,
   }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    closeModal()
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -794,43 +750,49 @@ const editSsh =
           elid,
           lang: 'en',
           clicked_button: 'ok',
+          processingmodulegroup: '1',
           ...values,
         }),
         { signal },
       )
       .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc?.error) {
+          /* Get and parse errors */
+          const errorObject = JSON.parse(data.doc.error.msg.$)
+          /* Get the first key */
+          const firstKey = Object.keys(errorObject)[0]
+          if (firstKey) {
+            const errorMessage = errorObject[firstKey]
+            throw new Error(errorMessage)
+          }
+        } else if (typeof data === 'string') {
+          /* if long request - throw Error */
+          throw new Error('Request in process, please wait')
+        }
 
         dispatch(
           getSshKeys({
-            setSshItems,
+            p_col,
+            p_num,
+            p_cnt,
             setTotalElems,
             signal,
             setIsLoading,
           }),
         )
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        closeModal()
         toast.success(t('Changes saved successfully', { ns: 'other' }))
       })
       .catch(error => {
-        errorCallback()
         closeModal()
-        checkIfTokenAlive(error.message, dispatch)
+        errorCallback()
+        checkIfTokenAlive(error?.message, dispatch)
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
       })
   }
 
 const deleteSsh =
-  ({
-    elid,
-    closeModal,
-    setSshItems,
-    setTotalElems,
-    successCallback,
-    signal,
-    setIsLoading,
-  }) =>
+  ({ elid, item, closeModal, setTotalElems, successCallback, signal, setIsLoading }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -850,7 +812,6 @@ const deleteSsh =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         return dispatch(
           getSshKeys({
-            setSshItems,
             setTotalElems,
             signal,
             setIsLoading,
@@ -860,7 +821,9 @@ const deleteSsh =
       .then(() => {
         successCallback && successCallback()
         closeModal()
-        toast.success(t('server_deleted_success', { ns: 'other', id: `#${elid}` }))
+        toast.success(
+          t('server_deleted_success', { ns: 'other', id: `${item?.comment?.$}` }),
+        )
         dispatch(actions.hideLoader())
       })
       .catch(err => {
@@ -882,7 +845,6 @@ export default {
   changeTariffConfirm,
   rebuildInstance,
   getSshKeys,
-  setSshKey,
   editSsh,
   deleteSsh,
   getInstanceInfo,

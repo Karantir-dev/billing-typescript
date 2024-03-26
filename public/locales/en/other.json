@@ -270,5 +270,7 @@
   "here": "here",
   "eu_vat_info_text": "If you have a valid European VAT ID, fill it in with the country prefix, e.g. NL123456, DE123456.",  
   "new_ticket_message": "New message in ticket #{{id}}",
-  "long_request": "Request processing failed, please try again"
+  "long_request": "Request processing failed, please try again",
+  "Invalid SSH public key": "Invalid SSH public key",
+  "A key already exists with the same name": "A key already exists with the same name"
 }
