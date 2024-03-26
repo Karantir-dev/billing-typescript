@@ -46,7 +46,6 @@ export default function Component(props) {
           }}
           onSubmit={sendMessageHandle}
         >
-          {/* here */}
           {({ values, setFieldValue, errors, touched }) => {
             let checkItemSize = values?.files.filter(el => el?.size >= 10000000)
 

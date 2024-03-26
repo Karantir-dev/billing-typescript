@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './ConnectMethod.module.scss'
+import { cloudVpsActions } from '@src/Redux'
+import { useDispatch } from 'react-redux'
 
 export default function ConnectMethod({
   connectionType,
@@ -17,6 +19,8 @@ export default function ConnectMethod({
   name,
 }) {
   const { t } = useTranslation(['cloud_vps'])
+  const dispatch = useDispatch()
+
   return (
     <div className={s.list} name={name}>
       {!isWindows && (
@@ -43,7 +47,14 @@ export default function ConnectMethod({
                 value={sshKey}
                 error={errors.ssh_keys}
               />
-              <Button label={'create'} isShadow size="small" />
+              <Button
+                label={'create'}
+                isShadow
+                size="small"
+                onClick={() => {
+                  dispatch(cloudVpsActions.setItemForModals({ ssh_rename: true }))
+                }}
+              />
             </div>
           )}
         </div>

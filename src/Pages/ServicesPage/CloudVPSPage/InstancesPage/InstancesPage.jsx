@@ -172,6 +172,17 @@ export default function InstancesPage() {
 
   const filterKeys = filters?.active && Object.keys(filters.active)
 
+  const setNewSshKey = values => {
+    dispatch(
+      cloudVpsOperations.editSsh({
+        ...values,
+        closeModal: () =>
+          dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false })),
+        isFetchUpdatedList: false,
+      }),
+    )
+  }
+
   return (
     <>
       {instances && (
@@ -292,6 +303,7 @@ export default function InstancesPage() {
         pagination={pagination}
         setPagination={setPagination}
         getInstances={getInstances}
+        addNewSshSubmit={setNewSshKey}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
