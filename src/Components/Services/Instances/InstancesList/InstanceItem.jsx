@@ -35,6 +35,8 @@ export default function InstanceItem({ item, editInstance }) {
 
   const itemCountry = formatCountryName(item)
 
+  const ip = item.ip?.$ || item.ip_v6?.$
+
   return (
     <tr
       className={cn(s.tr, { [s.disabled]: isNotActive })}
@@ -117,10 +119,10 @@ export default function InstanceItem({ item, editInstance }) {
       </td>
       <td ref={ipCell} className={s.td}>
         <div className={s.ip_cell}>
-          <span>{item.ip?.$}</span>
-          {item.ip?.$ && (
+          <span>{ip}</span>
+          {ip && (
             <div className={s.fade_in}>
-              <CopyText text={item.ip?.$} />
+              <CopyText text={ip} />
             </div>
           )}
         </div>

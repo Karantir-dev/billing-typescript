@@ -1,4 +1,4 @@
-import { CheckBox, Icon, InputField, Select } from '@components'
+import { Button, CheckBox, Icon, InputField, Select } from '@components'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
@@ -43,6 +43,7 @@ export default function ConnectMethod({
                 value={sshKey}
                 error={errors.ssh_keys}
               />
+              <Button label={'create'} isShadow size="small" />
             </div>
           )}
         </div>

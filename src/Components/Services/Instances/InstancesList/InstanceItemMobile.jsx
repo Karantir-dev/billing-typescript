@@ -16,6 +16,7 @@ export default function InstanceItemMobile({ item }) {
   const { isResized, displayStatus, displayName, isNotActive } = getInstanceMainInfo(item)
 
   const itemCountry = formatCountryName(item)
+  const ip = item.ip?.$ || item.ip_v6?.$
 
   return (
     <div
@@ -85,7 +86,7 @@ export default function InstanceItemMobile({ item }) {
         <p className={s.mobile_item__param}>Access IP</p>
         <p className={s.mobile_item__value} ref={ipCell}>
           <span className={s.ip_cell}>
-            <span>{item.ip?.$}</span> {item.ip?.$ && <CopyText text={item.ip?.$} />}
+            <span>{ip}</span> {ip && <CopyText text={ip} />}
           </span>
         </p>
       </div>
