@@ -4,7 +4,7 @@ import * as route from '@src/routes'
 import { Loader } from '@components'
 import { navigateIfFromSite } from '@utils'
 
-export default function Component(props) {
+export default function CartFromSite(props) {
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -28,6 +28,7 @@ export default function Component(props) {
 
     if (isAuth && data) {
       navigateIfFromSite(data, navigate)
+      return
     }
 
     redirectToLogin()

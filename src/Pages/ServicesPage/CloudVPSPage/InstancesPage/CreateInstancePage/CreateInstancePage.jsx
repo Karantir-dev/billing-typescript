@@ -56,6 +56,7 @@ export default function CreateInstancePage() {
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
+
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
       const location = dataFromSite.location
@@ -72,6 +73,7 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           needOsList: !operationSystems,
+          datacenter: dataFromSite.location || '',
         }),
       )
     }
@@ -85,6 +87,10 @@ export default function CreateInstancePage() {
           datacenter: currentDC?.$key,
         }),
       )
+    }
+
+    return () => {
+      localStorage.removeItem('site_cart')
     }
   }, [])
 
@@ -235,6 +241,10 @@ export default function CreateInstancePage() {
     }),
   })
 
+  const tariffFromSite = tariffs?.[currentDC?.$key]?.find(el =>
+    el.title.main.$.toLowerCase().includes(dataFromSite?.name?.toLowerCase()),
+  )
+
   return (
     <div className={s.page_padding}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -245,10 +255,10 @@ export default function CreateInstancePage() {
         <Formik
           initialValues={{
             instances_os: null,
-            tariff_id: null,
-            tariffData: null,
+            tariff_id: tariffFromSite?.id.$ || null,
+            tariffData: tariffFromSite || null,
             period: 30,
-            network_ipv6: dataFromSite?.network_ipv6 || false,
+            network_ipv6: !!dataFromSite?.network_ipv6 || false,
             connectionType: '',
             instances_ssh_keys: '',
             password: '',

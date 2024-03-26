@@ -528,10 +528,11 @@ const getOsList =
   }
 
 const getAllTariffsInfo =
-  ({ signal, setIsLoading, needOsList }) =>
+  ({ signal, setIsLoading, needOsList, datacenter }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
+
     Promise.all([
       axiosInstance.post(
         '/',
@@ -560,6 +561,8 @@ const getAllTariffsInfo =
         if (netherlandsData.doc?.error) throw new Error(netherlandsData.doc.error.msg.$)
         if (polandData.doc?.error) throw new Error(polandData.doc.error.msg.$)
 
+        console.log(netherlandsData)
+
         const allTariffs = {
           ...writeTariffsWithDC(netherlandsData),
           ...writeTariffsWithDC(polandData),
@@ -569,16 +572,16 @@ const getAllTariffsInfo =
         /** it is important to get lastTariff ID from the first DC in the list,
          * as it will be selected in the UI,
          * because then we will get OS list with this tariff (OS IDs differs between DC) */
-        const firstDCid = DClist[0].$key
-        const firstDCtariffs = allTariffs[firstDCid]
-        const lastTariffID = firstDCtariffs[firstDCtariffs.length - 1].id.$
+        let dcID = datacenter ? datacenter : DClist[0].$key
+        const tariffs = allTariffs[dcID]
+        const lastTariffID = tariffs[tariffs.length - 1].id.$
 
         const windowsTag = netherlandsData.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
 
         if (needOsList) {
-          await dispatch(getOsList({ signal, lastTariffID, datacenter: firstDCid }))
+          await dispatch(getOsList({ signal, lastTariffID, datacenter: dcID }))
         }
 
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
