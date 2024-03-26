@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { cloudVpsActions } from '@redux'
 import { useDispatch } from 'react-redux'
 
-export default function InstanceItem({ item }) {
+export default function SshItem({ item }) {
   const { t } = useTranslation(['vds'])
 
   const dispatch = useDispatch()
