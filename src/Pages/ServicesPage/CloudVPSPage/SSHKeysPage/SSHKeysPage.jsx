@@ -18,15 +18,19 @@ export default function SSHKeysPage() {
 
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
 
-  const setNewSshKey = values => {
+  const setNewSshKey = (values, p_col, p_cnt) => {
+    setPagination({ p_num: 1 }),
     dispatch(
       cloudVpsOperations.editSsh({
         ...values,
         ...getSshRequiredParams,
         closeModal: () =>
           dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false })),
+        p_col,
+        p_cnt: p_cnt ?? pagination.p_cnt,
+        p_num: 1,
       }),
-      setPagination({ p_num: 1 }),
+
     )
   }
 
