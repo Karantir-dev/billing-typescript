@@ -52,12 +52,16 @@ export default function CreateInstancePage() {
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
   const sshList = useSelector(cloudVpsSelectors.getSshList)
 
-  const [currentDC, setCurrentDC] = useState(dcList?.[0])
+  const [currentDC, setCurrentDC] = useState()
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
 
+  const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
-      setCurrentDC(dcList?.[0])
+      const location = dataFromSite.location
+
+      const dcFromSite = dcList.find(el => el.$key === location)
+      dcFromSite ? setCurrentDC(dcFromSite) : setCurrentDC(dcList?.[0])
     }
   }, [dcList])
 
@@ -244,7 +248,7 @@ export default function CreateInstancePage() {
             tariff_id: null,
             tariffData: null,
             period: 30,
-            network_ipv6: false,
+            network_ipv6: dataFromSite?.network_ipv6 || false,
             connectionType: '',
             instances_ssh_keys: '',
             password: '',

@@ -74,7 +74,8 @@ import {
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
-import { FIRST_MONTH_HOSTING_DISCOUNT_ID } from '@src/utils/constants'
+import { FIRST_MONTH_HOSTING_DISCOUNT_ID } from '@utils/constants'
+import { navigateIfFromSite } from '@utils'
 
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
@@ -145,43 +146,13 @@ const Component = ({ fromPromotionLink }) => {
     }
   }, [promotionsList, paymentsList])
 
+  /**
+   * navigates to specific service order page if we have info in localStorage
+   */
   useEffect(() => {
-    const cartFromSite = localStorage.getItem('site_cart')
-    if (cartFromSite) {
-      const funcName = JSON.parse(cartFromSite)?.func
-      if (funcName === 'vds.order.param') {
-        return navigate(route.VPS_ORDER, {
-          replace: true,
-        })
-      } else if (funcName === 'domain.order.name') {
-        return navigate(route.DOMAINS_ORDERS, {
-          replace: true,
-        })
-      } else if (funcName === 'vhost.order.param') {
-        return navigate(route.SHARED_HOSTING_ORDER, {
-          replace: true,
-        })
-      } else if (funcName === 'wordpress.order.param') {
-        return navigate(route.WORDPRESS_ORDER, {
-          replace: true,
-        })
-      } else if (funcName === 'forexbox.order.param') {
-        return navigate(route.FOREX_ORDER, {
-          replace: true,
-        })
-      } else if (funcName === 'storage.order.param') {
-        return navigate(route.FTP_ORDER, {
-          replace: true,
-        })
-      } else if (funcName === 'dedic.order.param') {
-        return navigate(route.DEDICATED_SERVERS_ORDER, {
-          replace: true,
-        })
-      } else if (funcName === 'v2.instances.order.param') {
-        return navigate(route.CLOUD_VPS_CREATE_INSTANCE, {
-          replace: true,
-        })
-      }
+    const cartDataFromSite = localStorage.getItem('site_cart')
+    if (cartDataFromSite) {
+      navigateIfFromSite(cartDataFromSite, navigate)
     }
   }, [])
 
