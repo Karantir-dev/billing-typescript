@@ -834,7 +834,7 @@ export default function Component() {
         {filteredCloudList?.length > 0 && (
           <div className={s.vds_wrapper}>
             <div className={cn(s.formBlockTitle, s.padding)}>
-              {t('services.cloud_vps', { ns: 'other' })}:
+              {t('cloud_vps', { ns: 'crumbs' })}:
             </div>
 
             <div className={s.padding}>

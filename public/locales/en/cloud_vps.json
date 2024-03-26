@@ -30,7 +30,8 @@
   "Access IP": "Access IP",
   "OS": "OS",
   "create_instance_btn": "Order",
-  "Day": "Day",
+  "day": "Day",
+  "hour": "Hour",
   "Yes": "Yes",
   "No": "No",
 
@@ -112,5 +113,15 @@
     "warning": {
       "rebuild": "All data currently on the instance disk will be permanently deleted."
     }
-  }
+  },
+  "server_location": "Server location",
+  "location": "Location",
+  "server_image": "Server image",
+  "server_size": "Server size",
+  "cloud_ipv6": "Enable only IPv6",
+  "price_per": "Price per",
+  "period_description": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for unused hours is returned to the balance if the server was not deleted before 01:00 of the day following the day of the order. Otherwise, recalculation and refund will not occur",
+  "authentication_method": "Choose Authentication Method",
+  "create_instance": "Create instance",
+  "windows_disabled": "Windows enabled with other tariffs"
 }

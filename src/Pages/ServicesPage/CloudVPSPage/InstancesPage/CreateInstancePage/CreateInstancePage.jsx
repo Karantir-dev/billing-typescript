@@ -13,6 +13,8 @@ import {
   Incrementer,
   FixedFooter,
   ScrollToFieldError,
+  Icon,
+  HintWrapper,
 } from '@components'
 import * as Yup from 'yup'
 import { useLocation } from 'react-router-dom'
@@ -23,23 +25,25 @@ import { cloudVpsOperations, cloudVpsSelectors, userOperations } from '@src/Redu
 import { formatCountryName, getFlagFromCountryName, useCancelRequest } from '@utils'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { PASS_REGEX } from '@utils/constants'
+import { PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
 
 import s from './CreateInstancePage.module.scss'
-
-const PERIODS_LIST = [
-  { value: 30, label: 'month' },
-  { value: 1, label: 'day' },
-  { value: 0.0416, label: 'hour' },
-]
+import { useMediaQuery } from 'react-responsive'
 
 const IPv4_DAILY_COST = 1 / 30
 
 export default function CreateInstancePage() {
   const location = useLocation()
   const dispatch = useDispatch()
-  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other'])
+  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
 
+  const PERIODS_LIST = [
+    { id: 'month', value: 30, label: t('month', { ns: 'other' }) },
+    { id: 'day', value: 1, label: t('day', { ns: 'cloud_vps' }) },
+    { id: 'hour', value: 0.0416, label: t('hour', { ns: 'cloud_vps' }) },
+  ]
+
+  const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const tariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
@@ -49,6 +53,7 @@ export default function CreateInstancePage() {
   const sshList = useSelector(cloudVpsSelectors.getSshList)
 
   const [currentDC, setCurrentDC] = useState(dcList?.[0])
+  const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
 
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
@@ -107,20 +112,26 @@ export default function CreateInstancePage() {
         }))
 
         return (
-          <SoftwareOSSelect
+          <HintWrapper
+            label={t('windows_disabled')}
             key={optionsList[0].value}
-            disabled={el[0].disabled}
-            iconName={name.toLowerCase()}
-            itemsList={optionsList}
-            state={value}
-            getElement={value => {
-              if (fieldName === OSfieldName) {
-                onOSchange(value)
-              } else {
-                onRecipeChange(value)
-              }
-            }}
-          />
+            disabled={!el[0].disabled}
+            hintDelay={200}
+          >
+            <SoftwareOSSelect
+              disabled={el[0].disabled}
+              iconName={name.toLowerCase()}
+              itemsList={optionsList}
+              state={value}
+              getElement={value => {
+                if (fieldName === OSfieldName) {
+                  onOSchange(value)
+                } else {
+                  onRecipeChange(value)
+                }
+              }}
+            />
+          </HintWrapper>
         )
       } else {
         return (
@@ -201,9 +212,10 @@ export default function CreateInstancePage() {
     password: Yup.string().when('connectionType', {
       is: type => type === 'password',
       then: Yup.string()
-        .min(6, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-        .max(48, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
-        .matches(PASS_REGEX, t('warnings.invalid_pass', { ns: 'auth', min: 6, max: 48 }))
+        .min(8, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
+        .max(48, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
+        .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
+        .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
     connectionType: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -338,10 +350,10 @@ export default function CreateInstancePage() {
               const dailyCost = tariff?.prices.price.cost.$
 
               period = period ? period : values.period
-              let price
-              if (values.network_ipv6) price = dailyCost - IPv4_DAILY_COST
+              let price = dailyCost
+              if (values.network_ipv6) price -= IPv4_DAILY_COST
 
-              price = dailyCost * period * count
+              price = price * period * count
 
               if (price < 0.01) {
                 price = price.toFixed(3)
@@ -388,7 +400,7 @@ export default function CreateInstancePage() {
                               height={14}
                               alt={formatCountryName(dc.$)}
                             />
-                            {t(formatCountryName(dc.$))}
+                            {t(formatCountryName(dc.$), { ns: 'countries' })}
                           </button>
                         </li>
                       )
@@ -411,7 +423,7 @@ export default function CreateInstancePage() {
                 </section>
 
                 <section className={s.section}>
-                  <h3 className={s.section_title}>{t('Server size')}</h3>
+                  <h3 className={s.section_title}>{t('server_size')}</h3>
 
                   <div className={s.period_bar}>
                     <label className={s.ip_checkbox} htmlFor="ipv6">
@@ -423,16 +435,31 @@ export default function CreateInstancePage() {
                           setFieldValue('network_ipv6', !values.network_ipv6)
                         }}
                       />
-                      Enable only IPv6
-                      <span className={s.ip_discount}>-1€/mon</span>
+                      {t('cloud_ipv6')}
+                      <span className={s.ip_discount}>
+                        -1€/{t('short_month', { ns: 'other' })}
+                      </span>
                     </label>
 
                     <RadioTypeButton
+                      withCaption
+                      label={t('price_per')}
                       list={PERIODS_LIST}
                       value={values.period}
                       onClick={value => setFieldValue('period', value)}
                     />
                   </div>
+                  <button
+                    className={cn(s.period_description, {
+                      [s.truncated]: !periodCaptionShown,
+                    })}
+                    type="button"
+                    onClick={() => setPeriodCaptionShown(value => !value)}
+                    disabled={widerThan1550}
+                  >
+                    <Icon className={s.caption_icon} name={'HintHelp'} />
+                    {t('period_description')}
+                  </button>
 
                   <ul className={s.grid}>
                     {filteredTariffsList?.map(tariff => {
@@ -453,7 +480,7 @@ export default function CreateInstancePage() {
                 </section>
 
                 <section className={s.section}>
-                  <h3 className={s.section_title}>Choose Authentication Method</h3>
+                  <h3 className={s.section_title}>{t('authentication_method')}</h3>
 
                   <ConnectMethod
                     connectionType={values.connectionType}
@@ -475,13 +502,13 @@ export default function CreateInstancePage() {
                 </section>
 
                 <section className={s.section}>
-                  <h3 className={s.section_title}>{t('Server name')}</h3>
+                  <h3 className={s.section_title}>{t('server_name', { ns: 'vds' })}</h3>
                   <div className={s.grid}>
                     <InputField
                       inputWrapperClass={s.input_wrapper}
                       inputClassName={s.input}
                       name="servername"
-                      placeholder={t('serverName')}
+                      placeholder={t('server_name', { ns: 'vds' })}
                       isShadow
                     />
                   </div>
@@ -491,7 +518,9 @@ export default function CreateInstancePage() {
                   <div className={s.footer_container}>
                     <div className={cn(s.footer_parameters, s.footer_item)}>
                       <div className={s.footer_params_row}>
-                        <span className={s.footer_params_label}>Location</span>
+                        <span className={s.footer_params_label}>
+                          {t('location', { ns: 'cloud_vps' })}
+                        </span>
                         <img
                           className={s.flag}
                           src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -514,7 +543,7 @@ export default function CreateInstancePage() {
                     </div>
 
                     <div className={s.footer_item}>
-                      <p className={s.label}>{t('amount', { ns: 'vds' })}:</p>
+                      <p className={s.label}>{t('amount', { ns: 'vds' })}</p>
                       <Incrementer
                         count={values.order_count}
                         setCount={value => setFieldValue('order_count', value)}
@@ -523,13 +552,13 @@ export default function CreateInstancePage() {
                     </div>
 
                     <div className={s.footer_item}>
-                      <p className={s.label}>{t('summary', { ns: 'vds' })}:</p>
+                      <p className={s.label}>{t('Sum', { ns: 'other' })}</p>
                       <p className={s.footer_price}>
                         €
                         {calculatePrice(
                           values.tariffData,
                           values,
-                          PERIODS_LIST.find(el => el.label === 'day').value,
+                          PERIODS_LIST.find(el => el.id === 'day').value,
                           values.order_count,
                         )}
                         /<span className={s.price_period}>{t('day')}</span>
@@ -539,7 +568,7 @@ export default function CreateInstancePage() {
                         {calculatePrice(
                           values.tariffData,
                           values,
-                          PERIODS_LIST.find(el => el.label === 'hour').value,
+                          PERIODS_LIST.find(el => el.id === 'hour').value,
                           values.order_count,
                         )}
                         /{t('hour')})
@@ -548,7 +577,7 @@ export default function CreateInstancePage() {
 
                     <Button
                       className={cn(s.btn_buy, s.footer_item)}
-                      label={t('create instanse', { ns: 'other' })}
+                      label={t('create_instance', { ns: 'cloud_vps' })}
                       type="submit"
                       isShadow
                       // onClick={() => {

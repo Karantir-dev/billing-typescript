@@ -7,7 +7,7 @@ import { translatePeriodToMonths } from '@utils'
 import s from './VdsItem.module.scss'
 
 export default function VdsItem({ el, deleteItemHandler }) {
-  const { t } = useTranslation(['vds', 'virtual_hosting'])
+  const { t } = useTranslation(['vds', 'virtual_hosting', 'cloud_vps'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dropdownEl = useRef()
   const infoEl = useRef()
@@ -88,7 +88,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
                 {t('Period', { ns: 'other' })}:
                 {/* For cloud VPS we set default period - a day */}
                 {el['item.type']?.$ === 'instances'
-                  ? ' Day'
+                  ? ' ' + t('day', { ns: 'cloud_vps' })
                   : ` ${el['item.period']?.$} ${translatePeriodToMonths(
                       el['item.period']?.$,
                     )}`}

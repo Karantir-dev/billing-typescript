@@ -1,3 +1,7 @@
+.wrapper {
+  width: 100%;
+}
+
 .cloud__toolbar {
   display: flex;
   border-radius: 99px;
@@ -37,9 +41,21 @@
   }
 }
 
+.label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  margin-left: 10px;
+}
+
 @media screen and (min-width: 768px) {
-  .cloud__toolbar {
+  .wrapper {
     width: 250px;
+  }
+
+  .cloud__toolbar {
     height: 56px;
     font-weight: 600;
     font-size: 16px;
@@ -47,5 +63,9 @@
 
   .toolbar_btn {
     font-size: 18px;
+  }
+
+  .label {
+    font-size: 16px;
   }
 }
