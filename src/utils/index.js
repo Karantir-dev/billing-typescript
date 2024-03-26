@@ -4,6 +4,7 @@ export { default as useScrollToElement } from './hooks/useScrollToElement'
 export { default as useCancelRequest } from './hooks/useCancelRequest'
 export { default as useAnalyticsSender } from './hooks/useAnalyticsSender'
 export { default as useFormFraudCheckData } from './hooks/useFormFraudCheckData'
+export { default as navigateIfFromSite } from './navigateIfFromSite'
 
 export { default as isBase64 } from './isBase64'
 export { default as ipRegex } from './ipRegex'

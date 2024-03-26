@@ -50,14 +50,19 @@ export default function CreateInstancePage() {
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
-  const sshList = useSelector(cloudVpsSelectors.getSshList)
 
-  const [currentDC, setCurrentDC] = useState(dcList?.[0])
+  const [sshList, setSshList] = useState()
+  const [currentDC, setCurrentDC] = useState()
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
+
+  const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
-      setCurrentDC(dcList?.[0])
+      const location = dataFromSite.location
+
+      const dcFromSite = dcList.find(el => el.$key === location)
+      dcFromSite ? setCurrentDC(dcFromSite) : setCurrentDC(dcList?.[0])
     }
   }, [dcList])
 
@@ -68,6 +73,8 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           needOsList: !operationSystems,
+          setSshList,
+          datacenter: dataFromSite.location || '',
         }),
       )
     }
@@ -78,9 +85,14 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           closeLoader: () => setIsLoading(false),
-          datacenter: currentDC?.$key,
+          datacenter: dcList?.[0]?.$key,
+          setSshList,
         }),
       )
+    }
+
+    return () => {
+      localStorage.removeItem('site_cart')
     }
   }, [])
 
@@ -231,6 +243,10 @@ export default function CreateInstancePage() {
     }),
   })
 
+  const tariffFromSite = tariffs?.[currentDC?.$key]?.find(el =>
+    el.title.main.$.toLowerCase().includes(dataFromSite?.name?.toLowerCase()),
+  )
+
   return (
     <div className={s.page_padding}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
@@ -241,10 +257,10 @@ export default function CreateInstancePage() {
         <Formik
           initialValues={{
             instances_os: null,
-            tariff_id: null,
-            tariffData: null,
+            tariff_id: tariffFromSite?.id.$ || null,
+            tariffData: tariffFromSite || null,
             period: 30,
-            network_ipv6: false,
+            network_ipv6: !!dataFromSite?.network_ipv6 || false,
             connectionType: '',
             instances_ssh_keys: '',
             password: '',

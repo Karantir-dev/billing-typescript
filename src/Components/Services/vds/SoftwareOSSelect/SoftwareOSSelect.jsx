@@ -52,7 +52,7 @@ export default function SoftwareOSSelect({
         className={s.btn}
         type="button"
         disabled={disabled}
-        onClick={disabled ? () => {} : () => setIsOpened(true)}
+        onClick={() => setIsOpened(true)}
       >
         {svgIcon ? (
           <Icon name={svgIcon} />
