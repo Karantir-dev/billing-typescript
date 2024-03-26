@@ -68,8 +68,8 @@ export default function InstanceItem({ item, editInstance }) {
           className={cn(
             s.status,
             s[
-              item.fotbo_status?.$.trim().toLowerCase() ||
-                item.item_status?.$.trim().toLowerCase()
+              item?.fotbo_status?.$.trim().toLowerCase() ||
+                item?.item_status?.$.trim().toLowerCase()
             ],
           )}
         >
