@@ -12,7 +12,6 @@ import s from './Modals.module.scss'
 import cn from 'classnames'
 
 export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
-
   const [allSshItems, setAllSshItems] = useState([])
   const { t } = useTranslation('cloud_vps', 'other', 'user_settings', 'auth')
   const dispatch = useDispatch()
@@ -30,7 +29,6 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
       }),
     )
   }, [])
-
 
   const validationSchema = Yup.object().shape({
     comment: Yup.string()
