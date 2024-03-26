@@ -492,7 +492,7 @@ const writeTariffsWithDC = data => {
 }
 
 const getOsList =
-  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter }) =>
+  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
   (dispatch, getState) => {
     setIsLoading && setIsLoading(true)
 
@@ -516,7 +516,7 @@ const getOsList =
         const operationSystems = { [data.doc.datacenter.$]: osList }
 
         dispatch(cloudVpsActions.setOperationSystems(operationSystems))
-        dispatch(cloudVpsActions.setSshList(sshList))
+        setSshList && setSshList(sshList)
 
         closeLoader && closeLoader()
       })
@@ -527,7 +527,7 @@ const getOsList =
   }
 
 const getAllTariffsInfo =
-  ({ signal, setIsLoading, needOsList, datacenter }) =>
+  ({ signal, setIsLoading, needOsList, datacenter, setSshList }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -560,8 +560,6 @@ const getAllTariffsInfo =
         if (netherlandsData.doc?.error) throw new Error(netherlandsData.doc.error.msg.$)
         if (polandData.doc?.error) throw new Error(polandData.doc.error.msg.$)
 
-        console.log(netherlandsData)
-
         const allTariffs = {
           ...writeTariffsWithDC(netherlandsData),
           ...writeTariffsWithDC(polandData),
@@ -580,7 +578,9 @@ const getAllTariffsInfo =
         ).$key
 
         if (needOsList) {
-          await dispatch(getOsList({ signal, lastTariffID, datacenter: dcID }))
+          await dispatch(
+            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList }),
+          )
         }
 
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))

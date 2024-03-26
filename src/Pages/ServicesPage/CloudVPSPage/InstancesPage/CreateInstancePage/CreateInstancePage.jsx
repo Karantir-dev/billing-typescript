@@ -50,8 +50,8 @@ export default function CreateInstancePage() {
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
-  const sshList = useSelector(cloudVpsSelectors.getSshList)
 
+  const [sshList, setSshList] = useState()
   const [currentDC, setCurrentDC] = useState()
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
 
@@ -73,6 +73,7 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           needOsList: !operationSystems,
+          setSshList,
           datacenter: dataFromSite.location || '',
         }),
       )
@@ -85,6 +86,7 @@ export default function CreateInstancePage() {
           setIsLoading,
           closeLoader: () => setIsLoading(false),
           datacenter: dcList?.[0]?.$key,
+          setSshList,
         }),
       )
     }
