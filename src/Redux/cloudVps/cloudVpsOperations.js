@@ -501,7 +501,7 @@ const getOsList =
       const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
       lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
     }
-    console.log(datacenter)
+
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -566,9 +566,11 @@ const getAllTariffsInfo =
         }
         const DClist = netherlandsData.doc.slist.find(el => el.$name === 'datacenter').val
 
-        /** it is important to get lastTariff ID from the first DC in the list,
-         * as it will be selected in the UI,
-         * because then we will get OS list with this tariff (OS IDs differs between DC) */
+        /**
+         * it is important to get ID of the last Tariff because it must have full list of OS,
+         * and the Tariff must be from selected DC,
+         * because OS IDs differs between DC
+         */
         let dcID = datacenter ? datacenter : DClist[0].$key
         const tariffs = allTariffs[dcID]
         const lastTariffID = tariffs[tariffs.length - 1].id.$
