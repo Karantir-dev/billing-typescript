@@ -152,7 +152,6 @@ const Component = ({ fromPromotionLink }) => {
   useEffect(() => {
     const cartDataFromSite = localStorage.getItem('site_cart')
     if (cartDataFromSite) {
-      console.log('secure - we have data')
       navigateIfFromSite(cartDataFromSite, navigate)
     }
   }, [])

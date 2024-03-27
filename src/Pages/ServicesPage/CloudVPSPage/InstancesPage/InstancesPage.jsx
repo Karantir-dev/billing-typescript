@@ -38,8 +38,6 @@ export default function InstancesPage() {
   const instancesCount = useSelector(cloudVpsSelectors.getInstancesCount)
   const filters = useSelector(cloudVpsSelectors.getInstancesFilters)
 
-  const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
-
   const [pagination, setPagination] = useReducer(
     (state, action) => {
       return { ...state, ...action }
@@ -73,10 +71,6 @@ export default function InstancesPage() {
   useEffect(() => {
     setFiltersHandler()
     setIsFirstRender(false)
-
-    if (!instancesTariffs) {
-      dispatch(cloudVpsOperations.getAllTariffsInfo({ signal, setIsLoading }))
-    }
 
     return () => {
       dispatch(cloudVpsActions.setInstancesCount(0))
@@ -172,6 +166,16 @@ export default function InstancesPage() {
 
   const filterKeys = filters?.active && Object.keys(filters.active)
 
+  const setNewSshKey = values => {
+    dispatch(
+      cloudVpsOperations.editSsh({
+        ...values,
+        closeModal: () =>
+          dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false })),
+      }),
+    )
+  }
+
   return (
     <>
       {instances && (
@@ -184,6 +188,7 @@ export default function InstancesPage() {
               onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}
             />
             <div className={s.filter}>
+              <IconButton icon="update" onClick={() => getInstances()} />
               <IconButton
                 className={cn(s.filter__icon, { [s.filtered]: isFiltered })}
                 onClick={() => setIsFiltersOpened(true)}
@@ -246,16 +251,14 @@ export default function InstancesPage() {
               placeholder={t('sort')}
               label={`${t('sort')}:`}
               isShadow
-              itemsList={CLOUD_SORT_LIST
-                .filter(el => el.isSort)
-                .map(el => {
-                  const { icon } = checkSortItem(el.value)
-                  return {
-                    ...el,
-                    label: t(el.label),
-                    icon,
-                  }
-                })}
+              itemsList={CLOUD_SORT_LIST.filter(el => el.isSort).map(el => {
+                const { icon } = checkSortItem(el.value)
+                return {
+                  ...el,
+                  label: t(el.label),
+                  icon,
+                }
+              })}
               itemIcon
               getElement={value => changeSort(value)}
               value={sortBy?.replace(/[+-]/g, '')}
@@ -293,6 +296,7 @@ export default function InstancesPage() {
         pagination={pagination}
         setPagination={setPagination}
         getInstances={getInstances}
+        addNewSshSubmit={setNewSshKey}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>

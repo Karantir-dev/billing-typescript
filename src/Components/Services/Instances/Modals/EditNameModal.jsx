@@ -10,11 +10,13 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
   const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
-    servername: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    servername: Yup.string()
+      .required(t('Is a required field', { ns: 'other' }))
+      .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
   })
 
   return (
-    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
+    <Modal isOpen={!!item} closeModal={closeModal}>
       <Modal.Header>
         <p>{t('Rename')}</p>
         <p className={s.modal__subtitle}>

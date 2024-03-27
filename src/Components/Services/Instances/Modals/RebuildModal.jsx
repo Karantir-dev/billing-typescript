@@ -132,12 +132,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   })
 
   return (
-    <Modal
-      isOpen={!!item && !!data}
-      closeModal={closeModal}
-      isClickOutside
-      className={s.rebuild_modal}
-    >
+    <Modal isOpen={!!item && !!data} closeModal={closeModal} className={s.rebuild_modal}>
       <Modal.Header>
         <p>{t(`rebuild_modal.title.${item.rebuild_action}`)}</p>
       </Modal.Header>

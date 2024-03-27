@@ -1,8 +1,10 @@
-import { CheckBox, Icon, InputField, Select } from '@components'
+import { Button, CheckBox, Icon, InputField, Select } from '@components'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 
 import s from './ConnectMethod.module.scss'
+import { cloudVpsActions } from '@src/Redux'
+import { useDispatch } from 'react-redux'
 
 export default function ConnectMethod({
   connectionType,
@@ -17,6 +19,8 @@ export default function ConnectMethod({
   name,
 }) {
   const { t } = useTranslation(['cloud_vps'])
+  const dispatch = useDispatch()
+
   return (
     <div className={s.list} name={name}>
       {!isWindows && (
@@ -43,6 +47,14 @@ export default function ConnectMethod({
                 value={sshKey}
                 error={errors.ssh_keys}
               />
+              <Button
+                label={'create'}
+                isShadow
+                size="small"
+                onClick={() => {
+                  dispatch(cloudVpsActions.setItemForModals({ ssh_rename: true }))
+                }}
+              />
             </div>
           )}
         </div>
@@ -56,7 +68,9 @@ export default function ConnectMethod({
           />
           <div className={s.item__text_wrapper}>
             <p className={s.item__name}>{t('password', { ns: 'vds' })}</p>
-            <p className={s.item__text}>{t('pass_method_password')}</p>
+            <p className={s.item__text}>
+              {t('pass_method_password', { user: isWindows ? 'Administrator' : 'root' })}
+            </p>
           </div>
           <Icon name="Lock" />
         </div>

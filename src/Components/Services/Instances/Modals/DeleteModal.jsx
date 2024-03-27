@@ -15,7 +15,7 @@ export const DeleteModal = ({ item, closeModal, onSubmit }) => {
       .required(t('Is a required field', { ns: 'other' })),
   })
   return (
-    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
+    <Modal isOpen={!!item} closeModal={closeModal}>
       <Modal.Header>
         <p>{t('delete', { ns: 'other' })}</p>
         <p className={s.modal__subtitle}>

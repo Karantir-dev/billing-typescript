@@ -99,7 +99,7 @@ export default function InstanceDetailsOverview() {
                 <div className={s.item_info_block}>
                   <img
                     src={require(`@images/countryFlags/${getFlagFromCountryName(
-                      item.datacentername.$.split(' ')[1],
+                      itemCountry,
                     )}.png`)}
                     width={20}
                     height={14}

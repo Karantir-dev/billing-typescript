@@ -106,6 +106,11 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
     return error
   }
 
+  const validateCnp = value => {
+    const cnpRegex = /^[0-9]+$/
+    return (cnpRegex.test(value) && value.length <= 13) || value === ''
+  }
+
   useEffect(() => {
     if (
       selectedPayerFields?.address_physical &&
@@ -188,7 +193,8 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
 
         {payersSelectedFields?.profiletype === '1' &&
         (payersSelectedFields?.country || payersSelectedFields?.country_physical) ===
-          '181' ? (
+          '181' &&
+        !selectedPayerFields?.cnp ? (
           <>
             <InputField
               inputWrapperClass={s.inputHeight}
@@ -200,8 +206,16 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
               error={!!errors.cnp}
               touched={!!touched.cnp}
               value={values.cnp}
-              onChange={e => setState({ cnp: e.target.value })}
-              onBlur={e => setState({ cnp: e.target.value })}
+              onChange={e => {
+                const value = e.target.value
+                const isValid = validateCnp(value)
+
+                if (!isValid) {
+                  return
+                }
+
+                setState({ cnp: value })
+              }}
               isRequired
             />
           </>

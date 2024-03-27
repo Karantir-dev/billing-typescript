@@ -13,18 +13,21 @@ export default function Options({ options, columns = 1, buttonClassName }) {
   return (
     <div className={s.wrapper}>
       <button
-        className={cn(s.btn, { [buttonClassName]: buttonClassName })}
+        className={cn(s.btn, [buttonClassName], { [s.opened]: isOptionsOpen })}
         type="button"
         onClick={() => setIsOptionsOpen(true)}
       >
         <Icon name="Settings" />
+
+        {isOptionsOpen && (
+          <div className={s.pointer_wrapper}>
+            <div className={s.pointer}></div>
+          </div>
+        )}
       </button>
 
       {isOptionsOpen && (
         <div className={s.dropdown} ref={dropdownEl}>
-          <div className={s.pointer_wrapper}>
-            <div className={s.pointer}></div>
-          </div>
           <ul
             className={cn(s.tools__list)}
             style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}

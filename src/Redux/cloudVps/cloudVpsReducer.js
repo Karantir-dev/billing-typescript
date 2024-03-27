@@ -7,7 +7,7 @@ const initialState = {
   instances: null,
   instancesCount: 0,
   instancesFilters: {},
-  instancesTariffs: null,
+  instancesTariffs: {},
   instancesDcList: null,
   windowsTag: '',
   operationSystems: null,
@@ -17,7 +17,10 @@ const initialState = {
 }
 
 const itemForModalsReducer = createReducer(initialState.itemForModalsReducer, {
-  [cloudVpsActions.setItemForModals]: (_, { payload }) => payload,
+  [cloudVpsActions.setItemForModals]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
 })
 
 const instances = createReducer(initialState.instances, {
@@ -31,7 +34,10 @@ const instancesFilters = createReducer(initialState.instancesFilters, {
   [cloudVpsActions.setInstancesFilters]: (_, { payload }) => payload,
 })
 const instancesTariffs = createReducer(initialState.instancesTariffs, {
-  [cloudVpsActions.setInstancesTariffs]: (_, { payload }) => payload,
+  [cloudVpsActions.setInstancesTariffs]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
 })
 
 const instancesDcList = createReducer(initialState.instancesDcList, {
