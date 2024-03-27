@@ -1,14 +1,13 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './RadioTypeButton.module.scss'
-import Icon from '../Icon/Icon'
 
 export default function RadioTypeButton({ label, list, value, onClick, withCaption }) {
   return (
     <div className={s.wrapper}>
       {label && (
         <p className={s.label}>
-          {label}:{withCaption && <Icon name={'HintHelp'} />}
+          {label}:{withCaption && <span className="asterisk">*</span>}
         </p>
       )}
 
