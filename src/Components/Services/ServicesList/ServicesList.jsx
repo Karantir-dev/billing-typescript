@@ -54,8 +54,8 @@ export default function ServicesList() {
       routeName: routes.CLOUD_VPS,
       allowedToRender: true,
       icon_name: 'cloud_vps',
-      icon_width: '131',
-      icon_height: '100',
+      // icon_width: '131',
+      // icon_height: '100',
     },
     {
       name: t('burger_menu.services.services_list.virtual_hosting'),
