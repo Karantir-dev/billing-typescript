@@ -21,7 +21,12 @@ import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { cloudVpsOperations, cloudVpsSelectors, userOperations } from '@src/Redux'
+import {
+  cloudVpsActions,
+  cloudVpsOperations,
+  cloudVpsSelectors,
+  userOperations,
+} from '@src/Redux'
 import { formatCountryName, getFlagFromCountryName, useCancelRequest } from '@utils'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
@@ -29,6 +34,7 @@ import { PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
 
 import s from './CreateInstancePage.module.scss'
 import { useMediaQuery } from 'react-responsive'
+import { Modals } from '@src/Components/Services/Instances/Modals/Modals'
 
 const IPv4_DAILY_COST = 1 / 30
 
@@ -243,6 +249,15 @@ export default function CreateInstancePage() {
     }),
   })
 
+  const setNewSshKey = values => {
+    dispatch(
+      cloudVpsOperations.editSsh({
+        ...values,
+        closeModal: () =>
+          dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false })),
+      }),
+    )
+  }
   const tariffFromSite = tariffs?.[currentDC?.$key]?.find(el =>
     el.title.main.$.toLowerCase().includes(dataFromSite?.name?.toLowerCase()),
   )
@@ -610,6 +625,7 @@ export default function CreateInstancePage() {
           }}
         </Formik>
       )}
+      <Modals addNewSshSubmit={setNewSshKey} />
       {isLoading && <Loader local shown={isLoading} />}
     </div>
   )

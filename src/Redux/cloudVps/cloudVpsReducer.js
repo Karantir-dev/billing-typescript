@@ -1,4 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer, current } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import cloudVpsActions from './cloudVpsActions'
 
@@ -17,7 +17,10 @@ const initialState = {
 }
 
 const itemForModalsReducer = createReducer(initialState.itemForModalsReducer, {
-  [cloudVpsActions.setItemForModals]: (_, { payload }) => payload,
+  [cloudVpsActions.setItemForModals]: (state, { payload }) => ({
+    ...current(state),
+    ...payload,
+  }),
 })
 
 const instances = createReducer(initialState.instances, {
