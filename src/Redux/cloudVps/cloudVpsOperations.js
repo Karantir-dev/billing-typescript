@@ -565,13 +565,13 @@ const getAllTariffsInfo =
           el.$.toLowerCase().includes('windows'),
         ).$key
 
-        dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
-        dispatch(cloudVpsActions.setInstancesDCList(DClist))
-        dispatch(cloudVpsActions.setWindowsTag(windowsTag))
-
         if (needOsList) {
           await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
         }
+
+        dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
+        dispatch(cloudVpsActions.setInstancesDCList(DClist))
+        dispatch(cloudVpsActions.setWindowsTag(windowsTag))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
