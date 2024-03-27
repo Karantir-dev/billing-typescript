@@ -28,22 +28,48 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
 
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
-  // SERVICES
+  /* SERVICES */
   const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false)
   const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false)
   const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false)
   const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost', false)
   const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false)
   const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
+  /* zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked */
   const isWebsitecareAllowedToRender = usePageRender(
     'mainmenuservice',
     'zabota-o-servere',
     false,
   )
-  // zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked
   const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false) //funcname wuwuwuw
+  const isVPNAllowedToRender = usePageRender('mainmenuservice', 'vpn', false)
 
   const servicesMenuList = [
+    {
+      name: t('burger_menu.services.services_list.cloud_vps'),
+      routeName: routes.CLOUD_VPS,
+      allowedToRender: true,
+    },
+    {
+      name: t('burger_menu.services.services_list.virtual_hosting'),
+      routeName: routes.SHARED_HOSTING,
+      allowedToRender: isVirtualHostAllowedToRender,
+    },
+    {
+      name: t('burger_menu.services.services_list.dedicated_servers'),
+      routeName: routes.DEDICATED_SERVERS,
+      allowedToRender: isDedicactedAllowedToRender,
+    },
+    {
+      name: t('burger_menu.services.services_list.forex_server'),
+      routeName: routes.FOREX,
+      allowedToRender: isForexServerAllowedToRender,
+    },
+    {
+      name: t('burger_menu.services.services_list.wordpress_hosting'),
+      routeName: routes.WORDPRESS,
+      allowedToRender: isVirtualHostAllowedToRender,
+    },
     {
       name: t('burger_menu.services.services_list.domains'),
       routeName: routes.DOMAINS,
@@ -55,14 +81,9 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
       allowedToRender: isVdsAllowedToRender,
     },
     {
-      name: t('burger_menu.services.services_list.dedicated_servers'),
-      routeName: routes.DEDICATED_SERVERS,
-      allowedToRender: isDedicactedAllowedToRender,
-    },
-    {
-      name: t('burger_menu.services.services_list.virtual_hosting'),
-      routeName: routes.SHARED_HOSTING,
-      allowedToRender: isVirtualHostAllowedToRender,
+      name: t('burger_menu.services.services_list.external_ftp'),
+      routeName: routes.FTP,
+      allowedToRender: isFtpAllowedToRender,
     },
     {
       name: t('burger_menu.services.services_list.dns_hosting'),
@@ -70,24 +91,14 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
       allowedToRender: isDnsAllowedToRender,
     },
     {
-      name: t('burger_menu.services.services_list.external_ftp'),
-      routeName: routes.FTP,
-      allowedToRender: isFtpAllowedToRender,
-    },
-    {
       name: t('burger_menu.services.services_list.wetsite_care'),
       routeName: routes.SITE_CARE,
       allowedToRender: isWebsitecareAllowedToRender,
     },
     {
-      name: t('burger_menu.services.services_list.forex_server'),
-      routeName: routes.FOREX,
-      allowedToRender: isForexServerAllowedToRender,
-    },
-    {
-      name: t('burger_menu.services.services_list.wordpress_hosting'),
-      routeName: routes.WORDPRESS,
-      allowedToRender: isVirtualHostAllowedToRender,
+      name: t('VPN'),
+      routeName: routes.VPN,
+      allowedToRender: isVPNAllowedToRender,
     },
   ]
 

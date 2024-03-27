@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   BreadCrumbs,
   Loader,
@@ -13,28 +12,35 @@ import {
   Incrementer,
   FixedFooter,
   ScrollToFieldError,
-  Icon,
   HintWrapper,
+  WarningMessage,
 } from '@components'
 import * as Yup from 'yup'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   cloudVpsActions,
+  billingActions,
   cloudVpsOperations,
   cloudVpsSelectors,
   userOperations,
+  userSelectors,
 } from '@src/Redux'
-import { formatCountryName, getFlagFromCountryName, useCancelRequest } from '@utils'
+import {
+  formatCountryName,
+  getFlagFromCountryName,
+  roundToDecimal,
+  useCancelRequest,
+} from '@utils'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
-
-import s from './CreateInstancePage.module.scss'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@src/Components/Services/Instances/Modals/Modals'
+
+import s from './CreateInstancePage.module.scss'
 
 const IPv4_DAILY_COST = 1 / 30
 
@@ -52,14 +58,18 @@ export default function CreateInstancePage() {
   const widerThan1550 = useMediaQuery({ query: '(min-width: 1550px)' })
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
+  const warningEl = useRef()
+
   const tariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
+  const { $balance } = useSelector(userSelectors.getUserInfo)
 
   const [sshList, setSshList] = useState()
   const [currentDC, setCurrentDC] = useState()
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
+  // const [notEnoughMoney, setNotEnoughMoney] = useState(false)
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
@@ -282,6 +292,7 @@ export default function CreateInstancePage() {
             password: '',
             servername: '',
             order_count: '1',
+            notEnoughMoney: '',
           }}
           validationSchema={validationSchema}
           onSubmit={onFormSubmit}
@@ -388,9 +399,9 @@ export default function CreateInstancePage() {
               price = price * period * count
 
               if (price < 0.01) {
-                price = price.toFixed(3)
+                price = roundToDecimal(price, 'ceil', 3)
               } else {
-                price = price.toFixed(2)
+                price = roundToDecimal(price)
               }
               return price
             }
@@ -403,9 +414,38 @@ export default function CreateInstancePage() {
               .value.$.replace('.', '')
             const currentCountryName = formatCountryName(currentDC.$)
 
+            const finalPrice = calculatePrice(
+              values.tariffData,
+              values,
+              PERIODS_LIST.find(el => el.id === 'day').value,
+              values.order_count,
+            )
+
+            if (finalPrice > $balance && finalPrice < 1) {
+              !values.notEnoughMoney && setFieldValue('notEnoughMoney', true)
+            } else {
+              values.notEnoughMoney && setFieldValue('notEnoughMoney', false)
+            }
+
             return (
               <Form>
                 <ScrollToFieldError />
+
+                {values.notEnoughMoney && (
+                  <WarningMessage className={s.warning} ref={warningEl}>
+                    {t('not_enough_money', { ns: 'cloud_vps' })}{' '}
+                    <button
+                      className={s.link}
+                      type="button"
+                      onClick={() =>
+                        dispatch(billingActions.setIsModalCreatePaymentOpened(true))
+                      }
+                    >
+                      {t('top_up', { ns: 'cloud_vps' })}
+                    </button>
+                  </WarningMessage>
+                )}
+
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('server_location')}</h3>
 
@@ -489,7 +529,7 @@ export default function CreateInstancePage() {
                     onClick={() => setPeriodCaptionShown(value => !value)}
                     disabled={widerThan1550}
                   >
-                    <Icon className={s.caption_icon} name={'HintHelp'} />
+                    <span className="asterisk">*</span>
                     {t('period_description')}
                   </button>
 
@@ -586,14 +626,7 @@ export default function CreateInstancePage() {
                     <div className={s.footer_item}>
                       <p className={s.label}>{t('Sum', { ns: 'other' })}</p>
                       <p className={s.footer_price}>
-                        €
-                        {calculatePrice(
-                          values.tariffData,
-                          values,
-                          PERIODS_LIST.find(el => el.id === 'day').value,
-                          values.order_count,
-                        )}
-                        /<span className={s.price_period}>{t('day')}</span>
+                        €{finalPrice}/<span className={s.price_period}>{t('day')}</span>
                       </p>
                       <p className={s.footer_hour_price}>
                         (€
@@ -612,12 +645,16 @@ export default function CreateInstancePage() {
                       label={t('create_instance', { ns: 'cloud_vps' })}
                       type="submit"
                       isShadow
-                      // onClick={() => {
-                      //   values.agreement === 'off' &&
-                      //     agreementEl.current.scrollIntoView({
-                      //       behavior: 'smooth',
-                      //     })
-                      // }}
+                      onClick={e => {
+                        if (values.notEnoughMoney) {
+                          e.preventDefault()
+
+                          warningEl.current.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                          })
+                        }
+                      }}
                     />
                   </div>
                 </FixedFooter>

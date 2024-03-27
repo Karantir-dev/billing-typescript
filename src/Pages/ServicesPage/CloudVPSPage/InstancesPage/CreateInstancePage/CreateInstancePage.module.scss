@@ -192,6 +192,15 @@
   }
 }
 
+.warning {
+  margin: 0;
+}
+
+.link {
+  text-decoration: underline;
+  color: var(--link-color);
+}
+
 @media screen and (min-width: 768px) {
   .section {
     padding: 32px 0;
