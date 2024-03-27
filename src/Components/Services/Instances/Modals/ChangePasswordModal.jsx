@@ -20,7 +20,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
   })
 
   return (
-    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
+    <Modal isOpen={!!item} closeModal={closeModal}>
       <Modal.Header>
         <p>{t('change_password_title')}</p>
         <p className={s.modal__subtitle}>

@@ -8,17 +8,28 @@
 }
 
 .btn {
+  position: relative;
   display: flex;
-  transform: scale(1);
-  transition: transform 150ms;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+
+  svg {
+    transition: transform 150ms;
+  }
 
   &:hover svg {
     fill: url('#gradient');
   }
 
   &:active {
-    transform: scale(0.9);
+    svg {
+      transform: scale(0.9);
+    }
+  }
+
+  &.opened {
+    z-index: 2;
   }
 }
 
@@ -36,8 +47,9 @@
   position: absolute;
   width: 30px;
   height: 20px;
-  top: -20px;
-  right: 3px;
+  bottom: -20px;
+  left: 50%;
+  transform: translate(-50%);
   overflow: hidden;
 }
 

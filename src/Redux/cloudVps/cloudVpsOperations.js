@@ -11,7 +11,7 @@ import { axiosInstance } from '@config/axiosInstance'
 import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
-import { DC_ID_IN, FOTBO_STATUSES_LIST } from '@utils/constants'
+import { FOTBO_STATUSES_LIST } from '@utils/constants'
 
 const getInstances =
   ({
@@ -532,62 +532,46 @@ const getAllTariffsInfo =
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
-    Promise.all([
-      axiosInstance.post(
+    axiosInstance
+      .post(
         '/',
         qs.stringify({
           func: 'v2.instances.order.pricelist',
           out: 'json',
           auth: sessionId,
           lang: 'en',
-          datacenter: DC_ID_IN.netherlands,
+          datacenter,
         }),
         { signal },
-      ),
-      axiosInstance.post(
-        '/',
-        qs.stringify({
-          func: 'v2.instances.order.pricelist',
-          out: 'json',
-          auth: sessionId,
-          lang: 'en',
-          datacenter: DC_ID_IN.poland,
-        }),
-        { signal },
-      ),
-    ])
-      .then(async ([{ data: netherlandsData }, { data: polandData }]) => {
-        if (netherlandsData.doc?.error) throw new Error(netherlandsData.doc.error.msg.$)
-        if (polandData.doc?.error) throw new Error(polandData.doc.error.msg.$)
+      )
+      .then(async ({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
+        const datacenter = data.doc.datacenter.$
         const allTariffs = {
-          ...writeTariffsWithDC(netherlandsData),
-          ...writeTariffsWithDC(polandData),
+          ...writeTariffsWithDC(data),
         }
-        const DClist = netherlandsData.doc.slist.find(el => el.$name === 'datacenter').val
+        const DClist = data.doc.slist.find(el => el.$name === 'datacenter').val
 
         /**
          * it is important to get ID of the last Tariff because it must have full list of OS,
          * and the Tariff must be from selected DC,
          * because OS IDs differs between DC
          */
-        let dcID = datacenter ? datacenter : DClist[0].$key
-        const tariffs = allTariffs[dcID]
+        const tariffs = allTariffs[datacenter]
         const lastTariffID = tariffs[tariffs.length - 1].id.$
 
-        const windowsTag = netherlandsData.doc.flist.val.find(el =>
+        const windowsTag = data.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
-
-        if (needOsList) {
-          await dispatch(
-            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList }),
-          )
-        }
 
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
         dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
+
+        if (needOsList) {
+          await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
+        }
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)

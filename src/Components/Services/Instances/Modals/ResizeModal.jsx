@@ -14,16 +14,25 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
   const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
   const { displayName } = getInstanceMainInfo(item)
 
+  const datacenter = item.datacenter.$
+
   useEffect(() => {
+    if (!instancesTariffs[datacenter]) {
+      dispatch(
+        cloudVpsOperations.getAllTariffsInfo({
+          datacenter,
+        }),
+      )
+    }
+
     dispatch(cloudVpsOperations.getTariffsListToChange(item.id.$, setTariffs, closeModal))
   }, [])
 
   return (
     <Modal
-      isOpen={!!item && !!tariffs}
+      isOpen={!!item && !!tariffs && !!instancesTariffs[datacenter]}
       closeModal={closeModal}
       className={s.resize_modal}
-      isClickOutside
     >
       <Modal.Header>
         <p> {t('choose_flavor')}</p>
@@ -42,7 +51,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
                   <p className={s.body__text_small}>{t('resize_notes')}</p>
 
                   <ul className={s.tariffs_list}>
-                    {instancesTariffs[item.datacenter.$]
+                    {instancesTariffs[datacenter]
                       ?.filter(el => tariffs.find(tariff => tariff.$key === el.id.$))
                       .map(item => {
                         return (

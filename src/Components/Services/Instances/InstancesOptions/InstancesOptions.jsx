@@ -5,6 +5,7 @@ import { getInstanceMainInfo } from '@src/utils'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import s from './InstancesOptions..module.scss'
 
 export default function InstancesOptions({ item, isMobile, buttonClassName }) {
   const { t } = useTranslation(['cloud_vps'])
@@ -156,5 +157,11 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
 
   const optionsColumns = isMobile ? 1 : options.filter(el => !el.hidden).length > 5 && 2
 
-  return <Options options={options} columns={optionsColumns} buttonClassName={buttonClassName} />
+  return (
+    <Options
+      options={options}
+      columns={optionsColumns}
+      buttonClassName={[s.btn, buttonClassName]}
+    />
+  )
 }

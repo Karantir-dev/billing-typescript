@@ -38,8 +38,6 @@ export default function InstancesPage() {
   const instancesCount = useSelector(cloudVpsSelectors.getInstancesCount)
   const filters = useSelector(cloudVpsSelectors.getInstancesFilters)
 
-  const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
-
   const [pagination, setPagination] = useReducer(
     (state, action) => {
       return { ...state, ...action }
@@ -73,10 +71,6 @@ export default function InstancesPage() {
   useEffect(() => {
     setFiltersHandler()
     setIsFirstRender(false)
-
-    if (!instancesTariffs) {
-      dispatch(cloudVpsOperations.getAllTariffsInfo({ signal, setIsLoading }))
-    }
 
     return () => {
       dispatch(cloudVpsActions.setInstancesCount(0))

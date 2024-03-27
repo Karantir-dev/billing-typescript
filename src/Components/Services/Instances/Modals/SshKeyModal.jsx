@@ -67,7 +67,7 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
   })
 
   return (
-    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
+    <Modal isOpen={!!item} closeModal={closeModal}>
       <Modal.Header>
         <div className={s.sshModal_headBlock}>
           <Icon name="Ssh_keys" />

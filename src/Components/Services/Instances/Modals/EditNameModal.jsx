@@ -14,7 +14,7 @@ export const EditNameModal = ({ item, closeModal, onSubmit }) => {
   })
 
   return (
-    <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
+    <Modal isOpen={!!item} closeModal={closeModal}>
       <Modal.Header>
         <p>{t('Rename')}</p>
         <p className={s.modal__subtitle}>
