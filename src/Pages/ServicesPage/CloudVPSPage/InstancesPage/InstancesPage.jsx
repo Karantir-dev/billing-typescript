@@ -178,7 +178,6 @@ export default function InstancesPage() {
         ...values,
         closeModal: () =>
           dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false })),
-        isFetchUpdatedList: false,
       }),
     )
   }

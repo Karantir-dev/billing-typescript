@@ -492,7 +492,7 @@ const writeTariffsWithDC = data => {
 }
 
 const getOsList =
-  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter }) =>
+  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
   (dispatch, getState) => {
     setIsLoading && setIsLoading(true)
 
@@ -516,7 +516,7 @@ const getOsList =
         const operationSystems = { [data.doc.datacenter.$]: osList }
 
         dispatch(cloudVpsActions.setOperationSystems(operationSystems))
-        dispatch(cloudVpsActions.setSshList(sshList))
+        setSshList && setSshList(sshList)
 
         closeLoader && closeLoader()
       })
@@ -527,10 +527,11 @@ const getOsList =
   }
 
 const getAllTariffsInfo =
-  ({ signal, setIsLoading, needOsList }) =>
+  ({ signal, setIsLoading, needOsList, datacenter, setSshList }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
+
     Promise.all([
       axiosInstance.post(
         '/',
@@ -565,19 +566,23 @@ const getAllTariffsInfo =
         }
         const DClist = netherlandsData.doc.slist.find(el => el.$name === 'datacenter').val
 
-        /** it is important to get lastTariff ID from the first DC in the list,
-         * as it will be selected in the UI,
-         * because then we will get OS list with this tariff (OS IDs differs between DC) */
-        const firstDCid = DClist[0].$key
-        const firstDCtariffs = allTariffs[firstDCid]
-        const lastTariffID = firstDCtariffs[firstDCtariffs.length - 1].id.$
+        /**
+         * it is important to get ID of the last Tariff because it must have full list of OS,
+         * and the Tariff must be from selected DC,
+         * because OS IDs differs between DC
+         */
+        let dcID = datacenter ? datacenter : DClist[0].$key
+        const tariffs = allTariffs[dcID]
+        const lastTariffID = tariffs[tariffs.length - 1].id.$
 
         const windowsTag = netherlandsData.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
 
         if (needOsList) {
-          await dispatch(getOsList({ signal, lastTariffID, datacenter: firstDCid }))
+          await dispatch(
+            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList }),
+          )
         }
 
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
@@ -730,7 +735,6 @@ const editSsh =
     p_col,
     p_num,
     p_cnt,
-    isFetchUpdatedList = true,
   }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
@@ -768,17 +772,16 @@ const editSsh =
           throw new Error('Request in process, please wait')
         }
 
-        isFetchUpdatedList &&
-          dispatch(
-            getSshKeys({
-              p_col,
-              p_num,
-              p_cnt,
-              setTotalElems,
-              signal,
-              setIsLoading,
-            }),
-          )
+        dispatch(
+          getSshKeys({
+            p_col,
+            p_num,
+            p_cnt,
+            setTotalElems,
+            signal,
+            setIsLoading,
+          }),
+        )
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         toast.success(t('Changes saved successfully', { ns: 'other' }))
       })

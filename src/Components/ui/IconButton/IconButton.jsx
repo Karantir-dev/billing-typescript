@@ -105,6 +105,7 @@ Component.propTypes = {
     'exchange',
     'change-tariff',
     'euro',
+    'update',
   ]),
   className: PropTypes.string,
   dataTestid: PropTypes.string,
