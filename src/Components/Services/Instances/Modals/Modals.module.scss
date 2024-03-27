@@ -2,6 +2,9 @@
   margin-top: 5px;
   font-size: 14px;
   font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
   &_transparent {
     font-weight: 400;
     color: var(--transparent-color);
@@ -16,6 +19,7 @@
 
 .body__text {
   font-size: 18px;
+  word-wrap: break-word;
 }
 .body__text_small {
   font-size: 14px;
