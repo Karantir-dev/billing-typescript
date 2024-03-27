@@ -67,7 +67,10 @@ export default function CreateInstancePage() {
   }, [dcList])
 
   useEffect(() => {
-    if (!tariffs) {
+    if (
+      (dataFromSite.location && !tariffs[dataFromSite.location]) ||
+      !Object.keys(tariffs).length
+    ) {
       dispatch(
         cloudVpsOperations.getAllTariffsInfo({
           signal,
@@ -77,9 +80,7 @@ export default function CreateInstancePage() {
           datacenter: dataFromSite.location || '',
         }),
       )
-    }
-
-    if (tariffs && (!operationSystems || !sshList)) {
+    } else if (tariffs && (!operationSystems || !sshList)) {
       dispatch(
         cloudVpsOperations.getOsList({
           signal,

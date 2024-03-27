@@ -38,8 +38,6 @@ export default function InstancesPage() {
   const instancesCount = useSelector(cloudVpsSelectors.getInstancesCount)
   const filters = useSelector(cloudVpsSelectors.getInstancesFilters)
 
-  const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
-
   const [pagination, setPagination] = useReducer(
     (state, action) => {
       return { ...state, ...action }
@@ -73,10 +71,6 @@ export default function InstancesPage() {
   useEffect(() => {
     setFiltersHandler()
     setIsFirstRender(false)
-
-    if (!instancesTariffs) {
-      dispatch(cloudVpsOperations.getAllTariffsInfo({ signal, setIsLoading }))
-    }
 
     return () => {
       dispatch(cloudVpsActions.setInstancesCount(0))
@@ -246,16 +240,14 @@ export default function InstancesPage() {
               placeholder={t('sort')}
               label={`${t('sort')}:`}
               isShadow
-              itemsList={CLOUD_SORT_LIST
-                .filter(el => el.isSort)
-                .map(el => {
-                  const { icon } = checkSortItem(el.value)
-                  return {
-                    ...el,
-                    label: t(el.label),
-                    icon,
-                  }
-                })}
+              itemsList={CLOUD_SORT_LIST.filter(el => el.isSort).map(el => {
+                const { icon } = checkSortItem(el.value)
+                return {
+                  ...el,
+                  label: t(el.label),
+                  icon,
+                }
+              })}
               itemIcon
               getElement={value => changeSort(value)}
               value={sortBy?.replace(/[+-]/g, '')}
