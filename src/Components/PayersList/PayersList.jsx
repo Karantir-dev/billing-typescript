@@ -216,7 +216,6 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
 
                 setState({ cnp: value })
               }}
-              onBlur={e => setState({ cnp: e.target.value })}
               isRequired
             />
           </>

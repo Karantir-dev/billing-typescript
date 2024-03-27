@@ -227,7 +227,6 @@ export default function ModalAddPayer(props) {
 
                           setFieldValue('cnp', value)
                         }}
-                        onBlur={e => setFieldValue('cnp', e.target.value)}
                       />
                     ) : null}
 
