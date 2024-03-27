@@ -53,7 +53,7 @@
   "Enter your SSH key": "Enter your SSH key",
   "Name can only contain": "The name must contain only valid characters: Latin letters, numbers, spaces, dashes or underscores",
   "pass_method_ssh": "Connect to your instance using SSH key pair",
-  "pass_method_password": "Connect to your instance as root user via password",
+  "pass_method_password": "Connect to your instance as {{user}} user via password",
   "windows_password_warning": "Please create an instance and go to the console to set a password",
   "resize_popup_text": "Check if files have been successfully migrated to the new instance disk. Choose Confirm resize from the instance menu to confirm migration was successful, otherwise choose Revert resize to revert back to the initial disk.",
   "sort": "Sort by",

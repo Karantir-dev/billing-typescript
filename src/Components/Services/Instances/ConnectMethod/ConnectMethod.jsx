@@ -68,7 +68,9 @@ export default function ConnectMethod({
           />
           <div className={s.item__text_wrapper}>
             <p className={s.item__name}>{t('password', { ns: 'vds' })}</p>
-            <p className={s.item__text}>{t('pass_method_password')}</p>
+            <p className={s.item__text}>
+              {t('pass_method_password', { user: isWindows ? 'Administrator' : 'root' })}
+            </p>
           </div>
           <Icon name="Lock" />
         </div>

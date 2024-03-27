@@ -21,8 +21,9 @@ export default function InstanceItem({ item, editInstance }) {
   const { isResized, displayStatus, isNotActive } = getInstanceMainInfo(item)
 
   const editServerName = value => {
+    const slicedValue = value.slice(0, 100)
     editInstance({
-      value,
+      value: slicedValue,
       elid: item.id.$,
       errorCallback: () => setServerName(serverName),
     })
