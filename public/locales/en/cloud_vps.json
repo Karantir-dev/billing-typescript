@@ -124,5 +124,6 @@
   "authentication_method": "Choose Authentication Method",
   "create_instance": "Create instance",
   "windows_disabled": "Windows enabled with other tariffs",
-  "not_enough_money": "Insufficient funds for purchase. Top up your balance"
+  "not_enough_money": "Insufficient funds for purchase.",
+  "top_up": "Top up your balance"
 }

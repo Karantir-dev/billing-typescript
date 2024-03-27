@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  billingActions,
   cloudVpsOperations,
   cloudVpsSelectors,
   userOperations,
@@ -66,7 +67,7 @@ export default function CreateInstancePage() {
   const [sshList, setSshList] = useState()
   const [currentDC, setCurrentDC] = useState()
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
-  const [notEnoughMoney, setNotEnoughMoney] = useState(false)
+  // const [notEnoughMoney, setNotEnoughMoney] = useState(false)
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
@@ -266,12 +267,6 @@ export default function CreateInstancePage() {
 
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
 
-      {notEnoughMoney && (
-        <WarningMessage className={s.warning} ref={warningEl}>
-          {t('not_enough_money', { ns: 'cloud_vps' })}
-        </WarningMessage>
-      )}
-
       {tariffs && operationSystems && currentDC && (
         <Formik
           initialValues={{
@@ -285,6 +280,7 @@ export default function CreateInstancePage() {
             password: '',
             servername: '',
             order_count: '1',
+            notEnoughMoney: '',
           }}
           validationSchema={validationSchema}
           onSubmit={onFormSubmit}
@@ -414,14 +410,30 @@ export default function CreateInstancePage() {
             )
 
             if (finalPrice > $balance && finalPrice < 1) {
-              !notEnoughMoney && setNotEnoughMoney(true)
+              !values.notEnoughMoney && setFieldValue('notEnoughMoney', true)
             } else {
-              setNotEnoughMoney(false)
+              values.notEnoughMoney && setFieldValue('notEnoughMoney', false)
             }
 
             return (
               <Form>
                 <ScrollToFieldError />
+
+                {values.notEnoughMoney && (
+                  <WarningMessage className={s.warning} ref={warningEl}>
+                    {t('not_enough_money', { ns: 'cloud_vps' })}{' '}
+                    <button
+                      className={s.link}
+                      type="button"
+                      onClick={() =>
+                        dispatch(billingActions.setIsModalCreatePaymentOpened(true))
+                      }
+                    >
+                      {t('top_up', { ns: 'cloud_vps' })}
+                    </button>
+                  </WarningMessage>
+                )}
+
                 <section className={s.section}>
                   <h3 className={s.section_title}>{t('server_location')}</h3>
 
@@ -622,11 +634,12 @@ export default function CreateInstancePage() {
                       type="submit"
                       isShadow
                       onClick={e => {
-                        if (notEnoughMoney) {
+                        if (values.notEnoughMoney) {
                           e.preventDefault()
-                          console.log('asd')
+
                           warningEl.current.scrollIntoView({
                             behavior: 'smooth',
+                            block: 'center',
                           })
                         }
                       }}
