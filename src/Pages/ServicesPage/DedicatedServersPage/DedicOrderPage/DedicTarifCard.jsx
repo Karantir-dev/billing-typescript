@@ -63,7 +63,7 @@ export default function DedicTarifCard({
           )
         }}
         type="button"
-        className={classNames(s.tarif_card_btn, { [s.vds]: item.isVds })}
+        className={classNames(s.tarif_card_btn, { [s.new]: item.isNew })}
       >
         {hasSale === 3 && (
           <span
@@ -75,13 +75,13 @@ export default function DedicTarifCard({
           </span>
         )}
 
-        {item.isVds && <span className={s.new_tariff}>NEW</span>}
+        {item.isNew && <span className={s.new_tariff}>NEW</span>}
         <div className={s.card_header}>
           <span
             className={classNames({
               [s.card_title]: true,
               [s.selected]: item?.pricelist?.$ === values.tarif,
-              [s.vds]: item.isVds,
+              [s.new]: item.isNew,
             })}
           >
             {cardTitle}
@@ -110,7 +110,7 @@ export default function DedicTarifCard({
             </div>
           )}
         </div>
-        <div className={classNames(s.price_wrapper, { [s.vds]: item.isVds })}>
+        <div className={classNames(s.price_wrapper, { [s.new]: item.isNew })}>
           <span
             className={classNames({
               [s.price]: true,
