@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import {
   actions,
