@@ -506,17 +506,23 @@ const getOsList =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
-        const sshList = data.doc.slist
-          .find(el => el.$name === 'instances_ssh_keys')
-          .val.map(el => ({
+
+        const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
+
+        let formatedSshList
+        if (sshList[0].$key === 'none') {
+          formatedSshList = []
+        } else {
+          formatedSshList = sshList.map(el => ({
             label: el.$,
             value: el.$key,
           }))
+        }
 
         const operationSystems = { [data.doc.datacenter.$]: osList }
 
         dispatch(cloudVpsActions.setOperationSystems(operationSystems))
-        setSshList && setSshList(sshList)
+        setSshList && setSshList(formatedSshList)
 
         closeLoader && closeLoader()
       })

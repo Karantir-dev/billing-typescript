@@ -40,6 +40,7 @@ export default function ConnectMethod({
           {connectionType === 'ssh' && (
             <div className={s.item__field}>
               <Select
+                name="ssh_keys"
                 isShadow
                 itemsList={sshList}
                 placeholder={t('ssh_key')}

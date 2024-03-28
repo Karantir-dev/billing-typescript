@@ -64,6 +64,7 @@ export default function CreateInstancePage() {
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
+  const globalSshList = useSelector(cloudVpsSelectors.getSshList)
   const { $balance, credit } = useSelector(userSelectors.getUserInfo)
 
   const [sshList, setSshList] = useState()
@@ -71,6 +72,14 @@ export default function CreateInstancePage() {
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
+
+  useEffect(() => {
+    const formatedList = globalSshList?.map(el => {
+      return { value: el.elid.$, label: el.comment.$ }
+    })
+
+    formatedList && setSshList(formatedList)
+  }, [globalSshList])
 
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
@@ -189,7 +198,7 @@ export default function CreateInstancePage() {
       password,
       instances_os,
       order_count,
-      instances_ssh_keys,
+      ssh_keys,
       network_ipv6,
       tariff_id,
       connectionType,
@@ -215,7 +224,7 @@ export default function CreateInstancePage() {
       password,
       instances_os,
       order_count,
-      instances_ssh_keys,
+      instances_ssh_keys: ssh_keys,
       ...ipv6_parametr,
     }
 
@@ -247,7 +256,7 @@ export default function CreateInstancePage() {
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
     connectionType: Yup.string().required(t('Is a required field', { ns: 'other' })),
-    instances_ssh_keys: Yup.string().when('connectionType', {
+    ssh_keys: Yup.string().when('connectionType', {
       is: type => type === 'ssh',
       then: Yup.string()
         .required(t('Is a required field', { ns: 'other' }))
@@ -288,7 +297,7 @@ export default function CreateInstancePage() {
             period: 30,
             network_ipv6: !!dataFromSite?.network_ipv6 || false,
             connectionType: '',
-            instances_ssh_keys: '',
+            ssh_keys: '',
             password: '',
             servername: '',
             order_count: '1',
@@ -321,7 +330,7 @@ export default function CreateInstancePage() {
               if (checkIsItWindows(value)) {
                 setFieldValue('password', '')
                 setFieldValue('connectionType', '')
-                setFieldValue('instances_ssh_keys', '')
+                setFieldValue('ssh_keys', '')
               }
             }
 
@@ -381,8 +390,9 @@ export default function CreateInstancePage() {
             if (!values.instances_os && operationSystems[currentDC.$key]?.[0]?.$key) {
               setFieldValue('instances_os', operationSystems[currentDC.$key]?.[0]?.$key)
             }
-            if (!values.instances_ssh_keys && sshList?.[0]?.value) {
-              setFieldValue('instances_ssh_keys', sshList?.[0]?.value)
+
+            if (!values.ssh_keys && sshList?.[0]?.value) {
+              setFieldValue('ssh_keys', sshList?.[0]?.value)
             }
             if (!values.tariff_id && filteredTariffsList?.[0]?.id.$) {
               setFieldValue('tariff_id', filteredTariffsList?.[0]?.id.$)
@@ -559,9 +569,9 @@ export default function CreateInstancePage() {
                   <ConnectMethod
                     connectionType={values.connectionType}
                     name="connectionType"
-                    sshKey={values.instances_ssh_keys}
+                    sshKey={values.ssh_keys}
                     onChangeType={type => setFieldValue('connectionType', type)}
-                    setSSHkey={value => setFieldValue('instances_ssh_keys', value)}
+                    setSSHkey={value => setFieldValue('ssh_keys', value)}
                     setPassword={value => setFieldValue('password', value)}
                     errors={errors}
                     touched={touched}

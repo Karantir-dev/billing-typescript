@@ -27,7 +27,8 @@ export default function Select(props) {
     saleIcon,
     withoutArrow,
     itemIcon,
-    disableClickActive = true
+    disableClickActive = true,
+    name,
   } = props
   const { t } = useTranslation('other')
 
@@ -94,6 +95,7 @@ export default function Select(props) {
         </label>
       )}
       <button
+        name={name}
         type="button"
         style={{ height }}
         className={s.input_wrapper}
@@ -204,6 +206,7 @@ Select.propTypes = {
   isRequired: PropTypes.bool,
   error: PropTypes.string,
   withoutArrow: PropTypes.bool,
+  name: PropTypes.string,
 }
 
 Select.defaultProps = {
