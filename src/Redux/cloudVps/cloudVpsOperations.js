@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import qs from 'qs'
 import {
   actions,
@@ -8,7 +9,12 @@ import {
 } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
+import {
+  checkIfTokenAlive,
+  handleLoadersClosing,
+  renameAddonFields,
+  cookies,
+} from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
 import { FOTBO_STATUSES_LIST } from '@utils/constants'
@@ -408,6 +414,10 @@ const openConsole =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        const { $name, $: value } = data.doc.cookies.cookie
+        cookies.setCookie($name, value)
+
         const url = data.doc.ok.$
         const link = document.createElement('a')
         link.setAttribute('target', '__blank')
