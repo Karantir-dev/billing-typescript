@@ -258,6 +258,7 @@ export default function CreateInstancePage() {
           value => value !== 'none',
         ),
     }),
+    servername: Yup.string().max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
   })
 
   const setNewSshKey = values => {
