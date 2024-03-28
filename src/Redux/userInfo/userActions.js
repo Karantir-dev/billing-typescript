@@ -14,6 +14,8 @@ const hideUserInfoLoading = createAction('HIDE_USER_INFO_LOADING')
 const setEmailStatus = createAction('SET_EMAIL_STATUS')
 const setIsNewMessage = createAction('SET_IS_NEW_MESSAGE')
 
+const setAvailableCredit = createAction('SET_AVAILABLE_CREDIT')
+
 export default {
   setItems,
   setTickets,
@@ -24,5 +26,6 @@ export default {
   removeItems,
   setEmailStatus,
   updateUserInfo,
-  setIsNewMessage
+  setIsNewMessage,
+  setAvailableCredit,
 }

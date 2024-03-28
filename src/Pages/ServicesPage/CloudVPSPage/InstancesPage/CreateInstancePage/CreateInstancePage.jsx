@@ -64,12 +64,11 @@ export default function CreateInstancePage() {
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
-  const { $balance } = useSelector(userSelectors.getUserInfo)
+  const { $balance, credit } = useSelector(userSelectors.getUserInfo)
 
   const [sshList, setSshList] = useState()
   const [currentDC, setCurrentDC] = useState()
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
-  // const [notEnoughMoney, setNotEnoughMoney] = useState(false)
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
@@ -422,7 +421,9 @@ export default function CreateInstancePage() {
               values.order_count,
             )
 
-            if (finalPrice > $balance && finalPrice < 1) {
+            const totalBalance = credit ? +$balance + +credit : +$balance
+
+            if (finalPrice > totalBalance && finalPrice < 1) {
               !values.notEnoughMoney && setFieldValue('notEnoughMoney', true)
             } else {
               values.notEnoughMoney && setFieldValue('notEnoughMoney', false)
