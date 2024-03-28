@@ -94,6 +94,18 @@ const dashBoardInfo = (data, dispatch) => {
   }
 }
 
+const getAvailableCredit = (data, dispatch) => {
+  const { elem } = data.doc
+  if (elem && elem?.length > 0) {
+    dispatch(
+      userActions.setAvailableCredit({
+        available_credit: elem[0]?.available_credit?.$,
+        credit: elem[0]?.credit?.$,
+      }),
+    )
+  }
+}
+
 const funcsArray = [
   userInfo,
   userNotifications,
@@ -101,6 +113,7 @@ const funcsArray = [
   userTickets,
   clearBasket,
   dashBoardInfo,
+  getAvailableCredit,
 ]
 
 const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
@@ -157,6 +170,15 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
       '/',
       qs.stringify({
         func: 'dashboard.info',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    ),
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'dashboard.subaccount_credit',
         out: 'json',
         lang: 'en',
         auth: sessionId,

@@ -3,7 +3,18 @@ import { combineReducers } from 'redux'
 import userActions from './userActions'
 
 const initialState = {
-  userInfo: {},
+  userInfo: {
+    $realname: '',
+    $balance: '',
+    $email: '',
+    $phone: '',
+    $id: '',
+    $email_verified: '',
+    $need_phone_validate: '',
+    verefied_phone: '',
+    available_credit: '',
+    credit: '',
+  },
   userTickets: [],
   userItems: [],
   currentSessionRights: [],
@@ -20,10 +31,15 @@ const userInfo = createReducer(initialState.userInfo, {
     state.$email_verified = payload
     return state
   },
+  [userActions.setAvailableCredit]: (state, { payload }) => {
+    return { ...state, ...payload }
+  },
 })
+
 const userTickets = createReducer(initialState.userTickets, {
   [userActions.setTickets]: (_, { payload }) => payload,
 })
+
 const userItems = createReducer(initialState.userItems, {
   [userActions.setItems]: (_, { payload }) => payload,
   [userActions.removeItems]: (state, { payload }) =>
