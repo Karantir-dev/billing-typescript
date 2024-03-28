@@ -85,13 +85,13 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
           }),
         ),
     },
-    {
-      label: t('Resize'),
-      icon: 'Resize',
-      disabled: isDisabled || item.change_pricelist?.$ === 'off',
-      hidden: isHideMostItems,
-      onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
-    },
+    // {
+    //   label: t('Resize'),
+    //   icon: 'Resize',
+    //   disabled: isDisabled || item.change_pricelist?.$ === 'off',
+    //   hidden: isHideMostItems,
+    //   onClick: () => dispatch(cloudVpsActions.setItemForModals({ resize: item })),
+    // },
     {
       label: t('Change password'),
       icon: 'ChangePassword',
