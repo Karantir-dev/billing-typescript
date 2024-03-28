@@ -31,7 +31,7 @@ import 'swiper/swiper.min.css'
 
 import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
-import { VDS_IDS_TO_ORDER } from '@src/utils/constants'
+import { NEW_DEDICS, VDS_IDS_TO_ORDER } from '@src/utils/constants'
 import DedicFilter from './DedicFilter'
 
 SwiperCore.use([EffectCoverflow, Pagination])
@@ -223,14 +223,51 @@ export default function DedicOrderPage() {
     }
   }, [])
 
-  useEffect(() => {
-    const dedicList = tarifsList?.tarifList || []
-    const sortedDedic = [...dedicList]
+  const sortDedicList = list =>
+    [...list]
       .sort((a, b) => parsePrice(a.price.$).amount - parsePrice(b.price.$).amount)
       .sort((a, b) => parsePrice(b.price.$).length - parsePrice(a.price.$).length)
 
-    const newVdsList = [...vdsList]?.map(e => {
-      const params = e.desc.$.split(' / ')
+  const getParams = el => el.desc.$.split(' / ')
+
+  useEffect(() => {
+    const initialDedicList = tarifsList?.tarifList || []
+
+    const sortedDedic = sortDedicList(initialDedicList)
+
+    const separatedDedicList = sortedDedic.reduce(
+      (res, dedic) => {
+        const params = getParams(dedic)
+        const configName = params[0]
+        let tag = tarifsList?.fpricelist.filter(plist => {
+          return dedic.filter.tag.find(tagItem => plist.$key === tagItem.$)
+        })
+
+        /* Config 41 has additional filters tags to filter VDS tariffs,
+          here we remove those tags form config 41 to filter works correct  */
+        if (dedic.desc.$.includes('Config 41')) {
+          const drive = params.find(el => el.includes('SSD')).replace(' SSD', '')
+          tag = tag.filter(el =>
+            el.$.includes('drive:') ? drive === el.$.replace('drive:', '') : el,
+          )
+        }
+
+        const item = { ...dedic, filter: { tag } }
+
+        NEW_DEDICS.includes(configName)
+          ? res.newDedicList.push({ ...item, isNew: true })
+          : res.dedicList.push(item)
+
+        return res
+      },
+      {
+        newDedicList: [],
+        dedicList: [],
+      },
+    )
+
+    const newVdsList = [...vdsList]?.map(el => {
+      const params = getParams(el)
 
       const gen = params.find(param => param.includes('HP G')).replace('HP ', '')
       const ram = params.find(param => param.includes(' RAM DDR')).split(' RAM')[0]
@@ -268,28 +305,14 @@ export default function DedicOrderPage() {
             return value === traffic
         }
       })
-      return { ...e, filter: { tag } }
-    })
-
-    const deidcList = sortedDedic.map(el => {
-      let tag = tarifsList?.fpricelist.filter(plist => {
-        return el.filter.tag.find(tagItem => plist.$key === tagItem.$)
-      })
-
-      /* Config 41 has additional filters tags to filter VDS tariffs,
-       here we remove those tags form config 41 to filter works correct  */
-      if (el.desc.$.includes('Config 41')) {
-        const filters = el.desc.$.split(' / ')
-        const drive = filters.find(el => el.includes('SSD')).replace(' SSD', '')
-        tag = tag.filter(el =>
-          el.$.includes('drive:') ? drive === el.$.replace('drive:', '') : el,
-        )
-      }
-
       return { ...el, filter: { tag } }
     })
 
-    const newArrTarifList = [...newVdsList, ...deidcList]
+    const newArrTarifList = [
+      ...separatedDedicList.newDedicList,
+      ...newVdsList,
+      ...separatedDedicList.dedicList,
+    ]
 
     setFiltersItems(getFiltersItems())
     setTarifList({ ...tarifsList, tarifList: newArrTarifList })

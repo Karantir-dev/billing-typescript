@@ -86,6 +86,8 @@ export const SBER_PHONE_COUNTRIES = ['ru']
 export const VDS_IDS_LIKE_DEDICS = ['6322', '6334', '6370']
 export const VDS_IDS_TO_ORDER = ['6322', '6370']
 
+export const NEW_DEDICS = ['Config 71', 'Config 72']
+
 export const WORDPRESS_VHOST = ['6346', '6349', '6352', '6361']
 
 export const OFFER_FIELD = 'offer_4'
