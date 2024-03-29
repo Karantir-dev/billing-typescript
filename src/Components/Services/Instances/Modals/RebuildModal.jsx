@@ -11,8 +11,8 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useReducer, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { cloudVpsOperations } from '@redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { generatePassword } from '@utils'
 
 import s from './Modals.module.scss'
@@ -23,15 +23,13 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const dispatch = useDispatch()
 
   const [data, setData] = useState()
+  const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
 
   const [state, setState] = useReducer((state, action) => {
     return { ...state, ...action }
   }, {})
 
   const isRebuild = item.rebuild_action === 'rebuild'
-
-  const sshList = isRebuild ? data?.slist.find(el => el.$name === 'ssh_keys')?.val : null
-
   const select = isRebuild ? 'select_rebuild' : 'select_boot'
   const depends = isRebuild ? 'image' : 'pub'
 
@@ -48,7 +46,18 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       cloudVpsOperations.rebuildInstance({
         action: item.rebuild_action,
         elid: item.id.$,
-        successCallback: setData,
+        successCallback: value => {
+          setData(value)
+          if (isRebuild) {
+            const p_cnt = value?.slist.find(el => el.$name === 'ssh_keys')?.val.length
+            dispatch(
+              cloudVpsOperations.getSshKeys({
+                p_cnt,
+                setAllSshItems: list => dispatch(cloudVpsActions.setAllSshList(list)),
+              }),
+            )
+          }
+        },
         errorCallback: closeModal,
       }),
     )
@@ -131,6 +140,10 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
         ),
   })
 
+  useEffect(() => {
+    setState({ ssh_keys: allSshList?.[0]?.fotbokeyid.$ })
+  }, [allSshList])
+
   return (
     <Modal isOpen={!!item && !!data} closeModal={closeModal} className={s.rebuild_modal}>
       <Modal.Header>
@@ -143,7 +156,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
             [select]: state?.[select] || data?.[select]?.$,
             password: state.password || '',
             password_type: state.passwordType,
-            ssh_keys: state.ssh_keys || sshList?.[0].$key,
+            ssh_keys: state.ssh_keys || allSshList?.[0]?.fotbokeyid.$,
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
@@ -187,9 +200,9 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                         setPassword={value => setState({ password: value })}
                         errors={errors}
                         touched={touched}
-                        sshList={sshList.map(el => ({
-                          label: el.$,
-                          value: el.$key,
+                        sshList={allSshList.map(el => ({
+                          label: el.comment.$,
+                          value: el.fotbokeyid.$,
                         }))}
                         sshKey={values.ssh_keys}
                         isWindows={isWindowsOS}

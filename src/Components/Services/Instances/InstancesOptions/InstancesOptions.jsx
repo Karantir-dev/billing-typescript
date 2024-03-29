@@ -114,7 +114,6 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
     {
       label: t('Instructions'),
       icon: 'Instruction',
-      disabled: isDisabled,
       hidden: isHideMostItems,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
@@ -142,7 +141,6 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
     {
       label: t('Rename'),
       icon: 'Rename',
-      disabled: isDisabled,
       hidden: isHideMostItems,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
