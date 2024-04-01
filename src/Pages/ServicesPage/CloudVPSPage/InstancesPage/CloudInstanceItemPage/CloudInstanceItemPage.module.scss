@@ -32,11 +32,13 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+  gap: 10px;
 }
 
 .page_title {
   font-size: 22px;
   line-height: 120%;
+  word-break: break-all;
 }
 
 .popup__wrapper {
@@ -45,6 +47,7 @@
 
 .page_title_wrapper {
   display: flex;
+  align-items: center;
 }
 
 .status {
