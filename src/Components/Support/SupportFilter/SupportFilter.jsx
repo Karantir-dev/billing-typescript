@@ -141,10 +141,7 @@ export default function Component(props) {
         />
       )}
       {createTicketModal && (
-        <CreateTicketModal
-          setCreateTicketModal={setCreateTicketModal}
-          relatedService={location.state?.id}
-        />
+        <CreateTicketModal setCreateTicketModal={setCreateTicketModal} />
       )}
     </div>
   )
