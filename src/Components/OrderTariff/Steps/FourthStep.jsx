@@ -4,12 +4,7 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import s from '../OrderTariff.module.scss'
 import cn from 'classnames'
-import {
-  QIWI_PHONE_COUNTRIES,
-  SBER_PHONE_COUNTRIES,
-  OFFER_FIELD,
-  CNP_REGEX,
-} from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 import {
   cartActions,
   cartOperations,
@@ -163,13 +158,6 @@ export default function FourthStep({
       !filteredPayment_method?.hide?.includes('alfabank_login')
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    cnp:
-      payersSelectedFields?.profiletype === '1' &&
-      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
-        ? Yup.string()
-            .required(t('Is a required field', { ns: 'other' }))
-            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
-        : null,
     [OFFER_FIELD]: Yup.bool().oneOf([true]),
   })
 
@@ -249,7 +237,7 @@ export default function FourthStep({
       data.ddirector = payersData.selectedPayerFields?.ddirector || 'ddirector '
       data.djobtitle = payersData.selectedPayerFields?.djobtitle || 'djobtitle '
       data.baseaction = payersData.selectedPayerFields?.baseaction || 'baseaction '
-      data.name = values?.name || ''
+      data.name = payersData.selectedPayerFields?.name || ''
     }
 
     const cart = { ...state.cartData, paymethod_name: values?.selectedPayMethod?.name?.$ }
@@ -261,7 +249,6 @@ export default function FourthStep({
         }),
       )
     }
-
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
   }
 

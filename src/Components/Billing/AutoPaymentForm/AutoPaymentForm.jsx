@@ -15,7 +15,7 @@ import { OFERTA_URL } from '@config/config'
 import * as Yup from 'yup'
 import s from './AutoPaymentForm.module.scss'
 import { useMediaQuery } from 'react-responsive'
-import { OFFER_FIELD, CNP_REGEX } from '@utils/constants'
+import { OFFER_FIELD } from '@utils/constants'
 
 export default function AutoPaymentForm(props) {
   const dispatch = useDispatch()
@@ -95,13 +95,6 @@ export default function AutoPaymentForm(props) {
     [OFFER_FIELD]: payersData.selectedPayerFields?.offer_field
       ? Yup.bool().oneOf([true])
       : null,
-    cnp:
-      payersSelectedFields?.profiletype === '1' &&
-      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
-        ? Yup.string()
-            .required(t('Is a required field', { ns: 'other' }))
-            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
-        : null,
   })
 
   const createAutoPaymentMethodHandler = values => {
