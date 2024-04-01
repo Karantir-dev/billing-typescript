@@ -39,12 +39,7 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn, useFormFraudCheckData, roundToDecimal } from '@utils'
-import {
-  QIWI_PHONE_COUNTRIES,
-  SBER_PHONE_COUNTRIES,
-  OFFER_FIELD,
-  CNP_REGEX,
-} from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -167,13 +162,6 @@ export default function Component() {
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
     [OFFER_FIELD]: Yup.bool().oneOf([true]),
-    cnp:
-      payersSelectedFields?.profiletype === '1' &&
-      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
-        ? Yup.string()
-            .required(t('Is a required field', { ns: 'other' }))
-            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
-        : null,
   })
 
   const setPromocodeToCart = promocode => {
