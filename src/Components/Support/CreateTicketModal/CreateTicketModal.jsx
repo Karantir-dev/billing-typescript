@@ -41,12 +41,11 @@ export default function Component(props) {
             message: '',
             files: [],
             client_department: '',
-            ticket_item: 'null',
+            ticket_item: props.relatedService ?? 'null',
             subject: '',
           }}
           onSubmit={sendMessageHandle}
         >
-          {/* here */}
           {({ values, setFieldValue, errors, touched }) => {
             let checkItemSize = values?.files.filter(el => el?.size >= 10000000)
 

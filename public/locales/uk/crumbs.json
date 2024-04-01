@@ -25,5 +25,8 @@
   "vpn_order": "Замовлення VPN",
   "dedicated": "Виділені сервери",
   "wordpress": "Wordpress хостинг",
-  "wordpress_order": "Замовлення Wordpress хостингу"
+  "wordpress_order": "Замовлення Wordpress хостингу",
+  "cloud_vps": "Cloud VPS",
+  "ssh_keys": "SSH ключі",
+  "create_instance": "Створити сервер VPS"
 }

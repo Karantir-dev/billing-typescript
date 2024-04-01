@@ -15,7 +15,7 @@ import * as Yup from 'yup'
 
 import s from './ModalCreatePaymentMethod.module.scss'
 import { checkIfTokenAlive } from '@utils'
-import { OFFER_FIELD } from '@utils/constants'
+import { OFFER_FIELD, CNP_REGEX } from '@utils/constants'
 
 export default function Component(props) {
   const dispatch = useDispatch()
@@ -41,6 +41,7 @@ export default function Component(props) {
     const data = {
       postcode_physical: values?.postcode_physical,
       eu_vat: values?.eu_vat,
+      cnp: values?.cnp,
       city_legal: values?.city_physical,
       city_physical: values?.city_physical,
       address_legal: values?.address_physical,
@@ -96,6 +97,13 @@ export default function Component(props) {
     [OFFER_FIELD]: payersData.selectedPayerFields?.offer_field
       ? Yup.bool().oneOf([true])
       : null,
+    cnp:
+      payersSelectedFields?.profiletype === '1' &&
+      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
+        ? Yup.string()
+            .required(t('Is a required field', { ns: 'other' }))
+            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
+        : null,
   })
 
   return (
@@ -119,7 +127,7 @@ export default function Component(props) {
                 payersData.selectedPayerFields?.profile ||
                 payersList?.[payersList?.length - 1]?.id?.$ ||
                 '',
-              slecetedPayMethod: isStripeAvailable.paymethod.$,
+              slecetedPayMethod: isStripeAvailable?.paymethod?.$,
               name: payersData.state?.name || payersData.selectedPayerFields?.name || '',
               address_physical:
                 payersData.state?.addressPhysical ??
@@ -142,6 +150,7 @@ export default function Component(props) {
                 payersSelectedFields?.profiletype,
               eu_vat:
                 payersData.state?.euVat || payersData.selectedPayerFields?.eu_vat || '',
+              cnp: payersData.state?.cnp || payersData.selectedPayerFields?.cnp || '',
               [OFFER_FIELD]: isPolicyChecked || false,
               payment_currency: {
                 title: paymentsCurrency?.payment_currency_list?.filter(

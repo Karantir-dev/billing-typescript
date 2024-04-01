@@ -4,7 +4,7 @@ import s from './Options.module.scss'
 import cn from 'classnames'
 import { useOutsideAlerter } from '@utils'
 
-export default function Options({ options }) {
+export default function Options({ options, columns = 1, buttonClassName }) {
   const dropdownEl = useRef()
   const [isOptionsOpen, setIsOptionsOpen] = useState(false)
 
@@ -12,16 +12,26 @@ export default function Options({ options }) {
 
   return (
     <div className={s.wrapper}>
-      <button className={s.btn} type="button" onClick={() => setIsOptionsOpen(true)}>
+      <button
+        className={cn(s.btn, [buttonClassName], { [s.opened]: isOptionsOpen })}
+        type="button"
+        onClick={() => setIsOptionsOpen(true)}
+      >
         <Icon name="Settings" />
+
+        {isOptionsOpen && (
+          <div className={s.pointer_wrapper}>
+            <div className={s.pointer}></div>
+          </div>
+        )}
       </button>
 
       {isOptionsOpen && (
         <div className={s.dropdown} ref={dropdownEl}>
-          <div className={s.pointer_wrapper}>
-            <div className={s.pointer}></div>
-          </div>
-          <ul>
+          <ul
+            className={cn(s.tools__list)}
+            style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
+          >
             {options
               .filter(option => !option.hidden)
               .map(option => (

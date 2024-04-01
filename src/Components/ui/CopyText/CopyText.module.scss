@@ -1,0 +1,33 @@
+.copy_btn {
+  position: relative;
+  width: 15px;
+  height: 16px;
+  vertical-align: middle;
+  &:hover {
+    & .copy_icon {
+      fill: url(#gradient);
+    }
+  }
+}
+
+.copy_icon {
+  width: 100%;
+  height: auto;
+  fill: var(--inactive_icon_color);
+}
+
+.copy_prompt {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  top: -60px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 214px;
+  height: 41px;
+  border-radius: 25px;
+  color: #fff;
+  background: rgba(63, 63, 63, 0.43);
+}

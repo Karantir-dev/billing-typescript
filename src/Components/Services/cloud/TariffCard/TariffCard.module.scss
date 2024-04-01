@@ -1,0 +1,94 @@
+@import '@scss/placeholders.scss';
+
+.tariff_item {
+  border-radius: 3px;
+  background-color: var(--forms_bgc_1);
+  box-shadow: var(--shadow_cards_static);
+
+  &.active {
+    outline: 1px solid var(--accent-color-light);
+  }
+
+  &.disabled {
+    pointer-events: none;
+    filter: opacity(0.6);
+  }
+}
+
+.tariff_btn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+  cursor: pointer;
+  padding: 16px;
+}
+
+.tariff_title {
+  text-align: start;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.tariff_parameters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tariff_row {
+  display: flex;
+}
+
+.parameter_label {
+  display: block;
+  text-align: start;
+  width: 72px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 117%;
+  color: var(--transparent-color);
+}
+
+.parameter_value {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 114%;
+}
+
+.infinity {
+  fill: var(--main-text);
+}
+
+.tariff_price {
+  @extend %accent-text-gradient;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .tariff_btn {
+    gap: 16px;
+  }
+
+  .tariff_title {
+    font-size: 25px;
+    line-height: 1.28;
+  }
+
+  .parameter_label {
+    font-size: 14px;
+  }
+
+  .parameter_value {
+    font-size: 16px;
+  }
+
+  .tariff_price {
+    font-size: 30px;
+  }
+}

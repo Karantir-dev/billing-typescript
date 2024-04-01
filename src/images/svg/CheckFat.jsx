@@ -1,7 +1,7 @@
 export default function SvgComponent({
   colorFirst = '#FA4BB4',
   colorSecond = '#ED32CF',
-  props,
+  ...props
 }) {
   return (
     <svg

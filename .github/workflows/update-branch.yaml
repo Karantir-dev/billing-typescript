@@ -5,15 +5,19 @@ on:
     branches: [ dev ]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  createPullRequest:
+  create_pull_request:
     name: Update branch
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
           - head: dev # з якої гілки
-            base: bill-update # до якої гілки
+            base: update # до якої гілки
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -31,4 +35,5 @@ jobs:
 
       - name: Run workflow
         run: |
-          gh workflow run deploy.yml --ref ${{ matrix.base }}
+          # need use this bad use for manual run workflow in specific branch 
+          gh workflow run deploy.yaml --ref ${{ matrix.base }}

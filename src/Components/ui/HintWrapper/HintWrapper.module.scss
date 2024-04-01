@@ -3,7 +3,7 @@
   position: relative;
 
   &:hover .hint_popup {
-    animation: popup 0.5s forwards;
+    animation: popup var(--hint_delay) forwards;
     pointer-events: auto;
 
     @media (max-width: 1023px) {

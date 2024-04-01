@@ -1,9 +1,24 @@
 name: Deployment
 on:
   push:
-    branches: [ prod, dev, prod-biz, bill-update ]
-
+    branches: [ prod, dev, prod-biz, update ]
   workflow_dispatch:
+
+  workflow_call:
+    secrets:
+      KUBECONFIG:
+        required: true
+        description: "Kubeconfig in base64"
+    inputs:
+      environment:
+        required: false
+        type: string
+        description: "Яку environment github використовується"
+      prefix:
+        required: false
+        type: string
+        description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
+
 
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -11,15 +26,61 @@ permissions:
 
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.workflow_call.workflow_file }}
   cancel-in-progress: true
 
-env:
-  NAMESPACE: ${{ vars.NAMESPACE_PREFIX }}-${{ github.ref_name }}
-  PREFIX: version-${{ github.run_number }}-${{ github.ref_name }}
 
 jobs:
+  vars:
+    name: Generation vars
+    runs-on: ubuntu-latest
+    outputs:
+      static_version: ${{ steps.basic.outputs.static_version }}
+
+      namespace: ${{ steps.dynamic.outputs.NAMESPACE }}
+      prefix: ${{ steps.dynamic.outputs.PREFIX }}
+      environment: ${{ steps.dynamic.outputs.environment }}
+    steps:
+      # Logic
+      - name: Set prefix
+        env:
+          VALUE: ${{ inputs.prefix }}
+          DEFAULT: ${{ github.ref_name }}
+        id: _tmp_prefix
+        run: |
+          if [[ -n "$VALUE" ]]; then
+            echo "value=${{ env.VALUE }}" >> $GITHUB_OUTPUT
+          else
+            echo "value=${{ env.DEFAULT }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set environments
+        env:
+          VALUE: ${{ inputs.environment }}
+          DEFAULT: ${{ github.ref_name }}
+        id: _tmp_environment
+        run: |
+          if [[ -n "$VALUE" ]]; then
+            echo "value=${{ env.VALUE }}" >> $GITHUB_OUTPUT
+          else
+            echo "value=${{ env.DEFAULT }}" >> $GITHUB_OUTPUT
+          fi
+
+      # Set
+      - name: Create dynamic vars
+        id: dynamic
+        run: |
+          echo "NAMESPACE=${{ vars.NAMESPACE_PREFIX }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
+          echo "PREFIX=version-${{ github.run_number }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
+          echo "environment=${{ steps._tmp_environment.outputs.value }}" >> "$GITHUB_OUTPUT"
+
+      - name: Create basic vars
+        id: basic
+        run: |
+          echo "static_version=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
+
   test:
+    needs: [ vars ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,10 +89,10 @@ jobs:
         npm-version:
           - 8.1.2
         command:
-#          - test
+          #          - test
           - lint
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ needs.vars.outputs.environment }}
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
@@ -41,35 +102,23 @@ jobs:
           cache: 'npm'
       - run: npm install -g npm@${{ matrix.npm-version }}
       - run: npm install
-      - name: Get Static version
-        id: static_version
-        run: echo "value=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
       - name: Run test
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
           REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
-          REACT_APP_TRANSLATION_VERSION: ${{ steps.static_version.outputs.value }}
+          REACT_APP_TRANSLATION_VERSION: ${{ needs.vars.outputs.static_version }}
           REACT_APP_SITE_URL: ${{ vars.SITE_URL }}
         run: npm run ${{ matrix.command }}
-      - name: Send fail start in Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
-        if: failure()
 
   build_and_push:
-    needs: [ test ]
-    name: Build and push bill docker
+    needs: [ vars, test ]
+    name: Build and push
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ needs.vars.outputs.environment }}
+    outputs:
+      image_tag: ${{ steps.image_tag.outputs.value }}
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
@@ -81,16 +130,14 @@ jobs:
           cache: 'npm'
       - run: npm install -g npm@8.1.2
       - run: npm install
-      - name: Get Static version
-        id: static_version
-        run: echo "value=$( echo $(date +'%s') )" >> $GITHUB_OUTPUT
       - name: Build js
         env:
           REACT_APP_API_URL: ${{ vars.API_URL }}
           REACT_APP_BASE_URL: ${{ vars.BASE_URL }}
           REACT_APP_PROXY_API_URL: ${{ vars.PROXY_API_URL }}
-          REACT_APP_TRANSLATION_VERSION: ${{ steps.static_version.outputs.value }}
+          REACT_APP_TRANSLATION_VERSION: ${{ needs.vars.outputs.static_version }}
           REACT_APP_SITE_URL: ${{ vars.SITE_URL }}
+          CI: false
         run: |
           npm run build
 
@@ -109,6 +156,11 @@ jobs:
           AWS_REGION: ${{ vars.AWS_REGION }}
           ROLE_TO_ASSUME: ${{ vars.ROLE_TO_ASSUME }}-${{ vars.APP_NAME }}
 
+      - name: Create image tag
+        id: image_tag
+        run: |
+          echo "value=${{ steps.login-ecr.outputs.registry }}/${{ vars.APP_NAME }}:${{ needs.vars.outputs.prefix }}-app" >> "$GITHUB_OUTPUT"
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
@@ -119,28 +171,16 @@ jobs:
           provenance: false
           target: github
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ vars.APP_NAME }}:${{ env.PREFIX }}-app
+            ${{ steps.image_tag.outputs.value }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Push status
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()
-
   deploy_on_server:
-    needs: [ build_and_push ]
+    needs: [ vars, build_and_push ]
     name: Deploy version on k8s
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ needs.vars.outputs.environment }}
     steps:
       - uses: actions/checkout@v4
       - name: Import kubeconfig
@@ -149,24 +189,22 @@ jobs:
           base64-kube-config: ${{ secrets.KUBECONFIG }}
 
       - name: Update Version
-        env:
-          TMP_IMAGE_PREFIX: ${{ vars.DOCKER_REPOSITORY }}/${{ vars.APP_NAME }}:${{ env.PREFIX }}-app
         working-directory: deployment
         run: |
-          sed -i "s|{{ IMAGE }}|${{ env.TMP_IMAGE_PREFIX }}|g" deployment.yml
-          sed -i "s|{{ NAMESPACE }}|${{ env.NAMESPACE }}|g" deployment.yml
+          sed -i "s|{{ IMAGE }}|${{ needs.build_and_push.outputs.image_tag }}|g" deployment.yaml
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" deployment.yaml
 
       - name: Check
         working-directory: deployment
-        run: cat deployment.yml
+        run: cat deployment.yaml
 
       - name: Deploy to DigitalOcean Kubernetes
         working-directory: deployment
-        run: kubectl apply -f deployment.yml
+        run: kubectl apply -f deployment.yaml
 
       - name: Verify deployment
         working-directory: deployment
-        run: kubectl rollout status deployment/bill-deployment -n ${{ env.NAMESPACE }}
+        run: kubectl rollout status deployment/bill-deployment -n ${{ needs.vars.outputs.namespace }}
 
       - name: Clean CloudFlare cache
         run: |
@@ -174,15 +212,3 @@ jobs:
           -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_TOKEN }}" \
           -H "Content-Type:application/json" \
           --data "{\"purge_everything\":true}"
-
-      - name: Deploy status
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          fields: all
-          mention: ${{ vars.STACK_DEVOPS_TRIGGER }}
-          channel: 'github-actions'
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()

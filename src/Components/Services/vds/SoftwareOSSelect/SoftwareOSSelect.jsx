@@ -10,7 +10,14 @@ import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
 import { SOFTWARE_ICONS_LIST } from '@utils/constants'
 
-export default function SoftwareOSSelect({ iconName, itemsList, state, getElement }) {
+export default function SoftwareOSSelect({
+  iconName,
+  itemsList,
+  state,
+  getElement,
+  svgIcon,
+  disabled,
+}) {
   const dropdown = useRef(null)
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const [isOpened, setIsOpened] = useState(false)
@@ -41,8 +48,18 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
 
   return (
     <div className={cn(s.bg, { [s.selected]: selectedItem.value === state })}>
-      <button className={s.btn} type="button" onClick={() => setIsOpened(true)}>
-        <img className={cn(s.img)} src={renderImg()} alt="icon" />
+      <button
+        className={s.btn}
+        type="button"
+        disabled={disabled}
+        onClick={() => setIsOpened(true)}
+      >
+        {svgIcon ? (
+          <Icon name={svgIcon} />
+        ) : (
+          <img className={cn(s.img)} src={renderImg()} alt="icon" />
+        )}
+
         <p>{selectedItem?.label}</p>
 
         <Icon name="Shevron" className={cn(ss.right_icon, { [ss.opened]: isOpened })} />
@@ -61,11 +78,16 @@ export default function SoftwareOSSelect({ iconName, itemsList, state, getElemen
                   onKeyDown={null}
                   role="button"
                 >
-                  <img
-                    className={cn(s.img, s.left, s.grey)}
-                    src={renderImg()}
-                    alt="icon"
-                  />
+                  {svgIcon ? (
+                    <Icon name={svgIcon} />
+                  ) : (
+                    <img
+                      className={cn(s.img, s.left, s.grey)}
+                      src={renderImg()}
+                      alt="icon"
+                    />
+                  )}
+
                   {el.label}
                 </div>
               )

@@ -26,15 +26,23 @@ import {
 } from '@utils'
 import cn from 'classnames'
 import * as Yup from 'yup'
+import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
 
 import s from './VDSOrder.module.scss'
-import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
+
+const MAX_ORDER_COUNT = 35
 
 export default function VDSOrder() {
   const location = useLocation()
   const dispatch = useDispatch()
   const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
-  const { t } = useTranslation(['vds', 'other', 'crumbs', 'dedicated_servers', 'autoprolong'])
+  const { t } = useTranslation([
+    'vds',
+    'other',
+    'crumbs',
+    'dedicated_servers',
+    'autoprolong',
+  ])
   const agreementEl = useRef()
 
   const { signal, isLoading, setIsLoading } = useCancelRequest()
@@ -203,7 +211,7 @@ export default function VDSOrder() {
     return { percent, oldPrice, newPrice }
   }
 
-  const renderSoftwareOSFields = (fieldName, values, setFieldValue, state, ostempl) => {
+  const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
     let dataArr = parametersInfo.slist.find(el => el.$name === fieldName)?.val
     const elemsData = {}
     if (fieldName === 'recipe') {
@@ -242,14 +250,6 @@ export default function VDSOrder() {
                 setParametersInfo({ ...parametersInfo })
               } else {
                 setRecipe(value)
-              }
-
-              if (value.includes('vestacp')) {
-                onChangeField(
-                  period,
-                  { ...values, recipe: value, Control_panel: '97' },
-                  'Control_panel',
-                )
               }
             }}
           />
@@ -491,14 +491,18 @@ export default function VDSOrder() {
                                             ? event.target.value.replace(/^0/, '')
                                             : event.target.value
 
-                                        setCount(+event.target.value > 35 ? 35 : value)
+                                        setCount(
+                                          +event.target.value > MAX_ORDER_COUNT
+                                            ? MAX_ORDER_COUNT
+                                            : value,
+                                        )
                                       }}
                                       onBlur={event => {
                                         if (event.target.value < 1) setCount(1)
                                       }}
                                       type="number"
                                       min={1}
-                                      max={35}
+                                      max={MAX_ORDER_COUNT}
                                     />
                                   </div>
                                 </div>
@@ -513,7 +517,7 @@ export default function VDSOrder() {
                                     roundToDecimal(+(values.totalPrice * (+count + 1))),
                                   )
                                 }}
-                                disabled={+count >= 35}
+                                disabled={+count >= MAX_ORDER_COUNT}
                               ></button>
                             </div>
                           )}
@@ -529,12 +533,7 @@ export default function VDSOrder() {
                       {t('os', { ns: 'dedicated_servers' })}
                     </p>
                     <div className={s.software_OS_List}>
-                      {renderSoftwareOSFields(
-                        'ostempl',
-                        values,
-                        setFieldValue,
-                        values.ostempl,
-                      )}
+                      {renderSoftwareOSFields('ostempl', setFieldValue, values.ostempl)}
                     </div>
 
                     <p className={s.section_title}>
@@ -543,7 +542,6 @@ export default function VDSOrder() {
                     <div className={s.software_OS_List}>
                       {renderSoftwareOSFields(
                         'recipe',
-                        values,
                         setFieldValue,
                         recipe,
                         values.ostempl,
@@ -742,14 +740,18 @@ export default function VDSOrder() {
                                       ? event.target.value?.replace(/^0/, '')
                                       : event.target.value
 
-                                  setCount(+event.target.value > 35 ? 35 : value)
+                                  setCount(
+                                    +event.target.value > MAX_ORDER_COUNT
+                                      ? MAX_ORDER_COUNT
+                                      : value,
+                                  )
                                 }}
                                 onBlur={event => {
                                   if (event.target.value < 1) setCount(1)
                                 }}
                                 type="number"
                                 min={1}
-                                max={35}
+                                max={MAX_ORDER_COUNT}
                               />
                             </div>
                           </div>
@@ -764,7 +766,7 @@ export default function VDSOrder() {
                               roundToDecimal(+(values.totalPrice * (+count + 1))),
                             )
                           }}
-                          disabled={+count >= 35}
+                          disabled={+count >= MAX_ORDER_COUNT}
                         ></button>
                       </div>
                     </div>

@@ -5,8 +5,17 @@ import { selectors } from '@redux'
 
 import s from './SoftwareOSBtn.module.scss'
 import { SOFTWARE_ICONS_LIST } from '@utils/constants'
+import { Icon } from '@components'
 
-export default function SoftwareOSBtn({ iconName, label, value, state, onClick }) {
+export default function SoftwareOSBtn({
+  iconName,
+  label,
+  value,
+  state,
+  onClick,
+  svgIcon,
+  disabled,
+}) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const icon =
@@ -29,13 +38,17 @@ export default function SoftwareOSBtn({ iconName, label, value, state, onClick }
   }
 
   return (
-    <div className={cn(s.bg, { [s.selected]: value === state })}>
+    <div className={cn(s.bg, { [s.selected]: value === state, [s.disabled]: disabled })}>
       <button className={s.btn} onClick={() => onClick(value)} type="button">
-        <img
-          className={cn(s.img, { [s.without]: icon === 'null' })}
-          src={renderImg()}
-          alt="icon"
-        />
+        {svgIcon ? (
+          <Icon name={svgIcon} />
+        ) : (
+          <img
+            className={cn(s.img, { [s.without]: icon === 'null' })}
+            src={renderImg()}
+            alt="icon"
+          />
+        )}
 
         {label}
       </button>

@@ -55,7 +55,8 @@
           ["@pages", "./src/Pages"],
           ["@utils", "./src/utils"],
           ["@config", "./src/config"],
-          ["@src", "./src"]
+          ["@src", "./src"],
+          ["@scss", "./scss"]
         ],
         "extensions": [".ts", ".js", ".jsx", ".json"]
       }

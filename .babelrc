@@ -21,6 +21,7 @@
           "@utils": "./src/utils",
           "@src": "./src",
           "@config": "./src/config",
+          "@scss": "./src/scss"
         }
       }
     ]
