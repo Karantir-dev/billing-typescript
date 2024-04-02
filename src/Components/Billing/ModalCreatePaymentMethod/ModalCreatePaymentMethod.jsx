@@ -15,7 +15,7 @@ import * as Yup from 'yup'
 
 import s from './ModalCreatePaymentMethod.module.scss'
 import { checkIfTokenAlive } from '@utils'
-import { OFFER_FIELD, CNP_REGEX } from '@utils/constants'
+import { OFFER_FIELD } from '@utils/constants'
 
 export default function Component(props) {
   const dispatch = useDispatch()
@@ -97,13 +97,6 @@ export default function Component(props) {
     [OFFER_FIELD]: payersData.selectedPayerFields?.offer_field
       ? Yup.bool().oneOf([true])
       : null,
-    cnp:
-      payersSelectedFields?.profiletype === '1' &&
-      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
-        ? Yup.string()
-            .required(t('Is a required field', { ns: 'other' }))
-            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
-        : null,
   })
 
   return (

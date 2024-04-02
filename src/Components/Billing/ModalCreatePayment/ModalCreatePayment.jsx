@@ -29,12 +29,7 @@ import {
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
 import { checkIfTokenAlive, replaceAllFn } from '@utils'
-import {
-  QIWI_PHONE_COUNTRIES,
-  SBER_PHONE_COUNTRIES,
-  OFFER_FIELD,
-  CNP_REGEX,
-} from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
 
@@ -231,13 +226,6 @@ export default function ModalCreatePayment() {
       filteredPayment_method?.hide?.includes('phone') &&
       !filteredPayment_method?.hide?.includes('alfabank_login')
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
-        : null,
-    cnp:
-      payersSelectedFields?.profiletype === '1' &&
-      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
-        ? Yup.string()
-            .required(t('Is a required field', { ns: 'other' }))
-            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
         : null,
     [OFFER_FIELD]: Yup.bool().oneOf([true]),
   })
