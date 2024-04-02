@@ -70,8 +70,7 @@ export default function ModalAddPayer(props) {
       ? Yup.string().required(t('Is a required field', { ns: 'other' }))
       : null,
     cnp:
-      payersSelectedFields?.profiletype === '1' &&
-      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
+      payersSelectedFields?.profiletype === '1' && payersSelectedFields?.country === '181'
         ? Yup.string()
             .required(t('Is a required field', { ns: 'other' }))
             .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
@@ -144,6 +143,7 @@ export default function ModalAddPayer(props) {
             country:
               payersSelectedFields?.country ||
               payersSelectedFields?.country_physical ||
+              geoData?.clients_country_id ||
               '',
             profiletype: payersSelectedFields?.profiletype || '',
             maildocs: payersSelectedFields?.maildocs || '',
@@ -153,10 +153,6 @@ export default function ModalAddPayer(props) {
             name: payersSelectedFields?.name || '',
             eu_vat: payersSelectedFields?.eu_vat || '',
             cnp: payersSelectedFields?.cnp || '',
-            country_physical:
-              payersSelectedFields?.country ||
-              payersSelectedFields?.country_physical ||
-              '',
             postcode_physical: payersSelectedFields?.postcode_physical || '',
             passport: payersSelectedFields?.passport || '',
             address_physical: payersSelectedFields?.address_physical || '',
@@ -204,8 +200,7 @@ export default function ModalAddPayer(props) {
                     />
 
                     {payersSelectedFields?.profiletype === '1' &&
-                    (payersSelectedFields?.country ||
-                      payersSelectedFields?.country_physical) === '181' ? (
+                    payersSelectedFields?.country === '181' ? (
                       <InputField
                         inputWrapperClass={s.inputHeight}
                         name="cnp"
@@ -283,7 +278,7 @@ export default function ModalAddPayer(props) {
                   <div className={s.formFieldsBlock}>
                     <SelectGeo
                       setSelectFieldValue={item => setFieldValue('country', item)}
-                      selectValue={values.country}
+                      selectValue={payersSelectedFields?.country}
                       selectClassName={s.select}
                       countrySelectClassName={s.countrySelectItem}
                       geoData={geoData}

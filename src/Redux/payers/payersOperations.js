@@ -76,7 +76,7 @@ const getPayerCountryType =
         dispatch(payersActions.setPayersSelectLists(filters))
 
         const fixedFields = {
-          country: filters?.country?.[0]?.$key,
+          country: data?.doc?.country?.$,
           profiletype: filters?.profiletype?.[0]?.$key,
         }
 
@@ -431,6 +431,7 @@ const getPayerEditInfo =
         data?.doc?.slist?.forEach(el => {
           if (el?.$name === 'maildocs') filters[el.$name] = el?.val
           if (el?.$name === 'profiletype') filters[el.$name] = el?.val
+          if (el?.$name === 'country_physical') filters[el.$name] = el?.val
         })
 
         const hideLoader = () =>
