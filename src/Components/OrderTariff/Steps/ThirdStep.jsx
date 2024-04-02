@@ -2,10 +2,8 @@ import { PayersList } from '@components'
 import { Form, Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, payersOperations, payersSelectors } from '@redux'
-import { OFFER_FIELD, CNP_REGEX } from '@utils/constants'
+import { OFFER_FIELD } from '@utils/constants'
 import s from '../OrderTariff.module.scss'
-import { useTranslation } from 'react-i18next'
-import * as Yup from 'yup'
 
 export default function ThirdtStep({ passStep }) {
   const dispatch = useDispatch()
@@ -14,8 +12,6 @@ export default function ThirdtStep({ passStep }) {
   const payersData = useSelector(payersSelectors.getPayersData)
   const payersList = useSelector(payersSelectors.getPayersList)
   const geoData = useSelector(authSelectors.getGeoData)
-
-  const { t } = useTranslation(['other'])
 
   const editPayerHandler = ({ profile, ...values }) => {
     let data = {
@@ -53,20 +49,9 @@ export default function ThirdtStep({ passStep }) {
   const submitFormHandler = values =>
     payersList?.length ? editPayerHandler(values) : createPayerHandler(values)
 
-  const validationSchema = Yup.object().shape({
-    cnp:
-      payersSelectedFields?.profiletype === '1' &&
-      (payersSelectedFields?.country || payersSelectedFields?.country_physical) === '181'
-        ? Yup.string()
-            .required(t('Is a required field', { ns: 'other' }))
-            .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
-        : null,
-  })
-
   return (
     <Formik
       enableReinitialize
-      validationSchema={validationSchema}
       initialValues={{
         profile:
           payersData.selectedPayerFields?.profile ||

@@ -274,42 +274,45 @@ const getDepartmenList = signal => (dispatch, getState) => {
     })
 }
 
-const getServiceList = signal => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+const getServiceList =
+  ({ signal, ticket_item }) =>
+  (dispatch, getState) => {
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'clientticket.edit',
-        lang: 'en',
-        out: 'json',
-        auth: sessionId,
-        sv_field: 'ticket_item',
-        sv_autocomplete: 'yes',
-      }),
-      { signal },
-    )
-    .then(({ data }) => {
-      if (data?.doc?.error) {
-        throw new Error(data.doc.error.msg.$)
-      }
-
-      data?.doc?.slist?.forEach(el => {
-        if (el?.$name === 'ticket_item') {
-          let services = el?.val?.map(e => {
-            return { label: e.$, value: e.$key }
-          })
-          dispatch(supportActions.getServices(services))
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'clientticket.edit',
+          lang: 'en',
+          out: 'json',
+          auth: sessionId,
+          sv_field: 'ticket_item',
+          sv_autocomplete: 'yes',
+          ticket_item,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data?.doc?.error) {
+          throw new Error(data.doc.error.msg.$)
         }
+
+        data?.doc?.slist?.forEach(el => {
+          if (el?.$name === 'ticket_item') {
+            let services = el?.val?.map(e => {
+              return { label: e.$, value: e.$key }
+            })
+            dispatch(supportActions.getServices(services))
+          }
+        })
       })
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch, true)
-    })
-}
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch, true)
+      })
+  }
 
 const createTicket = (data, setCreateTicketModal, resetForm) => (dispatch, getState) => {
   dispatch(actions.showLoader())

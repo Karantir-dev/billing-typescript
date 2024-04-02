@@ -6,7 +6,11 @@ import { useEffect, useReducer, useState } from 'react'
 import { useFormikContext } from 'formik'
 import s from './PayersList.module.scss'
 import cn from 'classnames'
-import { ADDRESS_REGEX, ADDRESS_SPECIAL_CHARACTERS_REGEX } from '@utils/constants'
+import {
+  ADDRESS_REGEX,
+  ADDRESS_SPECIAL_CHARACTERS_REGEX,
+  CNP_REGEX,
+} from '@utils/constants'
 
 export default function PayersList({ signal, setIsLoading, renderTitle = () => {} }) {
   const { t } = useTranslation(['billing', 'other', 'payers'])
@@ -107,8 +111,13 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
   }
 
   const validateCnp = value => {
-    const cnpRegex = /^[0-9]+$/
-    return (cnpRegex.test(value) && value.length <= 13) || value === ''
+    let error
+    if (!value) {
+      error = t('Is a required field', { ns: 'other' })
+    } else if (!value.match(CNP_REGEX)) {
+      error = t('cnp_validation', { ns: 'other' })
+    }
+    return error
   }
 
   useEffect(() => {
@@ -206,16 +215,9 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
               error={!!errors.cnp}
               touched={!!touched.cnp}
               value={values.cnp}
-              onChange={e => {
-                const value = e.target.value
-                const isValid = validateCnp(value)
-
-                if (!isValid) {
-                  return
-                }
-
-                setState({ cnp: value })
-              }}
+              onChange={e => setState({ cnp: e.target.value })}
+              validate={validateCnp}
+              type="number"
               isRequired
             />
           </>
