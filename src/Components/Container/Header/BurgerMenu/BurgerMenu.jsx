@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { ThemeBtn, LangBtn, Icon } from '@components'
 import ListItems from './ListItems/ListItems'
 import { userSelectors, authOperations, selectors, billingActions } from '@redux'
-import { useOutsideAlerter, usePageRender } from '@utils'
+import { roundToDecimal, useOutsideAlerter, usePageRender } from '@utils'
 import * as routes from '@src/routes'
 
 import s from './BurgerMenu.module.scss'
@@ -164,9 +164,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
   ]
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  const { $realname, $email, $balance } = useSelector(userSelectors.getUserInfo)
-
-  const userItems = useSelector(userSelectors.getUserItems)
+  const { $realname, $email, realbalance } = useSelector(userSelectors.getUserInfo)
 
   const dispatch = useDispatch()
   const getBurgerEl = useRef()
@@ -185,13 +183,6 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
     { active: false, listId: 4, listName: 'affiliate_program' },
     { active: false, listId: 5, listName: 'support' },
   ])
-
-  function truncateToDecimals(num, dec = 2) {
-    const calcDec = Math.pow(10, dec)
-    return Math.trunc(num * calcDec) / calcDec
-  }
-
-  const userBalance = userItems?.$balance?.replace(' €', '')?.replace(' EUR', '')
 
   return (
     <>
@@ -232,9 +223,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
               >
                 <p className={s.balance_text}>{t('balance')}</p>
                 <p className={s.balance_sum}>
-                  {userItems?.$balance
-                    ? truncateToDecimals(userBalance, 2)?.toFixed(2)
-                    : truncateToDecimals($balance, 2)?.toFixed(2)}
+                  {roundToDecimal(realbalance, 'floor')}
                   EUR
                 </p>
               </button>

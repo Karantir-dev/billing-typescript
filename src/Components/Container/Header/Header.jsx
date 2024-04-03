@@ -79,7 +79,7 @@ export default function Header() {
   const userTickets = useSelector(userSelectors.getUserTickets)
   const areNewTickets = userTickets.some(ticket => ticket.tstatus.$ === 'New replies')
 
-  const { $balance, $realname, $email } = useSelector(userSelectors.getUserInfo)
+  const { $realname, $email, realbalance } = useSelector(userSelectors.getUserInfo)
 
   const [isMenuOpened, setIsMenuOpened] = useState(false)
 
@@ -106,7 +106,6 @@ export default function Header() {
     dispatch(authOperations.logout())
   }
 
-  const userBalance = userItems?.$balance?.replace(' €', '')?.replace(' EUR', '')
   const closeCertificateModal = () => setIsUseCertificate(false)
 
   return (
@@ -136,9 +135,7 @@ export default function Header() {
                       {/* {t('balance')}{' '} */}
                       <Icon name="WalletBalance" />
                       <span className={s.balance_sum}>
-                        {userItems?.$balance
-                          ? roundToDecimal(userBalance, 'floor')
-                          : $balance && roundToDecimal($balance, 'floor')}
+                        {roundToDecimal(realbalance, 'floor')}
                         EUR
                       </span>
                     </div>
