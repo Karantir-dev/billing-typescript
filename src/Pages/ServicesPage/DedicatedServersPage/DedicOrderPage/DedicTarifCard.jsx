@@ -26,7 +26,6 @@ export default function DedicTarifCard({
   const parsedPrice = parsePrice(item?.price?.$)
 
   const priceAmount = parsedPrice.amount
-  const pricePercent = parsedPrice.percent
   const priceSale = parsedPrice.sale
   const hasSale = parsedPrice.length
   const periodName = parsedPrice.periodName
@@ -65,16 +64,6 @@ export default function DedicTarifCard({
         type="button"
         className={classNames(s.tarif_card_btn, { [s.new]: item.isNew })}
       >
-        {hasSale === 3 && (
-          <span
-            className={classNames({
-              [s.sale_percent]: hasSale === 3,
-            })}
-          >
-            -{pricePercent}
-          </span>
-        )}
-
         {item.isNew && <span className={s.new_tariff}>NEW</span>}
         <div className={s.card_header}>
           <span

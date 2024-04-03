@@ -212,7 +212,7 @@ export default function ModalAddPayer(props) {
                         touched={!!touched.name}
                         isRequired
                         inputClassName={s.field}
-                        onBlur={e => setFieldValue('cnp', e.target.value.trim())}
+                        type="number"
                       />
                     ) : null}
 
