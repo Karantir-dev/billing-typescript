@@ -7,19 +7,11 @@ import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 
 const userInfo = (data, dispatch) => {
   try {
-    const {
-      $realname,
-      $balance,
-      $email,
-      $phone,
-      $id,
-      $email_verified,
-      $need_phone_validate,
-    } = data.doc.user
+    const { $realname, $email, $phone, $id, $email_verified, $need_phone_validate } =
+      data.doc.user
     dispatch(
       userActions.setUserInfo({
         $realname,
-        $balance,
         $email,
         $phone,
         $id,
@@ -49,9 +41,6 @@ export const userNotifications = (data, dispatch, setIsLoader) => {
       }
       if (el?.$name === 'ticket') {
         d['ticket_count'] = el?.msg?.$
-      }
-      if (el?.$balance === 'yes') {
-        d['$balance'] = el?.value?.$
       }
     })
   }

@@ -135,8 +135,7 @@ export default function Header() {
                       {/* {t('balance')}{' '} */}
                       <Icon name="WalletBalance" />
                       <span className={s.balance_sum}>
-                        {roundToDecimal(realbalance, 'floor')}
-                        EUR
+                        {roundToDecimal(realbalance, 'floor')} EUR
                       </span>
                     </div>
                   </button>

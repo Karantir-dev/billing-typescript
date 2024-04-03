@@ -223,8 +223,7 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
               >
                 <p className={s.balance_text}>{t('balance')}</p>
                 <p className={s.balance_sum}>
-                  {roundToDecimal(realbalance, 'floor')}
-                  EUR
+                  {roundToDecimal(realbalance, 'floor')} EUR
                 </p>
               </button>
             </li>
