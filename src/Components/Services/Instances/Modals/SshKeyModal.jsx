@@ -92,8 +92,9 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            const trimmedValue = values.comment.trim()
-            onSubmit({ values: { comment: trimmedValue, ...values }, closeModal })
+            const comment = values.comment.trim()
+            const publicKey = values.publicKey.trim()
+            onSubmit({ values: { comment, publicKey }, closeModal })
           }}
         >
           {({ values, errors, touched }) => {
