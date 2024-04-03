@@ -212,6 +212,7 @@ export default function ModalAddPayer(props) {
                         touched={!!touched.name}
                         isRequired
                         inputClassName={s.field}
+                        type="number"
                       />
                     ) : null}
 
