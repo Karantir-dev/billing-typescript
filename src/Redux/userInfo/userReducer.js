@@ -5,7 +5,7 @@ import userActions from './userActions'
 const initialState = {
   userInfo: {
     $realname: '',
-    $balance: '',
+    realbalance: '',
     $email: '',
     $phone: '',
     $id: '',

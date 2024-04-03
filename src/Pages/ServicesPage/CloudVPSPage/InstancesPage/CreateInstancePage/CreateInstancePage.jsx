@@ -65,7 +65,7 @@ export default function CreateInstancePage() {
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
   const globalSshList = useSelector(cloudVpsSelectors.getSshList)
-  const { $balance, credit } = useSelector(userSelectors.getUserInfo)
+  const { credit, realbalance } = useSelector(userSelectors.getUserInfo)
 
   const [sshList, setSshList] = useState()
   const [currentDC, setCurrentDC] = useState()
@@ -432,7 +432,7 @@ export default function CreateInstancePage() {
               values.order_count,
             )
 
-            const totalBalance = credit ? +$balance + +credit : +$balance
+            const totalBalance = credit ? +realbalance + +credit : +realbalance
 
             if (finalPrice > totalBalance && finalPrice < 1) {
               !values.notEnoughMoney && setFieldValue('notEnoughMoney', true)
