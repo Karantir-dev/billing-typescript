@@ -126,10 +126,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
         .max(48, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
         .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
-        .matches(
-          DISALLOW_SPACE,
-          t('warnings.disallow_space', { min: 8, max: 48, ns: 'auth' }),
-        )
+        .matches(DISALLOW_SPACE, t('warnings.disallow_space', { ns: 'auth' }))
         .required(t('warnings.password_required', { ns: 'auth' })),
     password_type:
       isRebuild && Yup.string().required(t('Is a required field', { ns: 'other' })),
