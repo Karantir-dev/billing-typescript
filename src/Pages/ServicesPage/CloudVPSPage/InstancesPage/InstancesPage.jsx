@@ -37,6 +37,7 @@ export default function InstancesPage() {
   const instances = useSelector(cloudVpsSelectors.getInstancesList)
   const instancesCount = useSelector(cloudVpsSelectors.getInstancesCount)
   const filters = useSelector(cloudVpsSelectors.getInstancesFilters)
+  const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
 
   const [pagination, setPagination] = useReducer(
     (state, action) => {
@@ -44,6 +45,7 @@ export default function InstancesPage() {
     },
     { p_num: 1, p_cnt: '10' },
   )
+
   useEffect(() => {
     const isProcessing = instances?.find(item => {
       return getInstanceMainInfo(item).isProcessing
@@ -170,6 +172,8 @@ export default function InstancesPage() {
     dispatch(
       cloudVpsOperations.editSsh({
         ...values,
+        p_cnt: allSshCount + 1,
+        setAllSshItems: list => dispatch(cloudVpsActions.setAllSshList(list)),
         closeModal: () =>
           dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false })),
       }),
