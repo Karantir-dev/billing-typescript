@@ -12,7 +12,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { isDisabled, isProcessing, isStopped, isResized, isRescued } =
+  const { isDisabled, isProcessing, isStopped, isResized, isRescued, isWindows } =
     getInstanceMainInfo(item)
 
   const isHideMostItems = isResized || isRescued
@@ -96,7 +96,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
       label: t('Change password'),
       icon: 'ChangePassword',
       disabled: isDisabled || isStopped,
-      hidden: isHideMostItems,
+      hidden: isHideMostItems || isWindows,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ change_pass: item })),
     },
     {
