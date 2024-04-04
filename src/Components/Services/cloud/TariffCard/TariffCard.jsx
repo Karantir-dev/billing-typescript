@@ -30,7 +30,7 @@ export default function TariffCard({ tariff, onClick, price, active, disabled })
           </div>
           <div className={s.tariff_row}>
             <span className={s.parameter_label}>Speed</span>
-            <span className={s.parameter_value}>250 Mbps</span>
+            <span className={s.parameter_value}>1 Gbps</span>
           </div>
           <div className={s.tariff_row}>
             <span className={s.parameter_label}>Bandwidth</span>
