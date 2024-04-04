@@ -108,6 +108,7 @@ export default function Component() {
                   className={s.tools_icon}
                   onClick={() => setTipsModa(true)}
                   icon="euro"
+                  disabled={realbalance < 1}
                 />
               </HintWrapper>
             )}
