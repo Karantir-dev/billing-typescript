@@ -854,8 +854,9 @@ const generateSsh =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        const sshKey = data.doc.public_key.$
-        setSSHKey(sshKey)
+        const publicKey = data.doc.public_key.$
+        const privateKey = data.doc.private_key.$
+        setSSHKey({ publicKey, privateKey })
         dispatch(actions.hideLoader())
       })
       .catch(error => {

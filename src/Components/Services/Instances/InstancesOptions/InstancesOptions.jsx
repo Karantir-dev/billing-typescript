@@ -132,7 +132,6 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
     {
       label: t('Create ticket'),
       icon: 'Headphone',
-      hidden: isHideMostItems,
       onClick: () =>
         navigate(`${route.SUPPORT}/requests`, {
           state: { id: item.id.$, openModal: true },

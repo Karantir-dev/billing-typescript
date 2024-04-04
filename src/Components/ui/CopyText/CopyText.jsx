@@ -23,7 +23,7 @@ export default function CopyText({ text }) {
   }
 
   return (
-    <button className={s.copy_btn} onClick={handleCopyText}>
+    <button className={s.copy_btn} onClick={handleCopyText} type="button">
       <Icon name="Copy" className={s.copy_icon} />
       <CSSTransition
         in={refLinkCopied}
