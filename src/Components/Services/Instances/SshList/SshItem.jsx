@@ -23,7 +23,7 @@ export default function SshItem({ item }) {
       <td className={s.td}>
         <button
           type="button"
-          className={s.table_el_button}
+          className={cn(s.btn, s.table_el_button)}
           onClick={() => {
             dispatch(cloudVpsActions.setItemForModals({ ssh_rename: item }))
           }}
@@ -31,6 +31,7 @@ export default function SshItem({ item }) {
           <Icon name="Rename" />
         </button>
         <button
+          className={s.btn}
           type="button"
           onClick={() => {
             dispatch(cloudVpsActions.setItemForModals({ ssh_delete: item }))
