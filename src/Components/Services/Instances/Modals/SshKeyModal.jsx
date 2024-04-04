@@ -97,7 +97,16 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
             onSubmit({ values: { comment, publicKey }, closeModal })
           }}
         >
-          {({ values, errors, touched }) => {
+          {({ values, errors, touched, setFieldValue }) => {
+            const setSSHKey = value => setFieldValue('publicKey', value)
+
+            const generateSshHandler = () =>
+              dispatch(
+                cloudVpsOperations.generateSsh({
+                  setSSHKey,
+                }),
+              )
+
             return (
               <Form id={'add_ssh'} className={cn(s.form, s.sshForm)}>
                 <InputField
@@ -120,6 +129,15 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
                   label={`${t('ssh_key')}:`}
                   isRequired
                 />
+
+                <Button
+                  className={s.sshGenerateBtn}
+                  type="button"
+                  onClick={generateSshHandler}
+                  label={t('generate_new_key')}
+                  size="block"
+                  isShadow
+                ></Button>
               </Form>
             )
           }}

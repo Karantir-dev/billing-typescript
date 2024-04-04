@@ -42,6 +42,17 @@
   }
 }
 
+.sshGenerateBtn {
+  margin-top: 10px;
+  padding-left: 25px;
+  padding-right: 25px;
+  justify-self: start;
+  @media screen and (min-width: 768px) {
+    margin-top: 0;
+    min-width: 310px;
+  }
+}
+
 .sshAreaInput {
   overflow: unset;
   min-height: 80px;

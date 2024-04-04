@@ -40,6 +40,13 @@
     position: relative;
 
     .td {
+      .btn {
+        &:hover {
+          svg {
+            fill: url(#gradient);
+          }
+        }
+      }
       &:nth-child(1) {
         &::before {
           content: '';

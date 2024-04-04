@@ -125,5 +125,6 @@
   "create_instance": "Create instance",
   "windows_disabled": "Windows enabled with other tariffs",
   "not_enough_money": "Insufficient funds for purchase.",
-  "top_up": "Top up your balance"
+  "top_up": "Top up your balance",
+  "generate_new_key": "Generate new key"
 }

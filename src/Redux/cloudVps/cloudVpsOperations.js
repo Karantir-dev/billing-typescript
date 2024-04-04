@@ -836,6 +836,34 @@ const deleteSsh =
       })
   }
 
+const generateSsh =
+  ({ setSSHKey }) =>
+  (dispatch, getState) => {
+    dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'sshkeys.generator',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+        }),
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        const sshKey = data.doc.public_key.$
+        setSSHKey(sshKey)
+        dispatch(actions.hideLoader())
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -857,4 +885,5 @@ export default {
   getOsList,
   setOrderData,
   getTariffParamsRequest,
+  generateSsh,
 }
