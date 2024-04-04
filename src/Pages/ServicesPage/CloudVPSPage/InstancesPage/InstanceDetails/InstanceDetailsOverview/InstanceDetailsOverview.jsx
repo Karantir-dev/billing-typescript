@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
-import dayjs from 'dayjs'
 import { Loader } from '@components'
 import { getFlagFromCountryName, useCancelRequest, formatCountryName } from '@utils'
 
@@ -32,12 +31,6 @@ export default function InstanceDetailsOverview() {
         ),
       )
   }, [])
-
-  function formatDate() {
-    const formattedDate = dayjs(instanceInfo.createdate).format('MMM DD YYYY')
-
-    return `${formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1)}`
-  }
 
   const itemCountry = formatCountryName(item)
 
@@ -90,7 +83,7 @@ export default function InstanceDetailsOverview() {
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Created at')}</p>
                 {instanceInfo?.createdate && (
-                  <p className={s.item_info}>{formatDate()}</p>
+                  <p className={s.item_info}>{instanceInfo.createdate}</p>
                 )}
               </div>
               {/* Region Block */}
