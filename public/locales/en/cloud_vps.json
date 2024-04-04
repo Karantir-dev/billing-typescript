@@ -46,6 +46,7 @@
   "resize_notes": "Notes: you can only select flavors larger than your current flavor. After the resize is completed, the instance will have the state \"VERIFY RESIZE\". Check if everything is ok with your data and then click on \"Confirm resize\" in the instance menu.",
   "no_ssh_yet": "No SSH keys",
   "ssh_key": "SSH Key",
+  "private_ssh_key": "Private SSH Key",
   "Add new SSH Key": "Add SSH Key",
   "Name can have no more than": "The name can have no more than 32 characters",
   "This name is already in use": "This name is already in use",
@@ -126,5 +127,8 @@
   "windows_disabled": "Windows enabled with other tariffs",
   "not_enough_money": "Insufficient funds for purchase.",
   "top_up": "Top up your balance",
-  "generate_new_key": "Generate new key"
+  "generate_new_key": "Generate key",
+  "private_warn_message": "Private key. You should save this key locally, it will not be saved on server.",
+  "copy_private_key": "Copy private key to clipboard",
+  "key_copied": "SSH key copied"
 }

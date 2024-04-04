@@ -1,4 +1,12 @@
-import { Button, InputField, Modal, Icon, MessageInput } from '@components'
+import {
+  Button,
+  InputField,
+  Modal,
+  Icon,
+  MessageInput,
+  WarningMessage,
+  CopyText,
+} from '@components'
 import { SSH_KEY_NAME_REGEX, CYRILLIC_ALPHABET_PROHIBITED } from '@utils/constants'
 
 import { useEffect, useState } from 'react'
@@ -89,6 +97,7 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
           initialValues={{
             comment: item?.comment?.$ || '',
             publicKey: item?.publicKey?.$ || '',
+            privateKey: '',
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
@@ -98,7 +107,10 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
           }}
         >
           {({ values, errors, touched, setFieldValue }) => {
-            const setSSHKey = value => setFieldValue('publicKey', value)
+            const setSSHKey = ({ publicKey, privateKey }) => {
+              setFieldValue('publicKey', publicKey)
+              setFieldValue('privateKey', privateKey)
+            }
 
             const generateSshHandler = () =>
               dispatch(
@@ -129,15 +141,41 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
                   label={`${t('ssh_key')}:`}
                   isRequired
                 />
+                {values.privateKey && (
+                  <div>
+                    <WarningMessage>
+                      {t('private_warn_message')}{' '}
+                      <CopyText text={values.privateKey} promptText={t('key_copied')} />
+                    </WarningMessage>
+                    <div className={s.privateKeyWrapper}>
+                      <MessageInput
+                        message={values?.privateKey}
+                        enableFiles={false}
+                        name={'privateKey'}
+                        textareaClassName={s.sshAreaInput}
+                        placeholderText={t('Enter your SSH key')}
+                        label={`${t('private_ssh_key')}:`}
+                        disabled
+                      />
+                      <CopyText
+                        text={values.privateKey}
+                        className={s.privateKeyCopy}
+                        promptText={t('key_copied')}
+                      />
+                    </div>
+                  </div>
+                )}
 
-                <Button
-                  className={s.sshGenerateBtn}
-                  type="button"
-                  onClick={generateSshHandler}
-                  label={t('generate_new_key')}
-                  size="block"
-                  isShadow
-                ></Button>
+                {mode === 'add' && (
+                  <Button
+                    className={s.sshGenerateBtn}
+                    type="button"
+                    onClick={generateSshHandler}
+                    label={t('generate_new_key')}
+                    size="large"
+                    isShadow
+                  />
+                )}
               </Form>
             )
           }}
@@ -146,9 +184,9 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
       <Modal.Footer>
         <Button
           label={t('Save key', { ns: 'user_settings' })}
-          size={'large'}
+          size="large"
           type="submit"
-          form={'add_ssh'}
+          form="add_ssh"
           isShadow
         />
         <button type="button" onClick={closeModal}>

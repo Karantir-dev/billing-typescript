@@ -82,6 +82,10 @@
     background-clip: padding-box;
     background-color: #e72690;
   }
+
+  &:disabled {
+    color: var(--transparent-color);
+  }
 }
 
 .filesInfo {

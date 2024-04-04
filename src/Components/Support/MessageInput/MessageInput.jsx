@@ -18,6 +18,7 @@ export default function Component(props) {
     placeholderText,
     label,
     isRequired,
+    disabled,
   } = props
   const { t } = useTranslation(['support', 'other'])
 
@@ -47,6 +48,7 @@ export default function Component(props) {
             placeholder={placeholderText || t('Enter your message...')}
             as="textarea"
             onKeyDown={onKeyDown}
+            disabled={disabled}
           />
           {enableFiles && (
             <label htmlFor="files">
