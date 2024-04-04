@@ -144,17 +144,25 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
                 {values.privateKey && (
                   <div>
                     <WarningMessage>
-                      {t('private_warn_message')} <CopyText text={values.privateKey} />
+                      {t('private_warn_message')}{' '}
+                      <CopyText text={values.privateKey} promptText={t('key_copied')} />
                     </WarningMessage>
-                    <MessageInput
-                      message={values?.privateKey}
-                      enableFiles={false}
-                      name={'privateKey'}
-                      textareaClassName={s.sshAreaInput}
-                      placeholderText={t('Enter your SSH key')}
-                      label={`${t('private_ssh_key')}:`}
-                      disabled
-                    />
+                    <div className={s.privateKeyWrapper}>
+                      <MessageInput
+                        message={values?.privateKey}
+                        enableFiles={false}
+                        name={'privateKey'}
+                        textareaClassName={s.sshAreaInput}
+                        placeholderText={t('Enter your SSH key')}
+                        label={`${t('private_ssh_key')}:`}
+                        disabled
+                      />
+                      <CopyText
+                        text={values.privateKey}
+                        className={s.privateKeyCopy}
+                        promptText={t('key_copied')}
+                      />
+                    </div>
                   </div>
                 )}
 

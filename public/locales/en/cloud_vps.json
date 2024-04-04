@@ -129,5 +129,6 @@
   "top_up": "Top up your balance",
   "generate_new_key": "Generate key",
   "private_warn_message": "Private key. You should save this key locally, it will not be saved on server.",
-  "copy_private_key": "Copy private key to clipboard"
+  "copy_private_key": "Copy private key to clipboard",
+  "key_copied": "SSH key copied"
 }
