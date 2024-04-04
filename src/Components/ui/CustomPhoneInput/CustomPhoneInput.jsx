@@ -51,6 +51,9 @@ export default function CustomPhoneInput(props) {
         name={name}
         className={s.field_input}
         containerClass={cn(s.lang_container, containerClass)}
+        onMount={(_, data) => {
+          setCountryCode && setCountryCode(data?.countryCode)
+        }}
         inputProps={{
           name,
         }}

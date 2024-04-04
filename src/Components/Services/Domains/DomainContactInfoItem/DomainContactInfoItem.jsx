@@ -51,7 +51,6 @@ export default function Component(props) {
   const profiletype_list = `${formType}_profiletype_list`
   const email = `${formType}_email`
   const phone = `${formType}_phone`
-  const phone_country = `${formType}_phone_country`
   const privateForm = `${formType}_private`
   const firstname = `${formType}_firstname`
   const firstname_locale = `${formType}_firstname_locale`
@@ -84,20 +83,6 @@ export default function Component(props) {
   const [isOpen, setIsOpen] = useState(owner)
   const [profileTypeState, setProfiletypeState] = useState(domainsContacts[profiletype])
   const [countryCode, setCountryCode] = useState(null)
-
-  useEffect(() => {
-    if (
-      domainsContacts &&
-      domainsContacts[location_country_list] &&
-      domainsContacts[phone_country]
-    ) {
-      const findCountry = domainsContacts[location_country_list]?.find(
-        e => e?.$key === domainsContacts[phone_country],
-      )
-      const code = findCountry?.$image?.slice(-6, -4)?.toLowerCase()
-      setCountryCode(code)
-    }
-  }, [domainsContacts])
 
   const yupValidation = {
     name: Yup.string().required(t('Is a required field', { ns: 'other' })),
