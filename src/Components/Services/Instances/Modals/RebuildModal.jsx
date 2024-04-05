@@ -6,17 +6,20 @@ import {
   SoftwareOSBtn,
   SoftwareOSSelect,
   WarningMessage,
+  PageTabBar,
 } from '@components'
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useMemo, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { generatePassword } from '@utils'
 
 import s from './Modals.module.scss'
 import { DISALLOW_SPACE, PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
+
+const RESCUE_TABS_ORDER = ['shr', 'pub']
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
@@ -25,13 +28,30 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const [data, setData] = useState()
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
 
-  const [state, setState] = useReducer((state, action) => {
-    return { ...state, ...action }
-  }, {})
+  const [state, setState] = useReducer(
+    (state, action) => {
+      return { ...state, ...action }
+    },
+    { zone: 'shr' },
+  )
 
   const isRebuild = item.rebuild_action === 'rebuild'
   const select = isRebuild ? 'select_rebuild' : 'select_boot'
-  const depends = isRebuild ? 'image' : 'pub'
+  const depends = isRebuild ? 'image' : state.zone
+
+  const navSections = useMemo(() => {
+    const zoneList = data?.slist.find(el => el.$name === 'zone')?.val.map(({ $ }) => $)
+    const renderTabs = new Set([...RESCUE_TABS_ORDER, ...(zoneList || [])])
+
+    return [...renderTabs]?.map(zone => ({
+      label: t(`rescue_tab.${zone}`),
+      allowToRender: true,
+      localValue: zone,
+      onLocalClick: () => {
+        setState({ [select]: '', zone })
+      },
+    }))
+  }, [data])
 
   const windowsOS = data?.slist
     ?.find(el => el.$name === select)
@@ -139,6 +159,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
           t('Is a required field', { ns: 'other' }),
           value => value !== 'none',
         ),
+    [select]: Yup.string().required(t('Is a required field', { ns: 'other' })),
   })
 
   useEffect(() => {
@@ -154,7 +175,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
         <Formik
           enableReinitialize
           initialValues={{
-            [select]: state?.[select] || data?.[select]?.$,
+            [select]: state?.[select],
             password: state.password || '',
             password_type: state.passwordType,
             ssh_keys: state.ssh_keys || allSshList?.[0]?.fotbokeyid.$,
@@ -164,6 +185,9 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
             const submitData = values
             if (isRebuild) {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
+            }
+            if (!isRebuild) {
+              submitData.zone = state.zone
             }
             if (isWindowsOS && !isRebuild) {
               submitData.password = generatePassword({
@@ -188,8 +212,18 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                   <p className={s.body__text}>
                     {t(`rebuild_modal.text.${item.rebuild_action}`)}
                   </p>
-                  <div className={s.rebuild__os_list}>
-                    {renderSoftwareOSFields(select, values[select], depends)}
+                  {!isRebuild && (
+                    <PageTabBar sections={navSections} activeValue={state.zone} />
+                  )}
+                  <div>
+                    <div className={s.rebuild__os_list}>
+                      {renderSoftwareOSFields(select, values[select], depends)}
+                    </div>
+                    <ErrorMessage
+                      className={s.error_message}
+                      name={[select]}
+                      component="span"
+                    />
                   </div>
 
                   {isRebuild ? (
