@@ -42,7 +42,7 @@ export default function SoftwareOSSelect({
         darkTheme ? iconName + '_dt' : iconName
       }.png`)
     }
-
+    console.log('linux logo')
     return require(`@images/soft_os_icons/linux-logo${darkTheme ? '_dt' : ''}.png`)
   }
 

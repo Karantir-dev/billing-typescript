@@ -507,6 +507,7 @@ const getOsList =
 
     if (!lastTariffID) {
       const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
+
       const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
       lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
     }
@@ -514,6 +515,7 @@ const getOsList =
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
 
         const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val

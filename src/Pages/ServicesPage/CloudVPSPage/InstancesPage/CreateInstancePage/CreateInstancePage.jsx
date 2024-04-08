@@ -279,6 +279,7 @@ export default function CreateInstancePage() {
       }),
     )
   }
+
   const tariffFromSite = tariffs?.[currentDC?.$key]?.find(el =>
     el.title.main.$.toLowerCase().includes(dataFromSite?.name?.toLowerCase()),
   )

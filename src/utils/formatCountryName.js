@@ -1,8 +1,17 @@
+const DC_COUNTRIES = ['Netherlands', 'Poland']
+
 export default function formatCountryName(item) {
-  let country = item
+  let countryName = item
   if (typeof item === 'object' && item !== null) {
-    country = item?.datacentername?.$
+    countryName = item?.datacentername?.$
   }
 
-  return country?.replace('Fotbo ', '')
+  countryName = DC_COUNTRIES.find(country =>
+    countryName.toLowerCase().includes(country.toLowerCase()),
+  )
+  if (!countryName) {
+    console.error('country name parse failed')
+  }
+
+  return countryName
 }
