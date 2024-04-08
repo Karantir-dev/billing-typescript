@@ -95,7 +95,7 @@ export default function InstanceItem({ item, editInstance }) {
           <HintWrapper
             popupClassName={s.popup}
             wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
-            label={itemCountry}
+            label={t(itemCountry, { ns: 'countries' })}
           >
             <img
               src={require(`@images/countryFlags/${getFlagFromCountryName(
