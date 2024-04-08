@@ -1035,7 +1035,7 @@ const getPaymentMethods =
 
         dispatch(billingActions.setPaymentMethodList(elem))
         dispatch(billingActions.setPaymentMethodCount(count))
-        setIsLoading(false)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
