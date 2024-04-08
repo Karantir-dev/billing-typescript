@@ -216,6 +216,15 @@ export default function Component({ transfer = false }) {
 
     if (transfer) {
       data['domain_action'] = 'transfer'
+      // eslint-disable-next-line max-len
+      /* Below logic for check is selected Domain also exist in the selected_domain_real_name. Becouse there could be chance that could be selected all domain zones that are availabale, but we should put there only zones that user picked up */
+
+      data['selected_domain'] = selected_domain
+        ?.filter(SelectedDomain => {
+          const zoneArr = selected_domain_real_name?.map(domain => domain?.split('.')[1])
+          return zoneArr?.some(zone => SelectedDomain?.includes(zone))
+        })
+        ?.join(', ')
     }
 
     navigate &&
@@ -288,7 +297,7 @@ export default function Component({ transfer = false }) {
                     setSelectedDomains={setSelectedDomainsNames}
                     selectedDomains={selectedDomainsNames}
                     domains={pickUpDomains?.list}
-                    selected={pickUpDomains?.selected}
+                    selected={selectedDomains}
                     registerDomainHandler={registerDomainHandler}
                     transfer={transfer}
                     siteDomainCheckData={siteDomainCheckData}

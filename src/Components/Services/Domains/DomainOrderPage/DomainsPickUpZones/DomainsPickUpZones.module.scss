@@ -68,10 +68,9 @@
 }
 
 .domainItemTransfer {
+  display: grid;
+  grid-template-columns: 40px auto;
   padding: 19px 25px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   border-radius: 3px;
   box-shadow: var(--forms2_shadow);
   background: var(--forms_bgc_2);
@@ -139,6 +138,8 @@
   line-height: 113%;
   color: var(--main-text);
   flex-basis: 100%;
+
+  grid-column: 2/3;
 }
 
 .domainPrice {
@@ -162,6 +163,8 @@
 }
 
 .pricesBlockTransfer {
+  grid-column: 2/3;
+
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-end;
@@ -343,6 +346,8 @@
 
   flex-basis: 100%;
 
+  grid-column: 2/3;
+
   &.available {
     color: var(--success-color);
   }
@@ -354,9 +359,6 @@
 
 .checkbox {
   min-width: 30px;
-  position: absolute;
-  top: 25px;
-  left: 15px;
 }
 
 .prolongBlock {
@@ -423,7 +425,6 @@
 }
 
 @media screen and (min-width: 768px) {
-
   .domainItem {
     grid-template-rows: repeat(2, 1fr);
     grid-row-gap: 10px;
@@ -459,6 +460,7 @@
     background: var(--forms_bgc_2);
     position: relative;
     flex-basis: 100%;
+    cursor: pointer;
 
     &.selected {
       .domainName {
@@ -466,7 +468,6 @@
       }
       .domainPrice {
         font-weight: 400;
-        margin-right: 20px;
       }
     }
   }
