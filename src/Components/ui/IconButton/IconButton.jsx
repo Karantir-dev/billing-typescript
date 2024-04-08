@@ -56,6 +56,8 @@ export default function Component(props) {
         return <Icon name="Euro" />
       case 'update':
         return <Icon name="Update" />
+      case 'download':
+        return <Icon name="Download" />
       default:
         return null
     }
@@ -106,6 +108,7 @@ Component.propTypes = {
     'change-tariff',
     'euro',
     'update',
+    'download',
   ]),
   className: PropTypes.string,
   dataTestid: PropTypes.string,

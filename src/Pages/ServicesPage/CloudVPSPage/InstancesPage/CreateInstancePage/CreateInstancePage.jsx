@@ -64,22 +64,15 @@ export default function CreateInstancePage() {
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
-  const globalSshList = useSelector(cloudVpsSelectors.getSshList)
+  const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
+  const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
+
   const { credit, realbalance } = useSelector(userSelectors.getUserInfo)
 
-  const [sshList, setSshList] = useState()
   const [currentDC, setCurrentDC] = useState()
   const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
-
-  useEffect(() => {
-    const formatedList = globalSshList?.map(el => {
-      return { value: el.elid.$, label: el.comment.$ }
-    })
-
-    formatedList && setSshList(formatedList)
-  }, [globalSshList])
 
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
@@ -89,6 +82,16 @@ export default function CreateInstancePage() {
       dcFromSite ? setCurrentDC(dcFromSite) : setCurrentDC(dcList?.[0])
     }
   }, [dcList])
+
+  const getAllSSHList = list => {
+    const p_cnt = list.length
+    dispatch(
+      cloudVpsOperations.getSshKeys({
+        p_cnt,
+        setAllSshItems: list => dispatch(cloudVpsActions.setAllSshList(list)),
+      }),
+    )
+  }
 
   useEffect(() => {
     if (
@@ -100,18 +103,18 @@ export default function CreateInstancePage() {
           signal,
           setIsLoading,
           needOsList: !operationSystems,
-          setSshList,
+          setSshList: getAllSSHList,
           datacenter: dataFromSite.location || '',
         }),
       )
-    } else if (tariffs && (!operationSystems || !sshList)) {
+    } else if (tariffs && (!operationSystems || !allSshList.length)) {
       dispatch(
         cloudVpsOperations.getOsList({
           signal,
           setIsLoading,
           closeLoader: () => setIsLoading(false),
           datacenter: dcList?.[0]?.$key,
-          setSshList,
+          setSshList: getAllSSHList,
         }),
       )
     }
@@ -274,6 +277,8 @@ export default function CreateInstancePage() {
     dispatch(
       cloudVpsOperations.editSsh({
         ...values,
+        p_cnt: allSshCount + 1,
+        setAllSshItems: list => dispatch(cloudVpsActions.setAllSshList(list)),
         closeModal: () =>
           dispatch(cloudVpsActions.setItemForModals({ ssh_rename: false })),
       }),
@@ -308,6 +313,10 @@ export default function CreateInstancePage() {
           onSubmit={onFormSubmit}
         >
           {({ values, setFieldValue, errors, touched }) => {
+            useEffect(() => {
+              setFieldValue('ssh_keys', allSshList?.[0]?.elid.$)
+            }, [allSshList])
+
             const onDCchange = dc => {
               setCurrentDC(dc)
               setFieldValue('tariff_id', null)
@@ -392,9 +401,6 @@ export default function CreateInstancePage() {
               setFieldValue('instances_os', operationSystems[currentDC.$key]?.[0]?.$key)
             }
 
-            if (!values.ssh_keys && sshList?.[0]?.value) {
-              setFieldValue('ssh_keys', sshList?.[0]?.value)
-            }
             if (!values.tariff_id && filteredTariffsList?.[0]?.id.$) {
               setFieldValue('tariff_id', filteredTariffsList?.[0]?.id.$)
               setFieldValue('tariffData', filteredTariffsList?.[0])
@@ -576,7 +582,10 @@ export default function CreateInstancePage() {
                     setPassword={value => setFieldValue('password', value)}
                     errors={errors}
                     touched={touched}
-                    sshList={sshList}
+                    sshList={allSshList.map(el => ({
+                      label: el.comment.$,
+                      value: el.elid.$,
+                    }))}
                     isWindows={isItWindows}
                   />
                   <ErrorMessage

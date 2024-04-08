@@ -134,5 +134,7 @@
   "rescue_tab": {
     "shr": "Shared",
     "pub": "Public"
-  }
+  },
+  "create": "Create",
+  "download": "Download"
 }

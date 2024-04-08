@@ -49,7 +49,7 @@ export default function ConnectMethod({
                 error={errors.ssh_keys}
               />
               <Button
-                label={'create'}
+                label={t('create')}
                 isShadow
                 size="small"
                 onClick={() => {

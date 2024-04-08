@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Button,
   InputField,
@@ -6,6 +7,8 @@ import {
   MessageInput,
   WarningMessage,
   CopyText,
+  IconButton,
+  ScrollToFieldError,
 } from '@components'
 import { SSH_KEY_NAME_REGEX, CYRILLIC_ALPHABET_PROHIBITED } from '@utils/constants'
 
@@ -119,8 +122,21 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
                 }),
               )
 
+            const donwloadSSHHandler = () => {
+              const link = document.createElement('a')
+              const url = window.URL.createObjectURL(
+                new Blob([values.privateKey], { type: 'text/plain' }),
+              )
+              link.setAttribute('href', url)
+              link.setAttribute('download', 'rsa.pem')
+              document.body.appendChild(link)
+              link.click()
+              document.body.removeChild(link)
+            }
+
             return (
               <Form id={'add_ssh'} className={cn(s.form, s.sshForm)}>
+                <ScrollToFieldError />
                 <InputField
                   inputClassName={s.input}
                   name="comment"
@@ -147,6 +163,13 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
                       {t('private_warn_message')}{' '}
                       <CopyText text={values.privateKey} promptText={t('key_copied')} />
                     </WarningMessage>
+                    <Button
+                      label={t('download')}
+                      isShadow
+                      size="small"
+                      type="button"
+                      onClick={donwloadSSHHandler}
+                    />
                     <div className={s.privateKeyWrapper}>
                       <MessageInput
                         message={values?.privateKey}

@@ -61,6 +61,7 @@
 
 .privateKeyWrapper {
   position: relative;
+  margin-top: 15px;
   .sshAreaInput {
     overflow: hidden;
   }
@@ -75,6 +76,11 @@
   svg {
     display: none;
   }
+}
+
+.btnWrapper {
+  display: flex;
+  gap: 15px;
 }
 
 .filter_backdrop {
