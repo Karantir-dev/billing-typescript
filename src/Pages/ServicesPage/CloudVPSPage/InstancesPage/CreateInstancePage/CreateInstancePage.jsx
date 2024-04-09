@@ -29,6 +29,7 @@ import {
   userSelectors,
 } from '@src/Redux'
 import {
+  checkIfHasWindows,
   formatCountryName,
   getFlagFromCountryName,
   roundToDecimal,
@@ -352,15 +353,7 @@ export default function CreateInstancePage() {
             }
 
             const filterOSlist = () => {
-              let tariffHasWindows
-
-              if (Array.isArray(values.tariffData?.flabel.tag)) {
-                tariffHasWindows = values.tariffData.flabel.tag.some(
-                  el => el.$ === windowsTag,
-                )
-              } else {
-                tariffHasWindows = values.tariffData?.flabel.tag.$ === windowsTag
-              }
+              let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
 
               if (tariffHasWindows) {
                 return operationSystems[currentDC.$key]
