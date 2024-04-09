@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   Button,
   InputField,
@@ -7,7 +6,6 @@ import {
   MessageInput,
   WarningMessage,
   CopyText,
-  IconButton,
   ScrollToFieldError,
 } from '@components'
 import { SSH_KEY_NAME_REGEX, CYRILLIC_ALPHABET_PROHIBITED } from '@utils/constants'
@@ -131,6 +129,7 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
               link.setAttribute('download', 'rsa.pem')
               document.body.appendChild(link)
               link.click()
+              URL.revokeObjectURL(url)
               document.body.removeChild(link)
             }
 
