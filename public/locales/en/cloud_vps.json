@@ -11,7 +11,6 @@
   "Region": "Region",
   "Network Details": "Network Details",
   "Fingerprint": "Fingerprint",
-
   "Start": "Start",
   "Shut down": "Shut down",
   "Console": "Console",
@@ -34,7 +33,6 @@
   "hour": "Hour",
   "Yes": "Yes",
   "No": "No",
-
   "change_password_title": "Change admin password",
   "instance": "Instance",
   "delete_text": "Are you sure you want to delete the instance?",
@@ -83,7 +81,6 @@
   "Unrescue": "Unrescue",
   "Confirm Resize": "Confirm Resize",
   "Revert Resize": "Revert Resize",
-
   "confirm": {
     "title": {
       "stop": "Stop instance",
@@ -121,7 +118,7 @@
   "server_size": "Server size",
   "cloud_ipv6": "Enable only IPv6",
   "price_per": "Price per",
-  "period_description": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours unused on the day of the order is returned to the balance if the server has not been deleted before 08:30 the next day. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable",
+  "period_description": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours unused on the day of the order is returned to the balance if the server has not been deleted before 08:30 GMT+2 the next day. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable",
   "authentication_method": "Choose Authentication Method",
   "create_instance": "Create instance",
   "windows_disabled": "Windows enabled with other tariffs",
