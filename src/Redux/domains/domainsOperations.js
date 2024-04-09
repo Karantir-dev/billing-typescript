@@ -581,7 +581,6 @@ const getDomainPaymentInfo =
         setIsLoading(false)
       })
       .catch(error => {
-        setIsLoading(false)
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
         checkIfTokenAlive(error.message, dispatch, true)
       })

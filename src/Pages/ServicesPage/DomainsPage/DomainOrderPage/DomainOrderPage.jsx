@@ -77,11 +77,12 @@ export default function Component({ transfer = false }) {
           ),
         )
       } else {
+        const dataRegister = { domain_action: 'register' }
         dispatch(
           domainsOperations.getDomainsOrderName(
             setDomains,
             setAutoProlong(),
-            undefined,
+            dataRegister,
             undefined,
             signal,
             setIsLoading,
@@ -156,6 +157,8 @@ export default function Component({ transfer = false }) {
 
     if (transfer) {
       values['domain_action'] = 'transfer'
+    } else {
+      values['domain_action'] = 'register'
     }
     dispatch(
       domainsOperations.getDomainsOrderName(
