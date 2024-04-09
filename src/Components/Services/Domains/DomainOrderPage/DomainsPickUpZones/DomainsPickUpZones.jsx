@@ -210,9 +210,7 @@ export default function ServicesPage(props) {
       {transfer ? (
         <>
           {Array.isArray(domainsList) && domainsList?.length > 0 && (
-            <>
-              <h2 className={s.domainsZoneTitle}>{t('Domain zones')}</h2>
-            </>
+            <h2 className={s.domainsZoneTitle}>{t('Domain zones')}</h2>
           )}
           {domainsList ? (
             <div className={s.domainsBlockTransfer}>

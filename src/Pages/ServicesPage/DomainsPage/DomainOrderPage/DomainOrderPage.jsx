@@ -216,8 +216,11 @@ export default function Component({ transfer = false }) {
 
     if (transfer) {
       data['domain_action'] = 'transfer'
-      // eslint-disable-next-line max-len
-      /* Below logic for check is selected Domain also exist in the selected_domain_real_name. Becouse there could be chance that could be selected all domain zones that are availabale, but we should put there only zones that user picked up */
+
+      /* 
+      Below is the logic for checking if the selected domain also exists in selected_domain_real_name.
+      Because it may happen that all the domain zones that are available will be selected,
+      but we should add only those zones that the user has selected manually. */
 
       data['selected_domain'] = selected_domain
         ?.filter(SelectedDomain => {
