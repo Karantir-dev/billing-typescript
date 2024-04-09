@@ -77,6 +77,15 @@
   }
 }
 
+.downloadBtn {
+  margin: 0 0 -16px auto;
+}
+
+.btnWrapper {
+  display: flex;
+  gap: 15px;
+}
+
 .filter_backdrop {
   position: fixed;
   top: 0;

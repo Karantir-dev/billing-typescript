@@ -131,5 +131,7 @@
   "rescue_tab": {
     "shr": "Shared",
     "pub": "Public"
-  }
+  },
+  "create": "Створити",
+  "download": "Завантажити"
 }
