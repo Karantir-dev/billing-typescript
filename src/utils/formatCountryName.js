@@ -1,8 +1,26 @@
-export default function formatCountryName(item) {
-  let country = item
-  if (typeof item === 'object' && item !== null) {
-    country = item?.datacentername?.$
+const DC_COUNTRIES = ['Netherlands', 'Poland']
+
+/**
+ *
+ * @param {Object | String} item
+ * @returns {String}
+ */
+export default function formatCountryName(data) {
+  let inputString
+  if (typeof data === 'object' && data !== null) {
+    inputString = data?.datacentername?.$
+  } else {
+    inputString = data
   }
 
-  return country?.replace('Fotbo ', '')
+  const countryName = DC_COUNTRIES.find(country =>
+    inputString.toLowerCase().includes(country.toLowerCase()),
+  )
+
+  if (!countryName) {
+    console.error('country name parse failed')
+    return 'country_undefined'
+  }
+
+  return countryName
 }
