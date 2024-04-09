@@ -1,4 +1,4 @@
-import { Link, useLocation, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom'
 import s from './OrderTariff.module.scss'
 import { useEffect, useReducer, useState } from 'react'
 import { ErrorPayment, Icon, Steps } from '@components'
@@ -12,6 +12,7 @@ import { roundToDecimal } from '@utils'
 export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isClonePage }) {
   const { t } = useTranslation(['cart', 'auth', 'billing', 'other'])
   const { state } = useLocation()
+  const navigate = useNavigate()
 
   const [isError, setIsError] = useState(false)
   const [searchParams] = useSearchParams()
@@ -42,7 +43,12 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
       params[key] = searchParams.get(key)
     }
 
-    dispatch(cartOperations.getTariffInfo(params, setParameters, setPeriods, setIsError))
+    const errorHandler = () =>
+      isClonePage ? navigate(route.VDS_ORDER) : setIsError(true)
+
+    dispatch(
+      cartOperations.getTariffInfo(params, setParameters, setPeriods, errorHandler),
+    )
   }, [])
 
   useEffect(() => {
