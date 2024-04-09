@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import s from './ConnectMethod.module.scss'
 import { cloudVpsActions } from '@src/Redux'
 import { useDispatch } from 'react-redux'
-import { useEffect } from 'react'
 
 export default function ConnectMethod({
   connectionType,
@@ -21,12 +20,6 @@ export default function ConnectMethod({
 }) {
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (sshKey) {
-      setSSHkey(sshList[0].value)
-    }
-  }, [sshList])
 
   return (
     <div className={s.list} name={name}>
