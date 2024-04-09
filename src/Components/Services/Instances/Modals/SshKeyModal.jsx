@@ -7,6 +7,7 @@ import {
   WarningMessage,
   CopyText,
   ScrollToFieldError,
+  IconButton,
 } from '@components'
 import { SSH_KEY_NAME_REGEX, CYRILLIC_ALPHABET_PROHIBITED } from '@utils/constants'
 
@@ -162,12 +163,10 @@ export const SshKeyModal = ({ item, closeModal, onSubmit }) => {
                       {t('private_warn_message')}{' '}
                       <CopyText text={values.privateKey} promptText={t('key_copied')} />
                     </WarningMessage>
-                    <Button
-                      label={t('download')}
-                      isShadow
-                      size="small"
-                      type="button"
+                    <IconButton
+                      icon="download"
                       onClick={donwloadSSHHandler}
+                      className={s.downloadBtn}
                     />
                     <div className={s.privateKeyWrapper}>
                       <MessageInput

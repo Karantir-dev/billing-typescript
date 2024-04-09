@@ -61,7 +61,6 @@
 
 .privateKeyWrapper {
   position: relative;
-  margin-top: 15px;
   .sshAreaInput {
     overflow: hidden;
   }
@@ -76,6 +75,10 @@
   svg {
     display: none;
   }
+}
+
+.downloadBtn {
+  margin: 0 0 -16px auto;
 }
 
 .btnWrapper {
