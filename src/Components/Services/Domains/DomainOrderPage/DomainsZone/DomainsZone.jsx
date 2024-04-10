@@ -68,37 +68,10 @@ export default function ServicesPage(props) {
     }
   }
 
-  /* 
-      commented all domains checkbox while we have a trouble with long request 
-    */
-  // const setIsSelectedAllHandler = val => {
-  //   if (val) {
-  //     const items = []
-
-  //     domains.forEach(d => {
-  //       items.push(d?.id?.$)
-  //     })
-
-  //     setSelectedDomains(items)
-  //   } else if (domains.length === selectedDomains.length) {
-  //     setSelectedDomains([])
-  //   }
-  // }
-
   return (
     <div className={s.domainsZone}>
       <h2 className={s.domainsZoneTitle}>{t('Domain zones')}</h2>
       <ErrorMessage className={s.error_message} name="selectedDomains" component="span" />
-      {/* 
-        commented all domains checkbox while we have a trouble with long request 
-      */}
-      {/* <div className={s.chooseAllBlock}>
-        <CheckBox
-          initialState={domains.length === selectedDomains.length}
-          setValue={val => setIsSelectedAllHandler(val)}
-        />
-        <div className={s.chooseAllText}>{t('Choose all', { ns: 'other' })}</div>
-      </div> */}
       <div className={cn(s.domainsBlock, { [s.transfer]: transfer })}>
         {domains?.map(d => {
           const { id, tld, price } = d
