@@ -1,8 +1,14 @@
 import { Infinity } from '@src/images'
 import s from './TariffCard.module.scss'
 import cn from 'classnames'
+import { useSelector } from 'react-redux'
+import { cloudVpsSelectors } from '@src/Redux'
+import { checkIfHasWindows } from '@src/utils'
 
 export default function TariffCard({ tariff, onClick, price, active, disabled }) {
+  const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
+  const hasWindows = checkIfHasWindows(tariff, windowsTag)
+
   const cpu = tariff.detail.find(el => el.name.$.toLowerCase().includes('cpu'))?.value.$
   const memory = tariff.detail
     .find(el => el.name.$.toLowerCase() === 'memory')
@@ -36,6 +42,12 @@ export default function TariffCard({ tariff, onClick, price, active, disabled })
             <span className={s.parameter_label}>Bandwidth</span>
             <span className={s.parameter_value}>
               <Infinity className={s.infinity} />
+            </span>
+          </div>
+          <div className={s.tariff_row}>
+            <span className={s.parameter_label}>OS</span>
+            <span className={s.parameter_value}>
+              {hasWindows ? 'Windows & Linux' : 'Linux'}
             </span>
           </div>
         </div>
