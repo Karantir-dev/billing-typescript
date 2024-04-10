@@ -160,6 +160,7 @@ export default function CreateInstancePage() {
           //   hintDelay={200}
           // >
           <SoftwareOSSelect
+            key={el[0].$key}
             // disabled={el[0].disabled}
             iconName={name.toLowerCase()}
             itemsList={optionsList}
@@ -299,9 +300,9 @@ export default function CreateInstancePage() {
       {tariffs && operationSystems && currentDC && (
         <Formik
           initialValues={{
-            instances_os: null,
-            tariff_id: tariffFromSite?.id.$ || null,
-            tariffData: tariffFromSite || null,
+            instances_os: operationSystems?.[currentDC.$key]?.[0]?.$key,
+            tariff_id: tariffFromSite?.id.$ || tariffs?.[currentDC?.$key]?.[0]?.id.$,
+            tariffData: tariffFromSite || tariffs?.[currentDC?.$key]?.[0],
             period: 30,
             network_ipv6: !!dataFromSite?.network_ipv6 || false,
             connectionType: '',
@@ -400,16 +401,6 @@ export default function CreateInstancePage() {
                   onTariffChange(firstAvailableTariff)
                 }
               }
-            }
-
-            /** data initializing (sets default values) */
-            if (!values.instances_os && operationSystems[currentDC.$key]?.[0]?.$key) {
-              setFieldValue('instances_os', operationSystems[currentDC.$key]?.[0]?.$key)
-            }
-
-            if (!values.tariff_id && filteredTariffsList?.[0]?.id.$) {
-              setFieldValue('tariff_id', filteredTariffsList?.[0]?.id.$)
-              setFieldValue('tariffData', filteredTariffsList?.[0])
             }
 
             const calculatePrice = (tariff, values, period = null, count = 1) => {
