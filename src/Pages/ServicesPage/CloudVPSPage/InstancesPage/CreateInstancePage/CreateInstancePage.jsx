@@ -12,7 +12,7 @@ import {
   Incrementer,
   FixedFooter,
   ScrollToFieldError,
-  HintWrapper,
+  // HintWrapper,
   WarningMessage,
 } from '@components'
 import * as Yup from 'yup'
@@ -153,32 +153,32 @@ export default function CreateInstancePage() {
         }))
 
         return (
-          <HintWrapper
-            label={t('windows_disabled')}
-            key={optionsList[0].value}
-            disabled={!el[0].disabled}
-            hintDelay={200}
-          >
-            <SoftwareOSSelect
-              disabled={el[0].disabled}
-              iconName={name.toLowerCase()}
-              itemsList={optionsList}
-              state={value}
-              getElement={value => {
-                if (fieldName === OSfieldName) {
-                  onOSchange(value)
-                } else {
-                  onRecipeChange(value)
-                }
-              }}
-            />
-          </HintWrapper>
+          // <HintWrapper
+          //   label={t('windows_disabled')}
+          //   key={optionsList[0].value}
+          //   disabled={!el[0].disabled}
+          //   hintDelay={200}
+          // >
+          <SoftwareOSSelect
+            // disabled={el[0].disabled}
+            iconName={name.toLowerCase()}
+            itemsList={optionsList}
+            state={value}
+            getElement={value => {
+              if (fieldName === OSfieldName) {
+                onOSchange(value)
+              } else {
+                onRecipeChange(value)
+              }
+            }}
+          />
+          // </HintWrapper>
         )
       } else {
         return (
           <SoftwareOSBtn
             key={el[0].$key}
-            disabled={el[0].disabled}
+            // disabled={el[0].disabled}
             value={el[0].$key}
             state={value}
             iconName={name.toLowerCase()}
@@ -336,21 +336,12 @@ export default function CreateInstancePage() {
               }
             }
 
-            const onOSchange = value => {
-              setFieldValue('instances_os', value)
-
-              if (checkIsItWindows(value)) {
-                setFieldValue('password', '')
-                setFieldValue('connectionType', '')
-                setFieldValue('ssh_keys', '')
-              }
-            }
-
-            const isItWindows = checkIsItWindows(values.instances_os)
             const onTariffChange = tariff => {
               setFieldValue('tariff_id', tariff.id.$)
               setFieldValue('tariffData', tariff)
             }
+
+            const isItWindows = checkIsItWindows(values.instances_os)
 
             const filterOSlist = () => {
               let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
@@ -375,20 +366,41 @@ export default function CreateInstancePage() {
             const filteredOSlist = filterOSlist()
 
             /** if we have selected OS Windows - we disable tariffs that don`t support this OS */
-            const filteredTariffsList = isItWindows
-              ? tariffs[currentDC.$key].map(tariff => {
-                  const newTariff = { ...tariff }
-                  let supportsWindows
-                  if (Array.isArray(tariff.flabel.tag)) {
-                    supportsWindows = tariff.flabel.tag.some(el => el.$ === windowsTag)
-                  } else {
-                    supportsWindows = tariff.flabel.tag.$ === windowsTag
-                  }
+            const filterTariffsList = isItWindows => {
+              return isItWindows
+                ? tariffs[currentDC.$key].map(tariff => {
+                    const newTariff = { ...tariff }
+                    let supportsWindows
+                    if (Array.isArray(tariff.flabel.tag)) {
+                      supportsWindows = tariff.flabel.tag.some(el => el.$ === windowsTag)
+                    } else {
+                      supportsWindows = tariff.flabel.tag.$ === windowsTag
+                    }
 
-                  newTariff.disabled = !supportsWindows
-                  return newTariff
-                })
-              : tariffs[currentDC.$key]
+                    newTariff.disabled = !supportsWindows
+                    return newTariff
+                  })
+                : tariffs[currentDC.$key]
+            }
+
+            const filteredTariffsList = filterTariffsList(isItWindows)
+
+            const onOSchange = value => {
+              setFieldValue('instances_os', value)
+
+              if (checkIsItWindows(value)) {
+                const tariffsBasedOnOs = filterTariffsList(true)
+                const firstAvailableTariff = tariffsBasedOnOs.find(el => !el.disabled)
+
+                let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
+
+                values.connectionType === 'ssh' && setFieldValue('connectionType', '')
+                setFieldValue('ssh_keys', '')
+                if (!tariffHasWindows) {
+                  onTariffChange(firstAvailableTariff)
+                }
+              }
+            }
 
             /** data initializing (sets default values) */
             if (!values.instances_os && operationSystems[currentDC.$key]?.[0]?.$key) {
