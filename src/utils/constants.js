@@ -208,3 +208,14 @@ export const FOTBO_STATUSES_LIST = [
     $: 'Suspended',
   },
 ]
+
+export const TARIFFS_PRICES = {
+  'Cloud Basic': 0.13,
+  'Cloud Standart': 0.1634,
+  'Cloud Exclusive': 0.2497,
+  'Cloud Premium': 0.4497,
+  'Cloud Platinum': 0.6634,
+  'Cloud Enterprise': 1.283,
+  'Сloud Ultimate': 2.2164,
+  'Cloud Supreme': 2.9967,
+}
