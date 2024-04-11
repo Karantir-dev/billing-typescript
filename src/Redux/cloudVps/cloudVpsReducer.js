@@ -39,8 +39,10 @@ const instancesTariffs = createReducer(initialState.instancesTariffs, {
   [cloudVpsActions.setInstancesTariffs]: (state, { payload }) => {
     /** 13 it is hardcoded dc id - it must be refactored */
     payload[13] = payload[13]?.map(el => {
-      const newPrice = TARIFFS_PRICES[el.title.main.$]
-      el.prices.price.cost.$ = String(newPrice)
+      const newDayPrice = TARIFFS_PRICES[el.title.main.$].day
+      const newMonthPrice = TARIFFS_PRICES[el.title.main.$].month
+      el.prices.price.cost.$ = String(newDayPrice)
+      el.prices.price.cost.month = String(newMonthPrice)
 
       return el
     })

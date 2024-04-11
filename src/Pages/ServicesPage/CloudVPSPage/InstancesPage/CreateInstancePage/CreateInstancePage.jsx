@@ -44,6 +44,7 @@ import { Modals } from '@src/Components/Services/Instances/Modals/Modals'
 import s from './CreateInstancePage.module.scss'
 
 const IPv4_DAILY_COST = 1 / 30
+const IPv4_MONTHLY_COST = 1
 
 export default function CreateInstancePage() {
   const location = useLocation()
@@ -405,12 +406,29 @@ export default function CreateInstancePage() {
 
             const calculatePrice = (tariff, values, period = null, count = 1) => {
               const dailyCost = tariff?.prices.price.cost.$
+              const monthlyCost = tariff?.prices.price.cost.month
 
               period = period ? period : values.period
-              let price = dailyCost
-              if (values.network_ipv6) price -= IPv4_DAILY_COST
 
-              price = price * period * count
+              let price = dailyCost
+
+              if (period === 30) {
+                price = monthlyCost
+              }
+
+              if (values.network_ipv6) {
+                if (period === 30) {
+                  price -= IPv4_MONTHLY_COST
+                } else {
+                  price -= IPv4_DAILY_COST
+                }
+              }
+
+              if (period === 30) {
+                price = price * count
+              } else {
+                price = price * period * count
+              }
 
               if (price < 0.01) {
                 price = roundToDecimal(price, 'ceil', 3)
