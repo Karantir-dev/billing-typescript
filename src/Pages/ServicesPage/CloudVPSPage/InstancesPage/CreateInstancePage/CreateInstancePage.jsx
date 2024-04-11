@@ -49,7 +49,7 @@ const IPv4_MONTHLY_COST = 1
 export default function CreateInstancePage() {
   const location = useLocation()
   const dispatch = useDispatch()
-  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
+  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries', 'cart'])
 
   const PERIODS_LIST = [
     { id: 'month', value: 30, label: t('month', { ns: 'other' }) },
@@ -553,19 +553,21 @@ export default function CreateInstancePage() {
                       list={PERIODS_LIST}
                       value={values.period}
                       onClick={value => setFieldValue('period', value)}
+                      captionText={t('period_description')}
+                      popupClassName={s.priceDescPopup}
+                      toggleCaption={() => setPeriodCaptionShown(value => !value)}
                     />
                   </div>
-                  <button
-                    className={cn(s.period_description, {
-                      [s.truncated]: !periodCaptionShown,
-                    })}
-                    type="button"
-                    onClick={() => setPeriodCaptionShown(value => !value)}
-                    disabled={widerThan1550}
-                  >
-                    <span className="asterisk">*</span>
-                    {t('period_description')}
-                  </button>
+                  {!widerThan1550 && periodCaptionShown && (
+                    <div
+                      className={cn(s.period_description, {
+                        [s.truncated]: !periodCaptionShown,
+                      })}
+                    >
+                      <span className="asterisk">*</span>
+                      {t('period_description')}
+                    </div>
+                  )}
 
                   <ul className={s.grid}>
                     {filteredTariffsList?.map(tariff => {
@@ -674,6 +676,10 @@ export default function CreateInstancePage() {
                           values.order_count,
                         )}
                         /{t('hour')})
+                      </p>
+                      <p className={s.exlude_vat}>
+                        <span className="asterisk">*</span>
+                        {t('Excluding VAT', { ns: 'cart' })}
                       </p>
                     </div>
 
