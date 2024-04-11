@@ -8,11 +8,13 @@ import { supportSelectors, supportOperations } from '@redux'
 import * as Yup from 'yup'
 import s from './CreateTicketModal.module.scss'
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 export default function Component(props) {
   const { t } = useTranslation(['support', 'other'])
   const { setCreateTicketModal } = props
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const departmentsList = useSelector(supportSelectors.getDepartments)
   const servicesList = useSelector(supportSelectors.getServices)
@@ -41,12 +43,11 @@ export default function Component(props) {
             message: '',
             files: [],
             client_department: '',
-            ticket_item: 'null',
+            ticket_item: location.state?.id ?? 'null',
             subject: '',
           }}
           onSubmit={sendMessageHandle}
         >
-          {/* here */}
           {({ values, setFieldValue, errors, touched }) => {
             let checkItemSize = values?.files.filter(el => el?.size >= 10000000)
 

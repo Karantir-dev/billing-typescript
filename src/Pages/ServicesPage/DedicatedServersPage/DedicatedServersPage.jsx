@@ -25,7 +25,13 @@ import { useMediaQuery } from 'react-responsive'
 
 import * as route from '@src/routes'
 import s from './DedicatedServersPage.module.scss'
-import { checkServicesRights, useCancelRequest, usePageRender, isDisabledDedicTariff, roundToDecimal } from '@utils'
+import {
+  checkServicesRights,
+  useCancelRequest,
+  usePageRender,
+  isDisabledDedicTariff,
+  roundToDecimal,
+} from '@utils'
 
 export default function DedicatedServersPage() {
   const isAllowedToRender = usePageRender('mainmenuservice', 'dedic')

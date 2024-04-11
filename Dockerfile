@@ -2,9 +2,8 @@ FROM node:16.13.1-alpine as build
 
 WORKDIR /build
 
-RUN npm install -g npm@8.1.2
 COPY . .
-RUN npm install && npm run build
+RUN npm install -g npm@8.1.2 && npm install && npm run build
 
 
 FROM nginx:1.25.4-alpine-slim as local

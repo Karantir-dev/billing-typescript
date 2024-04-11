@@ -25,5 +25,8 @@
   "vpn_order": "VPN order",
   "dedicated": "Dedicated servers",
   "wordpress": "Wordpress hosting",
-  "wordpress_order": "Wordpress hosting order"
+  "wordpress_order": "Wordpress hosting order",
+  "cloud_vps": "Cloud VPS",
+  "ssh_keys": "SSH keys",
+  "create_instance": "Create virtual server"
 }

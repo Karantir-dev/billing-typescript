@@ -30,6 +30,7 @@ export default function ScrollToFieldError({
     if (isValid) return
 
     const fieldErrorNames = getFieldErrorNames(errors)
+
     if (fieldErrorNames.length <= 0) return
 
     const element = document.querySelector(`[name='${fieldErrorNames[0]}']`)

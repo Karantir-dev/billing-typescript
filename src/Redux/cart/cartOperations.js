@@ -170,6 +170,7 @@ const clearBasket = id => (dispatch, getState) => {
     .post(
       '/',
       qs.stringify({
+        /** func: 'cart.empty' for new API (the only required field) */
         func: 'basket',
         out: 'json',
         lang: 'en',

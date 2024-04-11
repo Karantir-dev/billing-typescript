@@ -1,0 +1,15 @@
+.sshPage_wrapper {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.ssh_purchase_btn {
+  justify-self: end;
+}
+
+@media screen and (min-width: 768px) {
+  .sshPage_wrapper {
+    gap: 20px;
+  }
+}

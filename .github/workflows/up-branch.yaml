@@ -1,0 +1,230 @@
+name: UP infrastructure
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        default: dev
+        type: environment
+        description: "Яку environment github використовується"
+      prefix:
+        required: false
+        type: string
+        description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
+
+
+permissions:
+  contents: read # This is required for actions/checkout
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs:
+  vars:
+    name: Generation vars
+    runs-on: ubuntu-latest
+    environment: up-infrastructure
+    outputs:
+      namespace: ${{ steps.dynamic.outputs.NAMESPACE }}
+      prefix: ${{ steps.dynamic.outputs.PREFIX }}
+      environment: ${{ steps.dynamic.outputs.environment }}
+      domain: ${{ vars.DOMAIN }}
+    steps:
+      # Logic
+      - name: Set environments
+        env:
+          VALUE: ${{ inputs.environment }}
+        id: _tmp_environment
+        run: |
+          if [[ -n "$VALUE" ]]; then
+            echo "value=${{ env.VALUE }}" >> $GITHUB_OUTPUT
+          else
+            echo "::error title=Значення inputs.environment не передано::Використовується значення по стандарту, або встановіть актуальний environment"
+            exit 1
+          fi
+
+      - name: Generation prefix
+        env:
+          INPUT: ${{ inputs.prefix }}
+          BRANCH: ${{ github.ref_name }}
+        id: _tmp_prefix
+        run: |
+          # перевірка чи input переданий. Якщо переданий, чи підпадає під регулярний вираз
+          if [[ -n "$INPUT" ]]; then
+            if [[ $INPUT =~ ^branch-[0-9]+$ ]]; then 
+              echo "value=${{ env.INPUT }}" >> $GITHUB_OUTPUT
+              exit 0
+            else
+              echo "::error title=Значення inputs.prefix не валідне::Значення повинно бути формату branch-<number>. Наприклад <branch-123>"
+              exit 1
+            fi
+          fi
+          
+          # перевірка, чи гілка має корректу назву. Якщо має - сформувати назву
+          if [[ $BRANCH =~ ^[0-9]+ ]]; then 
+              echo "value=branch-${BASH_REMATCH[0]}" >> $GITHUB_OUTPUT
+              exit 0
+          else
+              echo "::error title=Назва гілки, не є валідною::Назва гілки повинна починатися з цифр. Переназвіть гілку, або заповніть поле inputs.prefix, в форматі branch-<number>. Наприклад - <branch-123>"
+              exit 1
+          fi
+
+      # Set
+      - name: Create dynamic vars
+        id: dynamic
+        run: |
+          echo "NAMESPACE=${{ vars.NAMESPACE_PREFIX }}-${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
+          echo "PREFIX=${{ steps._tmp_prefix.outputs.value }}" >> "$GITHUB_OUTPUT"
+          echo "environment=${{ steps._tmp_environment.outputs.value }}" >> "$GITHUB_OUTPUT"
+  
+
+  create_basic:
+    needs: [ vars ]
+    name: Create basic component by admin
+    runs-on: ubuntu-latest
+    environment: up-infrastructure
+    outputs:
+      k8s_admin_config: ${{ steps.admin_config.outputs.value }}
+      namespaces_uid: ${{ steps.namespaces.outputs.UID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import kubeconfig from secrets
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ secrets.KUBECONFIG }}
+
+      - name: Update basic manifest for admin
+        working-directory: deployment/infrastructure/basic
+        env:
+          NAMESPACE: ${{ needs.vars.outputs.namespace }}
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ env.NAMESPACE }}|g" namespace.yaml
+
+      - name: Apply namespace
+        working-directory: deployment/infrastructure/basic
+        run: kubectl apply -f namespace.yaml
+
+      - name: Get UID namespace
+        id: namespaces
+        env:
+          NAMESPACE: ${{ needs.vars.outputs.namespace }}
+        run: |
+          uid=$(kubectl get ns ${{ env.NAMESPACE }} -o jsonpath='{.metadata.uid}')
+          echo "UID=$uid" >> "$GITHUB_OUTPUT"
+
+      - name: Update basic ci-cd admin manifest for admin
+        working-directory: deployment/infrastructure/basic
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ci-cd-admin.yaml
+          sed -i "s|{{ NAMESPACE_UID }}|${{ steps.namespaces.outputs.UID }}|g" ci-cd-admin.yaml
+
+      - name: Apply admin k8s manifest
+        working-directory: deployment/infrastructure
+        run: kubectl apply -f basic
+
+      - name: Generation config in base64
+        id: admin_config
+        working-directory: deployment/infrastructure/tools
+        env:
+          NAMESPACE: ${{ needs.vars.outputs.namespace }}
+          SERVICE_ACCOUNT: sa-ci-cd-admin
+          SECRET_NAME: ci-cd-admin-secret
+        run: |
+          kubeconfig_base=$(bash generate_kubeconfig.sh $NAMESPACE $SERVICE_ACCOUNT $SECRET_NAME)
+          echo "value=$kubeconfig_base" >> "$GITHUB_OUTPUT"
+
+  create_main:
+    needs: [ vars, create_basic ]
+    name: Create main component
+    runs-on: ubuntu-latest
+    environment: up-infrastructure
+    outputs:
+      k8s_config: ${{ steps.deploy_config.outputs.value }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import kubeconfig
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ needs.create_basic.outputs.k8s_admin_config }}
+
+      - name: Create domain
+        id: domain
+        run: |
+          echo "value=${{ needs.vars.outputs.prefix }}.${{ needs.vars.outputs.domain }}" >> "$GITHUB_OUTPUT"
+
+      - name: Update basic manifest for admin
+        working-directory: deployment/infrastructure/main
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" service.yaml
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ingress.yaml
+          sed -i "s|{{ DOMAIN }}|${{ steps.domain.outputs.value }}|g" ingress.yaml
+
+      - name: Update service manifest for admin
+        working-directory: deployment/infrastructure/main/ci-cd-deploy
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" ci-cd-deploy.yaml
+
+      - name: Update manifest-ecr-helper manifest for admin
+        working-directory: deployment/infrastructure/main/manifest-ecr-helper
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" manifest-ecr-helper.yaml
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" manifest-ecr-helper-creds.yaml
+          sed -i "s|{{ AWS_ACCESS_KEY_ID }}|${{ secrets.AWS_ACCESS_KEY_ID }}|g" manifest-ecr-helper-creds.yaml
+          sed -i "s|{{ AWS_SECRET_ACCESS_KEY }}|${{ secrets.AWS_SECRET_ACCESS_KEY }}|g" manifest-ecr-helper-creds.yaml
+          sed -i "s|{{ AWS_ACCOUNT }}|${{ secrets.AWS_ACCOUNT }}|g" manifest-ecr-helper-creds.yaml
+          sed -i "s|{{ AWS_REGION }}|${{ vars.AWS_REGION }}|g" manifest-ecr-helper-creds.yaml
+
+      - name: Update manifest-cleaner-helper manifest for admin
+        working-directory: deployment/infrastructure/main/manifest-cleaner-helper
+        run: |
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" manifest-cleaner-helper.yaml
+          sed -i "s|{{ NAMESPACE_UID }}|${{ needs.create_basic.outputs.namespaces_uid }}|g" manifest-cleaner-helper.yaml
+          sed -i "s|{{ NAMESPACE }}|${{ needs.vars.outputs.namespace }}|g" manifest-cleaner-helper-creds.yaml                    
+
+      - name: Apply k8s manifest
+        working-directory: deployment/infrastructure
+        run: |
+          kubectl apply -f main
+          kubectl apply -f main/ci-cd-deploy
+          kubectl apply -f main/manifest-ecr-helper
+          kubectl apply -f main/manifest-cleaner-helper
+
+      - name: Run manual job with update creds aws
+        env:
+          NAMESPACE: ${{ needs.vars.outputs.namespace }}
+        run:
+          kubectl create job --from=cronjob/ecr-registry-helper manual-job-${{ github.run_number }} -n ${{ env.NAMESPACE }}
+
+      - name: Generation config in base64
+        id: deploy_config
+        working-directory: deployment/infrastructure/tools
+        env:
+          NAMESPACE: ${{ needs.vars.outputs.namespace }}
+          SERVICE_ACCOUNT: sa-ci-cd-deploy
+          SECRET_NAME: ci-cd-deploy-secret
+        run: |
+          kubeconfig_base=$(bash generate_kubeconfig.sh $NAMESPACE $SERVICE_ACCOUNT $SECRET_NAME)
+          echo "value=$kubeconfig_base" >> "$GITHUB_OUTPUT"
+
+      - name: Write domain
+        run: echo "::notice title=Назва домену::http://${{ steps.domain.outputs.value }}"
+
+  run_workflow:
+    needs: [ vars, create_main ]
+    name: Run workflow - deployment
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read # This is required for actions/checkout
+    uses: ./.github/workflows/deploy.yaml
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-run_manual
+      cancel-in-progress: true
+    with:
+      environment: ${{ needs.vars.outputs.environment }}
+      prefix: ${{ needs.vars.outputs.prefix }}
+    secrets:
+      KUBECONFIG: ${{ needs.create_main.outputs.k8s_config }}

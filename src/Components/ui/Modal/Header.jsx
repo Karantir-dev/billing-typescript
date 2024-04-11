@@ -8,7 +8,7 @@ export const Header = ({ children, className, closeclassName }) => {
 
   return (
     <div className={cn(s.modal__header, className)}>
-      <div>{children}</div>
+      <div className={s.modal__header_content}>{children}</div>
       <button onClick={closeModal} className={cn(s.modal__close, closeclassName)}>
         <Icon name="Cross" />
       </button>

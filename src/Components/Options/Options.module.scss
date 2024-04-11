@@ -1,6 +1,6 @@
 .wrapper {
   position: relative;
-
+  width: max-content;
   &.disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -8,25 +8,34 @@
 }
 
 .btn {
+  position: relative;
   display: flex;
-  transform: scale(1);
-  transition: transform 150ms;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
+
+  svg {
+    transition: transform 150ms;
+  }
 
   &:hover svg {
     fill: url('#gradient');
   }
 
   &:active {
-    transform: scale(0.9);
+    svg {
+      transform: scale(0.9);
+    }
+  }
+
+  &.opened {
+    z-index: 2;
   }
 }
 
 .dropdown {
   position: absolute;
   right: -10px;
-  width: max-content;
-  max-width: 250px;
   top: calc(100% + 20px);
   border-radius: 3px;
   z-index: 1;
@@ -38,8 +47,9 @@
   position: absolute;
   width: 30px;
   height: 20px;
-  top: -20px;
-  right: 3px;
+  bottom: -20px;
+  left: 50%;
+  transform: translate(-50%);
   overflow: hidden;
 }
 
@@ -54,6 +64,14 @@
   box-shadow: var(--forms2_shadow);
 }
 
+.tools__list {
+  padding: 15px;
+  display: grid;
+  column-gap: 5px;
+}
+.tool_item {
+  white-space: nowrap;
+}
 .tool_item_delete {
   color: var(--red-text_2);
 }
@@ -63,13 +81,14 @@
   align-items: center;
   width: 100%;
   padding: 10px 15px;
+  border-radius: 3px;
   cursor: pointer;
   font-size: 18px;
   font-weight: 300;
   text-align: left;
 
   &:hover {
-    background-color: var(--select_option_bgc);
+    background-color: var(--btn-bgc);
 
     svg:not(.tool_icon_delete) {
       fill: url('#gradient');
