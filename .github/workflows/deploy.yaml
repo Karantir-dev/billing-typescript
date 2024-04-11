@@ -197,7 +197,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Import kubeconfig from secrets
-        if: ${{ needs.vars.outputs.kubeconfig_version == 'secrets' }}
         uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBECONFIG }}
