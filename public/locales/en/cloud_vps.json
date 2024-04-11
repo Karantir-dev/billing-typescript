@@ -109,7 +109,7 @@
       "rebuild": "Select boot source"
     },
     "warning": {
-      "rebuild": "All data currently on the instance disk will be permanently deleted."
+      "rebuild": "The system will be reinstalled. All data currently on the instance disk will be permanently deleted."
     }
   },
   "server_location": "Server location",

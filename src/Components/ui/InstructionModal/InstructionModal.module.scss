@@ -11,6 +11,10 @@
     &::-webkit-scrollbar-button:end {
       height: 0;
     }
+    a {
+      color: var(--link-text);
+      text-decoration: underline;
+    }
   }
 }
 
