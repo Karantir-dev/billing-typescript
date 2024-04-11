@@ -3,6 +3,19 @@ on:
   push:
     branches: [ prod, dev, prod-biz, update, dev-cloud ]
   workflow_dispatch:
+    inputs:
+      environment:
+        required: false
+        type: string
+        description: "Яку environment github використовується"
+      prefix:
+        required: false
+        type: string
+        description: "Значення типу branch-<number_branch>, де <number_branch> номер гілки. Отримується з 123_added_new_func/devops"
+      KUBECONFIG:
+        required: false
+        type: string
+        description: "Kubeconfig in base64"
 
   workflow_call:
     secrets:
@@ -183,10 +196,16 @@ jobs:
       name: ${{ needs.vars.outputs.environment }}
     steps:
       - uses: actions/checkout@v4
-      - name: Import kubeconfig
+      - name: Import kubeconfig from secrets
+        if: ${{ needs.vars.outputs.kubeconfig_version == 'secrets' }}
         uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBECONFIG }}
+      - name: Import kubeconfig from inputs
+        if: ${{ needs.vars.outputs.kubeconfig_version == 'inputs' }}
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ inputs.KUBECONFIG }}
 
       - name: Update Version
         working-directory: deployment

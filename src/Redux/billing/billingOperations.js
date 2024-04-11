@@ -581,7 +581,7 @@ const checkIsStripeAvailable = () => (dispatch, getState) => {
         .find(el => el.$name === 'methodlist')
         ?.elem.find(el => el.name.$.includes('Stripe'))
 
-      dispatch(billingActions.setIsStripeAvailable(Boolean(isStripeAvailable)))
+      dispatch(billingActions.setIsStripeAvailable(isStripeAvailable))
 
       dispatch(actions.hideLoader())
     })
@@ -1035,7 +1035,7 @@ const getPaymentMethods =
 
         dispatch(billingActions.setPaymentMethodList(elem))
         dispatch(billingActions.setPaymentMethodCount(count))
-        setIsLoading(false)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
         handleLoadersClosing(error?.message, dispatch, setIsLoading)

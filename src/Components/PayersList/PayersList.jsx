@@ -201,8 +201,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
         )}
 
         {payersSelectedFields?.profiletype === '1' &&
-        (payersSelectedFields?.country || payersSelectedFields?.country_physical) ===
-          '181' &&
+        payersSelectedFields?.country === '181' &&
         !selectedPayerFields?.cnp ? (
           <>
             <InputField

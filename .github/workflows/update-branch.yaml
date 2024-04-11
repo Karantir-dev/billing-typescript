@@ -2,7 +2,7 @@ name: Update branch
 
 on:
   push:
-    branches: [ dev ]
+    branches: [dev]
   workflow_dispatch:
 
 concurrency:
@@ -26,12 +26,12 @@ jobs:
           ref: ${{ matrix.head }}
 
       - name: Delete branch
-        run: | 
+        run: |
           git push -d ${{ github.server_url }}/${{ github.repository }} ${{ matrix.base }} || true
 
       - name: Create branch
         run: |
-          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }} 
+          git push ${{ github.server_url }}/${{ github.repository }} ${{ matrix.head }}:${{ matrix.base }}
 
       - name: Run workflow
         run: |
