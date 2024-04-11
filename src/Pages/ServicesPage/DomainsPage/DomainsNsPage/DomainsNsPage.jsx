@@ -23,7 +23,13 @@ import s from './DomainsNsPage.module.scss'
 import { roundToDecimal, translatePeriod, useCancelRequest } from '@utils'
 
 export default function Component({ transfer = false }) {
-  const { t } = useTranslation(['domains', 'trusted_users', 'auth', 'autoprolong'])
+  const { t } = useTranslation([
+    'domains',
+    'trusted_users',
+    'auth',
+    'autoprolong',
+    'other',
+  ])
   const dispatch = useDispatch()
 
   const location = useLocation()
@@ -91,8 +97,6 @@ export default function Component({ transfer = false }) {
       }
     }
 
-    setValidationSchema(Yup.object().shape(shema))
-
     if (paymentData) {
       selectedDomain?.forEach(select => {
         data[`autoprolong_${select}`] = paymentData[`autoprolong_${select}`]?.$
@@ -101,6 +105,13 @@ export default function Component({ transfer = false }) {
 
         if (transfer) {
           data[`domainparam_${select}_auth_code`] = ''
+
+          shema = {
+            ...shema,
+            [`domainparam_${select}_auth_code`]: Yup.string().required(
+              t('Is a required field', { ns: 'other' }),
+            ),
+          }
         }
 
         const keys = Object.keys(paymentData)
@@ -112,6 +123,8 @@ export default function Component({ transfer = false }) {
         })
       })
     }
+
+    setValidationSchema(Yup.object().shape(shema))
 
     setInitialValues(data)
   }, [selectedDomain, differentNS, paymentData])
@@ -319,11 +332,11 @@ export default function Component({ transfer = false }) {
                                     {sums?.length && (
                                       <div>
                                         <p className={s.domainName}>
-                                          {domainName}
+                                          {domainName}:{' '}
+                                          <span className={s.totalAmount}>
+                                            {roundToDecimal(sums[0])} EUR {t('per year')}
+                                          </span>
                                         </p>
-                                        <span>
-                                          - {roundToDecimal(sums[0])} EUR {t('per year')}
-                                        </span>
                                       </div>
                                     )}
                                     {checkBoxName && (

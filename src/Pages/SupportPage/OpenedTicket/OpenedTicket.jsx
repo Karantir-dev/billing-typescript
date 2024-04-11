@@ -36,6 +36,8 @@ export default function Component() {
   const ticket = useSelector(supportSelectors.getTicket)
   const isNewMessage = useSelector(userSelectors.getIsNewMessage)
 
+  const { realbalance } = useSelector(userSelectors.getUserInfo)
+
   const closeTipsModal = () => {
     setTipsModa(!tipsModal)
   }
@@ -98,6 +100,7 @@ export default function Component() {
                 label={t('THANK YOU')}
                 onClick={() => setTipsModa(true)}
                 type="button"
+                disabled={realbalance < 1}
               />
             ) : (
               <HintWrapper label={t('THANK YOU')}>
@@ -105,6 +108,7 @@ export default function Component() {
                   className={s.tools_icon}
                   onClick={() => setTipsModa(true)}
                   icon="euro"
+                  disabled={realbalance < 1}
                 />
               </HintWrapper>
             )}

@@ -128,7 +128,7 @@ export default function Component(props) {
             </div>
           )}
         </div>
-       </div>
+      </div>
       {params?.path === 'requests' && (
         <Button
           dataTestid={'new_ticket_btn'}

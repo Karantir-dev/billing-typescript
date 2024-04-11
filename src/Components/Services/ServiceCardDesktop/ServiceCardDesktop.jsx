@@ -5,7 +5,7 @@ import s from './ServiceCardDesktop.module.scss'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
-export default function ServiceCard(props) {
+export default function ServiceCardDesktop(props) {
   const { title, index, route, iconName, className } = props
   const { t } = useTranslation('other')
 
@@ -38,7 +38,7 @@ export default function ServiceCard(props) {
   )
 }
 
-ServiceCard.propTypes = {
+ServiceCardDesktop.propTypes = {
   title: PropTypes.string,
   index: PropTypes.number,
   route: PropTypes.string,

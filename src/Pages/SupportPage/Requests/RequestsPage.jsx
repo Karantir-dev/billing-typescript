@@ -5,10 +5,13 @@ import { SupportFilter, SupportTable, Pagination, Loader, Button } from '@compon
 import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsPage.module.scss'
 import { useCancelRequest } from '@src/utils'
+import { useLocation } from 'react-router-dom'
 
 export default function Component() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['support', 'other'])
+  const location = useLocation()
+
   const tickerList = useSelector(supportSelectors.getTicketList)
   const tickerCount = useSelector(supportSelectors.getTicketCount)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
@@ -21,7 +24,9 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(supportOperations.getDepartmenList(signal))
-    dispatch(supportOperations.getServiceList(signal))
+    dispatch(
+      supportOperations.getServiceList({ signal, ticket_item: location.state?.id }),
+    )
   }, [])
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export default function Component() {
       {!!selectedTickets.length && (
         <div className={s.footer}>
           <Button
-          className={s.footer_btn}
+            className={s.footer_btn}
             label={t('To the archive')}
             onClick={() => {
               dispatch(

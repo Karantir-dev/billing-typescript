@@ -74,6 +74,38 @@ const DedicatedPage = lazy(() =>
     /* webpackChunkName: "DedicatedServersPage" */ '@pages/ServicesPage/DedicatedServersPage/DedicPage'
   ),
 )
+const CloudVPSPage = lazy(() =>
+  import(
+    /* webpackChunkName: "CloudVPSPage" */ '@pages/ServicesPage/CloudVPSPage/CloudVPS'
+  ),
+)
+const CloudVPSInstancesPage = lazy(() =>
+  import(
+    /* webpackChunkName: "CloudVPSInstancesPage" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstancesPage'
+  ),
+)
+const CreateInstancePage = lazy(() =>
+  import(
+    /* webpackChunkName: "CreateInstancePage" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/CreateInstancePage/CreateInstancePage'
+  ),
+)
+const CloudVpsSSHKeysPage = lazy(() =>
+  import(
+    /* webpackChunkName: "CloudVpsSSHKeysPage" */ '@pages/ServicesPage/CloudVPSPage/SSHKeysPage/SSHKeysPage'
+  ),
+)
+const CloudInstanceItemPage = lazy(() =>
+  import(
+    /* webpackChunkName: "CloudInstanceItemPage" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/CloudInstanceItemPage/CloudInstanceItemPage'
+  ),
+)
+
+const InstanceDetailsOverview = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceDetailsOverview" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceDetailsOverview'
+  ),
+)
+
 const DedicOrderPage = lazy(() =>
   import(
     /* webpackChunkName: "DedicOrderPage" */ '@pages/ServicesPage/DedicatedServersPage/DedicOrderPage/DedicOrderPage'
@@ -419,6 +451,80 @@ export const DedicatedPageLazy = () => {
   return (
     <ShellСomponent title={title}>
       <DedicatedPage />
+    </ShellСomponent>
+  )
+}
+export const CloudVPSPageLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.cloud_vps', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <CloudVPSPage />
+    </ShellСomponent>
+  )
+}
+
+export const CloudVPSInstancesPageLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.cloud_vps', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <CloudVPSInstancesPage />
+    </ShellСomponent>
+  )
+}
+export const CreateInstancePageLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.create_cloud_vps', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <CreateInstancePage />
+    </ShellСomponent>
+  )
+}
+export const CloudVPSSSHKeysPageLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.ssh_keys', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <CloudVpsSSHKeysPage />
+    </ShellСomponent>
+  )
+}
+export const CloudInstanceItemPageLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <CloudInstanceItemPage />
+    </ShellСomponent>
+  )
+}
+
+export const InstanceDetailsOverviewLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceDetailsOverview />
     </ShellСomponent>
   )
 }

@@ -26,6 +26,9 @@ export default function Select(props) {
     hasNotSelectedOption,
     saleIcon,
     withoutArrow,
+    itemIcon,
+    disableClickActive = true,
+    name,
   } = props
   const { t } = useTranslation('other')
 
@@ -66,7 +69,7 @@ export default function Select(props) {
   }, [isOpened])
 
   const itemSelectHandler = item => {
-    if (value === item.value) {
+    if (value === item.value && disableClickActive) {
       setIsOpened(false)
       return
     }
@@ -92,6 +95,7 @@ export default function Select(props) {
         </label>
       )}
       <button
+        name={name}
         type="button"
         style={{ height }}
         className={s.input_wrapper}
@@ -114,9 +118,13 @@ export default function Select(props) {
             className={cn({
               [s.placeholder]: !selectedItem?.label,
               [s.additionalField]: additionalPlaceHolder,
+              [s.selected_with_icon]: selectedItem?.icon,
             })}
           >
             {selectedItem?.label || placeholder}
+            {itemIcon && (
+              <Icon name={itemsList.find(el => el.value === selectedItem?.value)?.icon} />
+            )}
           </span>
           {additionalPlaceHolder && (
             <div className={s.additionalPlaceHolder}>{additionalPlaceHolder}</div>
@@ -152,10 +160,14 @@ export default function Select(props) {
                   onClick={() => itemSelectHandler(el)}
                   role="button"
                   key={index}
-                  className={s.list_item}
+                  className={cn(s.list_item, {
+                    [s.list_item_active]: selectedItem?.value === el.value,
+                  })}
                   data-testid={`qwe${index}`}
                 >
-                  <span className={s.name}>{el.label}</span>
+                  <span className={s.name}>
+                    {el.label} {itemIcon && <Icon name={el.icon} />}
+                  </span>
                 </div>
               )
             })}
@@ -194,6 +206,7 @@ Select.propTypes = {
   isRequired: PropTypes.bool,
   error: PropTypes.string,
   withoutArrow: PropTypes.bool,
+  name: PropTypes.string,
 }
 
 Select.defaultProps = {

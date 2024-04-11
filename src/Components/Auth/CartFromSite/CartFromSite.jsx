@@ -2,19 +2,16 @@ import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { Loader } from '@components'
-import { VDS_IDS_TO_ORDER } from '@utils/constants'
+import { navigateIfFromSite } from '@utils'
 
-export default function Component(props) {
+export default function CartFromSite(props) {
   const location = useLocation()
   const navigate = useNavigate()
 
   const { isAuth } = props
 
-  const redirectToLogin = redirect => {
+  const redirectToLogin = () => {
     navigate(route.LOGIN, {
-      state: {
-        redirect: redirect,
-      },
       replace: true,
     })
   }
@@ -29,46 +26,9 @@ export default function Component(props) {
 
     localStorage.setItem('site_cart', data)
 
-    if (isAuth) {
-      if (data) {
-        const funcName = JSON.parse(data)?.func
-        if (funcName === 'vds.order.param') {
-          const pricelist = JSON.parse(data)?.pricelist
-          if (VDS_IDS_TO_ORDER.includes(pricelist)) {
-            return navigate(route.DEDICATED_SERVERS_ORDER, {
-              replace: true,
-              state: { isDedicOrderAllowed: true },
-            })
-          }
-          return navigate(route.VPS_ORDER, {
-            replace: true,
-          })
-        } else if (funcName === 'domain.order.name') {
-          return navigate(route.DOMAINS_ORDERS, {
-            replace: true,
-          })
-        } else if (funcName === 'vhost.order.param') {
-          return navigate(route.SHARED_HOSTING_ORDER, {
-            replace: true,
-          })
-        } else if (funcName === 'wordpress.order.param') {
-          return navigate(route.WORDPRESS_ORDER, {
-            replace: true,
-          })
-        } else if (funcName === 'forexbox.order.param') {
-          return navigate(route.FOREX_ORDER, {
-            replace: true,
-          })
-        } else if (funcName === 'storage.order.param') {
-          return navigate(route.FTP_ORDER, {
-            replace: true,
-          })
-        } else if (funcName === 'dedic.order.param') {
-          return navigate(route.DEDICATED_SERVERS_ORDER, {
-            replace: true,
-          })
-        }
-      }
+    if (isAuth && data) {
+      navigateIfFromSite(data, navigate)
+      return
     }
 
     redirectToLogin()

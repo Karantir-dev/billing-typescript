@@ -298,13 +298,14 @@ export default function Component() {
     const vhostList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'vhost',
     )
-
     const siteCareList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'zabota-o-servere',
     )
-
     const vpnList = state.cartData?.elemList?.filter(
       elem => elem['item.type']?.$ === 'vpn',
+    )
+    const cloudList = state.cartData?.elemList?.filter(
+      elem => elem['item.type']?.$ === 'instances',
     )
 
     const filteredVdsList = []
@@ -418,6 +419,21 @@ export default function Component() {
       }
     })
 
+    const filteredCloudList = []
+
+    cloudList?.forEach(elem => {
+      if (
+        filteredCloudList?.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+          ?.length === 0
+      ) {
+        filteredCloudList?.push({
+          ...elem,
+          count: cloudList.filter(e => e?.pricelist_name?.$ === elem?.pricelist_name?.$)
+            ?.length,
+        })
+      }
+    })
+
     const maxItemsToShow = screenWidth < 768 ? 1 : 3
     let displayedItems = []
 
@@ -464,6 +480,11 @@ export default function Component() {
         displayedItems = state.showAllItems
           ? filteredForexList
           : filteredForexList.slice(0, maxItemsToShow)
+        break
+      case filteredCloudList?.length > 0:
+        displayedItems = state.showAllItems
+          ? filteredCloudList
+          : filteredCloudList.slice(0, maxItemsToShow)
         break
       default:
         console.error('Error: Product was not selected')
@@ -796,6 +817,33 @@ export default function Component() {
             </div>
             {shouldRenderButton(filteredFtpList.length) &&
               showMoreButton(filteredForexList?.length)}
+          </div>
+        )}
+        {filteredCloudList?.length > 0 && (
+          <div className={s.vds_wrapper}>
+            <div className={cn(s.formBlockTitle, s.padding)}>
+              {t('cloud_vps', { ns: 'crumbs' })}:
+            </div>
+
+            <div className={s.padding}>
+              <div className={cn(s.elements_wrapper, { [s.opened]: state.showAllItems })}>
+                {displayedItems?.map(el => {
+                  return (
+                    <VdsItem
+                      key={el?.id?.$}
+                      el={el}
+                      deleteItemHandler={
+                        filteredCloudList?.length > 1
+                          ? () => deleteBasketItemHandler(el?.id?.$)
+                          : null
+                      }
+                    />
+                  )
+                })}
+              </div>
+              {shouldRenderButton(filteredCloudList.length) &&
+                showMoreButton(filteredCloudList?.length)}
+            </div>
           </div>
         )}
       </>

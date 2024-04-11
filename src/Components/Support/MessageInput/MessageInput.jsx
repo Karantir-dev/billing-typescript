@@ -13,7 +13,12 @@ export default function Component(props) {
     onKeyDown,
     filesError,
     enableFiles = true,
-    fieldId = 'message'
+    name = 'message',
+    textareaClassName,
+    placeholderText,
+    label,
+    isRequired,
+    disabled,
   } = props
   const { t } = useTranslation(['support', 'other'])
 
@@ -26,18 +31,24 @@ export default function Component(props) {
 
   return (
     <div className={s.messageContainer}>
+      {label && (
+        <label htmlFor={name} className={s.label}>
+          {isRequired ? requiredLabel(label) : label}
+        </label>
+      )}
       <div className={s.fieldsBlock}>
         <div className={s.messageBlock}>
           <Field
             data-testid="input_message"
             innerRef={textarea}
-            className={s.textarea}
+            className={cn(s.textarea, { [textareaClassName]: textareaClassName })}
             type="text"
-            name="message"
-            id={fieldId}
-            placeholder={t('Enter your message...')}
+            name={name}
+            id={name}
+            placeholder={placeholderText || t('Enter your message...')}
             as="textarea"
             onKeyDown={onKeyDown}
+            disabled={disabled}
           />
           {enableFiles && (
             <label htmlFor="files">
@@ -96,7 +107,15 @@ export default function Component(props) {
           {t('The size of the collected file should not exceed 10.0 MB')}
         </div>
       )}
-      <ErrorMessage className={s.fileError} name={'message'} component="span" />
+      <ErrorMessage className={s.fileError} name={name} component="span" />
     </div>
+  )
+}
+
+function requiredLabel(labelName) {
+  return (
+    <>
+      {labelName} {<span className={s.required_star}>*</span>}
+    </>
   )
 }

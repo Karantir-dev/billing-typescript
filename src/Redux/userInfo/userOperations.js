@@ -3,23 +3,15 @@ import { toast } from 'react-toastify'
 import { t } from 'i18next'
 import { userActions, cartOperations, actions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
-import { checkIfTokenAlive } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 
 const userInfo = (data, dispatch) => {
   try {
-    const {
-      $realname,
-      $balance,
-      $email,
-      $phone,
-      $id,
-      $email_verified,
-      $need_phone_validate,
-    } = data.doc.user
+    const { $realname, $email, $phone, $id, $email_verified, $need_phone_validate } =
+      data.doc.user
     dispatch(
       userActions.setUserInfo({
         $realname,
-        $balance,
         $email,
         $phone,
         $id,
@@ -49,9 +41,6 @@ export const userNotifications = (data, dispatch, setIsLoader) => {
       }
       if (el?.$name === 'ticket') {
         d['ticket_count'] = el?.msg?.$
-      }
-      if (el?.$balance === 'yes') {
-        d['$balance'] = el?.value?.$
       }
     })
   }
@@ -90,7 +79,24 @@ const clearBasket = (data, dispatch) => {
 const dashBoardInfo = (data, dispatch) => {
   const { elem } = data.doc
   if (elem && elem?.length > 0) {
-    dispatch(userActions.updateUserInfo({ verefied_phone: elem[0]?.phone?.$ }))
+    dispatch(
+      userActions.updateUserInfo({
+        verefied_phone: elem[0]?.phone?.$,
+        realbalance: elem[0]?.realbalance?.$.replace(' €', '')?.replace(' EUR', ''),
+      }),
+    )
+  }
+}
+
+const getAvailableCredit = (data, dispatch) => {
+  const { elem } = data.doc
+  if (elem && elem?.length > 0) {
+    dispatch(
+      userActions.setAvailableCredit({
+        available_credit: elem[0]?.available_credit?.$,
+        credit: elem[0]?.credit?.$,
+      }),
+    )
   }
 }
 
@@ -101,6 +107,7 @@ const funcsArray = [
   userTickets,
   clearBasket,
   dashBoardInfo,
+  getAvailableCredit,
 ]
 
 const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
@@ -157,6 +164,15 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
       '/',
       qs.stringify({
         func: 'dashboard.info',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    ),
+    axiosInstance.post(
+      '/',
+      qs.stringify({
+        func: 'dashboard.subaccount_credit',
         out: 'json',
         lang: 'en',
         auth: sessionId,
@@ -258,6 +274,31 @@ const getNotify = setIsLoader => (dispatch, getState) => {
     })
 }
 
+const getDashboardInfo = () => (dispatch, getState) => {
+  const {
+    auth: { sessionId },
+  } = getState()
+
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'dashboard.info',
+        out: 'json',
+        lang: 'en',
+        auth: sessionId,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+      dashBoardInfo(data, dispatch)
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+    })
+}
+
 const getTickets = () => (dispatch, getState) => {
   const {
     auth: { sessionId },
@@ -350,8 +391,8 @@ const verifyMainEmail = (key, username) => (dispatch, getState) => {
     .finally(() => dispatch(actions.hideLoader()))
 }
 
-const cleanBsketHandler = func => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const cleanBsketHandler = (func, signal, setIsLoading) => (dispatch, getState) => {
+  setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
   const {
     auth: { sessionId },
@@ -366,6 +407,7 @@ const cleanBsketHandler = func => (dispatch, getState) => {
         lang: 'en',
         auth: sessionId,
       }),
+      { signal },
     )
     .then(({ data }) => {
       if (data?.doc?.error) throw new Error(data.doc.error.msg.$)
@@ -376,10 +418,8 @@ const cleanBsketHandler = func => (dispatch, getState) => {
     })
     .then(() => func && func())
     .catch(error => {
-      dispatch(actions.hideLoader())
-      toast.error(t('unknown_error'), {
-        position: 'bottom-right',
-      })
+      handleLoadersClosing(error?.message, dispatch, setIsLoading)
+
       checkIfTokenAlive(error.message, dispatch)
     })
 }
@@ -393,4 +433,5 @@ export default {
   sendVerificationEmail,
   verifyMainEmail,
   cleanBsketHandler,
+  getDashboardInfo,
 }

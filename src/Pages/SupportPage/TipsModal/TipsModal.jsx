@@ -68,7 +68,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
                 <MessageInput
                   message={values.message}
                   enableFiles={false}
-                  fieldId={'tipsComment'}
+                  name={'tipsComment'}
                 />
               </Form>
             )
