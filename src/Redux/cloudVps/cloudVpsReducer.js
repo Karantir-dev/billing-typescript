@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import cloudVpsActions from './cloudVpsActions'
+import { TARIFFS_PRICES } from '@src/utils/constants'
 
 const initialState = {
   itemForModalsReducer: {},
@@ -33,11 +34,19 @@ const instancesCount = createReducer(initialState.instancesCount, {
 const instancesFilters = createReducer(initialState.instancesFilters, {
   [cloudVpsActions.setInstancesFilters]: (_, { payload }) => payload,
 })
+
 const instancesTariffs = createReducer(initialState.instancesTariffs, {
-  [cloudVpsActions.setInstancesTariffs]: (state, { payload }) => ({
-    ...state,
-    ...payload,
-  }),
+  [cloudVpsActions.setInstancesTariffs]: (state, { payload }) => {
+    /** 13 it is hardcoded dc id - it must be refactored */
+    payload[13] = payload[13]?.map(el => {
+      const newPrice = TARIFFS_PRICES[el.title.main.$]
+      el.prices.price.cost.$ = String(newPrice)
+
+      return el
+    })
+
+    return { ...state, ...payload }
+  },
 })
 
 const instancesDcList = createReducer(initialState.instancesDcList, {
