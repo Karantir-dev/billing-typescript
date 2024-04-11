@@ -16,7 +16,7 @@ export default function SelectGeo(props) {
   } = props
   const { t } = useTranslation(['countries', 'other'])
 
-  return payersSelectLists?.country_physical?.[0] && selectValue !== 'null' ? (
+  return payersSelectLists?.country[0] && selectValue !== 'null' ? (
     <Select
       placeholder={t('Not chosen', { ns: 'other' })}
       label={`${t('The country', { ns: 'other' })}:`}
@@ -32,10 +32,10 @@ export default function SelectGeo(props) {
           label: (
             <div className={countrySelectClassName}>
               <img
-                src={`${process.env.REACT_APP_BASE_URL}${payersSelectLists.country_physical[0].$image}`}
+                src={`${process.env.REACT_APP_BASE_URL}${payersSelectLists?.country[0].$image}`}
                 alt="flag"
               />
-              {t(`${payersSelectLists.country_physical[0].$.trim()}`)}
+              {t(`${payersSelectLists.country[0].$.trim()}`)}
             </div>
           ),
           value: selectValue,
