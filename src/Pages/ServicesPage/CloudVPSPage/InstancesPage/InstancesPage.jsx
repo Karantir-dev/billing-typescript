@@ -191,63 +191,65 @@ export default function InstancesPage() {
               isShadow
               onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}
             />
-            <div className={s.filter}>
-              <IconButton icon="update" onClick={() => getInstances()} />
-              <IconButton
-                className={cn(s.filter__icon, { [s.filtered]: isFiltered })}
-                onClick={() => setIsFiltersOpened(true)}
-                icon="filter"
-                disabled={!instances.length && !isFiltered}
-              />
+            {instances?.length > 0 && (
+              <div className={s.filter}>
+                <IconButton icon="update" onClick={() => getInstances()} />
+                <IconButton
+                  className={cn(s.filter__icon, { [s.filtered]: isFiltered })}
+                  onClick={() => setIsFiltersOpened(true)}
+                  icon="filter"
+                  disabled={!instances.length && !isFiltered}
+                />
 
-              {filterKeys && (
-                <ul className={s.filter__clouds}>
-                  {filterKeys.map(key => {
-                    const value =
-                      (filters.filtersList[key] &&
-                        filters.filtersList[key]?.find(
-                          el => el.$key === filters.active[key],
-                        )?.$) ||
-                      filters.active[key]
-                    return (
-                      <Fragment key={key}>
-                        {filters.active[key] && (
-                          <li className={s.filter__cloud}>
-                            <span className={s.filter__cloud_name}>{t(key)}:</span>
-                            <span className={s.filter__cloud_value}>
-                              {t(value.trim())}
-                            </span>
-                            <button
-                              className={s.filter__cloud_btn}
-                              onClick={() => {
-                                setFiltersHandler({ ...filters.active, [key]: '' })
-                              }}
-                            >
-                              <Icon name="Cross" />
-                            </button>
-                          </li>
-                        )}
-                      </Fragment>
-                    )
-                  })}
-                </ul>
-              )}
+                {filterKeys && (
+                  <ul className={s.filter__clouds}>
+                    {filterKeys.map(key => {
+                      const value =
+                        (filters.filtersList[key] &&
+                          filters.filtersList[key]?.find(
+                            el => el.$key === filters.active[key],
+                          )?.$) ||
+                        filters.active[key]
+                      return (
+                        <Fragment key={key}>
+                          {filters.active[key] && (
+                            <li className={s.filter__cloud}>
+                              <span className={s.filter__cloud_name}>{t(key)}:</span>
+                              <span className={s.filter__cloud_value}>
+                                {t(value.trim())}
+                              </span>
+                              <button
+                                className={s.filter__cloud_btn}
+                                onClick={() => {
+                                  setFiltersHandler({ ...filters.active, [key]: '' })
+                                }}
+                              >
+                                <Icon name="Cross" />
+                              </button>
+                            </li>
+                          )}
+                        </Fragment>
+                      )
+                    })}
+                  </ul>
+                )}
 
-              {isFiltersOpened && (
-                <>
-                  <InstanceFiltersModal
-                    isOpened
-                    closeFn={() => {
-                      setIsFiltersOpened(false)
-                    }}
-                    filters={filters.active}
-                    filtersList={filters.filtersList}
-                    resetFilterHandler={() => setFiltersHandler()}
-                    handleSubmit={setFiltersHandler}
-                  />
-                </>
-              )}
-            </div>
+                {isFiltersOpened && (
+                  <>
+                    <InstanceFiltersModal
+                      isOpened
+                      closeFn={() => {
+                        setIsFiltersOpened(false)
+                      }}
+                      filters={filters.active}
+                      filtersList={filters.filtersList}
+                      resetFilterHandler={() => setFiltersHandler()}
+                      handleSubmit={setFiltersHandler}
+                    />
+                  </>
+                )}
+              </div>
+            )}
           </div>
           {lessThan1550 && (
             <Select
