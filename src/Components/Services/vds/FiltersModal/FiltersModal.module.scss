@@ -93,7 +93,7 @@
     transform: scale(0);
 
     &.opened {
-      transform: scale(1) translate(-85%, 0%);
+      transform: scale(1);
     }
 
     &::after {
@@ -141,7 +141,7 @@
     right: initial;
 
     &::after {
-      left: 100px;
+      left: 34px;
     }
   }
 }
