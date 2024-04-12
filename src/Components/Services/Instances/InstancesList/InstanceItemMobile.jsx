@@ -55,13 +55,13 @@ export default function InstanceItemMobile({ item }) {
         </div>
       </div>
       <div className={s.mobile_item__body}>
-        <p className={s.mobile_item__param}>Flavor</p>
+        <p className={s.mobile_item__param}>{t('Flavor')}</p>
         <p className={s.mobile_item__value}>{item.pricelist.$}</p>
 
-        <p className={s.mobile_item__param}>Price</p>
+        <p className={s.mobile_item__param}>{t('Price')}</p>
         <p className={s.mobile_item__value}>{item.cost.$}</p>
 
-        <p className={s.mobile_item__param}>Region</p>
+        <p className={s.mobile_item__param}>{t('Region')}</p>
         <p className={s.mobile_item__value}>
           {item?.datacentername && (
             <img
@@ -78,12 +78,12 @@ export default function InstanceItemMobile({ item }) {
         <p className={s.mobile_item__param}>{t('Created at')}</p>
         <p className={s.mobile_item__value}>{item.createdate.$}</p>
 
-        <p className={s.mobile_item__param}>OS</p>
+        <p className={s.mobile_item__param}>{t('OS')}</p>
         <p className={s.mobile_item__value}>
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </p>
 
-        <p className={s.mobile_item__param}>Access IP</p>
+        <p className={s.mobile_item__param}>{t('Access IP')}</p>
         <p className={s.mobile_item__value} ref={ipCell}>
           <span className={s.ip_cell}>
             <span>{ip}</span> {ip && <CopyText text={ip} />}
