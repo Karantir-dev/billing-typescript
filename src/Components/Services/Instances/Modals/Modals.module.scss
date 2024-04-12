@@ -129,7 +129,8 @@
   @media screen and (min-width: 768px) {
     & {
       position: absolute;
-      left: 0;
+      right: 0;
+      left: unset;
       top: calc(100% + 15px);
       overflow: initial;
       height: fit-content;
@@ -145,7 +146,7 @@
       &::after {
         content: '';
         position: absolute;
-        left: 13px;
+        right: 13px;
         top: -10px;
         width: 0;
         height: 0;
@@ -158,10 +159,10 @@
 
   @media screen and (min-width: 1600px) {
     & {
-      left: -20px;
+      right: -20px;
 
       &::after {
-        left: 34px;
+        right: 34px;
       }
     }
   }
