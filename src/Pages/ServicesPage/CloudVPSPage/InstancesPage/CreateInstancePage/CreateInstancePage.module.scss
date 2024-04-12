@@ -319,6 +319,16 @@
 .exlude_vat_hint_popup {
   width: 150px;
   font-size: 14px;
+
+  @media (max-width: 450px) {
+    right: -10px;
+    left: initial;
+    transform: none;
+
+    > div > div {
+      left: 20px;
+    }
+  }
 }
 
 .ip_wrapper {
