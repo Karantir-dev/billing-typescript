@@ -67,5 +67,6 @@
   "next": "Next",
   "form_invalid": "The form is invalid",
   "edit": "Edit",
-  "off": "Off"
+  "off": "Off",
+  "clone_error": "Current tariff is no longer available for buying. Please choose another one from the list."
 }
