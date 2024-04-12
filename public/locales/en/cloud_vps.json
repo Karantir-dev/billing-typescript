@@ -110,6 +110,10 @@
     },
     "warning": {
       "rebuild": "The system will be reinstalled. All data currently on the instance disk will be permanently deleted."
+    },
+    "os_description": {
+      "shr": "Here are images uploaded by technical support staff for you",
+      "pub": "Here are publicly available LiveCD images of various systems"
     }
   },
   "server_location": "Server location",
