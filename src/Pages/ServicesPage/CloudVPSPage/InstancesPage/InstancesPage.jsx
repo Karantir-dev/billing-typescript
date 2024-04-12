@@ -191,86 +191,86 @@ export default function InstancesPage() {
               isShadow
               onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}
             />
-            {instances?.length > 0 && (
-              <div className={s.filter}>
-                <IconButton icon="update" onClick={() => getInstances()} />
-                <IconButton
-                  className={cn(s.filter__icon, { [s.filtered]: isFiltered })}
-                  onClick={() => setIsFiltersOpened(true)}
-                  icon="filter"
-                  disabled={!instances.length && !isFiltered}
-                />
+            {!instances.length && !isFiltered ? null : (
+              <>
+                <div className={s.filter}>
+                  <IconButton icon="update" onClick={() => getInstances()} />
+                  <IconButton
+                    className={cn(s.filter__icon, { [s.filtered]: isFiltered })}
+                    onClick={() => setIsFiltersOpened(true)}
+                    icon="filter"
+                    disabled={!instances.length && !isFiltered}
+                  />
 
-                {filterKeys && (
-                  <ul className={s.filter__clouds}>
-                    {filterKeys.map(key => {
-                      const value =
-                        (filters.filtersList[key] &&
-                          filters.filtersList[key]?.find(
-                            el => el.$key === filters.active[key],
-                          )?.$) ||
-                        filters.active[key]
-                      return (
-                        <Fragment key={key}>
-                          {filters.active[key] && (
-                            <li className={s.filter__cloud}>
-                              <span className={s.filter__cloud_name}>{t(key)}:</span>
-                              <span className={s.filter__cloud_value}>
-                                {t(value.trim())}
-                              </span>
-                              <button
-                                className={s.filter__cloud_btn}
-                                onClick={() => {
-                                  setFiltersHandler({ ...filters.active, [key]: '' })
-                                }}
-                              >
-                                <Icon name="Cross" />
-                              </button>
-                            </li>
-                          )}
-                        </Fragment>
-                      )
+                  {isFiltersOpened && (
+                    <>
+                      <InstanceFiltersModal
+                        isOpened
+                        closeFn={() => {
+                          setIsFiltersOpened(false)
+                        }}
+                        filters={filters.active}
+                        filtersList={filters.filtersList}
+                        resetFilterHandler={() => setFiltersHandler()}
+                        handleSubmit={setFiltersHandler}
+                      />
+                    </>
+                  )}
+                </div>
+                {lessThan1550 && (
+                  <Select
+                    className={s.sort_select}
+                    placeholder={t('sort')}
+                    label={`${t('sort')}:`}
+                    isShadow
+                    itemsList={CLOUD_SORT_LIST.filter(el => el.isSort).map(el => {
+                      const { icon } = checkSortItem(el.value)
+                      return {
+                        ...el,
+                        label: t(el.label),
+                        icon,
+                      }
                     })}
-                  </ul>
+                    itemIcon
+                    getElement={value => changeSort(value)}
+                    value={sortBy?.replace(/[+-]/g, '')}
+                    disableClickActive={false}
+                  />
                 )}
+              </>
+            )}
 
-                {isFiltersOpened && (
-                  <>
-                    <InstanceFiltersModal
-                      isOpened
-                      closeFn={() => {
-                        setIsFiltersOpened(false)
-                      }}
-                      filters={filters.active}
-                      filtersList={filters.filtersList}
-                      resetFilterHandler={() => setFiltersHandler()}
-                      handleSubmit={setFiltersHandler}
-                    />
-                  </>
-                )}
-              </div>
+            {filterKeys && (
+              <ul className={s.filter__clouds}>
+                {filterKeys.map(key => {
+                  const value =
+                    (filters.filtersList[key] &&
+                      filters.filtersList[key]?.find(
+                        el => el.$key === filters.active[key],
+                      )?.$) ||
+                    filters.active[key]
+                  return (
+                    <Fragment key={key}>
+                      {filters.active[key] && (
+                        <li className={s.filter__cloud}>
+                          <span className={s.filter__cloud_name}>{t(key)}:</span>
+                          <span className={s.filter__cloud_value}>{t(value.trim())}</span>
+                          <button
+                            className={s.filter__cloud_btn}
+                            onClick={() => {
+                              setFiltersHandler({ ...filters.active, [key]: '' })
+                            }}
+                          >
+                            <Icon name="Cross" />
+                          </button>
+                        </li>
+                      )}
+                    </Fragment>
+                  )
+                })}
+              </ul>
             )}
           </div>
-          {lessThan1550 && (
-            <Select
-              className={s.sort_select}
-              placeholder={t('sort')}
-              label={`${t('sort')}:`}
-              isShadow
-              itemsList={CLOUD_SORT_LIST.filter(el => el.isSort).map(el => {
-                const { icon } = checkSortItem(el.value)
-                return {
-                  ...el,
-                  label: t(el.label),
-                  icon,
-                }
-              })}
-              itemIcon
-              getElement={value => changeSort(value)}
-              value={sortBy?.replace(/[+-]/g, '')}
-              disableClickActive={false}
-            />
-          )}
           <InstancesList
             instances={instances}
             sortBy={sortBy}

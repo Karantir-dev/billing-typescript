@@ -139,13 +139,13 @@
       transform: scale(0);
 
       &.opened {
-        transform: scale(1);
+        transform: scale(1) translate(-85%, 0%);
       }
 
       &::after {
         content: '';
         position: absolute;
-        left: 13px;
+        right: 13px;
         top: -10px;
         width: 0;
         height: 0;
@@ -161,7 +161,7 @@
       left: -20px;
 
       &::after {
-        left: 34px;
+        right: 34px;
       }
     }
   }
