@@ -1,8 +1,15 @@
 import { useEffect, useImperativeHandle, useState } from 'react'
-import { InputField, CustomPhoneInput, Select, CheckBox, Icon } from '@components'
+import {
+  InputField,
+  CustomPhoneInput,
+  Select,
+  CheckBox,
+  Icon,
+  ScrollToFieldError,
+} from '@components'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { FormikProvider, useFormik } from 'formik'
+import { FormikProvider, useFormik, Form } from 'formik'
 import {
   EMAIL_SPECIAL_CHARACTERS_REGEX,
   CYRILLIC_ALPHABET_PROHIBITED,
@@ -328,7 +335,8 @@ export default function Component(props) {
 
   return (
     <FormikProvider value={formik}>
-      <form ref={refId}>
+      <Form ref={refId}>
+        <ScrollToFieldError />
         <button
           disabled={!owner && values[contact_use_first] === 'on'}
           onClick={openHandler}
@@ -618,7 +626,7 @@ export default function Component(props) {
             </div>
           </div>
         </div>
-      </form>
+      </Form>
     </FormikProvider>
   )
 }
