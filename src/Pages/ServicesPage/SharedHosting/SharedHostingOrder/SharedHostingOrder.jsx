@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useRef, useState } from 'react'
 import { BreadCrumbs, Select, TarifCard, Button, Loader } from '@components'
 import { useDispatch } from 'react-redux'
