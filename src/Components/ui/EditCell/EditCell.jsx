@@ -70,7 +70,8 @@ export default function EditCell({
             onMouseUp={() => input.current.focus()}
             ref={input}
           />
-          <Icon name="Edit"
+          <Icon
+            name="Edit"
             className={cn(s.btn, s.edit_icon, { [s.btn_show]: originName === editName })}
           />
           <button

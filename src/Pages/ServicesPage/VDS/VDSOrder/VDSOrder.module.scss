@@ -1,4 +1,4 @@
-@import '../../../../scss/placeholders.scss';
+@import '@scss/placeholders.scss';
 
 .page_title {
   margin-bottom: 25px;
@@ -342,19 +342,19 @@
   height: 30px;
   position: relative;
   background: rgba(179, 169, 193, 0.1);
+}
 
-  &_border {
-    border-radius: 3px;
-    padding: 1px;
-    &:hover {
-      background: var(--accent-gradient);
-    }
-  }
+.input_wrapper_bg {
+  border-radius: 2px;
+  background: var(--elements-bgc);
+  overflow: hidden;
+}
 
-  &_bg {
-    border-radius: 2px;
-    background: var(--elements-bgc);
-    overflow: hidden
+.input_wrapper_border {
+  border-radius: 3px;
+  padding: 1px;
+  &:hover {
+    background: var(--accent-gradient);
   }
 }
 

@@ -1,0 +1,98 @@
+.options {
+  display: grid;
+  justify-content: space-between;
+  grid-template-columns: repeat(2, 1fr);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px 30px;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+}
+
+.filter__icon {
+  svg {
+    min-width: 18px;
+    max-width: 25px;
+    min-height: 18px;
+    max-height: 20px;
+    fill: var(--icon-color_2);
+  }
+
+  &.filtered {
+    svg {
+      fill: url(#gradient);
+    }
+  }
+}
+
+.filter,
+.filter__clouds {
+  position: relative;
+  // flex-grow: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.filter {
+  justify-self: flex-end;
+}
+
+.filter__clouds {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  padding-top: 8px;
+  grid-column: 1/3;
+  grid-row: 2/3;
+}
+
+.filter__cloud {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 9px 9px 12px;
+  box-shadow: var(--forms_shadow);
+  background: var(--elements-bgc);
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 3px;
+}
+
+.filter__cloud_name {
+  color: var(--transparent-color);
+}
+
+.filter__cloud_btn {
+  margin-left: 5px;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--transparent-color);
+  }
+
+  &:hover {
+    svg {
+      fill: var(--main-text);
+    }
+  }
+}
+
+.sort_select {
+  max-width: 240px;
+  margin-bottom: 20px;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0;
+  }
+}
+
+.pagination {
+  margin-top: 32px;
+}

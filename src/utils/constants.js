@@ -8,10 +8,13 @@ export const CYRILLIC_ALPHABET_PROHIBITED = /^[^Ѐ-ӏ]+$/g
 export const LATIN_REGEX = /^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi
 export const LATIN_NUMBER_REGEX = /^([A-Za-z0-9\s]*)$/g
 
+export const SSH_KEY_NAME_REGEX = /^[A-Za-z0-9\s\-_-]+$/
+
 export const INDEX_REGEX = /^(?:[A-Za-z]{2,3}-?\d+|\d+)$/
 
 export const PASS_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/
 export const PASS_REGEX_ASCII = /^[\x20-\x7E]+$/
+export const DISALLOW_SPACE = /^\S*$/
 
 export const URL_REGEX =
   /^(?:https?:\/\/)(?:www\.)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,}(?:\/[^\s]*)?$/
@@ -170,4 +173,52 @@ export const RUS_LANG_COUNTRIES = [
 /** ID of promotion "1 month of hosting for free" for Affordable tariff */
 export const FIRST_MONTH_HOSTING_DISCOUNT_ID = '6041'
 
+
 export const DEDIC_FILTER_RANGE_GROUPS = ['cpucores']
+
+export const DC_ID_IN = { poland: 13, netherlands: 12 }
+
+export const CLOUD_SORT_LIST = [
+  { label: 'Name', isSort: true, value: 'servername' },
+  { label: 'Status', isSort: true, value: 'fotbo_status' },
+  { label: 'Flavor', isSort: true, value: 'pricelist' },
+  { label: 'Price', isSort: true, value: 'cost' },
+  { label: 'Region', isSort: true, value: 'datacentername' },
+  { label: 'Created at', isSort: true, value: 'createdate' },
+  { label: 'OS', isSort: true, value: 'instances_os' },
+  { label: 'Access IP', isSort: true, value: 'ip' },
+]
+
+export const FOTBO_STATUSES_LIST = [
+  {
+    $key: '',
+    $: 'Not selected',
+  },
+  {
+    $key: 'active',
+    $: 'Active',
+  },
+  {
+    $key: 'stopped',
+    $: 'Stopped',
+  },
+  {
+    $key: 'verify_resize',
+    $: 'Verify Resize',
+  },
+  {
+    $key: 'suspend',
+    $: 'Suspended',
+  },
+]
+
+export const TARIFFS_PRICES = {
+  'Cloud Basic': { day: 0.13, month: 3.9 },
+  'Cloud Standart': { day: 0.1634, month: 4.9 },
+  'Cloud Exclusive': { day: 0.2497, month: 7.49 },
+  'Cloud Premium': { day: 0.4497, month: 13.49 },
+  'Cloud Platinum': { day: 0.6634, month: 19.9 },
+  'Cloud Enterprise': { day: 1.283, month: 38.49 },
+  'Сloud Ultimate': { day: 2.2164, month: 66.49 },
+  'Cloud Supreme': { day: 2.9967, month: 89.9 },
+}

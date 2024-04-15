@@ -170,6 +170,7 @@ const clearBasket = id => (dispatch, getState) => {
     .post(
       '/',
       qs.stringify({
+        /** func: 'cart.empty' for new API (the only required field) */
         func: 'basket',
         out: 'json',
         lang: 'en',
@@ -506,6 +507,7 @@ const getTariffParameters =
     setIsError = () => {},
     signal,
     setIsLoading,
+    isClonePage,
   ) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
@@ -536,13 +538,20 @@ const getTariffParameters =
       })
       .catch(error => {
         setIsError(true)
-        checkIfTokenAlive(error.message, dispatch)
+        const errorMessage = isClonePage ? 'clone_error' : error.message
+        checkIfTokenAlive(errorMessage, dispatch)
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
       })
   }
 
 const getTariffInfo =
-  ({ service, id, period, ...params }, setParameters, setPeriods, setIsError) =>
+  (
+    { service, id, period, ...params },
+    setParameters,
+    setPeriods,
+    setIsError,
+    isClonePage,
+  ) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
@@ -570,6 +579,9 @@ const getTariffInfo =
             { service, id, period, ...params },
             setParameters,
             setIsError,
+            undefined,
+            undefined,
+            isClonePage,
           ),
         )
       })

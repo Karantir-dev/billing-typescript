@@ -1,0 +1,18 @@
+.warning {
+  display: flex;
+  gap: 8px;
+  width: fit-content;
+  margin: 20px 0;
+  padding: 12px 14px;
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+  color: #f79649;
+  background-color: var(--forms_bgc_2);
+
+  svg {
+    flex-shrink: 0;
+  }
+  circle {
+    fill: #f79649;
+  }
+}

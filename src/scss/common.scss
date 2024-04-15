@@ -75,6 +75,12 @@ p {
   opacity: 0.45;
 }
 
+.asterisk {
+  color: var(--error-color);
+  font-size: 18px;
+  margin-right: 4px;
+}
+
 //STORYBOOK ICONS//
 
 .css-ngu85f {
@@ -103,12 +109,24 @@ p {
   transform: translate(-50%, 0);
 }
 
-@media (min-width: 460px) {
+@media screen and (min-width: 460px) {
   .Toastify__toast-container {
     left: unset;
     transform: unset;
     width: var(--toastify-toast-width);
     bottom: 1em;
     right: 1em;
+  }
+}
+
+.page_title {
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 24px;
+}
+
+@media screen and (min-width: 768px) {
+  .page_title {
+    margin-bottom: 32px;
   }
 }

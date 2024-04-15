@@ -1,4 +1,4 @@
-@import '../../../scss/placeholders.scss';
+@import '@scss/placeholders.scss';
 
 .field_wrapper {
   width: 100%;
@@ -45,6 +45,16 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    &.selected_with_icon {
+      width: 100%;
+      max-width: calc(100% - 30px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      svg {
+        fill: var(--sort_svg);
+      }
+    }
   }
 }
 
@@ -177,7 +187,16 @@
   }
 }
 
+.list_item_active {
+  svg {
+    fill: var(--sort_svg);
+  }
+}
+
 .name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;

@@ -63,6 +63,11 @@ export { default as Icon } from './ui/Icon/Icon'
 export { default as CertificateModal } from './ui/CertificateModal/CertificateModal'
 export { default as InstructionModal } from './ui/InstructionModal/InstructionModal'
 export { default as InputRange } from './ui/InputRange/InputRange'
+export { default as WarningMessage } from './ui/WarningMessage/WarningMessage'
+export { default as RadioTypeButton } from './ui/RadioTypeButton/RadioTypeButton'
+export { default as CopyText } from './ui/CopyText/CopyText'
+export { default as Incrementer } from './ui/Incrementer/Incrementer'
+export { default as FixedFooter } from './ui/FixedFooter/FixedFooter'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -221,3 +226,14 @@ export { default as TariffConfig } from './TariffConfig/TariffConfig'
 export { default as Header } from './Container/Header/Header'
 export { default as Options } from './Options/Options'
 export { default as OrderTariff } from './OrderTariff/OrderTariff'
+
+/** I suggest to rename this section and all of the files with "Cloud" */
+//==========================================Instances==========================================//
+
+export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
+export { default as SshList } from './Services/Instances/SshList/SshList'
+
+export { default as ConnectMethod } from './Services/Instances/ConnectMethod/ConnectMethod'
+export { default as InstancesOptions } from './Services/Instances/InstancesOptions/InstancesOptions'
+export { InstanceFiltersModal } from './Services/Instances/Modals'
+export { default as TariffCard } from './Services/cloud/TariffCard/TariffCard'

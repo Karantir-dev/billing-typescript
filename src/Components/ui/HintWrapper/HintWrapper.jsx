@@ -5,6 +5,9 @@ import PropTypes from 'prop-types'
 import s from './HintWrapper.module.scss'
 import cn from 'classnames'
 
+/**
+ * @param hintDelay - delay in miliseconds
+ */
 export default function HintWrapper({
   label,
   children,
@@ -12,6 +15,7 @@ export default function HintWrapper({
   wrapperClassName,
   bottom,
   disabled,
+  hintDelay = 500,
 }) {
   const ref = useRef(null)
   const [elemWidth, setElemWidth] = useState(0)
@@ -22,13 +26,15 @@ export default function HintWrapper({
     setPageWidth(window.screen.width)
   }, [children, pageWidth, setElemWidth])
 
-  const handleClick = (e) => {
+  const handleClick = e => {
     // is it mobile device and width of the screen is less than 1024
-    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/i.test(navigator.userAgent)
-      && pageWidth < 1024
+    const isMobileDevice =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/i.test(
+        navigator.userAgent,
+      ) && pageWidth < 1024
 
     // Check is it Google Chrome for mobile devices
-    const isMobileChrome = /CriOS/i.test(navigator.userAgent);
+    const isMobileChrome = /CriOS/i.test(navigator.userAgent)
 
     if (isMobileDevice || isMobileChrome) {
       e.stopPropagation()
@@ -41,7 +47,12 @@ export default function HintWrapper({
         children
       ) : (
         // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-        <div ref={ref} className={cn(s.hint_wrapper, wrapperClassName)} onClick={handleClick}>
+        <div
+          ref={ref}
+          className={cn(s.hint_wrapper, wrapperClassName)}
+          style={{ '--hint_delay': hintDelay + 'ms' }}
+          onClick={handleClick}
+        >
           {children}
           <div
             className={cn(
@@ -70,4 +81,5 @@ HintWrapper.propTypes = {
   wrapperClassName: PropTypes.string,
   bottom: PropTypes.bool,
   disabled: PropTypes.bool,
+  hintDelay: PropTypes.number,
 }

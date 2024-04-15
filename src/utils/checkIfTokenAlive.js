@@ -48,6 +48,8 @@ export default function checkIfTokenAlive(err, dispatch, isLocalLoader) {
     */
   } else if (errorText.includes('Network Error')) {
     dispatch(authActions.setAuthErrorMsg('warnings.403_error_code'))
+  } else if (errorText === 'clone_error') {
+    toast.error(`${t('clone_error', { ns: 'cart' })}`)
   } else {
     const isExceptedError =
       errorText.match(bankCardsMirRegex) ||

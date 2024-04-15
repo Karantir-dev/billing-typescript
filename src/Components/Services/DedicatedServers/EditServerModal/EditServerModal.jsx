@@ -132,7 +132,7 @@ export default function EditServerModal({
   const handleEditionModal = () => {
     closeModal()
   }
-  console.log(parameters, ' parameters')
+
   const handleSubmit = values => {
     const {
       elid,

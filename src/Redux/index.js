@@ -118,3 +118,9 @@ export { default as vpnReducer } from './vpn/vpnReducer'
 export { default as vpnActions } from './vpn/vpnActions'
 export { default as vpnOperations } from './vpn/vpnOperations'
 export { default as vpnSelectors } from './vpn/vpnSelectors'
+
+//===========================================CloudVps=================================//
+export { default as cloudVpsOperations } from './cloudVps/cloudVpsOperations'
+export { default as cloudVpsReducer } from './cloudVps/cloudVpsReducer'
+export { default as cloudVpsActions } from './cloudVps/cloudVpsActions'
+export { default as cloudVpsSelectors } from './cloudVps/cloudVpsSelectors'

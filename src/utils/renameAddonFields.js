@@ -1,6 +1,11 @@
-export default function renameAddonFields(data, { isNewFunc, isEditFunc } = {}) {
-  // isNewFunc is flag for getting params from new api function
-  // isEditFunc is flag for getting params from edit order function
+/** This function mutates recieved data object */
+/**
+ * @param {Object} [options]
+ * @param {boolean} [options.isNewFunc] - is flag for getting params from new api function.
+ * @param {boolean} [options.isEditFunc] - is flag for getting params from edit order function.
+ */
+export default function renameAddonFields(data, options = {}) {
+  const { isNewFunc, isEditFunc } = options
   for (const key in data?.messages?.msg) {
     if (key.match(/^(addon_\d+)$/g)) {
       if (!data.register) {

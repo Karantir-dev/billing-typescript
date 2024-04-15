@@ -7,7 +7,7 @@ import { translatePeriodToMonths } from '@utils'
 import s from './VdsItem.module.scss'
 
 export default function VdsItem({ el, deleteItemHandler }) {
-  const { t } = useTranslation(['vds', 'virtual_hosting'])
+  const { t } = useTranslation(['vds', 'virtual_hosting', 'cloud_vps'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const dropdownEl = useRef()
   const infoEl = useRef()
@@ -85,8 +85,13 @@ export default function VdsItem({ el, deleteItemHandler }) {
             <p className={s.tariff_name}>{tariffName} </p>
             <div className={s.periodInfo}>
               <span>
-                {t('Period', { ns: 'other' })}: {el['item.period']?.$}{' '}
-                {translatePeriodToMonths(el['item.period']?.$)}
+                {t('Period', { ns: 'other' })}:
+                {/* For cloud VPS we set default period - a day */}
+                {el['item.type']?.$ === 'instances'
+                  ? ' ' + t('day', { ns: 'cloud_vps' })
+                  : ` ${el['item.period']?.$} ${translatePeriodToMonths(
+                      el['item.period']?.$,
+                    )}`}
               </span>
               <span>
                 {t('amount', { ns: 'vds' })}: {el?.count} {t('pcs.', { ns: 'vds' })}
@@ -161,6 +166,12 @@ export default function VdsItem({ el, deleteItemHandler }) {
             {el?.desc?.$.includes('Service limits') && (
               <span className={s.value}>
                 <b>{t('Service limits')}:</b> {t('port_speed_limits')} &nbsp;
+              </span>
+            )}
+
+            {el?.desc?.$.includes('public-v4') && (
+              <span className={s.value}>
+                <b>IPv4</b> &nbsp;
               </span>
             )}
           </div>

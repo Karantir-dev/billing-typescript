@@ -24,7 +24,7 @@
     font-size: 20px;
     line-height: 113%;
     color: var(--main-text);
-    
+
     @media screen and (min-width: 768px) {
       padding: 18px 25px 18px 35px;
     }
@@ -32,6 +32,7 @@
 
   &__close {
     padding: 5px;
+    align-self: flex-start;
     svg {
       vertical-align: middle;
     }
@@ -142,4 +143,8 @@
       }
     }
   }
+}
+
+.modal__header_content {
+  max-width: calc(100% - 26px);
 }

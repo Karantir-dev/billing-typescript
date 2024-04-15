@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  // height: 60px;
+  height: 60px;
   border-radius: 4px;
 
   &.selected {
@@ -13,17 +13,20 @@
 
     .btn {
       cursor: initial;
-      width: calc(100% - 2px);
-      height: calc(100% - 2px);
       font-weight: 600;
     }
+  }
+
+  &.disabled {
+    pointer-events: none;
+    filter: opacity(0.6);
   }
 }
 
 .btn {
   position: relative;
-  height: 100%;
-  width: 100%;
+  height: calc(100% - 2px);
+  width: calc(100% - 2px);
   padding: 15px 20px;
   border-radius: 3px;
   background-color: var(--forms_bgc_2);

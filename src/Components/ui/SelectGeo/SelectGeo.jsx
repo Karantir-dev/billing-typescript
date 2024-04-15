@@ -16,23 +16,38 @@ export default function SelectGeo(props) {
   } = props
   const { t } = useTranslation(['countries', 'other'])
 
-  return payersSelectLists?.country?.[0] ? (
+  return (payersSelectLists?.country_physical?.[0] || payersSelectLists?.country?.[0]) &&
+    selectValue !== 'null' ? (
     <Select
       placeholder={t('Not chosen', { ns: 'other' })}
       label={`${t('The country', { ns: 'other' })}:`}
       value={selectValue}
-      getElement={item => setSelectFieldValue('country', item)}
+      setFieldValue={selectValue}
+      setElement={() => {
+        return setSelectFieldValue('country', selectValue)
+      }}
       isShadow
       className={selectClassName}
       itemsList={[
         {
           label: (
             <div className={countrySelectClassName}>
-              <img src={`${process.env.REACT_APP_BASE_URL}${payersSelectLists.country[0].$image}`} alt="flag" />
-              {t(`${payersSelectLists.country[0].$.trim()}`)}
+              <img
+                src={`${process.env.REACT_APP_BASE_URL}${
+                  payersSelectLists?.country?.[0]?.$image ||
+                  payersSelectLists?.country_physical?.[0]?.$image
+                }`}
+                alt="flag"
+              />
+              {t(
+                `${
+                  payersSelectLists?.country?.[0]?.$.trim() ||
+                  payersSelectLists?.country_physical?.[0]?.$.trim()
+                }`,
+              )}
             </div>
           ),
-          value: payersSelectLists.country[0].$key,
+          value: selectValue,
         },
       ]}
       isRequired

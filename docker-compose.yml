@@ -1,6 +1,5 @@
 version: '3.9'
 
-
 services:
 
   web:
@@ -8,7 +7,5 @@ services:
       dockerfile: Dockerfile
       context: .
       target: local
-    env_file:
-      - .env
     ports:
       - 127.0.0.1:8080:8080

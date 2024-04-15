@@ -77,11 +77,12 @@ export default function Component({ transfer = false }) {
           ),
         )
       } else {
+        const dataRegister = { domain_action: 'register' }
         dispatch(
           domainsOperations.getDomainsOrderName(
             setDomains,
             setAutoProlong(),
-            undefined,
+            dataRegister,
             undefined,
             signal,
             setIsLoading,
@@ -156,6 +157,8 @@ export default function Component({ transfer = false }) {
 
     if (transfer) {
       values['domain_action'] = 'transfer'
+    } else {
+      values['domain_action'] = 'register'
     }
     dispatch(
       domainsOperations.getDomainsOrderName(
@@ -216,6 +219,18 @@ export default function Component({ transfer = false }) {
 
     if (transfer) {
       data['domain_action'] = 'transfer'
+
+      /* 
+      Below is the logic for checking if the selected domain also exists in selected_domain_real_name.
+      Because it may happen that all the domain zones that are available will be selected,
+      but we should add only those zones that the user has selected manually. */
+
+      data['selected_domain'] = selected_domain
+        ?.filter(SelectedDomain => {
+          const zoneArr = selected_domain_real_name?.map(domain => domain?.split('.')[1])
+          return zoneArr?.some(zone => SelectedDomain?.includes(zone))
+        })
+        ?.join(', ')
     }
 
     navigate &&
@@ -288,7 +303,7 @@ export default function Component({ transfer = false }) {
                     setSelectedDomains={setSelectedDomainsNames}
                     selectedDomains={selectedDomainsNames}
                     domains={pickUpDomains?.list}
-                    selected={pickUpDomains?.selected}
+                    selected={selectedDomains}
                     registerDomainHandler={registerDomainHandler}
                     transfer={transfer}
                     siteDomainCheckData={siteDomainCheckData}

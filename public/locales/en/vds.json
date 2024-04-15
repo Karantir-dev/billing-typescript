@@ -64,6 +64,7 @@
   "without_software": "Without software",
   "license_to_panel": "Control Panel License",
   "amount": "Amount",
+  "amount_servers": "Amount of servers",
   "Unit": "unit",
   "Service limits": "Service limits",
   "port_speed_limits": "DDoS Protected Port Speed (Incoming): 1024 Kbit/sec day + 0.0029 EUR for 1 Kbit/sec",
@@ -71,7 +72,7 @@
   "attention": "Attention",
   "delete_message": "Do you really want to delete the selected service",
   "warn_message": "The service will be removed after the expiration date",
-  
+
   "password_change_desc": "VPS reboot is needed to apply the changes (it will be suspended for some time).",
   "new_password": "New password",
   "new_password_placeholder": "Enter new password",
@@ -82,6 +83,7 @@
   "instruction_title": "Virtual server activation",
   "no_servers_yet": "You don`t have a server yet.",
   "no_servers_yet_desc": "VPS is the best low-cost offer with powerful processors, premium internet, fast RAM, DDOs protection, which is suitable for any task. With all our VPS plans you get 24/7 live support, unlimited bandwidth & traffic.",
+  "no_servers_yet_filtered": "There are no servers for the specified parameters",
   "The resource has been changed": "The resource '{{value}}' has been changed",
   "Memory": "Memory",
   "The tariff plan has been changed": "The tariff plan has been changed",
