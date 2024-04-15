@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
@@ -223,6 +224,31 @@ export default function ForexPage() {
     isAllActive ? setActiveServices([]) : setActiveServices(forexRenderData?.forexList)
   }
 
+  const loadingParams = {
+    signal,
+    setIsLoading,
+  }
+
+  const editForexHandler = ({ values, elid, errorCallback }) => {
+    dispatch(
+      forexOperations.editForex({
+        ...values,
+        elid,
+        errorCallback,
+        successCallback: () => forexSelectors.getForexList(),
+        ...loadingParams,
+      }),
+    )
+  }
+
+  const editNameSubmit = ({ value, elid, errorCallback }) => {
+    editForexHandler({
+      values: { server_name: value },
+      elid,
+      errorCallback,
+    })
+  }
+
   return (
     <div>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -309,6 +335,7 @@ export default function ForexPage() {
       <ForexList
         emptyFilter={emptyFilter}
         forexList={forexRenderData?.forexList}
+        editNameSubmit={editNameSubmit}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}

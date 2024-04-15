@@ -281,6 +281,7 @@ const getCurrentForexInfo =
           expiredate,
           createdate,
           server_ip,
+          server_name,
           server_hostname,
           server_package,
           server_password,
@@ -298,6 +299,7 @@ const getCurrentForexInfo =
           createdate,
           name,
           server_ip,
+          server_name,
           server_hostname,
           server_package,
           server_password,
@@ -316,47 +318,45 @@ const getCurrentForexInfo =
       })
   }
 
-const editForex =
-  (elid, autoprolong, stored_method, handleModal) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+const editForex = (values, elid, handleModal) => (dispatch, getState) => {
+  dispatch(actions.showLoader())
 
-    const {
-      auth: { sessionId },
-    } = getState()
+  const {
+    auth: { sessionId },
+  } = getState()
 
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'forexbox.edit',
-          out: 'json',
-          auth: sessionId,
-          lang: 'en',
-          elid,
-          autoprolong,
-          stored_method,
-          clicked_button: 'ok',
-          sok: 'ok',
-        }),
-      )
-      .then(({ data }) => {
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+  axiosInstance
+    .post(
+      '/',
+      qs.stringify({
+        func: 'forexbox.edit',
+        out: 'json',
+        auth: sessionId,
+        lang: 'en',
+        elid,
+        clicked_button: 'ok',
+        sok: 'ok',
+        ...values,
+      }),
+    )
+    .then(({ data }) => {
+      if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-        dispatch(getForexList({ p_num: 1 }))
+      dispatch(getForexList({ p_num: 1 }))
 
-        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
-          position: 'bottom-right',
-          toastId: 'customId',
-        })
-        dispatch(actions.hideLoader())
-
-        handleModal()
+      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+        position: 'bottom-right',
+        toastId: 'customId',
       })
-      .catch(error => {
-        checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
-      })
-  }
+      dispatch(actions.hideLoader())
+
+      handleModal && handleModal()
+    })
+    .catch(error => {
+      checkIfTokenAlive(error.message, dispatch)
+      dispatch(actions.hideLoader())
+    })
+}
 
 const deleteForex = (elid, handleModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())

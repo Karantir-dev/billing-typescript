@@ -1,12 +1,16 @@
-import cn from 'classnames'
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
+import cn from 'classnames'
 import s from './ForexItem.module.scss'
-import { CheckBox, ServerState, Options } from '@components'
+
+import { CheckBox, EditCell, ServerState, Options } from '@components'
 import { isUnpaidOrder } from '@utils'
 
 export default function ForexItem({
   server,
+  editNameSubmit,
   setElidForEditModal,
   setElidForProlongModal,
   setElidForHistoryModal,
@@ -18,6 +22,18 @@ export default function ForexItem({
   unpaidItems,
 }) {
   const { t } = useTranslation(['vds', 'other', 'dns', 'crumbs'])
+
+  const [serverName, setServerName] = useState(server?.server_name?.$ || '')
+
+  const editServerName = value => {
+    const slicedValue = value.slice(0, 100)
+    editNameSubmit({
+      value: slicedValue,
+      elid: server.id?.$,
+      errorCallback: () => setServerName(serverName),
+    })
+    setServerName(value)
+  }
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
@@ -35,6 +51,10 @@ export default function ForexItem({
     fn()
   }
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+
+  useEffect(() => {
+    setServerName(server?.server_name?.$ || '')
+  }, [server?.server_name?.$])
 
   const options = [
     deleteOption,
@@ -84,6 +104,15 @@ export default function ForexItem({
           [s.active_server]: isActive,
         })}
       >
+        <EditCell
+          originName={serverName}
+          onSubmit={editServerName}
+          className={s.value}
+          placeholder={t(serverName || t('server_placeholder', { ns: 'vds' }), {
+            ns: 'vds',
+          })}
+          isShadow={true}
+        />
         <span className={s.value}>{server?.id?.$}</span>
         <span className={s.value}>
           {server?.pricelist?.$.replace('for', t('for', { ns: 'dns' }))
