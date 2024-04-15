@@ -213,8 +213,12 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     {t(`rebuild_modal.text.${item.rebuild_action}`)}
                   </p>
                   {!isRebuild && (
-                    <PageTabBar sections={navSections} activeValue={state.zone} />
+                    <>
+                      <PageTabBar sections={navSections} activeValue={state.zone} />
+                      <p>{t(`rebuild_modal.os_description.${state.zone}`)}</p>
+                    </>
                   )}
+
                   <div>
                     <div className={s.rebuild__os_list}>
                       {renderSoftwareOSFields(select, values[select], depends)}

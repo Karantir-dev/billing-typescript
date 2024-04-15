@@ -207,7 +207,7 @@ export default function PayersList({ signal, setIsLoading, renderTitle = () => {
             <InputField
               inputWrapperClass={s.inputHeight}
               name="cnp"
-              label={`${t('CNP')}:`}
+              label={`${t('CNP', { ns: 'payers' })}:`}
               placeholder={t('Enter data', { ns: 'other' })}
               isShadow
               className={s.inputBig}

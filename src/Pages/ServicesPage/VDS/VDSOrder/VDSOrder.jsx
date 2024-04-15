@@ -713,7 +713,7 @@ export default function VDSOrder() {
                 <div className={cn(s.buying_panel, { [s.opened]: parametersInfo })}>
                   {widerThanMobile && (
                     <div className={s.buying_panel_item}>
-                      <p>{t('amount')}:</p>
+                      <p>{t('amount_servers')}:</p>
 
                       <div className={s.increment_wrapper}>
                         <button
