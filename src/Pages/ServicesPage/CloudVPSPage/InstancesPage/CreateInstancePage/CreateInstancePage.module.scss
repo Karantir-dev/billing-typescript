@@ -301,10 +301,38 @@
   }
 }
 
-.priceDescPopup {
+.hintPopup {
   width: 400px;
 }
 
 .exlude_vat {
   font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.exlude_vat_hint {
+  margin-left: 4px;
+  cursor: help;
+}
+
+.exlude_vat_hint_popup {
+  width: 150px;
+  font-size: 14px;
+
+  @media (max-width: 450px) {
+    right: -10px;
+    left: initial;
+    transform: none;
+
+    > div > div {
+      left: 20px;
+    }
+  }
+}
+
+.ip_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }

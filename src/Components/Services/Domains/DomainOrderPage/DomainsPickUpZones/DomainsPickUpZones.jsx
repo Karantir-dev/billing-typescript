@@ -166,7 +166,7 @@ export default function ServicesPage(props) {
           [s.selected]: itemIsSelected(domainItem),
           [s.notAvailable]: is_available,
         })}
-        onClick={() => setIsSelectedHandler(domainItem)}
+        onClick={() => !is_available && setIsSelectedHandler(domainItem)}
       >
         {salePercent > 0 && <div className={s.sale}>{salePercent}%</div>}
 

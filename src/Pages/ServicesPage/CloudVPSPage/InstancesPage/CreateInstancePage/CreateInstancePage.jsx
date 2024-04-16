@@ -12,8 +12,9 @@ import {
   Incrementer,
   FixedFooter,
   ScrollToFieldError,
-  // HintWrapper,
   WarningMessage,
+  HintWrapper,
+  Icon,
 } from '@components'
 import * as Yup from 'yup'
 import { useLocation } from 'react-router-dom'
@@ -49,7 +50,7 @@ const IPv4_MONTHLY_COST = 1
 export default function CreateInstancePage() {
   const location = useLocation()
   const dispatch = useDispatch()
-  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries', 'cart'])
+  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
 
   const PERIODS_LIST = [
     { id: 'month', value: 30, label: t('month', { ns: 'other' }) },
@@ -72,7 +73,7 @@ export default function CreateInstancePage() {
   const { credit, realbalance } = useSelector(userSelectors.getUserInfo)
 
   const [currentDC, setCurrentDC] = useState()
-  const [periodCaptionShown, setPeriodCaptionShown] = useState(false)
+  const [showCaption, setShowCaption] = useState(false)
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
@@ -291,6 +292,10 @@ export default function CreateInstancePage() {
   const tariffFromSite = tariffs?.[currentDC?.$key]?.find(el =>
     el.title.main.$.toLowerCase().includes(dataFromSite?.name?.toLowerCase()),
   )
+
+  const toggleCaptionHandler = value => {
+    setShowCaption(prev => (value === prev ? false : value))
+  }
 
   return (
     <div className={s.page_padding}>
@@ -532,20 +537,31 @@ export default function CreateInstancePage() {
                   <h3 className={s.section_title}>{t('server_size')}</h3>
 
                   <div className={s.period_bar}>
-                    <label className={s.ip_checkbox} htmlFor="ipv6">
-                      <CheckBox
-                        name="network_ipv6"
-                        id="ipv6"
-                        value={values.network_ipv6}
-                        onClick={() => {
-                          setFieldValue('network_ipv6', !values.network_ipv6)
-                        }}
-                      />
-                      {t('cloud_ipv6')}
-                      <span className={s.ip_discount}>
-                        -1€/{t('short_month', { ns: 'other' })}
-                      </span>
-                    </label>
+                    <div className={s.ip_wrapper}>
+                      <label className={s.ip_checkbox} htmlFor="ipv6">
+                        <CheckBox
+                          name="network_ipv6"
+                          id="ipv6"
+                          value={values.network_ipv6}
+                          onClick={() => {
+                            setFieldValue('network_ipv6', !values.network_ipv6)
+                          }}
+                        />
+                        {t('cloud_ipv6')}
+                        <span className={s.ip_discount}>
+                          -1€/{t('short_month', { ns: 'other' })}
+                        </span>
+                      </label>
+                      <HintWrapper
+                        label={t('hint_description.ip')}
+                        popupClassName={s.hintPopup}
+                        disabled={!widerThan1550}
+                      >
+                        <button type="button" onClick={() => toggleCaptionHandler('ip')}>
+                          <Icon name="Info" />
+                        </button>
+                      </HintWrapper>
+                    </div>
 
                     <RadioTypeButton
                       withCaption
@@ -553,22 +569,21 @@ export default function CreateInstancePage() {
                       list={PERIODS_LIST}
                       value={values.period}
                       onClick={value => setFieldValue('period', value)}
-                      captionText={t('period_description')}
-                      popupClassName={s.priceDescPopup}
-                      toggleCaption={() => setPeriodCaptionShown(value => !value)}
+                      captionText={t('hint_description.period')}
+                      popupClassName={s.hintPopup}
+                      toggleCaption={() => toggleCaptionHandler('period')}
                     />
                   </div>
-                  {!widerThan1550 && periodCaptionShown && (
+                  {!widerThan1550 && showCaption && (
                     <div
                       className={cn(s.period_description, {
-                        [s.truncated]: !periodCaptionShown,
+                        [s.truncated]: !showCaption,
                       })}
                     >
                       <span className="asterisk">*</span>
-                      {t('period_description')}
+                      {t(`hint_description.${showCaption}`)}
                     </div>
                   )}
-
                   <ul className={s.grid}>
                     {filteredTariffsList?.map(tariff => {
                       const price = calculatePrice(tariff, values)
@@ -641,7 +656,7 @@ export default function CreateInstancePage() {
                           height={14}
                           alt={currentCountryName}
                         />
-                        {t(currentCountryName)}
+                        {t(currentCountryName, { ns: 'countries' })}
                       </div>
                       <div className={s.footer_params_row}>
                         <span className={s.footer_params_label}>CPU</span>
@@ -654,7 +669,7 @@ export default function CreateInstancePage() {
                     </div>
 
                     <div className={s.footer_item}>
-                      <p className={s.label}>{t('amount', { ns: 'vds' })}</p>
+                      <p className={s.label}>{t('amount_servers', { ns: 'vds' })}</p>
                       <Incrementer
                         count={values.order_count}
                         setCount={value => setFieldValue('order_count', value)}
@@ -677,10 +692,17 @@ export default function CreateInstancePage() {
                         )}
                         /{t('hour')})
                       </p>
-                      <p className={s.exlude_vat}>
+                      <div className={s.exlude_vat}>
                         <span className="asterisk">*</span>
-                        {t('Excluding VAT', { ns: 'cart' })}
-                      </p>
+                        {t('excluding_vat')}
+                        <HintWrapper
+                          wrapperClassName={s.exlude_vat_hint}
+                          popupClassName={s.exlude_vat_hint_popup}
+                          label={t('exlude_vat_hint')}
+                        >
+                          <Icon name="Info" />
+                        </HintWrapper>
+                      </div>
                     </div>
 
                     <Button

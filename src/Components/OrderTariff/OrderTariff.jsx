@@ -47,7 +47,13 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
       isClonePage ? navigate(route.VDS_ORDER) : setIsError(true)
 
     dispatch(
-      cartOperations.getTariffInfo(params, setParameters, setPeriods, errorHandler),
+      cartOperations.getTariffInfo(
+        params,
+        setParameters,
+        setPeriods,
+        errorHandler,
+        isClonePage,
+      ),
     )
   }, [])
 

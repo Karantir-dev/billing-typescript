@@ -183,7 +183,7 @@ const Component = ({ fromPromotionLink }) => {
 
   return (
     <Container>
-      {isShowPromotion && promotionType && (
+      {isShowPromotion && promotionType && location.pathname === route.SHARED_HOSTING && (
         <PromotionBanner type={promotionType} closeBanner={closePromotionBanner} />
       )}
       <UpdateService />

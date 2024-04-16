@@ -19,7 +19,7 @@ export default function RadioTypeButton({
   return (
     <div className={s.wrapper}>
       {label && (
-        <p className={s.label}>
+        <div className={s.label}>
           {label}:
           {withCaption && (
             <HintWrapper
@@ -32,7 +32,7 @@ export default function RadioTypeButton({
               </button>
             </HintWrapper>
           )}
-        </p>
+        </div>
       )}
 
       <div className={s.cloud__toolbar}>

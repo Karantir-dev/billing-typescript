@@ -109,7 +109,12 @@
       "rebuild": "Select boot source"
     },
     "warning": {
-      "rebuild": "The system will be reinstalled. All data currently on the instance disk will be permanently deleted."
+      "rebuild": "The system will be reinstalled. All data currently on the instance disk will be permanently deleted.",
+      "stop": "Please note: When the server is stopped, the usage fee continues to be deducted from the balance, as your server remains assigned resources. The charges will only stop when the server is deleted."
+    },
+    "os_description": {
+      "shr": "Here are images uploaded by technical support staff for you",
+      "pub": "Here are publicly available LiveCD images of various systems"
     }
   },
   "server_location": "Server location",
@@ -118,7 +123,6 @@
   "server_size": "Server size",
   "cloud_ipv6": "Enable only IPv6",
   "price_per": "Price per",
-  "period_description": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours unused on the day of the order is returned to the balance if the server has not been deleted before 08:30 GMT+2 the next day. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable",
   "authentication_method": "Choose Authentication Method",
   "create_instance": "Create instance",
   "windows_disabled": "Windows enabled with other tariffs",
@@ -133,5 +137,11 @@
     "pub": "Public"
   },
   "create": "Create",
-  "download": "Download"
+  "download": "Download",
+  "hint_description": {
+    "period": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours unused on the day of the order is returned to the balance if the server has not been deleted before 08:30 GMT+2 the next day. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable",
+    "ip": "Your provider should support IPv6 functionality"
+  },
+  "excluding_vat": "Excluding VAT",
+  "exlude_vat_hint": "VAT - Value Added Tax for EU countries"
 }
