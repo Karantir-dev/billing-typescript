@@ -486,3 +486,15 @@
   font-size: 13px;
   line-height: 1.2;
 }
+
+.stopWarning {
+  align-items: center;
+  background-color: rgba(207, 226, 255, 0.6);
+  color: var(--main-text);
+}
+
+.stopWarinng_icon {
+  circle {
+    fill: #7da7ff;
+  }
+}
