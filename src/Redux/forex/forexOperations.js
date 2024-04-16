@@ -318,45 +318,52 @@ const getCurrentForexInfo =
       })
   }
 
-const editForex = (values, elid, handleModal) => (dispatch, getState) => {
-  dispatch(actions.showLoader())
+const editForex =
+  (values, elid, handleModal, signal, setIsLoading, errorCallback = () => {}) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
-  const {
-    auth: { sessionId },
-  } = getState()
+    const {
+      auth: { sessionId },
+    } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'forexbox.edit',
-        out: 'json',
-        auth: sessionId,
-        lang: 'en',
-        elid,
-        clicked_button: 'ok',
-        sok: 'ok',
-        ...values,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify(
+          {
+            func: 'forexbox.edit',
+            out: 'json',
+            auth: sessionId,
+            lang: 'en',
+            elid,
+            clicked_button: 'ok',
+            sok: 'ok',
+            ...values,
+          },
+          { signal },
+        ),
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dispatch(getForexList({ p_num: 1 }))
+        dispatch(getForexList({ p_num: 1 }))
 
-      toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
-        position: 'bottom-right',
-        toastId: 'customId',
+        toast.success(i18n.t('Changes saved successfully', { ns: 'other' }), {
+          position: 'bottom-right',
+          toastId: 'customId',
+        })
+
+        handleModal && handleModal()
+
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
-      dispatch(actions.hideLoader())
-
-      handleModal && handleModal()
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-      dispatch(actions.hideLoader())
-    })
-}
+      .catch(error => {
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        errorCallback()
+        checkIfTokenAlive(error.message, dispatch)
+      })
+  }
 
 const deleteForex = (elid, handleModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())

@@ -225,14 +225,14 @@ export default function ForexPage() {
 
   const editForexHandler = ({ values, elid, errorCallback }) => {
     dispatch(
-      forexOperations.editForex({
-        ...values,
+      forexOperations.editForex(
+        values,
         elid,
-        errorCallback,
-        successCallback: () => forexSelectors.getForexList(),
+        undefined,
         signal,
         setIsLoading,
-      }),
+        errorCallback,
+      ),
     )
   }
 

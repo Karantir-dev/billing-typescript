@@ -4,7 +4,7 @@ import { Button, InputField, Select, Icon, Modal } from '@components'
 import { useDispatch } from 'react-redux'
 import { Formik, Form } from 'formik'
 import { forexOperations } from '@redux'
-import { translatePeriod } from '@utils'
+import { translatePeriod, useCancelRequest } from '@utils'
 import { CSSTransition } from 'react-transition-group'
 
 import animations from './animations.module.scss'
@@ -24,6 +24,8 @@ export default function ForexEditModal({ elid, closeModal, isOpen }) {
   const dispatch = useDispatch()
   const [initialState, setInitialState] = useState()
   const [refLinkCopied, setRefLinkCopied] = useState(false)
+
+  const { signal, setIsLoading } = useCancelRequest()
 
   let paymentMethodList = initialState?.paymentMethodList?.filter(item => item.$key)
 
@@ -54,7 +56,9 @@ export default function ForexEditModal({ elid, closeModal, isOpen }) {
 
   const handleSubmit = values => {
     const { elid } = values
-    dispatch(forexOperations.editForex(values, elid, handleEditionModal))
+    dispatch(
+      forexOperations.editForex(values, elid, handleEditionModal, signal, setIsLoading),
+    )
   }
 
   return (
