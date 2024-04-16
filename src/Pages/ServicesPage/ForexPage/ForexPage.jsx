@@ -223,11 +223,6 @@ export default function ForexPage() {
     isAllActive ? setActiveServices([]) : setActiveServices(forexRenderData?.forexList)
   }
 
-  const loadingParams = {
-    signal,
-    setIsLoading,
-  }
-
   const editForexHandler = ({ values, elid, errorCallback }) => {
     dispatch(
       forexOperations.editForex({
@@ -235,17 +230,10 @@ export default function ForexPage() {
         elid,
         errorCallback,
         successCallback: () => forexSelectors.getForexList(),
-        ...loadingParams,
+        signal,
+        setIsLoading,
       }),
     )
-  }
-
-  const editNameSubmit = ({ value, elid, errorCallback }) => {
-    editForexHandler({
-      values: { server_name: value },
-      elid,
-      errorCallback,
-    })
   }
 
   return (
@@ -334,7 +322,7 @@ export default function ForexPage() {
       <ForexList
         emptyFilter={emptyFilter}
         forexList={forexRenderData?.forexList}
-        editNameSubmit={editNameSubmit}
+        editNameSubmit={editForexHandler}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}

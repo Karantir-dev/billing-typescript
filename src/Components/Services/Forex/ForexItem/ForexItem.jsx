@@ -27,7 +27,7 @@ export default function ForexItem({
   const editServerName = value => {
     const slicedValue = value.slice(0, 100)
     editNameSubmit({
-      value: slicedValue,
+      values: { server_name: slicedValue },
       elid: server.id?.$,
       errorCallback: () => setServerName(serverName),
     })
