@@ -61,6 +61,7 @@ export const userNotifications = (data, dispatch, setIsLoader) => {
       return newArr
     })
 
+  dispatch(userActions.updateUserInfo({ realbalance: data.doc?.realbalance?.$ || '' }))
   dispatch(userActions.setItems(d))
 }
 
@@ -274,30 +275,30 @@ const getNotify = setIsLoader => (dispatch, getState) => {
     })
 }
 
-const getDashboardInfo = () => (dispatch, getState) => {
-  const {
-    auth: { sessionId },
-  } = getState()
+// const getDashboardInfo = () => (dispatch, getState) => {
+//   const {
+//     auth: { sessionId },
+//   } = getState()
 
-  axiosInstance
-    .post(
-      '/',
-      qs.stringify({
-        func: 'dashboard.info',
-        out: 'json',
-        lang: 'en',
-        auth: sessionId,
-      }),
-    )
-    .then(({ data }) => {
-      if (data.doc.error) throw new Error(data.doc.error.msg.$)
+//   axiosInstance
+//     .post(
+//       '/',
+//       qs.stringify({
+//         func: 'dashboard.info',
+//         out: 'json',
+//         lang: 'en',
+//         auth: sessionId,
+//       }),
+//     )
+//     .then(({ data }) => {
+//       if (data.doc.error) throw new Error(data.doc.error.msg.$)
 
-      dashBoardInfo(data, dispatch)
-    })
-    .catch(error => {
-      checkIfTokenAlive(error.message, dispatch)
-    })
-}
+//       dashBoardInfo(data, dispatch)
+//     })
+//     .catch(error => {
+//       checkIfTokenAlive(error.message, dispatch)
+//     })
+// }
 
 const getTickets = () => (dispatch, getState) => {
   const {
@@ -433,5 +434,5 @@ export default {
   sendVerificationEmail,
   verifyMainEmail,
   cleanBsketHandler,
-  getDashboardInfo,
+  // getDashboardInfo,
 }
