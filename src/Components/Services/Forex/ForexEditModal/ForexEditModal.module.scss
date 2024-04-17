@@ -42,7 +42,7 @@
 }
 .copy_field {
   position: relative;
-  padding: 0 20px;
+  padding: 0 10px 0 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -80,7 +80,6 @@
   text-overflow: ellipsis;
   font-weight: 300;
   font-size: 16px;
-  // color: var(--transparent-color);
   color: var(--main-text);
 }
 
@@ -185,7 +184,7 @@
   }
 
   .field_wrapper {
-    width: 230px;
+    width: 250px;
   }
 
   .value {
