@@ -330,19 +330,17 @@ const editForex =
     axiosInstance
       .post(
         '/',
-        qs.stringify(
-          {
-            func: 'forexbox.edit',
-            out: 'json',
-            auth: sessionId,
-            lang: 'en',
-            elid,
-            clicked_button: 'ok',
-            sok: 'ok',
-            ...values,
-          },
-          { signal },
-        ),
+        qs.stringify({
+          func: 'forexbox.edit',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          clicked_button: 'ok',
+          sok: 'ok',
+          ...values,
+        }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
