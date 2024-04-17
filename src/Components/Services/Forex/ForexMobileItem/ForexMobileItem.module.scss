@@ -1,3 +1,17 @@
+.headerName_wrapper {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  gap: 15px;
+  padding: 5px 3px;
+}
+
+.headerName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .item {
   position: relative;
   display: grid;

@@ -281,6 +281,7 @@ const getCurrentForexInfo =
           expiredate,
           createdate,
           server_ip,
+          server_name,
           server_hostname,
           server_package,
           server_password,
@@ -298,6 +299,7 @@ const getCurrentForexInfo =
           createdate,
           name,
           server_ip,
+          server_name,
           server_hostname,
           server_package,
           server_password,
@@ -317,8 +319,9 @@ const getCurrentForexInfo =
   }
 
 const editForex =
-  (elid, autoprolong, stored_method, handleModal) => (dispatch, getState) => {
-    dispatch(actions.showLoader())
+  (values, elid, handleModal, signal, setIsLoading, errorCallback = () => {}) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
     const {
       auth: { sessionId },
@@ -333,11 +336,11 @@ const editForex =
           auth: sessionId,
           lang: 'en',
           elid,
-          autoprolong,
-          stored_method,
           clicked_button: 'ok',
           sok: 'ok',
+          ...values,
         }),
+        { signal },
       )
       .then(({ data }) => {
         if (data.doc.error) throw new Error(data.doc.error.msg.$)
@@ -348,13 +351,15 @@ const editForex =
           position: 'bottom-right',
           toastId: 'customId',
         })
-        dispatch(actions.hideLoader())
 
-        handleModal()
+        handleModal && handleModal()
+
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+        errorCallback()
         checkIfTokenAlive(error.message, dispatch)
-        dispatch(actions.hideLoader())
       })
   }
 
