@@ -489,7 +489,7 @@
 
 .stopWarning {
   align-items: center;
-  background-color: rgba(207, 226, 255, 0.6);
+  background-color: var(--info_alert_background);
   color: var(--main-text);
 }
 
