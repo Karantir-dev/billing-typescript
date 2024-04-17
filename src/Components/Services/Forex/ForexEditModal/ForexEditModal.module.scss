@@ -53,6 +53,10 @@
   background-color: var(--forms_bgc_1);
   cursor: pointer;
 
+  @media (min-width: 1281px) {
+    height: 50px;
+  }
+
   &:hover {
     & .copy_icon {
       fill: url(#gradient);
