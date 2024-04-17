@@ -109,7 +109,8 @@
       "rebuild": "Select boot source"
     },
     "warning": {
-      "rebuild": "The system will be reinstalled. All data currently on the instance disk will be permanently deleted."
+      "rebuild": "The system will be reinstalled. All data currently on the instance disk will be permanently deleted.",
+      "stop": "Please note: When the server is stopped, the usage fee continues to be deducted from the balance, as your server remains assigned resources. The charges will only stop when the server is deleted."
     },
     "os_description": {
       "shr": "Here are images uploaded by technical support staff for you",

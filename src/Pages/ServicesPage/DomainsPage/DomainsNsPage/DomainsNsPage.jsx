@@ -10,6 +10,7 @@ import {
   NsItem,
   Icon,
   Loader,
+  ScrollToFieldError,
 } from '@components'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -197,6 +198,7 @@ export default function Component({ transfer = false }) {
             {({ errors, touched, values, setFieldValue }) => {
               return (
                 <Form className={s.form}>
+                  <ScrollToFieldError />
                   <>
                     {differentNS ? (
                       selectedDomain?.map((select, index) => {

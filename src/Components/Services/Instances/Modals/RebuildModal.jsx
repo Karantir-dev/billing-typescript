@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useMemo, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
-import { generatePassword } from '@utils'
+import { generatePassword, getInstanceMainInfo } from '@utils'
 
 import s from './Modals.module.scss'
 import { DISALLOW_SPACE, PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
@@ -24,6 +24,8 @@ const RESCUE_TABS_ORDER = ['shr', 'pub']
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
   const dispatch = useDispatch()
+
+  const { displayName } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
@@ -170,6 +172,10 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     <Modal isOpen={!!item && !!data} closeModal={closeModal} className={s.rebuild_modal}>
       <Modal.Header>
         <p>{t(`rebuild_modal.title.${item.rebuild_action}`)}</p>
+        <p className={s.modal__subtitle}>
+          <span className={s.modal__subtitle_transparent}>{t('instance')}:</span>{' '}
+          {displayName}
+        </p>
       </Modal.Header>
       <Modal.Body className={s.rebuild_modal__body}>
         <Formik
