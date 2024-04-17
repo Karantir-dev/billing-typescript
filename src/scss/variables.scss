@@ -94,7 +94,7 @@ body {
     #feeff7 0.02%,
     #f5eafe 99.98%
   );
-  --warning-blue_blackground: rgba(207, 226, 255, 0.6);
+  --info_alert_background: rgba(207, 226, 255, 0.6);
 
   // SHADOWS
   --box-shadow: 4px 4px 10px rgba(213, 201, 236, 0.25), -4px -4px 10px #fefdff;
@@ -218,7 +218,7 @@ body.dark-theme {
   --access_rights_bg_item_title_gradient: #3f384c;
   --access_rights_bg_item_title_gradient_2: #3a3347;
   --transparent_lines: rgba(255, 255, 255, 0.1);
-  --warning-blue_blackground: rgba(102, 119, 145, 0.6);
+  --info_alert_background: rgba(102, 119, 145, 0.6);
 
   --gradient_cards_static: linear-gradient(90.05deg, #3c354b 0.04%, #433b52 99.97%);
 
