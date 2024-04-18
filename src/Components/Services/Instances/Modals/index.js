@@ -7,4 +7,4 @@ export { ResizeModal } from './ResizeModal'
 export { RebuildModal } from './RebuildModal'
 export { SshKeyModal } from './SshKeyModal'
 export { DeleteSshModal } from './DeleteSshModal'
-
+export { RdnsModal } from './RdnsModal'

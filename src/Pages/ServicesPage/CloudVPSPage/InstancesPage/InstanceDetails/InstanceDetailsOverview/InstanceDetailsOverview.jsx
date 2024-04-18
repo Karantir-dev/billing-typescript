@@ -1,9 +1,9 @@
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { cloudVpsOperations } from '@redux'
-import { Loader } from '@components'
+import { useDispatch, useSelector } from 'react-redux'
+import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
+import { CopyText, Loader } from '@components'
 import { getFlagFromCountryName, useCancelRequest, formatCountryName } from '@utils'
 
 import s from './InstanceDetailsOverview.module.scss'
@@ -18,21 +18,21 @@ export default function InstanceDetailsOverview() {
 
   const [instanceInfo, setInstanceInfo] = useState({})
 
+  const elid = item?.id?.$
+  const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
+
   useEffect(() => {
-    const elid = item?.id?.$
     elid &&
       dispatch(
-        cloudVpsOperations.getInstanceInfo(
-          elid,
-          {},
-          setInstanceInfo,
-          signal,
-          setIsLoading,
-        ),
+        cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading),
       )
   }, [])
 
   const itemCountry = formatCountryName(item)
+
+  useEffect(() => {
+    dispatch(cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo))
+  }, [itemForModals])
 
   return (
     <>
@@ -111,16 +111,40 @@ export default function InstanceDetailsOverview() {
 
             <div className={s.info_block_wrapper}>
               {instanceInfo?.network?.map(el => {
-                const { ip, ip_v6 } = instanceInfo
-                return (
+                const { ip, ip_v6, rdns_record } = instanceInfo
+
+                const isIpv4 = el?.includes('IPv4')
+
+                const shouldRenderNetworkBlock = (isIpv4 && !!ip) || el?.includes('IPv6')
+
+                return shouldRenderNetworkBlock ? (
                   <div key={el} className={s.network_block_item}>
                     <p className={s.network_item_name}>{el}:</p>
                     <div className={s.network_item}>
-                      <span>{el?.includes('v4') ? 'IPv4:' : 'IPv6:'}</span>
-                      <p>{el?.includes('v4') ? ip : ip_v6}</p>
+                      <div className={s.network_info}>
+                        <p>{isIpv4 ? ip : ip_v6}</p>
+
+                        <CopyText text={isIpv4 ? ip : ip_v6} />
+                      </div>
+                      <button
+                        className={s.network_rdns}
+                        type="button"
+                        onClick={() => {
+                          dispatch(
+                            cloudVpsActions.setItemForModals({
+                              rdns_edit: {
+                                rdns_record,
+                                ...item,
+                              },
+                            }),
+                          )
+                        }}
+                      >
+                        rDNS
+                      </button>
                     </div>
                   </div>
-                )
+                ) : null
               })}
             </div>
           </div>

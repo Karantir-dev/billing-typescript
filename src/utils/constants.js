@@ -1,6 +1,9 @@
 export const DOMAIN_REGEX =
   /^(?!-)(?:[a-zA-Z\d-]{0,62}[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63}$/g
 
+export const DOMAIN_SPECIAL_CHARACTERS_REGEX =
+  /[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/
+
 export const SPECIAL_CHARACTERS_REGEX = /^[^!#$%^&*()\]~/}[{=?|"<>',+:;]+$/g
 export const EMAIL_SPECIAL_CHARACTERS_REGEX = /^[^!#$%^&*()\]~/}[{=?|"<>',:;]+$/g
 export const CYRILLIC_ALPHABET_PROHIBITED = /^[^Ѐ-ӏ]+$/g

@@ -435,7 +435,7 @@ const openConsole =
 
 /* EDIT SERVERS OPERATION TO GET FULL DATA */
 const getInstanceInfo =
-  (elid, params, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
+  (elid, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const {
       auth: { sessionId },
@@ -450,7 +450,6 @@ const getInstanceInfo =
           auth: sessionId,
           lang: 'en',
           elid,
-          ...params,
         }),
         { signal },
       )
@@ -464,6 +463,7 @@ const getInstanceInfo =
           fotbo_id: renamedSlistData?.fotbo_id.$,
           ip: renamedSlistData?.ip?.$,
           ip_v6: renamedSlistData?.ip_v6?.$,
+          rdns_record: renamedSlistData?.rdns_record?.$,
         }
 
         const clearStr = /\s*\(.*?\)\s*\.?/g

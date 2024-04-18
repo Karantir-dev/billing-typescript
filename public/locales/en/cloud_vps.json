@@ -33,6 +33,7 @@
   "hour": "Hour",
   "Yes": "Yes",
   "No": "No",
+  "create_rdns_title": "Create rDNS",
   "change_password_title": "Change admin password",
   "instance": "Instance",
   "delete_text": "Are you sure you want to delete the instance?",
