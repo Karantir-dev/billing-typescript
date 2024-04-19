@@ -3,7 +3,7 @@ import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
-import { getInstanceMainInfo, DOMAIN_SPECIAL_CHARACTERS_REGEX } from '@utils'
+import { getInstanceMainInfo, DOMAIN_REGEX } from '@utils'
 
 export const RdnsModal = args => {
   const { item, closeModal, onSubmit } = args
@@ -11,10 +11,7 @@ export const RdnsModal = args => {
   const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
-    rdns_record: Yup.string().matches(
-      DOMAIN_SPECIAL_CHARACTERS_REGEX,
-      t('warning_domain', { ns: 'vds' }),
-    ),
+    rdns_record: Yup.string().matches(DOMAIN_REGEX, t('warning_domain', { ns: 'vds' })),
   })
 
   return (
