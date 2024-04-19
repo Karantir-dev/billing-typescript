@@ -31,7 +31,11 @@ export const RdnsModal = args => {
           initialValues={{ rdns_record: item?.rdns_record || '' }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            if (values.rdns_record === item?.rdns_record) return closeModal()
+            if (
+              values.rdns_record === item?.rdns_record ||
+              (values.rdns_record === '' && !item.rdns_record)
+            )
+              return closeModal()
             onSubmit({ value: values.rdns_record, elid: item.id.$, closeModal })
           }}
         >
