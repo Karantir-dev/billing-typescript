@@ -33,6 +33,7 @@
   "hour": "Час",
   "Yes": "Да",
   "No": "Нет",
+  "create_rdns_title": "Создать rDNS",
   "change_password_title": "Изменить пароль",
   "instance": "Сервер",
   "delete_text": "Вы уверены, что хотите удалить сервер?",
