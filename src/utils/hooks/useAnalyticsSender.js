@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
-import { cookies } from '@utils'
+import { cookies, useTrustpilot } from '@utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { billingOperations, billingSelectors } from '@redux'
 import axios from 'axios'
 
 export default function useAnalyticsSender() {
   const dispatch = useDispatch()
+
+  const { sendEmail } = useTrustpilot()
 
   const paymentId = cookies.getCookie('payment_id') // payment ID, obtained during the transition to the payment system
 
@@ -106,6 +108,11 @@ export default function useAnalyticsSender() {
             window.fbq('track', 'Purchase', fbAnalytics)
           }
           if (window.qp) window.qp('track', 'Purchase', { value: value })
+
+          /** Sends Trustpilot email  */
+          if (cartData?.items?.[0]?.item_category === 'dedic') {
+            sendEmail(cartData.billorder)
+          }
 
           // if the GTM is absent we add extra field to the front analytics
         } else {

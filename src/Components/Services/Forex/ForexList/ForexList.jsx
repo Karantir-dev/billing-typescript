@@ -13,6 +13,7 @@ import { billingOperations } from '@src/Redux'
 export default function ForexList({
   emptyFilter,
   forexList,
+  editNameSubmit,
   setElidForEditModal,
   setElidForProlongModal,
   setElidForHistoryModal,
@@ -83,7 +84,8 @@ export default function ForexList({
             onClick={toggleIsAllActiveHandler}
           />
           <ul className={s.head_row}>
-            <li className={s.table_head}>Id:</li>
+            <li className={s.table_head}>{t('server_name')}</li>
+            <li className={s.table_head}>ID:</li>
             <li className={s.table_head}>{t('tariff')}:</li>
             <li className={s.table_head}>
               {t('datacenter', { ns: 'dedicated_servers' })}:
@@ -103,6 +105,7 @@ export default function ForexList({
             <ForexItem
               key={el.id.$}
               server={el}
+              editNameSubmit={editNameSubmit}
               setElidForEditModal={() => setElidForEditModal(el.id.$)}
               setElidForProlongModal={() => setElidForProlongModal([el.id.$])}
               setElidForHistoryModal={() => setElidForHistoryModal(el.id.$)}

@@ -224,9 +224,8 @@ export default function DedicOrderPage() {
   }, [])
 
   const sortDedicList = list =>
-    [...list]
-      .sort((a, b) => parsePrice(a.price.$).amount - parsePrice(b.price.$).amount)
-      // .sort((a, b) => parsePrice(b.price.$).length - parsePrice(a.price.$).length)
+    [...list].sort((a, b) => parsePrice(a.price.$).amount - parsePrice(b.price.$).amount)
+  // .sort((a, b) => parsePrice(b.price.$).length - parsePrice(a.price.$).length)
 
   const getParams = el => el.desc.$.split(' / ')
 

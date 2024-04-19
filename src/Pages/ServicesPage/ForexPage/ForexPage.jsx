@@ -223,6 +223,19 @@ export default function ForexPage() {
     isAllActive ? setActiveServices([]) : setActiveServices(forexRenderData?.forexList)
   }
 
+  const editForexHandler = ({ values, elid, errorCallback }) => {
+    dispatch(
+      forexOperations.editForex(
+        values,
+        elid,
+        undefined,
+        signal,
+        setIsLoading,
+        errorCallback,
+      ),
+    )
+  }
+
   return (
     <div>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -309,6 +322,7 @@ export default function ForexPage() {
       <ForexList
         emptyFilter={emptyFilter}
         forexList={forexRenderData?.forexList}
+        editNameSubmit={editForexHandler}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}
