@@ -122,7 +122,7 @@ export default function InstanceDetailsOverview() {
                     <p className={s.network_item_name}>{el}:</p>
                     <div className={s.network_item}>
                       <div className={s.network_info}>
-                        <p>{isIpv4 ? ip : ip_v6}</p>
+                        <p className={s.ip_text}>{isIpv4 ? ip : ip_v6}</p>
 
                         <CopyText text={isIpv4 ? ip : ip_v6} />
                       </div>
