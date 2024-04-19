@@ -409,6 +409,7 @@ export default function ForexOrderPage() {
                         className={s.select}
                       />
                       <InputField
+                        height={50}
                         label={`${t('server_name', { ns: 'vds' })}:`}
                         name="server_name"
                         isShadow
