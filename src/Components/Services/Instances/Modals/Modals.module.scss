@@ -104,6 +104,11 @@
   }
 }
 
+.link {
+  text-decoration: underline;
+  color: var(--link-color);
+}
+
 .filters_modal {
   position: fixed;
   top: 50%;

@@ -316,7 +316,7 @@ export default function CreateInstancePage() {
             password: '',
             servername: '',
             order_count: '1',
-            notEnoughMoney: '',
+            notEnoughMoney: false,
           }}
           validationSchema={validationSchema}
           onSubmit={onFormSubmit}
