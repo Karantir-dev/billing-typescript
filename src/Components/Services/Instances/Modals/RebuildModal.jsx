@@ -141,7 +141,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
 
   const validationSchema = Yup.object().shape({
     password:
-      ((!isRebuild && !isWindowsOS) ||
+      ((!isRebuild && !isWindowsOS && state.zone !== 'shr') ||
         (isRebuild && (state.passwordType === 'password' || isWindowsOS))) &&
       Yup.string()
         .min(8, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
@@ -260,7 +260,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     </div>
                   ) : isWindowsOS ? (
                     <WarningMessage>{t('windows_password_warning')}</WarningMessage>
-                  ) : (
+                  ) : state.zone !== 'shr' ? (
                     <InputField
                       inputClassName={s.input}
                       name="password"
@@ -275,7 +275,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                       onChange={e => setState({ password: e.target.value })}
                       generatePasswordValue={value => setState({ password: value })}
                     />
-                  )}
+                  ) : null}
                 </div>
               </Form>
             )
