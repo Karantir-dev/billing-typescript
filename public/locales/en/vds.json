@@ -40,12 +40,10 @@
   "not_installed": "-- none --",
   "password": "Password",
   "user_password": "User password",
-
   "Without a license": "Without a license",
   "ISPmanager 6 Host - Unlimited domains": "ISPmanager 6 Host - Unlimited domains",
   "ISPmanager 6 Lite - 10 domains": "ISPmanager 6 Lite - 10 domains",
   "ISPmanager 6 Pro - 50 domains": "ISPmanager 6 Pro - 50 domains",
-
   "license": "License",
   "processors": "CPU count",
   "disk_space": "Disk space",
@@ -68,11 +66,10 @@
   "Unit": "unit",
   "Service limits": "Service limits",
   "port_speed_limits": "DDoS Protected Port Speed (Incoming): 1024 Kbit/sec day + 0.0029 EUR for 1 Kbit/sec",
-  "warning_domain": "Введите валидное доменное имя",
+  "warning_domain": "Enter a valid domain name",
   "attention": "Attention",
   "delete_message": "Do you really want to delete the selected service",
   "warn_message": "The service will be removed after the expiration date",
-
   "password_change_desc": "VPS reboot is needed to apply the changes (it will be suspended for some time).",
   "new_password": "New password",
   "new_password_placeholder": "Enter new password",
@@ -96,12 +93,9 @@
   "Suspended service": "Suspended service",
   "Active service": "Active service",
   "reboot_launched": "Server reboot process started",
-
   "pcs.": "pcs.",
   "Suspended due to abuse": "Suspended due to abuse",
-
   "daily charges": "daily\ncharges",
-
   "server_name": "Server name",
   "server_placeholder": "My Server",
   "not_set": "Not set",
