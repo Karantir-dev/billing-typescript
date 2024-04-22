@@ -5,6 +5,7 @@ export default function getInstanceMainInfo(item) {
   const isStopped = fotboStatus === 'stopped'
   const isResized = fotboStatus === 'resized'
   const isRescued = fotboStatus === 'rescued'
+  const isSuspended = fotboStatus === 'suspend'
   const isWindows = item.instances_os?.$.includes('Windows')
 
   const isNotActive =
@@ -23,7 +24,7 @@ export default function getInstanceMainInfo(item) {
     fotboStatus === 'rebuilding' ||
     billingStatus === 'Activation in progress'
 
-  const isDisabled = isProcessing || isNotActive
+  const isDisabled = isProcessing || isNotActive || isSuspended
 
   const displayName = item.servername?.$ || item.name.$
   const displayStatus = fotboStatus?.replaceAll('_', ' ') || billingStatus
@@ -34,6 +35,7 @@ export default function getInstanceMainInfo(item) {
     isStopped,
     isResized,
     isRescued,
+    isSuspended,
     isWindows,
     displayName,
     displayStatus,
