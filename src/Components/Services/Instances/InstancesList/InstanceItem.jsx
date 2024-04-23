@@ -77,17 +77,14 @@ export default function InstanceItem({ item, editInstance }) {
           )}
         >
           {isResized ? (
-            <>
-              {/* {displayStatus} */}
-              <HintWrapper
-                popupClassName={s.popup}
-                wrapperClassName={s.popup__wrapper}
-                label={t('resize_popup_text')}
-              >
-                {displayStatus}
-                <Icon name="Attention" />
-              </HintWrapper>
-            </>
+            <HintWrapper
+              popupClassName={s.popup}
+              wrapperClassName={s.popup__wrapper}
+              label={t('resize_popup_text')}
+            >
+              {displayStatus}
+              <Icon name="Attention" />
+            </HintWrapper>
           ) : (
             displayStatus
           )}
