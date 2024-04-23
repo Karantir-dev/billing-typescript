@@ -124,6 +124,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  width: fit-content;
 }
 
 .sort {
@@ -176,8 +177,7 @@
   &.resized {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding-right: 20px;
+    padding: 10px 65px 10px 2px;
     .popup {
       width: 300px;
       text-transform: none;
@@ -188,6 +188,7 @@
     .popup__wrapper {
       position: absolute;
       right: 3px;
+      gap: 3px;
     }
     svg {
       @media (max-width: 767px) {

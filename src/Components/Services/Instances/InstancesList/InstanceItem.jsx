@@ -76,15 +76,20 @@ export default function InstanceItem({ item, editInstance }) {
             ],
           )}
         >
-          {displayStatus}
-          {isResized && (
-            <HintWrapper
-              popupClassName={s.popup}
-              wrapperClassName={s.popup__wrapper}
-              label={t('resize_popup_text')}
-            >
-              <Icon name="Attention" />
-            </HintWrapper>
+          {isResized ? (
+            <>
+              {/* {displayStatus} */}
+              <HintWrapper
+                popupClassName={s.popup}
+                wrapperClassName={s.popup__wrapper}
+                label={t('resize_popup_text')}
+              >
+                {displayStatus}
+                <Icon name="Attention" />
+              </HintWrapper>
+            </>
+          ) : (
+            displayStatus
           )}
         </span>
       </td>
@@ -118,8 +123,8 @@ export default function InstanceItem({ item, editInstance }) {
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </HintWrapper>
       </td>
-      <td ref={ipCell} className={s.td}>
-        <div className={s.ip_cell}>
+      <td className={s.td}>
+        <div className={s.ip_cell} ref={ipCell}>
           <span>{ip}</span>
           {ip && (
             <div className={s.fade_in}>
