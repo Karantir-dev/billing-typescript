@@ -10,7 +10,7 @@ export const LATIN_NUMBER_REGEX = /^([A-Za-z0-9\s]*)$/g
 
 export const SSH_KEY_NAME_REGEX = /^[A-Za-z0-9\s\-_-]+$/
 
-export const INDEX_REGEX = /^(?:[A-Za-z]{2,3}-?\d+|\d+)$/
+export const INDEX_REGEX = /^(?:[A-Za-z]{2,3}-?\d+|[a-zA-Z0-9]+)$/
 
 export const PASS_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/
 export const PASS_REGEX_ASCII = /^[\x20-\x7E]+$/

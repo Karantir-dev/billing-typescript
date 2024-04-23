@@ -668,7 +668,7 @@ const setOrderData =
           sok: 'ok',
           lang: 'en',
           order_period: '-50',
-
+          licence_agreement: 'on',
           ...orderData,
         }),
         { signal },
