@@ -272,7 +272,7 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
     })
 }
 const changeTariff =
-  ({ elid, pricelist, successCallback }) =>
+  ({ elid, pricelist, successCallback, errorCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -286,8 +286,17 @@ const changeTariff =
       sok: 'ok',
     })
       .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        successCallback()
+        console.log(data)
+        if (data.doc?.error) {
+          if (data.doc.error.$type === 'not_enough_money') {
+            errorCallback(data.doc.error)
+            handleLoadersClosing('closeLoader', dispatch)
+          } else {
+            throw new Error(data.doc.error.msg.$)
+          }
+        } else {
+          successCallback()
+        }
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)

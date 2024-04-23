@@ -144,5 +144,7 @@
     "ip": "Your provider should support IPv6 functionality"
   },
   "excluding_vat": "Excluding VAT",
-  "exlude_vat_hint": "VAT - Value Added Tax for EU countries"
+  "exlude_vat_hint": "VAT - Value Added Tax for EU countries",
+  "prices_excluding_tax": "Prices are displayed excluding tax.",
+  "insufficient_funds": "Insufficient balance. Total price including VAT is {{price}} euros. Please <button>top up</button> your balance and try again."
 }
