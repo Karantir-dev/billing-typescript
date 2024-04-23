@@ -1,5 +1,11 @@
-import { Button, Modal, WarningMessage, TariffCard } from '@components'
-import { Form, Formik } from 'formik'
+import {
+  Button,
+  Modal,
+  WarningMessage,
+  TariffCard,
+  ScrollToFieldError,
+} from '@components'
+import { ErrorMessage, Form, Formik } from 'formik'
 import { Trans, useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import { useEffect, useRef, useState } from 'react'
@@ -10,25 +16,30 @@ import {
   cloudVpsSelectors,
   userSelectors,
 } from '@redux'
-import { getInstanceMainInfo } from '@utils'
+import { getInstanceMainInfo, roundToDecimal } from '@utils'
+import * as Yup from 'yup'
 
 export const ResizeModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
-  const [tariffs, setTariffs] = useState()
+  const [tariffsForResize, setTariffsForResize] = useState()
   const [notEnoughMoney, setNotEnoughMoney] = useState(false)
   const [fundsErrorData, setFundsErrorData] = useState(null)
+
+  const [price, setPrice] = useState(0)
 
   const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
   const { displayName } = getInstanceMainInfo(item)
 
   const warningEl = useRef()
+  const errorEl = useRef()
 
   const { credit, realbalance } = useSelector(userSelectors.getUserInfo)
 
   const totalBalance = credit ? +realbalance + +credit : +realbalance
 
   const datacenter = item.datacenter.$
+  const currentTariffPrice = item.item_cost.$
 
   useEffect(() => {
     if (!instancesTariffs[datacenter]) {
@@ -39,31 +50,42 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
       )
     }
 
-    dispatch(cloudVpsOperations.getTariffsListToChange(item.id.$, setTariffs, closeModal))
+    dispatch(
+      cloudVpsOperations.getTariffsListToChange(
+        item.id.$,
+        setTariffsForResize,
+        closeModal,
+      ),
+    )
   }, [])
 
   const onFormSubmit = values => {
     const errorCallback = errorData => {
       let requiredAmount
-      let deficit
 
       errorData.param.forEach(el => {
         if (el.$name === 'amount') {
           requiredAmount = el.$
-        } else if (el.$name === 'deficit') {
-          deficit = el.$
         }
       })
 
-      setFundsErrorData({ requiredAmount, deficit })
+      setFundsErrorData({ requiredAmount })
+      errorEl.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
     }
 
     onSubmit(values, errorCallback)
   }
 
+  const validateSchema = Yup.object().shape({
+    pricelist: Yup.string().required(t('choose_tariff')),
+  })
+
   return (
     <Modal
-      isOpen={!!item && !!tariffs && !!instancesTariffs[datacenter]}
+      isOpen={!!item && !!tariffsForResize && !!instancesTariffs[datacenter]}
       closeModal={closeModal}
       className={s.resize_modal}
     >
@@ -75,20 +97,19 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         </p>
       </Modal.Header>
       <Modal.Body>
-        <Formik initialValues={{ pricelist: '' }} onSubmit={onFormSubmit}>
+        <Formik
+          initialValues={{ pricelist: '' }}
+          onSubmit={onFormSubmit}
+          validationSchema={validateSchema}
+        >
           {({ values, setFieldValue }) => {
-            const tariffsList = instancesTariffs[datacenter]?.filter(el =>
-              tariffs.find(tariff => tariff.$key === el.id.$),
+            const filledTariffsList = instancesTariffs[datacenter]?.filter(el =>
+              tariffsForResize.find(tariff => tariff.$key === el.id.$),
             )
 
-            const checkIfEnoughMoney = currentTariffId => {
-              const currentPrice = +tariffsList.find(
-                el => el.pricelist.$ === currentTariffId,
-              )?.prices?.price?.cost?.$
-              console.log('currentPrice', currentPrice)
-              console.log('totalBalance', totalBalance)
-
-              if (currentPrice > totalBalance) {
+            const checkIfEnoughMoney = price => {
+              console.log(totalBalance)
+              if (price && +price > totalBalance) {
                 !notEnoughMoney && setNotEnoughMoney(true)
               } else {
                 notEnoughMoney && setNotEnoughMoney(false)
@@ -96,13 +117,16 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
             }
 
             return (
-              <Form id={'resize'}>
+              <Form id={'resize'} name="pricelist">
+                <ScrollToFieldError
+                  scrollBehavior={{ behavior: 'smooth', block: 'end' }}
+                />
                 <div className={s.body}>
                   <WarningMessage>{t('resize_warning')}</WarningMessage>
                   <p className={s.body__text_small}>{t('resize_notes')}</p>
 
                   {notEnoughMoney && (
-                    <WarningMessage className={s.warning} ref={warningEl}>
+                    <WarningMessage ref={warningEl}>
                       {t('not_enough_money', { ns: 'cloud_vps' })}{' '}
                       <button
                         className={s.link}
@@ -117,7 +141,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
                   )}
 
                   {fundsErrorData && (
-                    <WarningMessage className={s.warning}>
+                    <WarningMessage type="error" ref={errorEl}>
                       <Trans
                         t={t}
                         i18nKey="insufficient_funds"
@@ -142,22 +166,32 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
                   <p>{t('prices_excluding_tax')}</p>
 
                   <ul className={s.tariffs_list}>
-                    {tariffsList.map(item => {
+                    {filledTariffsList.map(item => {
+                      const tariffPrice = item.prices.price.cost.$
                       return (
                         <TariffCard
                           key={item.id.$}
                           tariff={item}
                           onClick={() => {
+                            const pricesDifference = roundToDecimal(
+                              +tariffPrice - +currentTariffPrice,
+                            )
                             setFieldValue('pricelist', item.id.$)
+                            setPrice(pricesDifference)
                             setFundsErrorData(null)
-                            checkIfEnoughMoney(item.id.$)
+                            checkIfEnoughMoney(pricesDifference)
                           }}
                           active={values.pricelist === item.id.$}
-                          price={item.prices.price.cost.$}
+                          price={tariffPrice}
                         />
                       )
                     })}
                   </ul>
+                  <ErrorMessage
+                    className={s.error_message}
+                    name="pricelist"
+                    component="span"
+                  />
                 </div>
               </Form>
             )
@@ -165,23 +199,30 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         </Formik>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          label={t('Confirm')}
-          size="small"
-          type="submit"
-          form={'resize'}
-          isShadow
-          onClick={e => {
-            if (notEnoughMoney) {
-              e.preventDefault()
+        <div className={s.footer_price_wrapper}>
+          <div className="">
+            <p className={s.amount_label}>{t('will_be_charged')}</p>
+            <span className={s.price}>€{price}</span>
+          </div>
 
-              warningEl.current.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-              })
-            }
-          }}
-        />
+          <Button
+            label={t('Confirm')}
+            size="small"
+            type="submit"
+            form={'resize'}
+            isShadow
+            onClick={e => {
+              if (notEnoughMoney) {
+                e.preventDefault()
+
+                warningEl.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                })
+              }
+            }}
+          />
+        </div>
         <button type="button" onClick={closeModal}>
           {t('Cancel')}
         </button>
