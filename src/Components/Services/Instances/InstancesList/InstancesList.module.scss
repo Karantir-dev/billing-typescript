@@ -162,6 +162,33 @@
   box-shadow: var(--forms2_shadow);
 }
 
+.status_wrapper {
+  .popup {
+    width: 200px;
+    text-transform: none;
+    white-space: normal;
+    text-align: left;
+    font-size: 13px;
+    color: var(--transparent-color_2);
+    left: 146%;
+
+    & > div {
+      left: 30%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .popup {
+      width: 300px;
+      left: 50%;
+
+      & > div {
+        left: 50%;
+      }
+    }
+  }
+}
+
 .status {
   text-transform: uppercase;
   font-size: 10px;
@@ -177,19 +204,14 @@
   &.resized {
     display: inline-flex;
     align-items: center;
-    padding: 10px 65px 10px 2px;
-    .popup {
-      width: 300px;
-      text-transform: none;
-      white-space: normal;
-      text-align: left;
-      font-size: 13px;
+    gap: 5px;
+    min-width: 70px;
+
+    @media (min-width: 767px) {
+      padding: 3px 7px;
+      min-width: unset;
     }
-    .popup__wrapper {
-      position: absolute;
-      right: 3px;
-      gap: 3px;
-    }
+
     svg {
       @media (max-width: 767px) {
         position: absolute;

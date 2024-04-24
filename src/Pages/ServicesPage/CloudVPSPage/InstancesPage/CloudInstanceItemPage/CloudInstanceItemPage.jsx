@@ -168,27 +168,38 @@ export default function CloudInstanceItemPage() {
             />
           </div>
 
-          <span
-          className={cn(
-            s.status,
-            s[
-              item.fotbo_status?.$.trim().toLowerCase() ||
-                item.item_status?.$.trim().toLowerCase()
-            ],
-          )}
-        >
-          {displayStatus}
-          {isResized && (
+          {isResized ? (
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
               label={t('resize_popup_text')}
             >
-              <Icon name="Attention" />
+              <span
+                className={cn(
+                  s.status,
+                  s[
+                    item?.fotbo_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
+                  ],
+                )}
+              >
+                {displayStatus}
+                <Icon name="Attention" />
+              </span>
             </HintWrapper>
+          ) : (
+            <span
+              className={cn(
+                s.status,
+                s[
+                  item?.fotbo_status?.$.trim().toLowerCase() ||
+                    item?.item_status?.$.trim().toLowerCase()
+                ],
+              )}
+            >
+              {displayStatus}
+            </span>
           )}
-        </span>
-
         </div>
 
         {/* Commented until only one tab exist: */}

@@ -67,28 +67,40 @@ export default function InstanceItem({ item, editInstance }) {
         />
       </td>
       <td className={s.td}>
-        <span
-          className={cn(
-            s.status,
-            s[
-              item?.fotbo_status?.$.trim().toLowerCase() ||
-                item?.item_status?.$.trim().toLowerCase()
-            ],
-          )}
-        >
+        <div className={s.status_wrapper}>
           {isResized ? (
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
               label={t('resize_popup_text')}
             >
-              {displayStatus}
-              <Icon name="Attention" />
+              <span
+                className={cn(
+                  s.status,
+                  s[
+                    item?.fotbo_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
+                  ],
+                )}
+              >
+                {displayStatus}
+                <Icon name="Attention" />
+              </span>
             </HintWrapper>
           ) : (
-            displayStatus
+            <span
+              className={cn(
+                s.status,
+                s[
+                  item?.fotbo_status?.$.trim().toLowerCase() ||
+                    item?.item_status?.$.trim().toLowerCase()
+                ],
+              )}
+            >
+              {displayStatus}
+            </span>
           )}
-        </span>
+        </div>
       </td>
       <td className={s.td}>{item.pricelist.$}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('day'))}</td>
