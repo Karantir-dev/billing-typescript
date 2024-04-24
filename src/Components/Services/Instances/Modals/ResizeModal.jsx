@@ -110,11 +110,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
             )
 
             const checkIfEnoughMoney = price => {
-              if (price && +price > totalBalance) {
-                !notEnoughMoney && setNotEnoughMoney(true)
-              } else {
-                notEnoughMoney && setNotEnoughMoney(false)
-              }
+              setNotEnoughMoney(price && +price > totalBalance)
             }
 
             return (
@@ -209,7 +205,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
       <Modal.Footer className={s.footer}>
         <div className={s.price_block}>
           <div className={s.label_wrapper}>
-            <span className={s.amount_label}>{t('will_be_charged')}</span>
+            <span className={s.amount_label}>{t('upgrade_cost')}</span>
             <HintWrapper
               popupClassName={s.hint_wrapper}
               label={t('resize_explanation')}
