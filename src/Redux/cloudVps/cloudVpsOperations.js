@@ -286,7 +286,6 @@ const changeTariff =
       sok: 'ok',
     })
       .then(({ data }) => {
-        console.log(data)
         if (data.doc?.error) {
           if (data.doc.error.$type === 'not_enough_money') {
             errorCallback(data.doc.error)
