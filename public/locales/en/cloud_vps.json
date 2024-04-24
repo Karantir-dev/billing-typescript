@@ -148,6 +148,6 @@
   "prices_excluding_tax": "Prices are displayed excluding tax.",
   "insufficient_funds": "Insufficient balance. Total price including VAT is {{price}} euros. Please <button>top up</button> your balance and try again.",
   "choose_tariff": "Choose new tariff",
-  "will_be_charged": "Upgrade cost:",
-  "resize_explanation": "The resize cost is the difference between the cost of the current and new tariff."
+  "upgrade_cost": "Upgrade cost:",
+  "resize_explanation": "The upgrade cost is the difference between the cost of the current and new tariff."
 }
