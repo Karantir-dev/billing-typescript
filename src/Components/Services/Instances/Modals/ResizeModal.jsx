@@ -106,7 +106,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         >
           {({ values, setFieldValue }) => {
             const filledTariffsList = instancesTariffs[datacenter]?.filter(el =>
-              tariffsForResize.find(tariff => tariff.$key === el.id.$),
+              tariffsForResize.some(tariff => tariff.$key === el.id.$),
             )
 
             const checkIfEnoughMoney = price => {
@@ -118,6 +118,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
             }
 
             return (
+              /** Attribute "name" here is just for scrolling errorMessage into view */
               <Form id={'resize'} name="pricelist">
                 <ScrollToFieldError
                   scrollBehavior={{ behavior: 'smooth', block: 'end' }}
@@ -227,16 +228,16 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
             type="submit"
             form={'resize'}
             isShadow
-            // onClick={e => {
-            //   if (notEnoughMoney) {
-            //     e.preventDefault()
+            onClick={e => {
+              if (notEnoughMoney) {
+                e.preventDefault()
 
-            //     warningEl.current.scrollIntoView({
-            //       behavior: 'smooth',
-            //       block: 'start',
-            //     })
-            //   }
-            // }}
+                warningEl.current.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                })
+              }
+            }}
           />
 
           <button type="button" onClick={closeModal}>
