@@ -4,6 +4,8 @@ import {
   WarningMessage,
   TariffCard,
   ScrollToFieldError,
+  HintWrapper,
+  Icon,
 } from '@components'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { Trans, useTranslation } from 'react-i18next'
@@ -108,7 +110,6 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
             )
 
             const checkIfEnoughMoney = price => {
-              console.log(totalBalance)
               if (price && +price > totalBalance) {
                 !notEnoughMoney && setNotEnoughMoney(true)
               } else {
@@ -122,11 +123,13 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
                   scrollBehavior={{ behavior: 'smooth', block: 'end' }}
                 />
                 <div className={s.body}>
-                  <WarningMessage>{t('resize_warning')}</WarningMessage>
+                  <WarningMessage className={s.without_margin}>
+                    {t('resize_warning')}
+                  </WarningMessage>
                   <p className={s.body__text_small}>{t('resize_notes')}</p>
 
                   {notEnoughMoney && (
-                    <WarningMessage ref={warningEl}>
+                    <WarningMessage className={s.without_margin} ref={warningEl}>
                       {t('not_enough_money', { ns: 'cloud_vps' })}{' '}
                       <button
                         className={s.link}
@@ -141,7 +144,11 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
                   )}
 
                   {fundsErrorData && (
-                    <WarningMessage type="error" ref={errorEl}>
+                    <WarningMessage
+                      className={s.without_margin}
+                      type="error"
+                      ref={errorEl}
+                    >
                       <Trans
                         t={t}
                         i18nKey="insufficient_funds"
@@ -198,34 +205,44 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
           }}
         </Formik>
       </Modal.Body>
-      <Modal.Footer>
-        <div className={s.footer_price_wrapper}>
-          <div className="">
-            <p className={s.amount_label}>{t('will_be_charged')}</p>
-            <span className={s.price}>€{price}</span>
+      <Modal.Footer className={s.footer}>
+        <div className={s.price_block}>
+          <div className={s.label_wrapper}>
+            <span className={s.amount_label}>{t('will_be_charged')}</span>
+            <HintWrapper
+              popupClassName={s.hint_wrapper}
+              label={t('resize_explanation')}
+              hintDelay={100}
+            >
+              <Icon name="Info" />
+            </HintWrapper>
           </div>
+          <p className={s.price}>€{price}</p>
+        </div>
 
+        <div className={s.btns_wrapper}>
           <Button
+            className={s.btn_confirm}
             label={t('Confirm')}
-            size="small"
             type="submit"
             form={'resize'}
             isShadow
-            onClick={e => {
-              if (notEnoughMoney) {
-                e.preventDefault()
+            // onClick={e => {
+            //   if (notEnoughMoney) {
+            //     e.preventDefault()
 
-                warningEl.current.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start',
-                })
-              }
-            }}
+            //     warningEl.current.scrollIntoView({
+            //       behavior: 'smooth',
+            //       block: 'start',
+            //     })
+            //   }
+            // }}
           />
+
+          <button type="button" onClick={closeModal}>
+            {t('Cancel')}
+          </button>
         </div>
-        <button type="button" onClick={closeModal}>
-          {t('Cancel')}
-        </button>
       </Modal.Footer>
     </Modal>
   )
