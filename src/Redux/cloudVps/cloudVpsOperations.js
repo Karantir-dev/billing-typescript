@@ -272,7 +272,7 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
     })
 }
 const changeTariff =
-  ({ elid, pricelist, successCallback, errorCallback }) =>
+  ({ elid, pricelist, successCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -286,16 +286,8 @@ const changeTariff =
       sok: 'ok',
     })
       .then(({ data }) => {
-        if (data.doc?.error) {
-          if (data.doc.error.$type === 'not_enough_money') {
-            errorCallback(data.doc.error)
-            handleLoadersClosing('closeLoader', dispatch)
-          } else {
-            throw new Error(data.doc.error.msg.$)
-          }
-        } else {
-          successCallback()
-        }
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
@@ -590,6 +582,10 @@ const getAllTariffsInfo =
           el.$.toLowerCase().includes('windows'),
         ).$key
 
+        const instanceTypePremium = data?.doc?.flist?.val.find(el =>
+          el?.$.toLowerCase().includes('premium'),
+        ).$key
+
         if (needOsList) {
           await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
         }
@@ -597,6 +593,7 @@ const getAllTariffsInfo =
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
         dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
+        dispatch(cloudVpsActions.setInstanceTypeTag(instanceTypePremium))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)

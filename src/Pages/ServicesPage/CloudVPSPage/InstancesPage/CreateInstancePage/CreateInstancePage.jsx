@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   BreadCrumbs,
   Loader,
@@ -44,6 +45,8 @@ import { Modals } from '@src/Components/Services/Instances/Modals/Modals'
 
 import s from './CreateInstancePage.module.scss'
 
+import crown from '@images/crown.svg'
+
 const IPv4_DAILY_COST = 1 / 30
 const IPv4_MONTHLY_COST = 1
 
@@ -66,6 +69,7 @@ export default function CreateInstancePage() {
   const tariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
+  const instanceTypeTag = useSelector(cloudVpsSelectors.getInstanceTypeTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
   const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
@@ -74,6 +78,8 @@ export default function CreateInstancePage() {
 
   const [currentDC, setCurrentDC] = useState()
   const [showCaption, setShowCaption] = useState(false)
+
+  const [isPremiumShouldRender, setIsPremiumShouldRender] = useState(true)
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
@@ -252,6 +258,9 @@ export default function CreateInstancePage() {
       .includes('windows')
   }
 
+  const checkIsItPremiumInstance = tags =>
+    tags?.some(tag => tag?.$.includes(instanceTypeTag))
+
   const validationSchema = Yup.object().shape({
     password: Yup.string().when('connectionType', {
       is: type => type === 'password',
@@ -392,6 +401,19 @@ export default function CreateInstancePage() {
 
             const filteredTariffsList = filterTariffsList(isItWindows)
 
+            const premiumTariffs = []
+            const otherTariffs = []
+
+            filteredTariffsList.forEach(tariff => {
+              const isItPremiumInstance = checkIsItPremiumInstance(tariff?.flabel?.tag)
+
+              isItPremiumInstance
+                ? premiumTariffs.push(tariff)
+                : otherTariffs.push(tariff)
+            })
+
+            const tariffsToRender = isPremiumShouldRender ? premiumTariffs : otherTariffs
+
             const onOSchange = value => {
               setFieldValue('instances_os', value)
 
@@ -446,6 +468,7 @@ export default function CreateInstancePage() {
             const currentCpu = values.tariffData?.detail.find(el =>
               el.name.$.toLowerCase().includes('cpu'),
             )?.value.$
+
             const currentDisk = values.tariffData?.detail
               .find(el => el.name.$.toLowerCase() === 'disk space')
               .value.$.replace('.', '')
@@ -520,6 +543,47 @@ export default function CreateInstancePage() {
                 </section>
 
                 <section className={s.section}>
+                  <h3 className={s.section_title}>{t('server_type')}</h3>
+
+                  <ul className={s.grid}>
+                    <li
+                      className={cn(s.category_item, {
+                        [s.selected]: isPremiumShouldRender,
+                      })}
+                    >
+                      <button
+                        className={cn(s.category_btn, s.serverType_btn)}
+                        type="button"
+                        onClick={() => setIsPremiumShouldRender(true)}
+                      >
+                        <img
+                          className={s.serverType_icon}
+                          src={crown}
+                          width={20}
+                          height={14}
+                          alt={'Premium VPS crown'}
+                        />
+                        Premium VPS
+                      </button>
+                    </li>
+
+                    <li
+                      className={cn(s.category_item, s.serverType_item, {
+                        [s.selected]: !isPremiumShouldRender,
+                      })}
+                    >
+                      <button
+                        className={cn(s.category_btn, s.serverType_btn)}
+                        type="button"
+                        onClick={() => setIsPremiumShouldRender(false)}
+                      >
+                        Basic VPS
+                      </button>
+                    </li>
+                  </ul>
+                </section>
+
+                <section className={s.section}>
                   <h3 className={s.section_title}>{t('server_image')}</h3>
 
                   <div className={s.os_list}>
@@ -585,7 +649,7 @@ export default function CreateInstancePage() {
                     </div>
                   )}
                   <ul className={s.grid}>
-                    {filteredTariffsList?.map(tariff => {
+                    {tariffsToRender?.map(tariff => {
                       const price = calculatePrice(tariff, values)
 
                       return (
