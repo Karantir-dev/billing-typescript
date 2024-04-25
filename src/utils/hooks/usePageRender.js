@@ -10,6 +10,9 @@ export default function usePageRender(sectionName, funcName, hasToaster = true) 
 
   const currentSessionRights = useSelector(userSelectors.getCurrentSessionRights)
 
+  /* Here should add condition to render VPS, Site care, FTP, VPN only for users whose have ordered service.
+  Don't forget to delete this comment later */
+
   const shouldComponentRender = checkIfComponentShouldRender(
     currentSessionRights,
     sectionName,

@@ -18,6 +18,7 @@ import {
   FiltersModal,
   InstructionModal,
   DedicsHistoryModal,
+  VPSCompareModal,
   Pagination,
   Portal,
   HintWrapper,
@@ -32,7 +33,12 @@ import {
   vdsOperations,
 } from '@redux'
 import no_vds from '@images/services/no_vds.png'
-import { checkServicesRights, roundToDecimal, useCancelRequest, usePageRender } from '@utils'
+import {
+  checkServicesRights,
+  roundToDecimal,
+  useCancelRequest,
+  usePageRender,
+} from '@utils'
 
 import s from './VDS.module.scss'
 
@@ -94,6 +100,7 @@ export default function VDS({ isDedic }) {
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
   const [isSearchMade, setIsSearchMade] = useState(false)
+  const [isCompareModalOpened, setIsCompareModalOpened] = useState(false)
 
   const getTotalPrice = () => {
     const list = activeServices.length > 0 ? activeServices : []
@@ -241,7 +248,7 @@ export default function VDS({ isDedic }) {
   }
 
   const orderSameTariff = id => {
-    dispatch(cartOperations.orderSameTariff('vds' ,id, navigate))
+    dispatch(cartOperations.orderSameTariff('vds', id, navigate))
   }
   return (
     <div>
@@ -272,9 +279,7 @@ export default function VDS({ isDedic }) {
                     state: { isDedicOrderAllowed: dedicRights?.new },
                     replace: true,
                   })
-                : navigate(route.VPS_ORDER, {
-                    replace: true,
-                  })
+                : setIsCompareModalOpened(true)
             }}
           />
 
@@ -527,6 +532,11 @@ export default function VDS({ isDedic }) {
           isOpen
         />
       )}
+
+      <VPSCompareModal
+        isOpen={isCompareModalOpened}
+        closeModal={() => setIsCompareModalOpened(false)}
+      />
 
       {isLoading && <Loader local shown={isLoading} halfScreen={isDedic} />}
     </div>
