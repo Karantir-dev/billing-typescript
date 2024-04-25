@@ -272,7 +272,7 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
     })
 }
 const changeTariff =
-  ({ elid, pricelist, successCallback }) =>
+  ({ elid, pricelist, successCallback, errorCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -286,8 +286,16 @@ const changeTariff =
       sok: 'ok',
     })
       .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        successCallback()
+        if (data.doc?.error) {
+          if (data.doc.error.$type === 'not_enough_money') {
+            errorCallback(data.doc.error)
+            handleLoadersClosing('closeLoader', dispatch)
+          } else {
+            throw new Error(data.doc.error.msg.$)
+          }
+        } else {
+          successCallback()
+        }
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
@@ -435,7 +443,7 @@ const openConsole =
 
 /* EDIT SERVERS OPERATION TO GET FULL DATA */
 const getInstanceInfo =
-  (elid, params, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
+  (elid, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const {
       auth: { sessionId },
@@ -450,7 +458,6 @@ const getInstanceInfo =
           auth: sessionId,
           lang: 'en',
           elid,
-          ...params,
         }),
         { signal },
       )
@@ -464,6 +471,7 @@ const getInstanceInfo =
           fotbo_id: renamedSlistData?.fotbo_id.$,
           ip: renamedSlistData?.ip?.$,
           ip_v6: renamedSlistData?.ip_v6?.$,
+          rdns_record: renamedSlistData?.rdns_record?.$,
         }
 
         const clearStr = /\s*\(.*?\)\s*\.?/g

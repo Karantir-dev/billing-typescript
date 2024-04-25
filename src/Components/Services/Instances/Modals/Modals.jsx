@@ -7,7 +7,9 @@ import {
   RebuildModal,
   DeleteSshModal,
   SshKeyModal,
+  RdnsModal,
 } from '.'
+
 import {
   cloudVpsActions,
   cloudVpsOperations,
@@ -81,7 +83,7 @@ export const Modals = ({
     }
   }
 
-  const resizeSubmit = values => {
+  const resizeSubmit = (values, errorCallback) => {
     dispatch(
       cloudVpsOperations.changeTariff({
         elid: itemForModals.resize.id.$,
@@ -89,6 +91,20 @@ export const Modals = ({
         successCallback: () => {
           dispatch(cloudVpsActions.setItemForModals({ resize: false }))
           getInstances({ ...loadingParams, ...pagination })
+        },
+        errorCallback,
+      }),
+    )
+  }
+
+  const rdnsSubmit = ({ value, elid, errorCallback }) => {
+    dispatch(
+      cloudVpsOperations.editInstance({
+        elid,
+        values: { rdns_record: value },
+        errorCallback,
+        successCallback: () => {
+          dispatch(cloudVpsActions.setItemForModals({ rdns_edit: false }))
         },
       }),
     )
@@ -213,6 +229,16 @@ export const Modals = ({
               ? renameSshSubmit
               : addNewSshSubmit
           }
+        />
+      )}
+
+      {!!itemForModals?.rdns_edit && (
+        <RdnsModal
+          item={itemForModals?.rdns_edit}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ rdns_edit: false }))
+          }
+          onSubmit={rdnsSubmit}
         />
       )}
     </>
