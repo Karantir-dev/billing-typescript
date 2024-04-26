@@ -122,6 +122,7 @@
   "location": "Location",
   "server_image": "Server image",
   "server_size": "Server size",
+  "server_type": "Server type",
   "cloud_ipv6": "Enable only IPv6",
   "price_per": "Price per",
   "authentication_method": "Choose Authentication Method",

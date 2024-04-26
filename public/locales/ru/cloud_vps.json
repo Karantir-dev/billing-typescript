@@ -122,6 +122,7 @@
   "location": "Размещение",
   "server_image": "Образ сервера",
   "server_size": "Размер сервера",
+  "server_type": "Тип сервера",
   "cloud_ipv6": "Только IPv6",
   "price_per": "Цена за",
   "authentication_method": "Выберите метод подключения",

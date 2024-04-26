@@ -17,6 +17,9 @@ export default function TariffCard({ tariff, onClick, price, active, disabled })
     .find(el => el.name.$.toLowerCase() === 'disk space')
     .value.$.replace('.', '')
 
+  const portSpeed = tariff.detail.find(el => el.name.$.toLowerCase() === 'port speed')
+    ?.value.$
+
   return (
     <li className={cn(s.tariff_item, { [s.active]: active, [s.disabled]: disabled })}>
       <button className={s.tariff_btn} type="button" onClick={() => onClick(tariff.id.$)}>
@@ -36,7 +39,7 @@ export default function TariffCard({ tariff, onClick, price, active, disabled })
           </div>
           <div className={s.tariff_row}>
             <span className={s.parameter_label}>Speed</span>
-            <span className={s.parameter_value}>1 Gbps</span>
+            <span className={s.parameter_value}>{portSpeed}</span>
           </div>
           <div className={s.tariff_row}>
             <span className={s.parameter_label}>Bandwidth</span>

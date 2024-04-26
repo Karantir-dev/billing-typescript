@@ -11,6 +11,7 @@ const initialState = {
   instancesTariffs: {},
   instancesDcList: null,
   windowsTag: '',
+  instanceTypeTag: '',
   operationSystems: null,
   sshList: null,
   sshCount: 0,
@@ -39,8 +40,8 @@ const instancesTariffs = createReducer(initialState.instancesTariffs, {
   [cloudVpsActions.setInstancesTariffs]: (state, { payload }) => {
     /** 13 it is hardcoded dc id - it must be refactored */
     payload[13] = payload[13]?.map(el => {
-      const newDayPrice = TARIFFS_PRICES[el.title.main.$].day
-      const newMonthPrice = TARIFFS_PRICES[el.title.main.$].month
+      const newDayPrice = TARIFFS_PRICES[el.title.main.$]?.day
+      const newMonthPrice = TARIFFS_PRICES[el.title.main.$]?.month
       el.prices.price.cost.$ = String(newDayPrice)
       el.prices.price.cost.month = String(newMonthPrice)
 
@@ -57,6 +58,10 @@ const instancesDcList = createReducer(initialState.instancesDcList, {
 
 const windowsTag = createReducer(initialState.windowsTag, {
   [cloudVpsActions.setWindowsTag]: (_, { payload }) => payload,
+})
+
+const instanceTypeTag = createReducer(initialState.instanceTypeTag, {
+  [cloudVpsActions.setInstanceTypeTag]: (_, { payload }) => payload,
 })
 
 const operationSystems = createReducer(initialState.operationSystems, {
@@ -85,6 +90,7 @@ const cloudVpsReducer = combineReducers({
   instancesTariffs,
   instancesDcList,
   windowsTag,
+  instanceTypeTag,
   operationSystems,
   sshList,
   sshCount,
