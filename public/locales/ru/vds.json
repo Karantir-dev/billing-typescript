@@ -40,12 +40,10 @@
   "not_installed": "-- Не установлено --",
   "password": "Пароль",
   "user_password": "Пароль пользователя",
-
   "Without a license": "Без лицензии",
   "ISPmanager 6 Host - Unlimited domains": "ISPmanager 6 Host - Неограниченное число доменов",
   "ISPmanager 6 Lite - 10 domains": "ISPmanager 6 Lite - 10 доменов",
   "ISPmanager 6 Pro - 50 domains": "ISPmanager 6 Pro - 50 доменов",
-
   "license": "Лицензия",
   "processors": "Кол-во процессоров",
   "disk_space": "Дисковое пространство",
@@ -97,13 +95,13 @@
   "Suspended service": "Услуга остановлена",
   "Active service": "Услуга запущена",
   "reboot_launched": "Запущен процесс перезагрузки сервера",
-
   "pcs.": "шт.",
   "Suspended due to abuse": "Остановлен за нарушение",
   "daily charges": "ежедневные\nсписания",
-
   "server_name": "Имя сервера",
   "server_placeholder": "Мой сервер",
   "not_set": "Не задано",
-  "clone_tariff": "Клонировать тариф"
+  "clone_tariff": "Клонировать тариф",
+  "compare_modal_title": "Попробуйте новый уровень производительности с Cloud VPS",
+  "compare_modal_text": "К сожалению, продажа устаревших VPS прекращена. Вместо них мы предлагаем Cloud VPS (Premium или Basic) по более выгодной цене. Premium Cloud VPS оснащены мощным процессором Xeon Gold, NVMe дисками и каналом 1 Гбит/с. Basic Cloud VPS обладают процессором Intel Xeon E5, большими дисками и каналом 500 Мбит/с."
 }

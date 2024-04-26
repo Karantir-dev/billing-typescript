@@ -35,7 +35,7 @@ export default function DNS() {
   let dnsRenderData = useSelector(dnsSelectors.getDNSList)
   const dnsCount = useSelector(dnsSelectors.getDNSCount)
 
-  const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost', true, 41)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const [activeServices, setActiveServices] = useState([])
 

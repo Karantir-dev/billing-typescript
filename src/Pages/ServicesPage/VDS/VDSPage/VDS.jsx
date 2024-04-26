@@ -63,7 +63,7 @@ export default function VDS({ isDedic }) {
     }
   }, [])
 
-  const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'vds', true, 6)
 
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])

@@ -5,6 +5,7 @@ const updateUserInfo = createAction('UPDATE_USER_INFO')
 const setTickets = createAction('SET_TICKETS')
 const setItems = createAction('SET_ITEMS')
 const removeItems = createAction('REMOVE_ITEMS')
+const setUserActiveServices = createAction('SET_USER_ACTIVE_SERVICES')
 
 const setCurrentSessionRihgts = createAction('SET_CURRENT_SESSION_RIGHTS')
 
@@ -28,4 +29,5 @@ export default {
   updateUserInfo,
   setIsNewMessage,
   setAvailableCredit,
+  setUserActiveServices,
 }

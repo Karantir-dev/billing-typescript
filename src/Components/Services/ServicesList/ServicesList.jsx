@@ -20,25 +20,38 @@ export default function ServicesList() {
   const { t } = useTranslation('container')
   const laptopAndHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
+  // Services List at the main page
+
   const dispatch = useDispatch()
 
   const swiperEl = useRef(null)
 
-  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false)
-  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false)
-  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false)
-  const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost', false)
-  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false)
-  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
+  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false, 4)
+  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false, 6)
+  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false, 20)
+  const isVirtualHostAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'vhost',
+    false,
+    23,
+  )
+  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false, 41)
+  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false, 27090)
   const isWebsitecareAllowedToRender = usePageRender(
     'mainmenuservice',
     'zabota-o-servere',
     false,
+    27129,
   )
 
-  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false)
+  const isForexServerAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'forexbox',
+    false,
+    27136,
+  )
 
-  const isVPNAllowedToRender = usePageRender('mainmenuservice', 'vpn', false)
+  const isVPNAllowedToRender = usePageRender('mainmenuservice', 'vpn', false, 27140)
 
   const darkTheme = useSelector(selectors.getTheme)
   const [dark, setDark] = useState(darkTheme)

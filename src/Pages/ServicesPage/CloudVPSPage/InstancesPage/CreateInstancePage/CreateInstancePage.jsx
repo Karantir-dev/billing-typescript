@@ -83,6 +83,18 @@ export default function CreateInstancePage() {
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
   useEffect(() => {
+    const instanceServerType = sessionStorage.getItem('instance_server_type')
+
+    if (instanceServerType) {
+      instanceServerType === 'premium'
+        ? setIsPremiumShouldRender(true)
+        : setIsPremiumShouldRender(false)
+
+      sessionStorage.removeItem('instance_server_type')
+    }
+  }, [])
+
+  useEffect(() => {
     if (!currentDC?.$key && dcList) {
       const location = dataFromSite.location
 

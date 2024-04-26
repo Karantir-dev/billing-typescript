@@ -15,20 +15,31 @@ export default function VPSCompareModal({ isOpen, closeModal }) {
   return (
     <Modal isOpen={isOpen} closeModal={closeModal} isClickOutside className={''}>
       <Modal.Header>
-        <p className={s.title}>Compare VPS and Cloud VPS</p>
+        <p className={s.title}>{t('compare_modal_title')}</p>
       </Modal.Header>
       <Modal.Body>
-        <div className={s.modal_wrapper}>
-          here will be compatison information with VPS and Cloud VPS
-        </div>
+        <div className={s.modal_wrapper}>{t('compare_modal_text')}</div>
       </Modal.Body>
       <Modal.Footer>
         <Button
           className={s.buy_btn}
           type="button"
           isShadow
-          label={t('to_order', { ns: 'other' }) + ' Cloud VPS'}
-          onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}
+          label={t('to_order', { ns: 'other' }) + ' Premium Cloud VPS'}
+          onClick={() => {
+            sessionStorage.setItem('instance_server_type', 'premium')
+            navigate(route.CLOUD_VPS_CREATE_INSTANCE)
+          }}
+        />
+        <Button
+          className={s.buy_btn}
+          type="button"
+          isShadow
+          label={t('to_order', { ns: 'other' }) + ' Basic Cloud VPS'}
+          onClick={() => {
+            sessionStorage.setItem('instance_server_type', 'basic')
+            navigate(route.CLOUD_VPS_CREATE_INSTANCE)
+          }}
         />
       </Modal.Footer>
     </Modal>

@@ -32,7 +32,7 @@ import {
 } from '@utils'
 
 export default function FTP() {
-  const isAllowedToRender = usePageRender('mainmenuservice', 'storage')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'storage', true, 27090)
 
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()

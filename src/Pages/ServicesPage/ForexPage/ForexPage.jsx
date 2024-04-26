@@ -42,7 +42,7 @@ export default function ForexPage() {
   const forexCount = useSelector(forexSelectors.getForexCount)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
-  const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox', true, 27136)
 
   const [activeServices, setActiveServices] = useState([])
 

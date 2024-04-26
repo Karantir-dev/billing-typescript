@@ -227,3 +227,22 @@ export const TARIFFS_PRICES = {
   'Cloud vps3': { day: 0.5497, month: 16.49 },
   'Cloud vps4': { day: 1.03, month: 16.49 },
 }
+
+/* ID of services that should be disabled: */
+export const FORBIDDEN_TO_ORDER_SERVICES = [27090, 6, 27140, 27129]
+
+/*
+Below ID and names of all services
+
+"id_itemtype": "name"
+"4": "Domain names"
+"6": "Virtual server"
+"20": "Dedicated server"
+"23": "Shared hosting"
+"41": "Slave name server"
+"27090": "External FTP-storage "
+"27129": "Site care service"
+"27136": "Forex server"
+"27140": "VPN"
+"27156": "Instances"
+*/

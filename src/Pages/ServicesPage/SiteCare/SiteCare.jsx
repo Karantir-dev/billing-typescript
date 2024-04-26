@@ -21,7 +21,12 @@ import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 
 export default function Component() {
-  const isAllowedToRender = usePageRender('mainmenuservice', 'zabota-o-servere')
+  const isAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'zabota-o-servere',
+    true,
+    27129,
+  )
 
   const { t } = useTranslation(['container', 'other', 'access_log'])
   const dispatch = useDispatch()
