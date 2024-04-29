@@ -229,7 +229,7 @@ export const TARIFFS_PRICES = {
 }
 
 /* ID of services that should be disabled: */
-export const FORBIDDEN_TO_ORDER_SERVICES = [27090, 6, 27140, 27129]
+export const FORBIDDEN_TO_ORDER_SERVICES = [27090, 6, 27140]
 
 /*
 Below ID and names of all services
