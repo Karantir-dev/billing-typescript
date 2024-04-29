@@ -419,11 +419,15 @@ export default function CreateInstancePage() {
             const tariffsToRender = isPremiumShouldRender ? premiumTariffs : otherTariffs
 
             useEffect(() => {
-              const renderTariffs = isPremiumShouldRender ? premiumTariffs : otherTariffs
-              const tariffChosen = renderTariffs.filter(el => !el.disabled)?.[0]
+              if (instanceTypeTag) {
+                const renderTariffs = isPremiumShouldRender
+                  ? premiumTariffs
+                  : otherTariffs
+                const tariffChosen = renderTariffs.filter(el => !el.disabled)?.[0]
 
-              onTariffChange(tariffChosen)
-            }, [isPremiumShouldRender])
+                onTariffChange(tariffChosen)
+              }
+            }, [isPremiumShouldRender, instanceTypeTag])
 
             const onOSchange = value => {
               setFieldValue('instances_os', value)
