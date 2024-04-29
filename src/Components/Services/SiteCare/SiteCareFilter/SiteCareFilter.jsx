@@ -4,13 +4,16 @@ import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { IconButton, Portal, CheckBox, SiteCareFiltertsModal } from '@components'
+import { IconButton, Portal, CheckBox, SiteCareFiltertsModal, Button } from '@components'
 import s from './SiteCareFilter.module.scss'
 import { actions, siteCareOperations, siteCareSelectors } from '@redux'
+import { useNavigate } from 'react-router-dom'
+import * as routes from '@src/routes'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
+  const navigate = useNavigate()
 
   const {
     setCurrentPage,
@@ -115,6 +118,21 @@ export default function Component(props) {
           />
           <span>{t('Choose all', { ns: 'other' })}</span>
         </div>
+        <Button
+          disabled={!rights?.new}
+          dataTestid={'new_ticket_btn'}
+          className={s.newTicketBtn}
+          isShadow
+          size="medium"
+          label={t('to_order', { ns: 'other' })}
+          type="button"
+          onClick={() => {
+            navigate(routes.SITE_CARE_ORDER, {
+              state: { isSiteCareOrderAllowed: rights?.new },
+              replace: true,
+            })
+          }}
+        />
         <div className={s.filterBtnBlock}>
           <IconButton
             onClick={() => setFilterModal(true)}

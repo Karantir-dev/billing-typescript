@@ -28,5 +28,7 @@
   "wordpress_order": "Замовлення Wordpress хостингу",
   "cloud_vps": "Cloud VPS",
   "ssh_keys": "SSH ключі",
-  "create_instance": "Створити сервер VPS"
+  "create_instance": "Створити сервер VPS",
+  "premium": "Premium VPS",
+  "basic": "Basic VPS"
 }

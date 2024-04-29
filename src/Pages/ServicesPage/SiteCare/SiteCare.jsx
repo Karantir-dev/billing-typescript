@@ -7,7 +7,6 @@ import {
   SiteCareHistoryModal,
   SiteCareEditModal,
   SiteCareDeleteModal,
-  CheckBox,
   SiteCareBottomBar,
   Loader,
   ProlongModal,
@@ -180,14 +179,6 @@ export default function Component() {
     dispatch(siteCareOperations.deleteSiteCare(data, setDeleteModal))
   }
 
-  const setSelectedAll = val => {
-    if (val) {
-      setSelctedItem(sitecareRenderData?.siteCareList)
-      return
-    }
-    setSelctedItem([])
-  }
-
   let rights = checkServicesRights(sitecareRenderData?.siteCarePageRights?.toolgrp)
 
   useEffect(() => {
@@ -196,9 +187,6 @@ export default function Component() {
     }
     dispatch(billingOperations.getUnpaidOrders(setUnpaidItems, signal))
   }, [])
-
-  const isAllActive = sitecareRenderData?.siteCareList?.length === selctedItem?.length
-  const toggleIsAllActiveHandler = () => setSelectedAll(!isAllActive)
 
   return (
     <>
@@ -225,7 +213,7 @@ export default function Component() {
           setIsLoading={setIsLoading}
         />
 
-        {sitecareRenderData?.siteCareList?.length > 0 && (
+        {/* {sitecareRenderData?.siteCareList?.length > 0 && (
           <div className={s.checkBoxColumn}>
             <CheckBox
               className={s.check_box}
@@ -234,7 +222,7 @@ export default function Component() {
             />
             <span>{t('Choose all', { ns: 'other' })}</span>
           </div>
-        )}
+        )} */}
 
         {sitecareRenderData?.siteCareList?.length < 1 && isFiltered && (
           <div className={s.no_vds_wrapper}>

@@ -287,14 +287,14 @@
     max-height: unset;
     padding: 20px;
     top: calc(90% + 10px);
-    left: -290px;
+    right: -20px;
     overflow-y: visible;
     transform: unset;
 
     &::after {
       content: '';
       position: absolute;
-      left: 285px;
+      right: 15px;
       top: -10px;
       width: 0;
       height: 0;
@@ -369,15 +369,6 @@
     min-width: 1070px;
     &.expenses {
       min-width: 770px;
-    }
-  }
-
-  .filterModal {
-    left: -20px;
-
-    &::after {
-      left: 15px;
-      top: -10px;
     }
   }
 
