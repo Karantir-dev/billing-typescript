@@ -565,7 +565,10 @@ export default function CreateInstancePage() {
                       <button
                         className={cn(s.category_btn, s.serverType_btn)}
                         type="button"
-                        onClick={() => setIsPremiumShouldRender(true)}
+                        onClick={() => {
+                          setIsPremiumShouldRender(true)
+                          onTariffChange(premiumTariffs?.[0])
+                        }}
                       >
                         <img
                           className={s.serverType_icon}
@@ -586,7 +589,10 @@ export default function CreateInstancePage() {
                       <button
                         className={cn(s.category_btn, s.serverType_btn)}
                         type="button"
-                        onClick={() => setIsPremiumShouldRender(false)}
+                        onClick={() => {
+                          setIsPremiumShouldRender(false)
+                          onTariffChange(otherTariffs?.[0])
+                        }}
                       >
                         Basic VPS
                       </button>

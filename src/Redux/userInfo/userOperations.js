@@ -106,29 +106,6 @@ const getActiveServices = (data, dispatch) => {
   dispatch(userActions.setUserActiveServices(elem))
 }
 
-// const getActiveServices = (dispatch, getState) => {
-//   const {
-//     auth: { sessionId },
-//   } = getState()
-
-//   axiosInstance
-//     .post(
-//       '/',
-//       qs.stringify({
-//         func: 'item.count',
-//         out: 'json',
-//         lang: 'en',
-//         auth: sessionId,
-//       }),
-//     )
-//     .then(({ data }) => {
-//       dispatch(userActions.setUserActiveServices(data?.elem))
-//     })
-//     .catch(error => {
-//       checkIfTokenAlive(error.message, dispatch)
-//     })
-// }
-
 const funcsArray = [
   userInfo,
   userNotifications,

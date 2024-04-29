@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 
-import cn from 'classnames'
 import s from './VPSCompareModal.module.scss'
 
 import { Button, Modal } from '@components'
@@ -13,7 +11,7 @@ export default function VPSCompareModal({ isOpen, closeModal }) {
 
   const navigate = useNavigate()
   return (
-    <Modal isOpen={isOpen} closeModal={closeModal} isClickOutside className={''}>
+    <Modal isOpen={isOpen} closeModal={closeModal} isClickOutside>
       <Modal.Header>
         <p className={s.title}>{t('compare_modal_title')}</p>
       </Modal.Header>

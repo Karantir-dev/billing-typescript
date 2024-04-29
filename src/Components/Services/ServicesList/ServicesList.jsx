@@ -20,8 +20,6 @@ export default function ServicesList() {
   const { t } = useTranslation('container')
   const laptopAndHigher = useMediaQuery({ query: '(min-width: 768px)' })
 
-  // Services List at the main page
-
   const dispatch = useDispatch()
 
   const swiperEl = useRef(null)
