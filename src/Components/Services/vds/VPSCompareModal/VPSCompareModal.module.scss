@@ -1,0 +1,18 @@
+.title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.buy_btn {
+  height: 50px;
+  max-width: 250px;
+  margin: 0 auto 0;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: 768px) {
+  .title {
+    font-size: 20px;
+  }
+}

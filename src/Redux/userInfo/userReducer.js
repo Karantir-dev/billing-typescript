@@ -20,6 +20,7 @@ const initialState = {
   currentSessionRights: [],
   userInfoLoading: false,
   isNewMessage: false,
+  userActiveServices: [],
 }
 
 const userInfo = createReducer(initialState.userInfo, {
@@ -63,6 +64,10 @@ const isNewMessage = createReducer(initialState.isNewMessage, {
   [userActions.setIsNewMessage]: (_, { payload }) => payload,
 })
 
+const userActiveServices = createReducer(initialState.userActiveServices, {
+  [userActions.setUserActiveServices]: (_, { payload }) => payload,
+})
+
 const userReducer = combineReducers({
   userInfo,
   userTickets,
@@ -70,6 +75,7 @@ const userReducer = combineReducers({
   userInfoLoading,
   currentSessionRights,
   isNewMessage,
+  userActiveServices,
 })
 
 export default userReducer

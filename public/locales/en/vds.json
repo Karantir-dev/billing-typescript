@@ -99,5 +99,7 @@
   "server_name": "Server name",
   "server_placeholder": "My Server",
   "not_set": "Not set",
-  "clone_tariff": "Clone tariff"
+  "clone_tariff": "Clone tariff",
+  "compare_modal_title": "Try new level of perfomance with Cloud VPS",
+  "compare_modal_text": "Unfortunately, the sale of legacy VPS is discontinued. Instead, we offer Cloud VPS (Premium or Basic) at a more favorable price. Premium Cloud VPS are equipped with a powerful Xeon Gold processor, NVMe disks and 1Gbps channel. Basic Cloud VPS have Intel Xeon E5 processor, large disks and 500 Mbps channel."
 }

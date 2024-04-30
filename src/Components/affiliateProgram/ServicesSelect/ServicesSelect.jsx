@@ -15,8 +15,8 @@ export default function ServicesSelect({ setServiseName }) {
   const [dropdownOpened, setDropdownOpened] = useState(false)
 
   const servicesList = [
-    { linkName: 'vds', text: t('vds') },
-    { linkName: 'big_vds', text: t('big_vds') },
+    { linkName: 'vps', text: t('cloud_vps_option') },
+    { linkName: 'big_vds', text: t('cloud_vps_big_option') },
     { linkName: 'dedicated', text: t('dedicated_servers') },
     { linkName: 'virtual', text: t('shared_hosting') },
     { linkName: 'server-for-forex', text: t('servers_for_forex') },

@@ -29,20 +29,31 @@ export default function BurgerMenu({ classes, isOpened, controlMenu, profileMenu
   const profileMenuListToRender = profileMenuList.filter(item => item.allowedToRender)
 
   /* SERVICES */
-  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false)
-  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false)
-  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false)
-  const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost', false)
-  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false)
-  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
+  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false, 4)
+  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false, 6)
+  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false, 20)
+  const isVirtualHostAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'vhost',
+    false,
+    23,
+  )
+  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false, 41)
+  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false, 27090)
   /* zabota-o-servere !!! this func is not provided in mainmenuservice, needs to be checked */
   const isWebsitecareAllowedToRender = usePageRender(
     'mainmenuservice',
     'zabota-o-servere',
     false,
+    27129,
   )
-  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false) //funcname wuwuwuw
-  const isVPNAllowedToRender = usePageRender('mainmenuservice', 'vpn', false)
+  const isForexServerAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'forexbox',
+    false,
+    27136,
+  )
+  const isVPNAllowedToRender = usePageRender('mainmenuservice', 'vpn', false, 27140)
 
   const servicesMenuList = [
     {
