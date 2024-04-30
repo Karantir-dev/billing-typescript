@@ -83,7 +83,7 @@ export const Modals = ({
     }
   }
 
-  const resizeSubmit = values => {
+  const resizeSubmit = (values, errorCallback) => {
     dispatch(
       cloudVpsOperations.changeTariff({
         elid: itemForModals.resize.id.$,
@@ -92,6 +92,7 @@ export const Modals = ({
           dispatch(cloudVpsActions.setItemForModals({ resize: false }))
           getInstances({ ...loadingParams, ...pagination })
         },
+        errorCallback,
       }),
     )
   }

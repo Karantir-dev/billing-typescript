@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
-import { Button, IconButton, Portal, CheckBox, VpnFiltertsModal } from '@components'
+import { IconButton, Portal, CheckBox, VpnFiltertsModal } from '@components'
 import { actions, vpnOperations, vpnSelectors } from '@redux'
 import s from './VpnFilter.module.scss'
-import * as routes from '@src/routes'
 
 export default function Component(props) {
   const { t } = useTranslation(['domains', 'other', 'vds'])
-  const navigate = useNavigate()
   const mobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const {
@@ -155,7 +152,7 @@ export default function Component(props) {
           )}
         </div>
       </div>
-      <Button
+      {/* <Button
         disabled={!rights?.new}
         className={s.newTicketBtn}
         isShadow
@@ -168,7 +165,7 @@ export default function Component(props) {
             replace: true,
           })
         }}
-      />
+      /> */}
     </div>
   )
 }

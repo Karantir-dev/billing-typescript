@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button, Select, Icon, Loader, TariffConfig } from '@components'
@@ -215,9 +214,7 @@ export default function DedicOrderPage() {
 
   useEffect(() => {
     if (isDedicOrderAllowed) {
-      dispatch(
-        dedicOperations.getTarifs(1, setNewVds, setDedicInfoList, signal, setIsLoading),
-      )
+      dispatch(dedicOperations.getTarifs(1, setDedicInfoList, signal, setIsLoading))
     } else {
       navigate(route.DEDICATED_SERVERS, { replace: true })
     }

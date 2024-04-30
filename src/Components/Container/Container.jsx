@@ -8,6 +8,7 @@ import {
   userSelectors,
   selectors,
   userActions,
+  vhostOperations,
 } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -44,7 +45,9 @@ export default function Component({ children }) {
 
   useEffect(() => {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
-
+    dispatch(
+      vhostOperations.getVhosts({ sok: 'ok' }, 'wordpress', undefined, undefined, true),
+    )
     let intervalId
 
     if (sessionId && online) {

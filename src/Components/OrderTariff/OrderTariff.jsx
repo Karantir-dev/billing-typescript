@@ -44,7 +44,9 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
     }
 
     const errorHandler = () =>
-      isClonePage ? navigate(route.VDS_ORDER) : setIsError(true)
+      isClonePage
+        ? navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}/premium`)
+        : setIsError(true)
 
     dispatch(
       cartOperations.getTariffInfo(

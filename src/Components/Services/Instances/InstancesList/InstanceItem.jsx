@@ -18,7 +18,8 @@ export default function InstanceItem({ item, editInstance }) {
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
-  const { isResized, displayStatus, isNotActive } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, isNotActive, isDeleting, isSuspended } =
+    getInstanceMainInfo(item)
 
   const editServerName = value => {
     const slicedValue = value.slice(0, 100)
@@ -37,6 +38,9 @@ export default function InstanceItem({ item, editInstance }) {
   const itemCountry = formatCountryName(item)
 
   const ip = item.ip?.$ || item.ip_v6?.$
+
+  const isHintStatus = isSuspended || isResized
+  const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
 
   return (
     <tr
@@ -72,19 +76,21 @@ export default function InstanceItem({ item, editInstance }) {
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
-              label={t('resize_popup_text')}
+              label={hintMessage}
             >
               <span
                 className={cn(
                   s.status,
                   s[
-                    item?.fotbo_status?.$.trim().toLowerCase() ||
-                      item?.item_status?.$.trim().toLowerCase()
+                    isDeleting
+                      ? 'deletion_in_progress'
+                      : item?.fotbo_status?.$.trim().toLowerCase() ||
+                        item?.item_status?.$.trim().toLowerCase()
                   ],
                 )}
               >
                 {displayStatus}
-                <Icon name="Attention" />
+                {isHintStatus && <Icon name="Attention" />}
               </span>
             </HintWrapper>
           ) : (

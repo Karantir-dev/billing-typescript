@@ -582,6 +582,10 @@ const getAllTariffsInfo =
           el.$.toLowerCase().includes('windows'),
         ).$key
 
+        const instanceTypePremium = data?.doc?.flist?.val.find(el =>
+          el?.$.toLowerCase().includes('premium'),
+        ).$key
+
         if (needOsList) {
           await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
         }
@@ -589,6 +593,7 @@ const getAllTariffsInfo =
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
         dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
+        dispatch(cloudVpsActions.setInstanceTypeTag(instanceTypePremium))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)

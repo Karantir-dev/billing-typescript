@@ -13,10 +13,13 @@ export default function InstanceItemMobile({ item }) {
   const ipCell = useRef()
   const navigate = useNavigate()
 
-  const { isResized, displayStatus, displayName, isNotActive } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, displayName, isNotActive, isDeleting, isSuspended } =
+    getInstanceMainInfo(item)
 
   const itemCountry = formatCountryName(item)
   const ip = item.ip?.$ || item.ip_v6?.$
+
+  const isHintStatus = isSuspended || isResized
 
   return (
     <div
@@ -48,13 +51,15 @@ export default function InstanceItemMobile({ item }) {
                   className={cn(
                     s.status,
                     s[
-                      item.fotbo_status?.$.trim().toLowerCase() ||
-                        item.item_status?.$.trim().toLowerCase()
+                      isDeleting
+                        ? 'deletion_in_progress'
+                        : item?.fotbo_status?.$.trim().toLowerCase() ||
+                          item?.item_status?.$.trim().toLowerCase()
                     ],
                   )}
                 >
                   {displayStatus}
-                  <Icon name="Attention" />
+                  {isHintStatus && <Icon name="Attention" />}
                 </p>
               </HintWrapper>
             ) : (

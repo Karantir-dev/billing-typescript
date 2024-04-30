@@ -189,7 +189,7 @@ export default function InstancesPage() {
               label={t('create_instance_btn')}
               size="large"
               isShadow
-              onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}
+              onClick={() => navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}/premium`)}
             />
             {!instances.length && !isFiltered ? null : (
               <>
