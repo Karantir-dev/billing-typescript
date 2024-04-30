@@ -24,7 +24,6 @@ export default function VDSItem({
   handleEditSubmit,
   isDedic,
   unpaidItems,
-  orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -61,11 +60,6 @@ export default function VDSItem({
 
   const options = [
     deleteOption,
-    {
-      label: t('clone_tariff'),
-      icon: 'Copy',
-      onClick: orderSameTariff,
-    },
     {
       label: t('instruction'),
       icon: 'Info',
