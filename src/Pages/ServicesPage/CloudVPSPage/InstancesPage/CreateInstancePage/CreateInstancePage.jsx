@@ -420,12 +420,17 @@ export default function CreateInstancePage() {
 
             useEffect(() => {
               if (instanceTypeTag) {
-                const renderTariffs = isPremiumShouldRender
-                  ? premiumTariffs
-                  : otherTariffs
-                const tariffChosen = renderTariffs.filter(el => !el.disabled)?.[0]
+                if (tariffFromSite) {
+                  onTariffChange(tariffFromSite)
+                  localStorage.removeItem('site_cart')
+                } else {
+                  const renderTariffs = isPremiumShouldRender
+                    ? premiumTariffs
+                    : otherTariffs
+                  const tariffChosen = renderTariffs.filter(el => !el.disabled)?.[0]
 
-                onTariffChange(tariffChosen)
+                  onTariffChange(tariffChosen)
+                }
               }
             }, [isPremiumShouldRender, instanceTypeTag])
 
