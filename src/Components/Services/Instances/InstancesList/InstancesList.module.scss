@@ -173,13 +173,15 @@
   line-height: 1;
   position: relative;
   background-color: #f79649;
-  &.resized {
+  &.resized,
+  &.suspended {
     display: inline-flex;
     align-items: center;
     gap: 7px;
     padding-right: 20px;
     .popup {
-      width: 300px;
+      width: max-content;
+      max-width: 300px;
       text-transform: none;
       white-space: normal;
       text-align: left;
@@ -204,13 +206,20 @@
       }
     }
   }
+  &.suspended {
+    svg {
+      path {
+        fill: #fa6848;
+      }
+    }
+  }
   &.runing,
   &.active {
     background-color: #45a884;
   }
   &.stopped,
   &.deletion_in_progress,
-  &.suspend {
+  &.suspended {
     background-color: #fa6848;
   }
 }
