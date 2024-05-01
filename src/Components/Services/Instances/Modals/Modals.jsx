@@ -28,7 +28,7 @@ export const Modals = ({
   pagination = {},
   setPagination = () => {},
   getInstances = () => {},
-  redirectCallback = () => {},
+  redirectCallback,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -40,9 +40,12 @@ export const Modals = ({
         closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
         ...loadingParams,
         successCallback: () => {
-          getInstances({ p_num: 1 })
-          setPagination({ p_num: 1 })
-          redirectCallback()
+          if (redirectCallback) {
+            redirectCallback()
+          } else {
+            getInstances({ p_num: 1 })
+            setPagination({ p_num: 1 })
+          }
         },
       }),
     )
