@@ -211,11 +211,13 @@ export const FOTBO_STATUSES_LIST = [
 
 export const TARIFFS_PRICES = {
   'Cloud Essential': { day: 0.13, month: 3.9 },
+  'Cloud Basic': { day: 0.13, month: 3.9 },
   /** Cloud Standart should be deleted after renaming to Standard */
   'Cloud Standart': { day: 0.1634, month: 4.9 },
   'Cloud Standard': { day: 0.1634, month: 4.9 },
   'Cloud Exclusive': { day: 0.2497, month: 7.49 },
   'Cloud Prime': { day: 0.4497, month: 13.49 },
+  'Cloud Premium': { day: 0.4497, month: 13.49 },
   'Cloud Platinum': { day: 0.6634, month: 19.9 },
   'Cloud Enterprise': { day: 1.283, month: 38.49 },
   'Сloud Ultimate': { day: 2.2164, month: 66.49 },
