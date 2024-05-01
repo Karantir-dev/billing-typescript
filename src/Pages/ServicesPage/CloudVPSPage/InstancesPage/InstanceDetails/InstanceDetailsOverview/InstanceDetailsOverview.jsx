@@ -32,7 +32,7 @@ export default function InstanceDetailsOverview() {
 
   useEffect(() => {
     dispatch(cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo))
-  }, [itemForModals])
+  }, [itemForModals.rdns_edit])
 
   return (
     <>
