@@ -225,7 +225,7 @@ export const TARIFFS_PRICES = {
   'Cloud Optimal': { day: 0.183, month: 5.49 },
   'Cloud Nova': { day: 0.3164, month: 9.49 },
   'Cloud Pro': { day: 0.5497, month: 16.49 },
-  'Cloud Max': { day: 1.03, month: 16.49 },
+  'Cloud Max': { day: 1.03, month: 30.9 },
 }
 
 /* ID of services that should be disabled: */
