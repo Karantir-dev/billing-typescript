@@ -7,6 +7,7 @@ const setDedicCount = createAction('SET_DEDIC_COUNT')
 const setVDSList = createAction('SET_VDS_LIST')
 const setVDSServersList = createAction('SET_VDS_SERVERS_LIST')
 const setVDSCount = createAction('SET_VDS_COUNT')
+const setIsVdsXlOrdered = createAction('SET_IS_VDS_XL_ORDERED')
 
 export default {
   setFilterList,
@@ -16,4 +17,5 @@ export default {
   setVDSList,
   setVDSServersList,
   setVDSCount,
+  setIsVdsXlOrdered,
 }
