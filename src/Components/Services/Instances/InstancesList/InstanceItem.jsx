@@ -71,28 +71,42 @@ export default function InstanceItem({ item, editInstance }) {
         />
       </td>
       <td className={s.td}>
-        <span
-          className={cn(
-            s.status,
-            s[
-              isDeleting
-                ? 'deletion_in_progress'
-                : item?.fotbo_status?.$.trim().toLowerCase() ||
-                  item?.item_status?.$.trim().toLowerCase()
-            ],
-          )}
-        >
-          {displayStatus}
-          {isHintStatus && (
+        <div className={s.status_wrapper}>
+          {isResized ? (
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
               label={hintMessage}
             >
-              <Icon name="Attention" />
+              <span
+                className={cn(
+                  s.status,
+                  s[
+                    isDeleting
+                      ? 'deletion_in_progress'
+                      : item?.fotbo_status?.$.trim().toLowerCase() ||
+                        item?.item_status?.$.trim().toLowerCase()
+                  ],
+                )}
+              >
+                {displayStatus}
+                {isHintStatus && <Icon name="Attention" />}
+              </span>
             </HintWrapper>
+          ) : (
+            <span
+              className={cn(
+                s.status,
+                s[
+                  item?.fotbo_status?.$.trim().toLowerCase() ||
+                    item?.item_status?.$.trim().toLowerCase()
+                ],
+              )}
+            >
+              {displayStatus}
+            </span>
           )}
-        </span>
+        </div>
       </td>
       <td className={s.td}>{item.pricelist.$}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('day'))}</td>
@@ -124,8 +138,8 @@ export default function InstanceItem({ item, editInstance }) {
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </HintWrapper>
       </td>
-      <td ref={ipCell} className={s.td}>
-        <div className={s.ip_cell}>
+      <td className={s.td}>
+        <div className={s.ip_cell} ref={ipCell}>
           <span>{ip}</span>
           {ip && (
             <div className={s.fade_in}>

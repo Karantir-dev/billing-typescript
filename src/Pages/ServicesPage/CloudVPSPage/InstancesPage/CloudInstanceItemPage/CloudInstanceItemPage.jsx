@@ -171,27 +171,48 @@ export default function CloudInstanceItemPage() {
             />
           </div>
 
-          <span
-            className={cn(
-              s.status,
-              s[
-                item.fotbo_status?.$.trim().toLowerCase() ||
-                  item.item_status?.$.trim().toLowerCase()
-              ],
-            )}
-          >
-            {displayStatus}
-            {isHintStatus && (
-              <HintWrapper
-                popupClassName={s.popup}
-                wrapperClassName={s.popup__wrapper}
-                label={hintMessage}
-                disabled={!widerThan768}
+          {isResized ? (
+            <HintWrapper
+              popupClassName={s.popup}
+              wrapperClassName={s.popup__wrapper}
+              label={t('resize_popup_text')}
+            >
+              <span
+                className={cn(
+                  s.status,
+                  s[
+                    item?.fotbo_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
+                  ],
+                )}
               >
+                {displayStatus}
                 <Icon name="Attention" />
-              </HintWrapper>
-            )}
-          </span>
+              </span>
+            </HintWrapper>
+          ) : (
+            <span
+              className={cn(
+                s.status,
+                s[
+                  item.fotbo_status?.$.trim().toLowerCase() ||
+                    item.item_status?.$.trim().toLowerCase()
+                ],
+              )}
+            >
+              {displayStatus}
+              {isHintStatus && (
+                <HintWrapper
+                  popupClassName={s.popup}
+                  wrapperClassName={s.popup__wrapper}
+                  label={hintMessage}
+                  disabled={!widerThan768}
+                >
+                  <Icon name="Attention" />
+                </HintWrapper>
+              )}
+            </span>
+          )}
         </div>
 
         {/* Commented until only one tab exist: */}
