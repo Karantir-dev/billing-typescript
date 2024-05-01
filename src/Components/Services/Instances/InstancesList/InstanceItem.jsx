@@ -72,9 +72,9 @@ export default function InstanceItem({ item, editInstance }) {
       </td>
       <td className={s.td}>
         <div className={s.status_wrapper}>
-          {isResized ? (
+          {isHintStatus ? (
             <HintWrapper
-              popupClassName={s.popup}
+              popupClassName={cn(s.popup, { [s.popup_reg]: isSuspended })}
               wrapperClassName={s.popup__wrapper}
               label={hintMessage}
             >
@@ -90,7 +90,7 @@ export default function InstanceItem({ item, editInstance }) {
                 )}
               >
                 {displayStatus}
-                {isHintStatus && <Icon name="Attention" />}
+                <Icon name="Attention" />
               </span>
             </HintWrapper>
           ) : (

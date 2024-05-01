@@ -20,6 +20,7 @@ export default function InstanceItemMobile({ item }) {
   const ip = item.ip?.$ || item.ip_v6?.$
 
   const isHintStatus = isSuspended || isResized
+  const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
 
   return (
     <div
@@ -41,11 +42,11 @@ export default function InstanceItemMobile({ item }) {
         <div className={s.mobile_item__header_name}>
           <p className={s.mobile_item__name}>{displayName}</p>
           <div className={s.status_wrapper}>
-            {isResized ? (
+            {isHintStatus ? (
               <HintWrapper
-                popupClassName={s.popup}
+                popupClassName={cn(s.popup, { [s.popup_reg]: isSuspended })}
                 wrapperClassName={s.popup__wrapper}
-                label={t('resize_popup_text')}
+                label={hintMessage}
               >
                 <p
                   className={cn(
@@ -59,7 +60,7 @@ export default function InstanceItemMobile({ item }) {
                   )}
                 >
                   {displayStatus}
-                  {isHintStatus && <Icon name="Attention" />}
+                  <Icon name="Attention" />
                 </p>
               </HintWrapper>
             ) : (

@@ -171,11 +171,11 @@ export default function CloudInstanceItemPage() {
             />
           </div>
 
-          {isResized ? (
+          {isHintStatus ? (
             <HintWrapper
-              popupClassName={s.popup}
+              popupClassName={cn(s.popup, { [s.popup_reg]: isSuspended })}
               wrapperClassName={s.popup__wrapper}
-              label={t('resize_popup_text')}
+              label={hintMessage}
             >
               <span
                 className={cn(
@@ -201,16 +201,6 @@ export default function CloudInstanceItemPage() {
               )}
             >
               {displayStatus}
-              {isHintStatus && (
-                <HintWrapper
-                  popupClassName={s.popup}
-                  wrapperClassName={s.popup__wrapper}
-                  label={hintMessage}
-                  disabled={!widerThan768}
-                >
-                  <Icon name="Attention" />
-                </HintWrapper>
-              )}
             </span>
           )}
         </div>
