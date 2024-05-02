@@ -74,7 +74,7 @@ export default function InstanceItem({ item, editInstance }) {
         <div className={s.status_wrapper}>
           {isHintStatus ? (
             <HintWrapper
-              popupClassName={cn(s.popup, { [s.popup_reg]: isSuspended })}
+              popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
               label={hintMessage}
             >

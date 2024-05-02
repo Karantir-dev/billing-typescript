@@ -173,7 +173,7 @@ export default function CloudInstanceItemPage() {
 
           {isHintStatus ? (
             <HintWrapper
-              popupClassName={cn(s.popup, { [s.popup_reg]: isSuspended })}
+              popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
               label={hintMessage}
             >
