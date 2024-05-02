@@ -167,5 +167,6 @@
     "cpumanuf": "Manufacturer"
   },
   "empty_dedic_tariffs_title": "No server found",
-  "empty_dedic_tariffs_text": "Please change your search criteria to view available servers"
+  "empty_dedic_tariffs_text": "Please change your search criteria to view available servers",
+  "price": "Price"
 }

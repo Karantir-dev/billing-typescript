@@ -77,6 +77,7 @@ export default function DedicFilter({
     <div className={s.filter__wrapper}>
       <div className={s.filter}>
         <div>
+          <span className={s.filter__label}>{t('price')}</span>
           <InputRange
             id="price"
             min={0}
@@ -86,6 +87,7 @@ export default function DedicFilter({
             onThumbDragEnd={data => setFilterPrice(data ?? priceValues)}
             rangeSlideDisabled
             withFields
+            wrapperClassName={s.price__filed}
           />
         </div>
         {[...renderCategory]?.map(category => {

@@ -7,6 +7,7 @@ import { DoubleInputField } from '@components'
 
 const InputRange = ({
   className,
+  wrapperClassName,
   labels,
   id,
   value,
@@ -33,7 +34,7 @@ const InputRange = ({
   }, [value])
 
   return (
-    <div>
+    <div className={wrapperClassName}>
       {withFields && (
         <div>
           <DoubleInputField
