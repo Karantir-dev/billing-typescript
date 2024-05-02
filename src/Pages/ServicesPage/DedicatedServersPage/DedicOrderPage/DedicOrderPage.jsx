@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import {
   cartActions,
   cartOperations,
-  dedicActions,
+  // dedicActions,
   dedicOperations,
   dedicSelectors,
   userOperations,
@@ -32,7 +32,7 @@ import s from './DedicOrderPage.module.scss'
 import './DedicSwiper.scss'
 import {
   NEW_DEDICS,
-  VDS_IDS_TO_ORDER,
+  // VDS_IDS_TO_ORDER,
   DEDIC_FILTER_RANGE_GROUPS,
 } from '@src/utils/constants'
 import DedicFilter from './DedicFilter'
@@ -382,13 +382,13 @@ export default function DedicOrderPage() {
   })
 
   // VDS
-  const setNewVds = data => {
-    const vdsList = data
-      .filter(el => VDS_IDS_TO_ORDER.includes(el.pricelist.$))
-      .map(el => ({ ...el, isVds: true }))
+  // const setNewVds = data => {
+  //   const vdsList = data
+  //     .filter(el => VDS_IDS_TO_ORDER.includes(el.pricelist.$))
+  //     .map(el => ({ ...el, isVds: true }))
 
-    dispatch(dedicActions.setVDSList(vdsList))
-  }
+  //   dispatch(dedicActions.setVDSList(vdsList))
+  // }
 
   const handleSubmit = () => {
     const { register, ostempl, recipe, domain, server_name } = parameters
@@ -643,7 +643,7 @@ export default function DedicOrderPage() {
                     dispatch(
                       dedicOperations.getTarifs(
                         item,
-                        setNewVds,
+                        // setNewVds,
                         setDedicInfoList,
                         signal,
                         setIsLoading,
