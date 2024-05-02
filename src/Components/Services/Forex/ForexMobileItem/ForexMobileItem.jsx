@@ -76,16 +76,19 @@ export default function ForexMobileItem({
     <li className={s.item}>
       {isToolsBtnVisible && (
         <div className={s.tools_wrapper}>
-          <CheckBox
-            className={s.check_box}
-            value={isActive}
-            onClick={toggleIsActiveHandler}
-          />
+          <div className={s.headerName_wrapper}>
+            <CheckBox
+              className={s.check_box}
+              value={isActive}
+              onClick={toggleIsActiveHandler}
+            />
+            <span className={s.headerName}>{server?.server_name?.$}</span>
+          </div>
           <Options options={options} />
         </div>
       )}
 
-      <span className={s.label}>Id:</span>
+      <span className={s.label}>ID:</span>
       <span className={s.value}>{server?.id?.$}</span>
       <span className={s.label}>{t('tariff')}:</span>
       <span className={s.value}>

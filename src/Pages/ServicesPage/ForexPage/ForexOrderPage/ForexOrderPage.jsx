@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { BreadCrumbs, Button, Select, Icon, Loader } from '@components'
+import { BreadCrumbs, Button, Select, InputField, Icon, Loader } from '@components'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import classNames from 'classnames'
@@ -146,7 +146,8 @@ export default function ForexOrderPage() {
   })
 
   const handleSubmit = values => {
-    const { datacenter, pricelist, period, autoprolong, server_package } = values
+    const { datacenter, pricelist, period, autoprolong, server_package, server_name } =
+      values
 
     dispatch(
       userOperations.cleanBsketHandler(() =>
@@ -157,6 +158,7 @@ export default function ForexOrderPage() {
             period,
             pricelist,
             server_package,
+            server_name,
           }),
         ),
       ),
@@ -185,6 +187,7 @@ export default function ForexOrderPage() {
               ? parameters?.paramsList?.find(elem => elem?.$name === 'server_package')
                   ?.val[0]?.$key
               : '',
+            server_name: '',
           }}
           onSubmit={handleSubmit}
         >
@@ -404,6 +407,17 @@ export default function ForexOrderPage() {
                           }
                         })}
                         className={s.select}
+                      />
+                      <InputField
+                        height={50}
+                        label={`${t('server_name', { ns: 'vds' })}:`}
+                        name="server_name"
+                        isShadow
+                        className={s.input_field_wrapper}
+                        inputClassName={s.input}
+                        autoComplete="off"
+                        type="text"
+                        value={values?.server_name}
                       />
                     </div>
 

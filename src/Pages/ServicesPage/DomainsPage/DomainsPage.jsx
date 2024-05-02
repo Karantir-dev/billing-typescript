@@ -22,7 +22,7 @@ import { checkServicesRights, useCancelRequest, usePageRender } from '@utils'
 import * as route from '@src/routes'
 
 export default function Component() {
-  const isAllowedToRender = usePageRender('mainmenuservice', 'domain')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'domain', true, 4)
 
   const { t } = useTranslation(['container', 'trusted_users', 'access_log', 'domains'])
   const dispatch = useDispatch()

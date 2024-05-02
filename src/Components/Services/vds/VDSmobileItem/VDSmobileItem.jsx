@@ -24,7 +24,6 @@ export default function VDSmobileItem({
   goToPanelFn,
   handleEditSubmit,
   unpaidItems,
-  orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -61,11 +60,6 @@ export default function VDSmobileItem({
 
   const options = [
     deleteOption,
-    {
-      label: t('clone_tariff'),
-      icon: 'Copy',
-      onClick: orderSameTariff,
-    },
     {
       label: t('instruction'),
       icon: 'Info',

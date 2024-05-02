@@ -42,7 +42,7 @@ export default function ForexPage() {
   const forexCount = useSelector(forexSelectors.getForexCount)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
-  const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox', true, 27136)
 
   const [activeServices, setActiveServices] = useState([])
 
@@ -223,6 +223,19 @@ export default function ForexPage() {
     isAllActive ? setActiveServices([]) : setActiveServices(forexRenderData?.forexList)
   }
 
+  const editForexHandler = ({ values, elid, errorCallback }) => {
+    dispatch(
+      forexOperations.editForex(
+        values,
+        elid,
+        undefined,
+        signal,
+        setIsLoading,
+        errorCallback,
+      ),
+    )
+  }
+
   return (
     <div>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -309,6 +322,7 @@ export default function ForexPage() {
       <ForexList
         emptyFilter={emptyFilter}
         forexList={forexRenderData?.forexList}
+        editNameSubmit={editForexHandler}
         setElidForEditModal={setElidForEditModal}
         setElidForProlongModal={setElidForProlongModal}
         setElidForHistoryModal={setElidForHistoryModal}

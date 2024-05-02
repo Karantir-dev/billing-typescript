@@ -53,10 +53,8 @@ export default function ForexEditModal({ elid, closeModal, isOpen }) {
   }
 
   const handleSubmit = values => {
-    const { elid, autoprolong, stored_method } = values
-    dispatch(
-      forexOperations.editForex(elid, autoprolong, stored_method, handleEditionModal),
-    )
+    const { elid } = values
+    dispatch(forexOperations.editForex(values, elid, handleEditionModal))
   }
 
   return (
@@ -75,6 +73,7 @@ export default function ForexEditModal({ elid, closeModal, isOpen }) {
             autoprolong: initialState?.autoprolong?.$ || null,
             period: initialState?.period?.$,
             server_ip: initialState?.server_ip?.$ || '',
+            server_name: initialState?.server_name?.$ || '',
             server_hostname: initialState?.server_hostname?.$ || '',
             server_password: initialState?.server_password?.$ || '',
             server_user: initialState?.server_user?.$ || '',
@@ -102,6 +101,16 @@ export default function ForexEditModal({ elid, closeModal, isOpen }) {
                   <div className={s.parameters_wrapper}>
                     <div className={s.main_block}>
                       <div>
+                        <InputField
+                          label={`${t('server_name', { ns: 'vds' })}:`}
+                          name="server_name"
+                          isShadow
+                          className={s.input_field_wrapper}
+                          inputClassName={s.input}
+                          autoComplete="off"
+                          type="text"
+                          value={values?.server_name}
+                        />
                         <Select
                           value={values.autoprolong}
                           label={t('autoprolong')}

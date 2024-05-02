@@ -4,9 +4,12 @@ import { Outlet } from 'react-router-dom'
 
 import s from './DedicatedServersPage.module.scss'
 import * as route from '@src/routes'
+import { useSelector } from 'react-redux'
+import { dedicSelectors } from '@src/Redux'
 
 export default function DedicPage() {
   const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
+  const isVdsXLOrdered = useSelector(dedicSelectors.getIsVdsXLOrdered)
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -41,7 +44,7 @@ export default function DedicPage() {
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
       </h2>
-      <PageTabBar sections={tavBarSections} />
+      {isVdsXLOrdered && <PageTabBar sections={tavBarSections} />}
       <div className={s.content}>
         <Outlet />
       </div>

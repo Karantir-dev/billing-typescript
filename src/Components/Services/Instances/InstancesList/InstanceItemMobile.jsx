@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { CopyText, Icon, InstancesOptions } from '@components'
+import { CopyText, Icon, InstancesOptions, HintWrapper } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
@@ -13,10 +13,13 @@ export default function InstanceItemMobile({ item }) {
   const ipCell = useRef()
   const navigate = useNavigate()
 
-  const { isResized, displayStatus, displayName, isNotActive } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, displayName, isNotActive, isDeleting, isSuspended } =
+    getInstanceMainInfo(item)
 
   const itemCountry = formatCountryName(item)
   const ip = item.ip?.$ || item.ip_v6?.$
+
+  const isHintStatus = isSuspended || isResized
 
   return (
     <div
@@ -37,18 +40,42 @@ export default function InstanceItemMobile({ item }) {
       <div className={s.mobile_item__header}>
         <div className={s.mobile_item__header_name}>
           <p className={s.mobile_item__name}>{displayName}</p>
-          <p
-            className={cn(
-              s.status,
-              s[
-                item.fotbo_status?.$.trim().toLowerCase() ||
-                  item.item_status?.$.trim().toLowerCase()
-              ],
+          <div className={s.status_wrapper}>
+            {isResized ? (
+              <HintWrapper
+                popupClassName={s.popup}
+                wrapperClassName={s.popup__wrapper}
+                label={t('resize_popup_text')}
+              >
+                <p
+                  className={cn(
+                    s.status,
+                    s[
+                      isDeleting
+                        ? 'deletion_in_progress'
+                        : item?.fotbo_status?.$.trim().toLowerCase() ||
+                          item?.item_status?.$.trim().toLowerCase()
+                    ],
+                  )}
+                >
+                  {displayStatus}
+                  {isHintStatus && <Icon name="Attention" />}
+                </p>
+              </HintWrapper>
+            ) : (
+              <p
+                className={cn(
+                  s.status,
+                  s[
+                    item.fotbo_status?.$.trim().toLowerCase() ||
+                      item.item_status?.$.trim().toLowerCase()
+                  ],
+                )}
+              >
+                {displayStatus}
+              </p>
             )}
-          >
-            {displayStatus}
-            {isResized && <Icon name="Attention" />}
-          </p>
+          </div>
         </div>
         <div ref={optionsBlock}>
           <InstancesOptions item={item} isMobile />

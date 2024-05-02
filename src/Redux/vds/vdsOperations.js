@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { axiosInstance } from '@config/axiosInstance'
-import { actions, cartActions, authSelectors } from '@redux'
+import { actions, cartActions, authSelectors, dedicActions } from '@redux'
 import * as routes from '@src/routes'
 import { toast } from 'react-toastify'
 import { checkIfTokenAlive, handleLoadersClosing, renameAddonFields } from '@utils'
@@ -20,7 +20,7 @@ const getVDS =
     isPutItems = true,
   }) =>
   (dispatch, getState) => {
-    setIsLoading(true)
+    signal ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -51,7 +51,7 @@ const getVDS =
 
         setElemsTotal && setElemsTotal(data?.doc?.p_elems?.$)
 
-        setIsLoading(false)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(err => {
         handleLoadersClosing(err?.message, dispatch, setIsLoading)
@@ -646,9 +646,10 @@ const setVdsFilters =
     isDedic,
     signal,
     setIsLoading,
+    checkOrderedVdsTariffs,
   ) =>
   (dispatch, getState) => {
-    setIsLoading(true)
+    signal ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -671,8 +672,13 @@ const setVdsFilters =
           )
           .map(el => el.$key)
 
+        if (checkOrderedVdsTariffs && isDedic) {
+          dispatch(dedicActions.setIsVdsXlOrdered(!!pricelist?.length))
+          throw new Error('close')
+        }
+
         if (isDedic && (!pricelist || !pricelist?.length)) {
-          throw new Error('no vds')
+          throw new Error('close')
         }
 
         return pricelist?.join()
@@ -758,10 +764,9 @@ const setVdsFilters =
             setfiltersListState(filtersList)
           })
       })
-
       .catch(err => {
-        if (err.message === 'no vds') {
-          setIsLoading(false)
+        if (err.message === 'close') {
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
           return
         }
         if (err.message.includes('filter')) {

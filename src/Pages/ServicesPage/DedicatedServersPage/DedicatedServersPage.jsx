@@ -34,7 +34,7 @@ import {
 } from '@utils'
 
 export default function DedicatedServersPage() {
-  const isAllowedToRender = usePageRender('mainmenuservice', 'dedic')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'dedic', true, 20)
 
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()

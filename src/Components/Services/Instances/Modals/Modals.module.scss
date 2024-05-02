@@ -1,3 +1,5 @@
+@import '@scss/placeholders';
+
 .modal__subtitle {
   margin-top: 5px;
   font-size: 14px;
@@ -102,6 +104,11 @@
     pointer-events: initial;
     opacity: 1;
   }
+}
+
+.link {
+  text-decoration: underline;
+  color: var(--link-color);
 }
 
 .filters_modal {
@@ -485,4 +492,76 @@
   color: var(--error-color);
   font-size: 13px;
   line-height: 1.2;
+}
+
+.stopWarning {
+  align-items: center;
+  background-color: var(--info_alert_background);
+  color: var(--main-text);
+}
+
+.stopWarinng_icon {
+  circle {
+    fill: #7da7ff;
+  }
+}
+
+.amount_label {
+  color: var(--transparent-color);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.price {
+  @extend %accent-text-gradient;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.price_block {
+  margin-right: auto;
+}
+
+.btn_confirm {
+  margin: auto;
+  max-width: 280px;
+}
+
+.footer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.btns_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.without_margin {
+  margin: 0;
+}
+
+.hint_wrapper {
+  min-width: 242px;
+}
+
+@media screen and (min-width: 768px) {
+  .price {
+    font-size: 30px;
+  }
+
+  .footer {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .btns_wrapper {
+    flex-direction: row;
+  }
 }

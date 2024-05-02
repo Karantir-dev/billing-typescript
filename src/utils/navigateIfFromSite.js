@@ -43,7 +43,7 @@ const navigateIfFromSite = (data, navigate) => {
       replace: true,
     })
   } else if (funcName === 'v2.instances.order.param') {
-    return navigate(route.CLOUD_VPS_CREATE_INSTANCE, {
+    return navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}/${data?.category}`, {
       replace: true,
     })
   }

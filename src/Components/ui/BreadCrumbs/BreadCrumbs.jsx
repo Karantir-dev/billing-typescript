@@ -14,13 +14,7 @@ export default function Component({ pathnames }) {
         const disabled = pathnames?.length === index + 1
 
         const renderPath = () => {
-          let pathes = pathnames.slice()
-          if (index === 0) {
-            return `/${e}`
-          } else if (disabled) {
-            return '#'
-          }
-          pathes?.pop()
+          const pathes = pathnames.filter((_, i) => i <= index)
           return `/${pathes?.join('/')}`
         }
         return (

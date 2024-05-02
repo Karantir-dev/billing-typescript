@@ -27,7 +27,7 @@ export default function CloudInstanceItemPage() {
 
   const [item, setItem] = useState(instanceItem)
 
-  const { isResized, displayStatus } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, isSuspended } = getInstanceMainInfo(item)
 
   const { t } = useTranslation(['cloud_vps'])
 
@@ -145,6 +145,9 @@ export default function CloudInstanceItemPage() {
     })
   }
 
+  const isHintStatus = isSuspended || isResized
+  const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
+
   return (
     <>
       <div className={s.page}>
@@ -168,27 +171,48 @@ export default function CloudInstanceItemPage() {
             />
           </div>
 
-          <span
-          className={cn(
-            s.status,
-            s[
-              item.fotbo_status?.$.trim().toLowerCase() ||
-                item.item_status?.$.trim().toLowerCase()
-            ],
-          )}
-        >
-          {displayStatus}
-          {isResized && (
+          {isResized ? (
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
               label={t('resize_popup_text')}
             >
-              <Icon name="Attention" />
+              <span
+                className={cn(
+                  s.status,
+                  s[
+                    item?.fotbo_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
+                  ],
+                )}
+              >
+                {displayStatus}
+                <Icon name="Attention" />
+              </span>
             </HintWrapper>
+          ) : (
+            <span
+              className={cn(
+                s.status,
+                s[
+                  item.fotbo_status?.$.trim().toLowerCase() ||
+                    item.item_status?.$.trim().toLowerCase()
+                ],
+              )}
+            >
+              {displayStatus}
+              {isHintStatus && (
+                <HintWrapper
+                  popupClassName={s.popup}
+                  wrapperClassName={s.popup__wrapper}
+                  label={hintMessage}
+                  disabled={!widerThan768}
+                >
+                  <Icon name="Attention" />
+                </HintWrapper>
+              )}
+            </span>
           )}
-        </span>
-
         </div>
 
         {/* Commented until only one tab exist: */}
@@ -198,7 +222,6 @@ export default function CloudInstanceItemPage() {
           <Outlet />
         </div>
       </div>
-
       <Modals
         editNameSubmit={editNameSubmit}
         loadingParams={{
@@ -206,7 +229,7 @@ export default function CloudInstanceItemPage() {
           setIsLoading,
         }}
         getInstances={fetchItemById}
-        redirectCallback={() => navigate(`${route.CLOUD_VPS}/${item.id.$}`)}
+        redirectCallback={() => navigate(route.CLOUD_VPS)}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>

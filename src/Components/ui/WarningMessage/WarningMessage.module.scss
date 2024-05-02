@@ -16,3 +16,10 @@
     fill: #f79649;
   }
 }
+
+.error {
+  color: var(--red-text);
+  circle {
+    fill: var(--red-text);
+  }
+}

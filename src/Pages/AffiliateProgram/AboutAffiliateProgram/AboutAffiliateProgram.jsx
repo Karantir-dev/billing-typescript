@@ -102,7 +102,7 @@ export default function AboutAffiliateProgram() {
                 {t('about_section.Up to', { value: t('15%') }).toUpperCase()}
               </span>
               <span className={s.percents_categories}>
-                {t('about_section.virtual_servers')}
+                {t('about_section.cloud_vps')}
               </span>
             </li>
             <li className={s.percents_item}>

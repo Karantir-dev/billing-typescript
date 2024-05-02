@@ -29,7 +29,7 @@ import {
 import cn from 'classnames'
 
 export default function Component({ type }) {
-  const isAllowedToRender = usePageRender('mainmenuservice', 'vhost')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'vhost', true, 23)
   const [firstRender, setFirstRender] = useState(true)
   const { t, i18n } = useTranslation([
     'container',

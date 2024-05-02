@@ -9,7 +9,8 @@ const initialState = {
   dedicCount: 0,
   vdsCount: 0,
   VDSList: [],
-  VDSServersList:  null,
+  VDSServersList: null,
+  isVdsXLOrdered: null,
 }
 
 const tarifList = createReducer(initialState.tarifList, {
@@ -37,6 +38,10 @@ const VDSServersList = createReducer(initialState.VDSServersList, {
   [dedicActions.setVDSServersList]: (_, { payload }) => payload,
 })
 
+const isVdsXLOrdered = createReducer(initialState.isVdsXLOrdered, {
+  [dedicActions.setIsVdsXlOrdered]: (_, { payload }) => payload,
+})
+
 const dedicReducer = combineReducers({
   tarifList,
   filterList,
@@ -45,6 +50,7 @@ const dedicReducer = combineReducers({
   VDSList,
   VDSServersList,
   vdsCount,
+  isVdsXLOrdered,
 })
 
 export default dedicReducer

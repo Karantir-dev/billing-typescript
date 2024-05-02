@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import {
   cartActions,
   cartOperations,
-  dedicActions,
+  dedicActions
   dedicOperations,
   dedicSelectors,
   userOperations,
@@ -342,9 +342,7 @@ export default function DedicOrderPage() {
 
   useEffect(() => {
     if (isDedicOrderAllowed) {
-      dispatch(
-        dedicOperations.getTarifs(1, setNewVds, setDedicInfoList, signal, setIsLoading),
-      )
+      dispatch(dedicOperations.getTarifs(1, setDedicInfoList, signal, setIsLoading))
     } else {
       navigate(route.DEDICATED_SERVERS, { replace: true })
     }
@@ -352,6 +350,7 @@ export default function DedicOrderPage() {
 
   const sortDedicList = list =>
     [...list].sort((a, b) => parsePrice(a.price.$).amount - parsePrice(b.price.$).amount)
+
 
   const getParams = el => el.desc.$.split(' / ')
 

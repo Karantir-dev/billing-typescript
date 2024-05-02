@@ -435,7 +435,7 @@ const openConsole =
 
 /* EDIT SERVERS OPERATION TO GET FULL DATA */
 const getInstanceInfo =
-  (elid, params, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
+  (elid, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const {
       auth: { sessionId },
@@ -450,7 +450,6 @@ const getInstanceInfo =
           auth: sessionId,
           lang: 'en',
           elid,
-          ...params,
         }),
         { signal },
       )
@@ -464,6 +463,7 @@ const getInstanceInfo =
           fotbo_id: renamedSlistData?.fotbo_id.$,
           ip: renamedSlistData?.ip?.$,
           ip_v6: renamedSlistData?.ip_v6?.$,
+          rdns_record: renamedSlistData?.rdns_record?.$,
         }
 
         const clearStr = /\s*\(.*?\)\s*\.?/g
@@ -582,6 +582,10 @@ const getAllTariffsInfo =
           el.$.toLowerCase().includes('windows'),
         ).$key
 
+        const instanceTypePremium = data?.doc?.flist?.val.find(el =>
+          el?.$.toLowerCase().includes('premium'),
+        ).$key
+
         if (needOsList) {
           await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
         }
@@ -589,6 +593,7 @@ const getAllTariffsInfo =
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
         dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
+        dispatch(cloudVpsActions.setInstanceTypeTag(instanceTypePremium))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
@@ -659,7 +664,7 @@ const setOrderData =
           sok: 'ok',
           lang: 'en',
           order_period: '-50',
-
+          licence_agreement: 'on',
           ...orderData,
         }),
         { signal },

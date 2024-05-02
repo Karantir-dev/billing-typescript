@@ -8,6 +8,8 @@ import {
   userSelectors,
   selectors,
   userActions,
+  vhostOperations,
+  vdsOperations,
 } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -45,13 +47,34 @@ export default function Component({ children }) {
   useEffect(() => {
     dispatch(userOperations.getUserInfo(sessionId, setLoading))
 
+    /* Check if user has ordered wordpress and VDS Xl tariffs */
+    dispatch(
+      vhostOperations.getVhosts({ sok: 'ok' }, 'wordpress', undefined, undefined, true),
+    )
+    dispatch(
+      vdsOperations.setVdsFilters(
+        null,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        true,
+        undefined,
+        undefined,
+        true,
+      ),
+    )
+
+    /* END Check if user has ordered wordpress and VDS Xl tariffs */
     let intervalId
 
     if (sessionId && online) {
       intervalId = setInterval(() => {
         dispatch(userOperations.getNotify())
         dispatch(userOperations.getTickets())
-        dispatch(userOperations.getDashboardInfo())
+        // dispatch(userOperations.getDashboardInfo())
       }, 60000)
     }
 
