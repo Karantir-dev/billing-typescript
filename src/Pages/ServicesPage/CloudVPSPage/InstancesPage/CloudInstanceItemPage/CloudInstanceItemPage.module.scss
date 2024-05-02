@@ -65,7 +65,15 @@
     cursor: pointer;
     gap: 7px;
 
+    @media (max-width: 767px) {
+      padding-right: 20px;
+    }
+
     svg {
+      @media (max-width: 767px) {
+        position: absolute;
+        right: 3px;
+      }
       width: 14px;
       height: 14px;
       circle {
@@ -108,7 +116,7 @@
   transform: unset;
 
   & > div {
-    left: 21%;
+    left: 60px;
   }
 }
 

@@ -170,8 +170,8 @@
     font-size: 14px;
 
     @media (max-width: 767px) {
-      left: 0;
-      transform: translateX(-14%);
+      left: -40px;
+      transform: unset;
 
       & > div {
         left: 34%;
@@ -199,12 +199,20 @@
     gap: 5px;
     min-width: 70px;
 
+    @media (max-width: 767px) {
+      padding-right: 20px;
+    }
+
     @media (min-width: 767px) {
       padding: 3px 7px;
       min-width: unset;
     }
 
     svg {
+      @media (max-width: 767px) {
+        position: absolute;
+        right: 3px;
+      }
       width: 14px;
       height: 14px;
       circle {
