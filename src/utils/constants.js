@@ -173,6 +173,9 @@ export const RUS_LANG_COUNTRIES = [
 /** ID of promotion "1 month of hosting for free" for Affordable tariff */
 export const FIRST_MONTH_HOSTING_DISCOUNT_ID = '6041'
 
+
+export const DEDIC_FILTER_RANGE_GROUPS = ['cpucores']
+
 export const DC_ID_IN = { poland: 13, netherlands: 12 }
 
 export const CLOUD_SORT_LIST = [
