@@ -164,26 +164,17 @@
 
 .status_wrapper {
   .popup {
-    width: 200px;
-    text-transform: none;
-    white-space: normal;
-    text-align: left;
-    font-size: 13px;
-    color: var(--transparent-color_2);
-    left: 146%;
+    width: max-content;
+    max-width: 300px;
+    text-wrap: initial;
+    font-size: 14px;
 
-    & > div {
-      left: 30%;
-    }
-  }
-
-  @media (min-width: 768px) {
-    .popup {
-      width: 300px;
-      left: 50%;
+    @media (max-width: 767px) {
+      left: -40px;
+      transform: unset;
 
       & > div {
-        left: 50%;
+        left: 34%;
       }
     }
   }
@@ -206,18 +197,11 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    min-width: 70px;
-
-    @media (min-width: 767px) {
-      padding: 3px 7px;
-      min-width: unset;
-    }
+    padding: 5px 22px 5px 10px;
 
     svg {
-      @media (max-width: 767px) {
-        position: absolute;
-        right: 3px;
-      }
+      position: absolute;
+      right: 5px;
       width: 14px;
       height: 14px;
       circle {
@@ -301,6 +285,7 @@
 .mobile_item__value {
   font-size: 14px;
   word-break: break-all;
+  width: fit-content;
 }
 
 .no_vds_wrapper {

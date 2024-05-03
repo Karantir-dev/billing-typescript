@@ -14,6 +14,7 @@ export default function InstanceItem({ item, editInstance }) {
   // const checkboxCell = useRef()
   const servernameCell = useRef()
   const ipCell = useRef()
+  const hintCell = useRef()
   const navigate = useNavigate()
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
@@ -51,6 +52,7 @@ export default function InstanceItem({ item, editInstance }) {
           // checkboxCell.current.contains(e.target) ||
           servernameCell.current.contains(e.target) ||
           ipCell.current.contains(e.target) ||
+          hintCell.current.contains(e.target) ||
           isNotActive
         )
           return
@@ -71,8 +73,8 @@ export default function InstanceItem({ item, editInstance }) {
         />
       </td>
       <td className={s.td}>
-        <div className={s.status_wrapper}>
-          {isResized ? (
+        <div className={s.status_wrapper} ref={hintCell}>
+          {isHintStatus ? (
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
@@ -90,7 +92,7 @@ export default function InstanceItem({ item, editInstance }) {
                 )}
               >
                 {displayStatus}
-                {isHintStatus && <Icon name="Attention" />}
+                <Icon name="Attention" />
               </span>
             </HintWrapper>
           ) : (

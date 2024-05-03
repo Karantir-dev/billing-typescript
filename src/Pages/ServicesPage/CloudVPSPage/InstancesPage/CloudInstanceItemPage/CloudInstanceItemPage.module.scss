@@ -64,16 +64,11 @@
     align-items: center;
     cursor: pointer;
     gap: 7px;
-
-    @media (max-width: 767px) {
-      padding-right: 20px;
-    }
+    padding: 5px 22px 5px 10px;
 
     svg {
-      @media (max-width: 767px) {
-        position: absolute;
-        right: 3px;
-      }
+      position: absolute;
+      right: 5px;
       width: 14px;
       height: 14px;
       circle {
@@ -103,16 +98,20 @@
 }
 
 .popup {
-  width: 200px;
+  width: max-content;
+  max-width: 300px;
+  text-wrap: initial;
   text-transform: none;
   white-space: normal;
   text-align: left;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--transparent-color_2);
-  left: 146%;
+
+  left: 0;
+  transform: unset;
 
   & > div {
-    left: 30%;
+    left: 60px;
   }
 }
 
@@ -122,14 +121,6 @@
   }
   .head_coponent {
     margin-bottom: 32px;
-  }
-  .popup {
-    width: 300px;
-    left: 185%;
-
-    & > div {
-      left: 22%;
-    }
   }
 }
 

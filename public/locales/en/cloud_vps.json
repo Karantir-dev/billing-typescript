@@ -56,7 +56,7 @@
   "pass_method_password": "Connect to your instance as {{user}} user via password",
   "windows_password_warning": "Please proceed to the console to set up a password",
   "resize_popup_text": "Check if files have been successfully migrated to the new instance disk. Choose Confirm resize from the instance menu to confirm migration was successful, otherwise choose Revert resize to revert back to the initial disk.",
-  "by_admin": "by admin",
+  "by_admin": "Suspended by admin",
   "sort": "Sort by",
   "Active": "Active",
   "Suspended": "Suspended",
