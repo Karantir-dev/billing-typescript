@@ -31,14 +31,6 @@ export default function AboutAffiliateProgram() {
     dispatch(affiliateOperations.getReferralLink(signal, setIsLoading))
   }, [])
 
-  // const showPrompt = fn => {
-  //   fn(true)
-
-  //   setTimeout(() => {
-  //     fn(false)
-  //   }, 2000)
-  // }
-
   const toggleDescrHeight = () => {
     if (!isDescrOpened) {
       descrWrapper.current.style.height = descrWrapper.current.scrollHeight + 25 + 'px'
@@ -123,7 +115,6 @@ export default function AboutAffiliateProgram() {
           <label className={s.label}> {t('about_section.referral_link')}: </label>
           <div
             className={cn(s.copy_field, { [s.selected]: link })}
-            // onClick={() => handleCopyText('link')}
             role="button"
             tabIndex={0}
             onKeyUp={() => {}}
