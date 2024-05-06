@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
 export default function CopyText({ text, className, promptText }) {
-  const { t } = useTranslation(['affiliate_program'])
+  const { t } = useTranslation(['other'])
   const [refLinkCopied, setRefLinkCopied] = useState(false)
 
   const showPrompt = () => {
@@ -33,7 +33,8 @@ export default function CopyText({ text, className, promptText }) {
         unmountOnExit
       >
         <div className={s.copy_prompt}>
-          {promptText || t('about_section.link_copied')}
+          <div className={s.prompt_pointer} />
+          {promptText || t('copied')}
         </div>
       </CSSTransition>
     </button>

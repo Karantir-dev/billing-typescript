@@ -125,6 +125,7 @@
   "server_size": "Server size",
   "server_type": "Server type",
   "cloud_ipv6": "Enable only IPv6",
+  "ip_address_copied": "IP address copied",
   "price_per": "Price per",
   "authentication_method": "Choose Authentication Method",
   "create_instance": "Create instance",

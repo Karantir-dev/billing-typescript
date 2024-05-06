@@ -127,7 +127,6 @@
   "Order date (from/to)": "Дата заказа (от/до)",
   "ok": "OK",
   "FTP server": "FTP-сервер",
-
   "Trial": "Пробный",
   "Trial period": "10 дней",
   "Month": "Месяц",
@@ -200,20 +199,17 @@
   "email_confirmed": "Почтовый адрес {{email}} подтвержден",
   "address_error_msg": "Введите полный адрес",
   "symbols_restricted": "Спецсимволы не допустимы",
-
   "discounts_up_to": "СКИДКИ ДО {{amount}}",
   "halloween_discount": "на Хостинг, VPS, Выделенные серверы и Сервер для Forex",
   "discounts": "СКИДКИ",
   "on_halloween": "НА ХЭЛЛОУИН",
   "promotion_period": "Акция действует с 31 октября до 2 ноября",
-
   "for virtual hosting": "на виртуальный хостинг",
   "for VPS": "на VPS",
   "for dedicated servers": "на выделенные серверы",
   "for VPN": "на VPN",
   "BLACK FRIDAY": "ЧЕРНАЯ ПЯТНИЦА",
   "IN ZOMRO": "В ZOMRO",
-
   "Shared hosting": "Виртуальный хостинг",
   "Dedicated server": "Выделенный сервер",
   "Server for Forex": "Сервер для Forex",
@@ -229,35 +225,26 @@
   "Dedicated server (promo code YT52BD)": "Выделенного сервера (промокод YT52BD)",
   "The above promo codes can only be used once.": "Вышеприведенные промокоды можно использовать только 1 раз",
   "Number of auto-renewable services": "К-тво автоматически возобновляемых сервисов",
-
   "On Valentines Day": "В ДЕНЬ ВСЕХ ВЛЮБЛЕННЫХ",
   "CASHBACK": "КЕШБЭК",
-
   "The promotion is valid from 14.02 to 16.02": "Акция действует с 14.02 по 16.02",
   "Order any of our services or top up your balance for any amount and get a 14% cashback to your account in your personal account.": "Закажите любые наши услуги или пополните баланс на любую сумму и получите кешбэк 14% на счёт в личном кабинете.",
   "Cashback you can spend on our services in the future": "Кешбэк вы сможете потратить на наши услуги в будущем",
-
   "for all services from 14.02 to 16.02": "на все услуги с 14.02 по 16.02",
   "CASHBACK 14%": "КЕШБЭК 14%",
-
   "more": "подробнее",
-
   "month count 1": "месяц",
   "month count 3/24": "месяца",
   "month count 6/12/36": "месяцев",
-
   "fraud_invalid_code": "Неверный код подтверждения",
   "The phone has been successfully verified": "Телефон успешно подтвержден",
   "payment_saved": "Способ оплаты успешно сохранен",
-
   "this_phone_exists": "Данный номер телефона уже использовался для активации другого клиентского аккаунта, укажите другой номер телефона или обратитесь в техподдержку для подтверждения номера телефона",
-
   "certificate_code": "Код сертификата",
   "enter_certificate_code": "Введите код сертификата",
   "certificate_not_exist": "Сертификат не существует",
   "certificate_matches_error": "Допускаются только цифры и заглавные буквы",
   "certificate_applied_success": "Сертификат успешно применен",
-
   "payment_processed": "Ваш платеж в обработке, проверить статус вы можете в разделе",
   "Finance/Accounts": "Финансы/Счета",
   "online": "Вы снова онлайн",
@@ -270,5 +257,6 @@
   "new_ticket_message": "Новое сообщение в тикете #{{id}}",
   "long_request": "Обработка запроса не удалась, попробуйте еще раз",
   "Invalid SSH public key": "Недействительное значение открытого SSH ключа",
-  "A key already exists with the same name": "Ключ с таким именем уже существует"
+  "A key already exists with the same name": "Ключ с таким именем уже существует",
+  "copied": "Скопировано"
 }

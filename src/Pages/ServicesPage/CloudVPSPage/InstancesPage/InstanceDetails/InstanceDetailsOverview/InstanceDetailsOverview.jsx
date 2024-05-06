@@ -124,7 +124,10 @@ export default function InstanceDetailsOverview() {
                       <div className={s.network_info}>
                         <p className={s.ip_text}>{isIpv4 ? ip : ip_v6}</p>
 
-                        <CopyText text={isIpv4 ? ip : ip_v6} />
+                        <CopyText
+                          text={isIpv4 ? ip : ip_v6}
+                          promptText={t('ip_address_copied')}
+                        />
                       </div>
                       <button
                         className={s.network_rdns}
