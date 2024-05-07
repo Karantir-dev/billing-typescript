@@ -171,6 +171,7 @@ export { default as VDSPasswordChange } from './Services/vds/PasswordChange/Pass
 export { default as VdsRebootModal } from './Services/vds/RebootModal/RebootModal'
 export { default as IPeditModal } from './Services/vds/IPeditModal/IPeditModal'
 export { default as FiltersModal } from './Services/vds/FiltersModal/FiltersModal'
+export { default as VPSCompareModal } from './Services/vds/VPSCompareModal/VPSCompareModal'
 
 //==========================================VPN==========================================//
 export { default as VpnFilter } from './Services/vpn/VpnFilter/VpnFilter'

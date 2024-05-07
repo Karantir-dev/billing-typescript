@@ -1,6 +1,12 @@
-export default function checkIfComponentShouldRender(rightsList, sectionName, funcName) {
-  // componentName => name of function from BACK
+import { FORBIDDEN_TO_ORDER_SERVICES } from '@utils/constants'
 
+export default function checkIfComponentShouldRender(
+  rightsList,
+  sectionName,
+  funcName,
+  currentActiveServices,
+  serviceID,
+) {
   const isCurrentSectionAllowed = rightsList.some(obj => {
     return obj.$name === sectionName
   }) // if includes the name of func, this right is allowed
@@ -13,5 +19,15 @@ export default function checkIfComponentShouldRender(rightsList, sectionName, fu
     return res
   })
 
-  return isCurrentSectionAllowed && isCurrentPageAllowed
+  /* ID is forbidden and have active service */
+  const isSectionHaveActiveServices =
+    FORBIDDEN_TO_ORDER_SERVICES.includes(serviceID) &&
+    currentActiveServices.some(item => Number(item?.id_itemtype.$) === serviceID)
+
+  const isRenderAllowed =
+    isCurrentSectionAllowed &&
+    isCurrentPageAllowed &&
+    (isSectionHaveActiveServices || !FORBIDDEN_TO_ORDER_SERVICES.includes(serviceID))
+
+  return isRenderAllowed
 }

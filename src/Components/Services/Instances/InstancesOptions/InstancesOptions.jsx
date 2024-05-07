@@ -12,8 +12,15 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { isDisabled, isProcessing, isStopped, isResized, isRescued, isWindows } =
-    getInstanceMainInfo(item)
+  const {
+    isDisabled,
+    isProcessing,
+    isStopped,
+    isResized,
+    isRescued,
+    isWindows,
+    isDeleting,
+  } = getInstanceMainInfo(item)
 
   const isHideMostItems = isResized || isRescued
 
@@ -114,6 +121,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
     {
       label: t('Instructions'),
       icon: 'Instruction',
+      disabled: isDeleting,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
     {
@@ -131,6 +139,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
     {
       label: t('Create ticket'),
       icon: 'Headphone',
+      disabled: isDeleting,
       onClick: () =>
         navigate(`${route.SUPPORT}/requests`, {
           state: { id: item.id.$, openModal: true },
@@ -139,12 +148,13 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
     {
       label: t('Rename'),
       icon: 'Rename',
+      disabled: isDeleting,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
       label: t('Delete'),
       icon: 'Remove',
-      disabled: isProcessing,
+      disabled: isProcessing || isDeleting,
       isDelete: true,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
     },

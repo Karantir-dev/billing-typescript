@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import {
-  Button,
   IconButton,
   HintWrapper,
   BreadCrumbs,
@@ -33,7 +32,7 @@ import {
 } from '@utils'
 
 export default function FTP() {
-  const isAllowedToRender = usePageRender('mainmenuservice', 'storage')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'storage', true, 27090)
 
   const widerThan1600 = useMediaQuery({ query: '(min-width: 1600px)' })
   const dispatch = useDispatch()
@@ -250,7 +249,7 @@ export default function FTP() {
         )}
 
         <div className={s.btns_wrapper}>
-          <Button
+          {/* <Button
             disabled={!rights?.new}
             className={s.order_btn}
             isShadow
@@ -262,7 +261,7 @@ export default function FTP() {
                 replace: true,
               })
             }}
-          />
+          /> */}
 
           <div className={s.tools_container}>
             <div className={s.filterBtnBlock}>

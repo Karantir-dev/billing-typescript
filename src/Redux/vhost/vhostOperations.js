@@ -8,7 +8,7 @@ import * as route from '@src/routes'
 import { WORDPRESS_VHOST } from '@utils/constants'
 
 const getVhosts =
-  (body = {}, type, signal, setIsLoading) =>
+  (body = {}, type, signal, setIsLoading, checkWordpressAllowed) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
@@ -43,7 +43,9 @@ const getVhosts =
 
         dispatch(vhostActions.setVhostList(virtualHostingRenderData))
         dispatch(vhostActions.setVhostCount(count))
-        dispatch(getVhostFilters({}, false, type, signal, setIsLoading))
+        dispatch(
+          getVhostFilters({}, false, type, signal, setIsLoading, checkWordpressAllowed),
+        )
       })
       .catch(error => {
         handleLoadersClosing(error?.message, dispatch, setIsLoading)
@@ -52,7 +54,7 @@ const getVhosts =
   }
 
 const getVhostFilters =
-  (body = {}, filtered = false, type, signal, setIsLoading) =>
+  (body = {}, filtered = false, type, signal, setIsLoading, checkWordpressAllowed) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
 
@@ -80,6 +82,14 @@ const getVhostFilters =
               : WORDPRESS_VHOST.includes(el.$key),
           )
           .map(el => el.$key)
+
+        if (type === 'wordpress' && checkWordpressAllowed) {
+          if (!tariffs || !tariffs?.length) {
+            dispatch(vhostActions.setWordpressAllowed(false))
+          } else {
+            dispatch(vhostActions.setWordpressAllowed(true))
+          }
+        }
 
         if (!tariffs || !tariffs?.length) {
           return axiosInstance

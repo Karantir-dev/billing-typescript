@@ -173,6 +173,9 @@ export const RUS_LANG_COUNTRIES = [
 /** ID of promotion "1 month of hosting for free" for Affordable tariff */
 export const FIRST_MONTH_HOSTING_DISCOUNT_ID = '6041'
 
+
+export const DEDIC_FILTER_RANGE_GROUPS = ['cpucores']
+
 export const DC_ID_IN = { poland: 13, netherlands: 12 }
 
 export const CLOUD_SORT_LIST = [
@@ -210,14 +213,41 @@ export const FOTBO_STATUSES_LIST = [
 ]
 
 export const TARIFFS_PRICES = {
+  'Cloud Essential': { day: 0.13, month: 3.9 },
   'Cloud Basic': { day: 0.13, month: 3.9 },
   /** Cloud Standart should be deleted after renaming to Standard */
   'Cloud Standart': { day: 0.1634, month: 4.9 },
   'Cloud Standard': { day: 0.1634, month: 4.9 },
   'Cloud Exclusive': { day: 0.2497, month: 7.49 },
+  'Cloud Prime': { day: 0.4497, month: 13.49 },
   'Cloud Premium': { day: 0.4497, month: 13.49 },
   'Cloud Platinum': { day: 0.6634, month: 19.9 },
   'Cloud Enterprise': { day: 1.283, month: 38.49 },
   'Сloud Ultimate': { day: 2.2164, month: 66.49 },
   'Cloud Supreme': { day: 2.9967, month: 89.9 },
+
+  /* Tariffs below are of the BASIC type and will be renamed */
+  'Cloud Optimal': { day: 0.183, month: 5.49 },
+  'Cloud Nova': { day: 0.3164, month: 9.49 },
+  'Cloud Pro': { day: 0.5497, month: 16.49 },
+  'Cloud Max': { day: 1.03, month: 30.9 },
 }
+
+/* ID of services that should be disabled: */
+export const FORBIDDEN_TO_ORDER_SERVICES = [27090, 6, 27140]
+
+/*
+Below ID and names of all services
+
+"id_itemtype": "name"
+"4": "Domain names"
+"6": "Virtual server"
+"20": "Dedicated server"
+"23": "Shared hosting"
+"41": "Slave name server"
+"27090": "External FTP-storage "
+"27129": "Site care service"
+"27136": "Forex server"
+"27140": "VPN"
+"27156": "Instances"
+*/

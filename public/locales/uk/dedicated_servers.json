@@ -167,5 +167,8 @@
     "driveamount": "Кількість дисків",
     "cpucores": "Ядра",
     "cpumanuf": "Виробник"
-  }
+  },
+  "empty_dedic_tariffs_title": "Сервер не знайдено",
+  "empty_dedic_tariffs_text": "Будь ласка, змініть критерії пошуку, щоб переглянути доступні сервери",
+  "price": "Ціна"
 }

@@ -124,6 +124,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  width: fit-content;
 }
 
 .sort {
@@ -161,6 +162,24 @@
   box-shadow: var(--forms2_shadow);
 }
 
+.status_wrapper {
+  .popup {
+    width: max-content;
+    max-width: 300px;
+    text-wrap: initial;
+    font-size: 14px;
+
+    @media (max-width: 767px) {
+      left: -40px;
+      transform: unset;
+
+      & > div {
+        left: 34%;
+      }
+    }
+  }
+}
+
 .status {
   text-transform: uppercase;
   font-size: 10px;
@@ -173,27 +192,16 @@
   line-height: 1;
   position: relative;
   background-color: #f79649;
-  &.resized {
+  &.resized,
+  &.suspended {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding-right: 20px;
-    .popup {
-      width: 300px;
-      text-transform: none;
-      white-space: normal;
-      text-align: left;
-      font-size: 13px;
-    }
-    .popup__wrapper {
-      position: absolute;
-      right: 3px;
-    }
+    gap: 5px;
+    padding: 5px 22px 5px 10px;
+
     svg {
-      @media (max-width: 767px) {
-        position: absolute;
-        right: 3px;
-      }
+      position: absolute;
+      right: 5px;
       width: 14px;
       height: 14px;
       circle {
@@ -204,13 +212,20 @@
       }
     }
   }
+  &.suspended {
+    svg {
+      path {
+        fill: #fa6848;
+      }
+    }
+  }
   &.runing,
   &.active {
     background-color: #45a884;
   }
   &.stopped,
   &.deletion_in_progress,
-  &.suspend {
+  &.suspended {
     background-color: #fa6848;
   }
 }
@@ -270,6 +285,7 @@
 .mobile_item__value {
   font-size: 14px;
   word-break: break-all;
+  width: fit-content;
 }
 
 .no_vds_wrapper {

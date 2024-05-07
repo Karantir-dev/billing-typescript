@@ -14,11 +14,13 @@ export default function InstanceItem({ item, editInstance }) {
   // const checkboxCell = useRef()
   const servernameCell = useRef()
   const ipCell = useRef()
+  const hintCell = useRef()
   const navigate = useNavigate()
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
-  const { isResized, displayStatus, isNotActive } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, isNotActive, isDeleting, isSuspended } =
+    getInstanceMainInfo(item)
 
   const editServerName = value => {
     const slicedValue = value.slice(0, 100)
@@ -38,6 +40,9 @@ export default function InstanceItem({ item, editInstance }) {
 
   const ip = item.ip?.$ || item.ip_v6?.$
 
+  const isHintStatus = isSuspended || isResized
+  const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
+
   return (
     <tr
       className={cn(s.tr, { [s.disabled]: isNotActive })}
@@ -47,6 +52,7 @@ export default function InstanceItem({ item, editInstance }) {
           // checkboxCell.current.contains(e.target) ||
           servernameCell.current.contains(e.target) ||
           ipCell.current.contains(e.target) ||
+          hintCell.current.contains(e.target) ||
           isNotActive
         )
           return
@@ -67,26 +73,42 @@ export default function InstanceItem({ item, editInstance }) {
         />
       </td>
       <td className={s.td}>
-        <span
-          className={cn(
-            s.status,
-            s[
-              item?.fotbo_status?.$.trim().toLowerCase() ||
-                item?.item_status?.$.trim().toLowerCase()
-            ],
-          )}
-        >
-          {displayStatus}
-          {isResized && (
+        <div className={s.status_wrapper} ref={hintCell}>
+          {isHintStatus ? (
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
-              label={t('resize_popup_text')}
+              label={hintMessage}
             >
-              <Icon name="Attention" />
+              <span
+                className={cn(
+                  s.status,
+                  s[
+                    isDeleting
+                      ? 'deletion_in_progress'
+                      : item?.fotbo_status?.$.trim().toLowerCase() ||
+                        item?.item_status?.$.trim().toLowerCase()
+                  ],
+                )}
+              >
+                {displayStatus}
+                <Icon name="Attention" />
+              </span>
             </HintWrapper>
+          ) : (
+            <span
+              className={cn(
+                s.status,
+                s[
+                  item?.fotbo_status?.$.trim().toLowerCase() ||
+                    item?.item_status?.$.trim().toLowerCase()
+                ],
+              )}
+            >
+              {displayStatus}
+            </span>
           )}
-        </span>
+        </div>
       </td>
       <td className={s.td}>{item.pricelist.$}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('day'))}</td>
@@ -118,8 +140,8 @@ export default function InstanceItem({ item, editInstance }) {
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </HintWrapper>
       </td>
-      <td ref={ipCell} className={s.td}>
-        <div className={s.ip_cell}>
+      <td className={s.td}>
+        <div className={s.ip_cell} ref={ipCell}>
           <span>{ip}</span>
           {ip && (
             <div className={s.fade_in}>

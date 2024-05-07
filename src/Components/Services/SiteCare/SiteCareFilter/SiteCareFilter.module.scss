@@ -10,12 +10,18 @@
 .newTicketBtn {
   height: 53px;
   text-transform: uppercase;
-  max-width: 100%;
-  width: 100%;
-  min-width: 200px;
   max-height: 53px;
-  margin-right: 24px;
   font-size: 18px;
+  width: 200px;
+  margin-right: 15px;
+  @media (min-width: 576px) {
+    width: 220px;
+    margin-right: 24px;
+  }
+  @media (min-width: 768px) {
+    width: 240px;
+    margin-right: 24px;
+  }
 }
 
 .searchInput {
@@ -39,8 +45,13 @@
 .formBlock {
   width: 100%;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   padding-bottom: 10px;
+  flex-wrap: wrap;
+
+  @media (min-width: 768px) {
+    justify-content: flex-end;
+  }
 }
 
 .archiveBtn {
@@ -50,9 +61,6 @@
 
 .filterBtnBlock {
   position: relative;
-  margin-top: 5px;
-  margin-right: 19px;
-  margin-left: auto;
 }
 
 .bg {
@@ -186,7 +194,13 @@
   margin-left: 15px;
   display: flex;
   align-items: center;
+  margin-right: auto;
 
+  @media (max-width: 767px) {
+    width: 100%;
+    order: 1;
+    margin-top: 15px;
+  }
   span {
     font-style: normal;
     font-weight: 400;
@@ -195,35 +209,33 @@
     color: var(--main-text);
     margin-left: 16px;
   }
+
+  @media (min-width: 1550px) {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 320px) {
   .newTicketBtn {
-    margin-bottom: 30px;
     max-height: 53px;
     max-width: 100%;
   }
 }
 
-@media screen and (min-width: 321px) {
-  .newTicketBtn {
-    margin-bottom: 30px;
-    max-height: 53px;
-    max-width: 100%;
-  }
-}
+// @media screen and (min-width: 321px) {
+//   .newTicketBtn {
+//     margin-bottom: 30px;
+//     max-height: 53px;
+//     max-width: 100%;
+//   }
+// }
 
 @media screen and (min-width: 600px) {
   .filterBtnBlock {
     margin-left: 0;
   }
 
-  .checkBoxColumn {
-    display: none;
-  }
-
   .newTicketBtn {
-    max-width: 229px;
     margin-right: 20px;
     margin-bottom: 0;
   }
