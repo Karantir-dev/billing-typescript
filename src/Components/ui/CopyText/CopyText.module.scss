@@ -7,6 +7,10 @@
     & .copy_icon {
       fill: url(#gradient);
     }
+
+    & .copy_icon.disabled {
+      fill: var(--inactive_icon_color);
+    }
   }
 }
 
@@ -14,6 +18,10 @@
   width: 100%;
   height: auto;
   fill: var(--inactive_icon_color);
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
 
 .copy_prompt {

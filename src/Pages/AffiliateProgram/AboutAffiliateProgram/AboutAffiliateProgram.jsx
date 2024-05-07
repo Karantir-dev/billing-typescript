@@ -127,7 +127,11 @@ export default function AboutAffiliateProgram() {
               disabled
               value={link}
             />
-            <CopyText text={link} promptText={t('about_section.link_copied')} />
+            <CopyText
+              text={link}
+              promptText={t('about_section.link_copied')}
+              isBtnDisabled={!link}
+            />
           </div>
         </div>
 

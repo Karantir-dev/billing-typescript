@@ -6,7 +6,7 @@ import animations from './animations.module.scss'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
-export default function CopyText({ text, className, promptText }) {
+export default function CopyText({ text, className, promptText, isBtnDisabled = false }) {
   const { t } = useTranslation(['other'])
   const [refLinkCopied, setRefLinkCopied] = useState(false)
 
@@ -24,8 +24,13 @@ export default function CopyText({ text, className, promptText }) {
   }
 
   return (
-    <button className={cn(s.copy_btn, className)} onClick={handleCopyText} type="button">
-      <Icon name="Copy" className={s.copy_icon} />
+    <button
+      className={cn(s.copy_btn, className)}
+      onClick={handleCopyText}
+      type="button"
+      disabled={isBtnDisabled}
+    >
+      <Icon name="Copy" className={cn(s.copy_icon, { [s.disabled]: isBtnDisabled })} />
       <CSSTransition
         in={refLinkCopied}
         classNames={animations}
