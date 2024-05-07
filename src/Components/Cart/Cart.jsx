@@ -181,7 +181,6 @@ export default function Component() {
   const fraudData = useFormFraudCheckData()
 
   const payBasketHandler = values => {
-    console.log('submit')
     const data = {
       postcode_physical: values?.postcode_physical,
       eu_vat: values?.eu_vat,
@@ -1483,7 +1482,6 @@ export default function Component() {
                                   ? t('Activate', { ns: 'billing' })
                                   : t('Pay', { ns: 'billing' })
                               }
-                              onClick={() => console.log(errors)}
                               type="submit"
                             />
                           )}

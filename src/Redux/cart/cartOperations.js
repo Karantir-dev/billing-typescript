@@ -17,6 +17,7 @@ import {
   fraudCheckSender,
   renameAddonFields,
   handleLoadersClosing,
+  sendTrustpilotEmail,
 } from '@utils'
 import * as routes from '@src/routes'
 
@@ -30,8 +31,6 @@ const getBasket =
       auth: { sessionId },
       billing: { periodValue },
     } = store
-    // eslint-disable-next-line no-unused-vars
-    const { $email, $realname } = userSelectors.getUserInfo(store)
 
     axiosInstance
       .post(
@@ -68,9 +67,6 @@ const getBasket =
           }
         })
 
-        // sendTrustpilotEmail($email, $realname, cartData)
-
-        console.log(cartData)
         setCartData && setCartData(cartData)
         setPaymentsMethodList &&
           dispatch(
@@ -242,10 +238,14 @@ const setPaymentMethods =
     dispatch(actions.showLoader())
     analyticsSaver()
 
+    const store = getState()
     const {
       auth: { sessionId },
+      // eslint-disable-next-line no-unused-vars
       cart: { cartState },
-    } = getState()
+    } = store
+    // eslint-disable-next-line no-unused-vars
+    const { $email, $realname } = userSelectors.getUserInfo(store)
 
     axiosInstance
       .post(
@@ -377,6 +377,8 @@ const setPaymentMethods =
 
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
+
+              sendTrustpilotEmail($email, $realname, cartData)
 
               navigate &&
                 navigate(cartState?.redirectPath, {
