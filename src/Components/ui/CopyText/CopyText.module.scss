@@ -47,6 +47,19 @@
   top: 100%;
   left: 50%;
   transform: translate(-50%, 0) rotate(180deg);
-  border: 10px solid transparent;
-  border-bottom-color: var(--forms_bgc_1);
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background-color: var(--forms_bgc_1);
+    transform: rotate(45deg);
+    box-shadow: var(--forms3_shadow);
+  }
 }
