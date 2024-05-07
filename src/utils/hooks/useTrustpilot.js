@@ -17,3 +17,11 @@ export default function useTrustpilot() {
 
   return { sendEmail }
 }
+
+// function sendTrustpilotEmail($email, $realname, cartData) {
+//   if (
+//     cartData.elemList[0]['item.type'].$ === 'dedic' &&
+//     cartData.elemList[0].desc.$.icludes('renew')
+//   ) {
+//   }
+// }

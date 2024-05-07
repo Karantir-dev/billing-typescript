@@ -7,6 +7,7 @@ import {
   userOperations,
   billingActions,
   authSelectors,
+  userSelectors,
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
@@ -24,10 +25,13 @@ const getBasket =
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
+    const store = getState()
     const {
       auth: { sessionId },
       billing: { periodValue },
-    } = getState()
+    } = store
+    // eslint-disable-next-line no-unused-vars
+    const { $email, $realname } = userSelectors.getUserInfo(store)
 
     axiosInstance
       .post(
@@ -64,6 +68,9 @@ const getBasket =
           }
         })
 
+        // sendTrustpilotEmail($email, $realname, cartData)
+
+        console.log(cartData)
         setCartData && setCartData(cartData)
         setPaymentsMethodList &&
           dispatch(
