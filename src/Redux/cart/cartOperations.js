@@ -26,11 +26,10 @@ const getBasket =
   (dispatch, getState) => {
     dispatch(actions.showLoader())
 
-    const store = getState()
     const {
       auth: { sessionId },
       billing: { periodValue },
-    } = store
+    } = getState()
 
     axiosInstance
       .post(
@@ -241,10 +240,9 @@ const setPaymentMethods =
     const store = getState()
     const {
       auth: { sessionId },
-      // eslint-disable-next-line no-unused-vars
       cart: { cartState },
     } = store
-    // eslint-disable-next-line no-unused-vars
+
     const { $email, $realname } = userSelectors.getUserInfo(store)
 
     axiosInstance
