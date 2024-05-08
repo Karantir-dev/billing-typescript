@@ -54,16 +54,14 @@ export default function Component({ type }) {
     if (isVhostOrderAllowed || cartFromSite) {
       dispatch(vhostOperations.orderVhost({}, type, setData, signal, setIsLoading))
     } else {
-      type === 'vhost'
-        ? navigate(routes.SHARED_HOSTING, { replace: true })
-        : navigate(routes.WORDPRESS, { replace: true })
+      navigate(routes.SHARED_HOSTING, { replace: true })
     }
 
     if (location?.state?.isBasket) {
       dispatch(
         cartActions.setCartIsOpenedState({
           isOpened: true,
-          redirectPath: type === 'vhost' ? routes.SHARED_HOSTING : routes.WORDPRESS,
+          redirectPath: routes.SHARED_HOSTING,
         }),
       )
     }

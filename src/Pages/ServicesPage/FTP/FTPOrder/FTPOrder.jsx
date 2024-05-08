@@ -1,92 +1,92 @@
-import { useEffect, useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { BreadCrumbs, Button, Loader, Select } from '@components'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useMediaQuery } from 'react-responsive'
-import classNames from 'classnames'
-import { Form, Formik } from 'formik'
-import * as Yup from 'yup'
+// import { useEffect, useRef, } from 'react'
+// import { useDispatch } from 'react-redux'
+
+import { BreadCrumbs } from '@components'
+// import classNames from 'classnames'
+// import { Form, Formik } from 'formik'
+// import * as Yup from 'yup'
+// import { useNavigate } from 'react-router-dom'
+// import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
-import {
-  roundToDecimal,
-  translatePeriod,
-  useCancelRequest,
-  useScrollToElement,
-} from '@utils'
-import { ftpOperations, userOperations } from '@redux'
-import * as route from '@src/routes'
+import // roundToDecimal,
+// translatePeriod,
+// useCancelRequest,
+// useScrollToElement,
+'@utils'
+// import { ftpOperations, userOperations } from '@redux'
+// import * as route from '@src/routes'
 
 import s from './FTPOrder.module.scss'
 
 export default function FTPOrder() {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
-  const licenceCheck = useRef()
-  const secondTarrif = useRef(null)
-  const location = useLocation()
-  const navigate = useNavigate()
+  // const licenceCheck = useRef()
+  // const secondTarrif = useRef(null)
+  // const location = useLocation()
+  // const navigate = useNavigate()
 
-  const isFtpOrderAllowed = location?.state?.isFtpOrderAllowed
+  // const isFtpOrderAllowed = location?.state?.isFtpOrderAllowed
 
-  const { t } = useTranslation(['dedicated_servers', 'other', 'crumbs', 'autoprolong'])
-  const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
-  const { signal, isLoading, setIsLoading } = useCancelRequest()
+  const { t } = useTranslation(['ftp'])
+  // const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
+  // const { signal, isLoading, setIsLoading } = useCancelRequest()
 
-  const [tarifList, setTarifList] = useState([])
-  const [parameters, setParameters] = useState(null)
-  const [dataFromSite, setDataFromSite] = useState(null)
-  const [price, setPrice] = useState('')
-  const [periodName, setPeriodName] = useState('')
-  const [isTarifChosen, setTarifChosen] = useState(false)
-  const [scrollElem, runScroll] = useScrollToElement({ condition: parameters })
+  // const [tarifList, setTarifList] = useState([])
+  // const [parameters, setParameters] = useState(null)
+  // const [dataFromSite, setDataFromSite] = useState(null)
+  // const [price, setPrice] = useState('')
+  // const [periodName, setPeriodName] = useState('')
+  // const [isTarifChosen, setTarifChosen] = useState(false)
+  // const [scrollElem, runScroll] = useScrollToElement({ condition: parameters })
 
-  const parsePrice = price => {
-    const words = price?.match(/[\d|.|\\+]+/g)
-    const amounts = []
+  // const parsePrice = price => {
+  //   const words = price?.match(/[\d|.|\\+]+/g)
+  //   const amounts = []
 
-    let period
+  //   let period
 
-    if (price.includes('for three months')) {
-      period = t('for three months').toLocaleLowerCase()
-    } else if (price.includes('for two years')) {
-      period = t('for two years').toLocaleLowerCase()
-    } else if (price.includes('for three years')) {
-      period = t('for three years').toLocaleLowerCase()
-    } else if (price.includes('half a year')) {
-      period = t('half a year', { ns: 'other' }).toLocaleLowerCase()
-    } else if (price.includes('year')) {
-      period = t('year', { ns: 'other' }).toLocaleLowerCase()
-    } else if (price.includes('years')) {
-      period = t('years', { ns: 'other' }).toLocaleLowerCase()
-    } else if (price.includes('month')) {
-      period = t('month', { ns: 'other' }).toLocaleLowerCase()
-    } else {
-      period = t('for three months', { ns: 'other' }).toLocaleLowerCase()
-    }
+  //   if (price.includes('for three months')) {
+  //     period = t('for three months').toLocaleLowerCase()
+  //   } else if (price.includes('for two years')) {
+  //     period = t('for two years').toLocaleLowerCase()
+  //   } else if (price.includes('for three years')) {
+  //     period = t('for three years').toLocaleLowerCase()
+  //   } else if (price.includes('half a year')) {
+  //     period = t('half a year', { ns: 'other' }).toLocaleLowerCase()
+  //   } else if (price.includes('year')) {
+  //     period = t('year', { ns: 'other' }).toLocaleLowerCase()
+  //   } else if (price.includes('years')) {
+  //     period = t('years', { ns: 'other' }).toLocaleLowerCase()
+  //   } else if (price.includes('month')) {
+  //     period = t('month', { ns: 'other' }).toLocaleLowerCase()
+  //   } else {
+  //     period = t('for three months', { ns: 'other' }).toLocaleLowerCase()
+  //   }
 
-    if (words.length > 0) {
-      words.forEach(w => {
-        if (!isNaN(w)) {
-          amounts.push(w)
-        }
-      })
-    } else {
-      return
-    }
+  //   if (words.length > 0) {
+  //     words.forEach(w => {
+  //       if (!isNaN(w)) {
+  //         amounts.push(w)
+  //       }
+  //     })
+  //   } else {
+  //     return
+  //   }
 
-    let amoumt = roundToDecimal(Number(amounts[amounts.length - 1]))
-    let percent = Number(amounts[0]) + '%'
-    let sale = roundToDecimal(Number(amounts[1])) + ' ' + 'EUR'
+  //   let amoumt = roundToDecimal(Number(amounts[amounts.length - 1]))
+  //   let percent = Number(amounts[0]) + '%'
+  //   let sale = roundToDecimal(Number(amounts[1])) + ' ' + 'EUR'
 
-    setPeriodName(period)
+  //   setPeriodName(period)
 
-    return {
-      amoumt,
-      percent,
-      sale,
-      length: amounts.length,
-    }
-  }
+  //   return {
+  //     amoumt,
+  //     percent,
+  //     sale,
+  //     length: amounts.length,
+  //   }
+  // }
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -96,61 +96,71 @@ export default function FTPOrder() {
     return pathnames
   }
 
-  useEffect(() => {
-    const cartFromSite = localStorage.getItem('site_cart')
+  // useEffect(() => {
+  //   const cartFromSite = localStorage.getItem('site_cart')
 
-    if (isFtpOrderAllowed || cartFromSite) {
-      dispatch(ftpOperations.getTarifs(setTarifList, {}, signal, setIsLoading))
-    } else {
-      navigate(route.FTP, { replace: true })
-    }
-  }, [])
+  //   if (isFtpOrderAllowed || cartFromSite) {
+  //     dispatch(ftpOperations.getTarifs(setTarifList, {}, signal, setIsLoading))
+  //   } else {
+  //     navigate(route.FTP, { replace: true })
+  //   }
+  // }, [])
 
-  useEffect(() => {
-    const cartFromSite = localStorage.getItem('site_cart')
-    if (cartFromSite && tarifList?.tarifList?.length > 0) {
-      const cartData = JSON.parse(cartFromSite)
-      setDataFromSite({
-        autoprolong: cartData?.autoprolong,
-        pricelist: cartData?.pricelist,
-      })
-      localStorage.removeItem('site_cart')
-    }
-  }, [tarifList])
+  // useEffect(() => {
+  //   const cartFromSite = localStorage.getItem('site_cart')
+  //   if (cartFromSite && tarifList?.tarifList?.length > 0) {
+  //     const cartData = JSON.parse(cartFromSite)
+  //     setDataFromSite({
+  //       autoprolong: cartData?.autoprolong,
+  //       pricelist: cartData?.pricelist,
+  //     })
+  //     localStorage.removeItem('site_cart')
+  //   }
+  // }, [tarifList])
 
-  const validationSchema = Yup.object().shape({
-    tarif: Yup.string().required('tariff is required'),
-    license: Yup.boolean()
-      .required(
-        t('You must agree to the terms of the Service Agreement to be able to proceed', {
-          ns: 'other',
-        }),
-      )
-      .oneOf(
-        [true],
-        t('You must agree to the terms of the Service Agreement to be able to proceed', {
-          ns: 'other',
-        }),
-      ),
-  })
+  // const validationSchema = Yup.object().shape({
+  //   tarif: Yup.string().required('tariff is required'),
+  //   license: Yup.boolean()
+  //     .required(
+  //       t('You must agree to the terms of the Service Agreement to be able to proceed', {
+  //         ns: 'other',
+  //       }),
+  //     )
+  //     .oneOf(
+  //       [true],
+  //       t('You must agree to the terms of the Service Agreement to be able to proceed', {
+  //         ns: 'other',
+  //       }),
+  //     ),
+  // })
 
-  const handleSubmit = values => {
-    const { datacenter, tarif, period, autoprolong } = values
+  // const handleSubmit = values => {
+  //   const { datacenter, tarif, period, autoprolong } = values
 
-    dispatch(
-      userOperations.cleanBsketHandler(() =>
-        dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif)),
-      ),
-    )
-  }
+  //   dispatch(
+  //     userOperations.cleanBsketHandler(() =>
+  //       dispatch(ftpOperations.orderFTP(autoprolong, datacenter, period, tarif)),
+  //     ),
+  //   )
+  // }
 
   return (
     <>
       <div className={s.modalHeader}>
         <BreadCrumbs pathnames={parseLocations()} />
-        <h2 className={s.page_title}>{t('ftp_order', { ns: 'crumbs' })}</h2>
+        <h2 className={s.page_title}>{t('no_more_ftp')}</h2>
 
-        <Formik
+        <img
+          src={require('@images/services/no_ftp.png')}
+          alt="ftp"
+          className={s.ftp_img}
+        />
+
+        <div className="noMore_ftp">
+          <p className={s.comment}>{t('ftp_tariffs_stoped')}</p>
+        </div>
+
+        {/* <Formik
           enableReinitialize
           validationSchema={validationSchema}
           initialValues={{
@@ -298,38 +308,6 @@ export default function FTPOrder() {
                         className={s.select}
                       />
                     </div>
-
-                    {/* <div className={s.terms_block} ref={licenceCheck}>
-                    <div className={s.checkbox_wrapper}>
-                      <CheckBox
-                        setValue={item => {
-                          if (touched.license && !!errors.license) {
-                            setFieldTouched('license', true)
-                          }
-
-                          setFieldValue('license', item)
-                        }}
-                        className={s.checkbox}
-                        error={!!errors.license && touched.license}
-                      />
-
-                      <div className={s.terms_text}>
-                        {t('terms')}
-                        <br />
-                        <a
-                          className={s.turn_link}
-                          target="_blank"
-                          href={PRIVACY_URL}
-                          rel="noreferrer"
-                        >
-                          {`"${t('terms_2')}"`}
-                        </a>
-                      </div>
-                    </div>
-                    {!!errors.license && touched.license && (
-                      <p className={s.license_error}>{errors.license}</p>
-                    )}
-                  </div> */}
                   </div>
                 )}
 
@@ -340,11 +318,6 @@ export default function FTPOrder() {
                   })}
                 >
                   <div className={s.container}>
-                    {/* <div className={s.sum_price_wrapper}>
-                    {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
-                    <span className={s.btn_price}>{price + '/' + periodName}</span>
-                  </div> */}
-
                     {tabletOrHigher ? (
                       <div className={s.sum_price_wrapper}>
                         {tabletOrHigher && <span className={s.topay}>{t('topay')}:</span>}
@@ -380,9 +353,9 @@ export default function FTPOrder() {
               </Form>
             )
           }}
-        </Formik>
+        </Formik> */}
       </div>
-      {isLoading && <Loader local shown={isLoading} />}
+      {/* {isLoading && <Loader local shown={isLoading} />} */}
     </>
   )
 }

@@ -1,41 +1,43 @@
-import { useEffect, useRef, useState } from 'react'
-import { Form, Formik } from 'formik'
-import { useTranslation } from 'react-i18next'
-import { useDispatch } from 'react-redux'
-import { useMediaQuery } from 'react-responsive'
-import { useLocation } from 'react-router-dom'
+// import { useEffect, useState } from 'react'
+// import { Form, Formik } from 'formik'
+// import { useDispatch } from 'react-redux'
+// import { useMediaQuery } from 'react-responsive'
+import { useLocation, useNavigate } from 'react-router-dom'
+import * as route from '@src/routes'
+import { Trans, useTranslation } from 'react-i18next'
 import {
   BreadCrumbs,
-  Select,
-  InputField,
-  SoftwareOSBtn,
-  SoftwareOSSelect,
+  // Select,
+  // InputField,
+  // SoftwareOSBtn,
+  // SoftwareOSSelect,
   Button,
-  Icon,
+  // Icon,
+  FixedFooter,
   Loader,
 } from '@components'
-import { userOperations, vdsOperations } from '@redux'
+// import { userOperations, vdsOperations } from '@redux'
 import {
-  DOMAIN_REGEX,
-  getPortSpeed,
-  translatePeriodName,
-  translatePeriodText,
+  //   DOMAIN_REGEX,
+  //   getPortSpeed,
+  //   translatePeriodName,
+  //   translatePeriodText,
   useCancelRequest,
-  useScrollToElement,
-  roundToDecimal,
+  //   useScrollToElement,
+  //   roundToDecimal,
 } from '@utils'
-import cn from 'classnames'
-import * as Yup from 'yup'
-import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
+// import cn from 'classnames'
+// import * as Yup from 'yup'
+// import { VDS_IDS_LIKE_DEDICS } from '@utils/constants'
 
 import s from './VDSOrder.module.scss'
 
-const MAX_ORDER_COUNT = 35
+// const MAX_ORDER_COUNT = 35
 
 export default function VDSOrder() {
   const location = useLocation()
-  const dispatch = useDispatch()
-  const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
+  // const dispatch = useDispatch()
+  // const widerThanMobile = useMediaQuery({ query: '(min-width: 768px)' })
   const { t } = useTranslation([
     'vds',
     'other',
@@ -43,303 +45,412 @@ export default function VDSOrder() {
     'dedicated_servers',
     'autoprolong',
   ])
-  const agreementEl = useRef()
+  // const agreementEl = useRef()
 
-  const { signal, isLoading, setIsLoading } = useCancelRequest()
+  const { isLoading } = useCancelRequest()
 
-  const [formInfo, setFormInfo] = useState(null)
-  const [period, setPeriod] = useState('1')
-  const [tariffsList, setTariffsList] = useState([])
-  const [tariffCategory, setTariffCategory] = useState()
-  const [selectedTariffId, setSelectedTariffId] = useState()
-  const [parametersInfo, setParametersInfo] = useState()
-  const [count, setCount] = useState(1)
-  const [domainName, setDomainName] = useState('')
+  const navigate = useNavigate()
 
-  const [dataFromSite, setDataFromSite] = useState(null)
+  const navigateToCloud = type => navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}/${type}`)
 
-  const [recipe, setRecipe] = useState('null')
-  const filteredList = tariffsList
-    .filter(el => (tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true))
-    .filter(el => !VDS_IDS_LIKE_DEDICS.includes(el.pricelist.$))
-  const [scrollElem, runScroll] = useScrollToElement({ condition: parametersInfo })
+  // const [formInfo, setFormInfo] = useState(null)
+  // const [period, setPeriod] = useState('1')
+  // const [tariffsList, setTariffsList] = useState([])
+  // const [tariffCategory, setTariffCategory] = useState()
+  // const [selectedTariffId, setSelectedTariffId] = useState()
+  // const [parametersInfo, setParametersInfo] = useState()
+  // const [count, setCount] = useState(1)
+  // const [domainName, setDomainName] = useState('')
 
-  useEffect(() => {
-    const isInList = filteredList.some(el => el.pricelist.$ === selectedTariffId)
-    if (!isInList && selectedTariffId) {
-      setSelectedTariffId(null)
-      setParametersInfo(null)
-      setCount(1)
-    }
-  }, [tariffCategory])
+  // const [dataFromSite, setDataFromSite] = useState(null)
 
-  useEffect(() => {
-    dispatch(
-      vdsOperations.getVDSOrderInfo(setFormInfo, setTariffsList, signal, setIsLoading),
-    )
-  }, [])
+  // const [recipe, setRecipe] = useState('null')
+  // const filteredList = tariffsList
+  //   .filter(el => (tariffCategory ? el?.filter?.tag?.$ === tariffCategory : true))
+  //   .filter(el => !VDS_IDS_LIKE_DEDICS.includes(el.pricelist.$))
+  // const [scrollElem, runScroll] = useScrollToElement({ condition: parametersInfo })
 
-  useEffect(() => {
-    const cartFromSite = localStorage.getItem('site_cart')
-    const cartFromSiteJson = JSON.parse(cartFromSite)
-    if (formInfo && tariffsList && cartFromSiteJson) {
-      setPeriod(cartFromSiteJson?.period)
-      handleTariffClick(cartFromSiteJson?.period, cartFromSiteJson?.pricelist)
-      setRecipe(cartFromSiteJson?.recipe)
-      setCount(Number(cartFromSiteJson?.order_count))
-      setDataFromSite({
-        recipe: cartFromSiteJson?.recipe,
-        ostempl: cartFromSiteJson?.ostempl,
-        domain: cartFromSiteJson?.domain,
-        CPU_count: cartFromSiteJson?.CPUcount,
-        Memory: cartFromSiteJson?.Memory,
-        Disk_space: cartFromSiteJson?.Diskspace,
-        Port_speed: cartFromSiteJson?.Portspeed,
-        Control_panel: cartFromSiteJson?.Controlpanel,
-        autoprolong: cartFromSiteJson?.autoprolong,
-      })
-      localStorage.removeItem('site_cart')
-    }
-  }, [formInfo, tariffsList])
+  // useEffect(() => {
+  //   const isInList = filteredList.some(el => el.pricelist.$ === selectedTariffId)
+  //   if (!isInList && selectedTariffId) {
+  //     setSelectedTariffId(null)
+  //     setParametersInfo(null)
+  //     setCount(1)
+  //   }
+  // }, [tariffCategory])
 
-  const handleTariffClick = (period, pricelist) => {
-    if (selectedTariffId !== pricelist) {
-      dispatch(
-        vdsOperations.getTariffParameters(
-          period,
-          pricelist,
-          setParametersInfo,
-          signal,
-          setIsLoading,
-        ),
-      )
-      setSelectedTariffId(pricelist)
-    }
-  }
+  // useEffect(() => {
+  //   dispatch(
+  //     vdsOperations.getVDSOrderInfo(setFormInfo, setTariffsList, signal, setIsLoading),
+  //   )
+  // }, [])
 
-  const getOptionsList = fieldName => {
-    const optionsList = formInfo.slist.find(elem => elem.$name === fieldName).val
+  // useEffect(() => {
+  //   const cartFromSite = localStorage.getItem('site_cart')
+  //   const cartFromSiteJson = JSON.parse(cartFromSite)
+  //   if (formInfo && tariffsList && cartFromSiteJson) {
+  //     setPeriod(cartFromSiteJson?.period)
+  //     handleTariffClick(cartFromSiteJson?.period, cartFromSiteJson?.pricelist)
+  //     setRecipe(cartFromSiteJson?.recipe)
+  //     setCount(Number(cartFromSiteJson?.order_count))
+  //     setDataFromSite({
+  //       recipe: cartFromSiteJson?.recipe,
+  //       ostempl: cartFromSiteJson?.ostempl,
+  //       domain: cartFromSiteJson?.domain,
+  //       CPU_count: cartFromSiteJson?.CPUcount,
+  //       Memory: cartFromSiteJson?.Memory,
+  //       Disk_space: cartFromSiteJson?.Diskspace,
+  //       Port_speed: cartFromSiteJson?.Portspeed,
+  //       Control_panel: cartFromSiteJson?.Controlpanel,
+  //       autoprolong: cartFromSiteJson?.autoprolong,
+  //     })
+  //     localStorage.removeItem('site_cart')
+  //   }
+  // }, [formInfo, tariffsList])
 
-    return optionsList
-      .filter(el => el?.$)
-      .map(({ $key, $ }) => ({
-        value: $key,
-        label: t($.trim(), { ns: 'dedicated_servers' }),
-      }))
-  }
+  // const handleTariffClick = (period, pricelist) => {
+  //   if (selectedTariffId !== pricelist) {
+  //     dispatch(
+  //       vdsOperations.getTariffParameters(
+  //         period,
+  //         pricelist,
+  //         setParametersInfo,
+  //         signal,
+  //         setIsLoading,
+  //       ),
+  //     )
+  //     setSelectedTariffId(pricelist)
+  //   }
+  // }
 
-  const getOptionsListExtended = fieldName => {
-    if (parametersInfo && parametersInfo.slist) {
-      const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
+  // const getOptionsList = fieldName => {
+  //   const optionsList = formInfo.slist.find(elem => elem.$name === fieldName).val
 
-      let firstItem = 0
+  //   return optionsList
+  //     .filter(el => el?.$)
+  //     .map(({ $key, $ }) => ({
+  //       value: $key,
+  //       label: t($.trim(), { ns: 'dedicated_servers' }),
+  //     }))
+  // }
 
-      return optionsList
-        ?.filter(el => el?.$)
-        ?.map(({ $key, $, $cost }, index) => {
-          let label = ''
-          let withSale = false
-          let words = []
+  // const getOptionsListExtended = fieldName => {
+  //   if (parametersInfo && parametersInfo.slist) {
+  //     const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
 
-          if (fieldName === 'Memory') {
-            words = $?.match(/[\d|.|\\+]+/g)
+  //     let firstItem = 0
 
-            if (words?.length > 0 && index === 0) {
-              firstItem = words[0]
-            }
+  //     return optionsList
+  //       ?.filter(el => el?.$)
+  //       ?.map(({ $key, $, $cost }, index) => {
+  //         let label = ''
+  //         let withSale = false
+  //         let words = []
 
-            if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
-              withSale = true
-            }
-          }
+  //         if (fieldName === 'Memory') {
+  //           words = $?.match(/[\d|.|\\+]+/g)
 
-          if (withSale && words?.length > 0) {
-            label = (
-              <span className={s.selectWithSale}>
-                <div className={s.sale55Icon}>-55%</div>
-                <span className={s.saleSpan}>
-                  {`${words[0]} Gb (`}
-                  <span className={s.memorySale}>
-                    {roundToDecimal(Number($cost / 0.45))}
-                  </span>
-                  {translatePeriodText($.trim().split('(')[1], t)}
-                </span>
-              </span>
-            )
-          } else if (fieldName === 'Memory' || $.includes('EUR ')) {
-            label = translatePeriodText($.trim(), t)
-          } else {
-            label = t($.trim())
-          }
-          return {
-            value: $key,
-            label: label,
-            sale: withSale,
-            newPrice: roundToDecimal(Number($cost)),
-            oldPrice: roundToDecimal(Number($cost) + $cost * 0.55),
-          }
-        })
-    }
-    return []
-  }
+  //           if (words?.length > 0 && index === 0) {
+  //             firstItem = words[0]
+  //           }
 
-  const getControlPanelList = fieldName => {
-    const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
+  //           if (words?.length > 0 && Number(words[0]) === firstItem * 2) {
+  //             withSale = true
+  //           }
+  //         }
 
-    return optionsList?.map(({ $key, $ }) => {
-      let label = translatePeriodText($.trim(), t)
+  //         if (withSale && words?.length > 0) {
+  //           label = (
+  //             <span className={s.selectWithSale}>
+  //               <div className={s.sale55Icon}>-55%</div>
+  //               <span className={s.saleSpan}>
+  //                 {`${words[0]} Gb (`}
+  //                 <span className={s.memorySale}>
+  //                   {roundToDecimal(Number($cost / 0.45))}
+  //                 </span>
+  //                 {translatePeriodText($.trim().split('(')[1], t)}
+  //               </span>
+  //             </span>
+  //           )
+  //         } else if (fieldName === 'Memory' || $.includes('EUR ')) {
+  //           label = translatePeriodText($.trim(), t)
+  //         } else {
+  //           label = t($.trim())
+  //         }
+  //         return {
+  //           value: $key,
+  //           label: label,
+  //           sale: withSale,
+  //           newPrice: roundToDecimal(Number($cost)),
+  //           oldPrice: roundToDecimal(Number($cost) + $cost * 0.55),
+  //         }
+  //       })
+  //   }
+  //   return []
+  // }
 
-      label = t(label?.split(' (')[0]) + ' (' + label?.split(' (')[1]
-      return { value: $key, label: label }
-    })
-  }
+  // const getControlPanelList = fieldName => {
+  //   const optionsList = parametersInfo.slist.find(elem => elem.$name === fieldName)?.val
 
-  const translate = string => {
-    return (
-      roundToDecimal(string?.split('EUR ')[0]) + ' EUR ' + t(string?.split('EUR ')[1])
-    )
-  }
+  //   return optionsList?.map(({ $key, $ }) => {
+  //     let label = translatePeriodText($.trim(), t)
 
-  const parseTariffPrice = price => {
-    let percent = price.match(/<b>(.+?)(?=<\/b>)/g)[0]?.replace('<b>', '')
-    let newPrice = price.match(/<b>(.+?)(?=<\/b>)/g)[1]?.replace('<b>', '')
-    let oldPrice = price.match(/<del>(.+?)(?=<\/del>)/g)[0]?.replace('<del>', '')
+  //     label = t(label?.split(' (')[0]) + ' (' + label?.split(' (')[1]
+  //     return { value: $key, label: label }
+  //   })
+  // }
 
-    newPrice = translate(newPrice)
-    oldPrice = translate(oldPrice)
+  // const translate = string => {
+  //   return (
+  //     roundToDecimal(string?.split('EUR ')[0]) + ' EUR ' + t(string?.split('EUR ')[1])
+  //   )
+  // }
 
-    return { percent, oldPrice, newPrice }
-  }
+  // const parseTariffPrice = price => {
+  //   let percent = price.match(/<b>(.+?)(?=<\/b>)/g)[0]?.replace('<b>', '')
+  //   let newPrice = price.match(/<b>(.+?)(?=<\/b>)/g)[1]?.replace('<b>', '')
+  //   let oldPrice = price.match(/<del>(.+?)(?=<\/del>)/g)[0]?.replace('<del>', '')
 
-  const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
-    let dataArr = parametersInfo.slist.find(el => el.$name === fieldName)?.val
-    const elemsData = {}
-    if (fieldName === 'recipe') {
-      dataArr = dataArr?.filter(el => el.$depend === ostempl && el.$key !== 'null')
-      elemsData.null = [{ $key: 'null', $: t('without_software') }]
-    }
+  //   newPrice = translate(newPrice)
+  //   oldPrice = translate(oldPrice)
 
-    dataArr?.forEach(element => {
-      const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
+  //   return { percent, oldPrice, newPrice }
+  // }
 
-      if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
-        elemsData[itemName] = [element]
-      } else {
-        elemsData[itemName].push(element)
-      }
-    })
+  // const renderSoftwareOSFields = (fieldName, setFieldValue, state, ostempl) => {
+  //   let dataArr = parametersInfo.slist.find(el => el.$name === fieldName)?.val
+  //   const elemsData = {}
+  //   if (fieldName === 'recipe') {
+  //     dataArr = dataArr?.filter(el => el.$depend === ostempl && el.$key !== 'null')
+  //     elemsData.null = [{ $key: 'null', $: t('without_software') }]
+  //   }
 
-    return Object.entries(elemsData).map(([name, el]) => {
-      if (el.length > 1) {
-        const optionsList = el.map(({ $key, $ }) => ({
-          value: $key,
-          label: $,
-        }))
+  //   dataArr?.forEach(element => {
+  //     const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
 
-        return (
-          <SoftwareOSSelect
-            key={optionsList[0].value}
-            iconName={name.toLowerCase()}
-            itemsList={optionsList}
-            state={state}
-            getElement={value => {
-              setFieldValue(fieldName, value)
-              if (fieldName === 'ostempl') {
-                setRecipe('null')
-                parametersInfo[fieldName].$ = value
-                setParametersInfo({ ...parametersInfo })
-              } else {
-                setRecipe(value)
-              }
-            }}
-          />
-        )
-      } else {
-        return (
-          <SoftwareOSBtn
-            key={el[0].$key}
-            value={el[0].$key}
-            state={state}
-            iconName={name.toLowerCase()}
-            label={el[0].$}
-            onClick={value => {
-              if (fieldName === 'ostempl') {
-                setRecipe('null')
-                parametersInfo[fieldName].$ = value
-                setParametersInfo({ ...parametersInfo })
-              } else {
-                setRecipe(value)
-              }
-            }}
-          />
-        )
-      }
-    })
-  }
+  //     if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
+  //       elemsData[itemName] = [element]
+  //     } else {
+  //       elemsData[itemName].push(element)
+  //     }
+  //   })
 
-  const onChangeField = (period, values, fieldName) => {
-    dispatch(
-      vdsOperations.changeOrderFormField(
-        period,
-        values,
-        recipe,
-        selectedTariffId,
-        parametersInfo.register[fieldName] || fieldName,
-        setParametersInfo,
-        parametersInfo.register,
-        signal,
-        setIsLoading,
-      ),
-    )
-  }
+  //   return Object.entries(elemsData).map(([name, el]) => {
+  //     if (el.length > 1) {
+  //       const optionsList = el.map(({ $key, $ }) => ({
+  //         value: $key,
+  //         label: $,
+  //       }))
 
-  const onFormSubmit = values => {
-    const saleMemory = getOptionsListExtended('Memory')?.find(
-      e => e?.value === values.Memory,
-    ).sale
+  //       return (
+  //         <SoftwareOSSelect
+  //           key={optionsList[0].value}
+  //           iconName={name.toLowerCase()}
+  //           itemsList={optionsList}
+  //           state={state}
+  //           getElement={value => {
+  //             setFieldValue(fieldName, value)
+  //             if (fieldName === 'ostempl') {
+  //               setRecipe('null')
+  //               parametersInfo[fieldName].$ = value
+  //               setParametersInfo({ ...parametersInfo })
+  //             } else {
+  //               setRecipe(value)
+  //             }
+  //           }}
+  //         />
+  //       )
+  //     } else {
+  //       return (
+  //         <SoftwareOSBtn
+  //           key={el[0].$key}
+  //           value={el[0].$key}
+  //           state={state}
+  //           iconName={name.toLowerCase()}
+  //           label={el[0].$}
+  //           onClick={value => {
+  //             if (fieldName === 'ostempl') {
+  //               setRecipe('null')
+  //               parametersInfo[fieldName].$ = value
+  //               setParametersInfo({ ...parametersInfo })
+  //             } else {
+  //               setRecipe(value)
+  //             }
+  //           }}
+  //         />
+  //       )
+  //     }
+  //   })
+  // }
 
-    dispatch(
-      userOperations.cleanBsketHandler(() =>
-        dispatch(
-          vdsOperations.setOrderData(
-            period,
-            count,
-            recipe,
-            values,
-            selectedTariffId,
-            parametersInfo.register,
-            saleMemory,
-          ),
-        ),
-      ),
-    )
-  }
+  // const onChangeField = (period, values, fieldName) => {
+  //   dispatch(
+  //     vdsOperations.changeOrderFormField(
+  //       period,
+  //       values,
+  //       recipe,
+  //       selectedTariffId,
+  //       parametersInfo.register[fieldName] || fieldName,
+  //       setParametersInfo,
+  //       parametersInfo.register,
+  //       signal,
+  //       setIsLoading,
+  //     ),
+  //   )
+  // }
 
-  const validationSchema = Yup.object().shape({
-    agreement: Yup.string().oneOf(
-      ['on'],
-      t('agreement_warning', { ns: 'dedicated_servers' }),
-    ),
-    domain: Yup.string().matches(DOMAIN_REGEX, t('warning_domain')),
-  })
+  // const onFormSubmit = values => {
+  //   const saleMemory = getOptionsListExtended('Memory')?.find(
+  //     e => e?.value === values.Memory,
+  //   ).sale
 
-  const totalPrice = +parametersInfo?.orderinfo?.$?.match(
-    /Total amount: (.+?)(?= EUR)/,
-  )[1]
+  //   dispatch(
+  //     userOperations.cleanBsketHandler(() =>
+  //       dispatch(
+  //         vdsOperations.setOrderData(
+  //           period,
+  //           count,
+  //           recipe,
+  //           values,
+  //           selectedTariffId,
+  //           parametersInfo.register,
+  //           saleMemory,
+  //         ),
+  //       ),
+  //     ),
+  //   )
+  // }
+
+  // const validationSchema = Yup.object().shape({
+  //   agreement: Yup.string().oneOf(
+  //     ['on'],
+  //     t('agreement_warning', { ns: 'dedicated_servers' }),
+  //   ),
+  //   domain: Yup.string().matches(DOMAIN_REGEX, t('warning_domain')),
+  // })
+
+  // const totalPrice = +parametersInfo?.orderinfo?.$?.match(
+  //   /Total amount: (.+?)(?= EUR)/,
+  // )[1]
 
   // const openTermsHandler = () => {
   //   dispatch(dnsOperations?.getPrintLicense(parametersInfo?.pricelist?.$))
   // }
 
-  const handleDomainChange = e => setDomainName(e.target.value)
+  // const handleDomainChange = e => setDomainName(e.target.value)
 
   return (
     <div className={s.pb}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
-      <h2 className={s.page_title}>{t('vps_order', { ns: 'crumbs' })} </h2>
+      <h2 className={s.page_title}>{t('vps_ordering_title')} </h2>
 
-      <ul className={s.categories_list}>
+      <div className={s.description_wrapper}>
+        <p className={s.description_text}>{t('vps_new_tariffs')}</p>
+        <p className={s.description_headline}>{t('why_cloud_better')}</p>
+        <ul className={s.description_list}>
+          <li className={s.description_list_item}>
+            <Trans
+              t={t}
+              i18nKey="cloud_unmatched_performance"
+              components={{
+                span: <span></span>,
+              }}
+            >
+              <span>Неперевершена продуктивність:</span> Завдяки процесорам Xeon Gold,
+              NVMe дискам та каналу 1 Гбит/с ваш сайт або веб-застосунок працюватиме
+              блискавично, без затримок та збоїв.
+            </Trans>
+          </li>
+          <li className={s.description_list_item}>
+            <Trans
+              t={t}
+              i18nKey="cloud_scalability"
+              components={{
+                span: <span></span>,
+              }}
+            >
+              <span>Масштабованість:</span> З Cloud VPS ви можете легко розширювати
+              ресурси сервера в міру зростання ваших потреб.
+            </Trans>
+          </li>
+          <li className={s.description_list_item}>
+            <Trans
+              t={t}
+              i18nKey="cloud_reliability"
+              components={{
+                span: <span></span>,
+              }}
+            >
+              <span>Надійність:</span> Наша хмарна інфраструктура гарантує безперебійну
+              роботу вашого серверу 24/7.
+            </Trans>
+          </li>
+          <li className={s.description_list_item}>
+            <Trans
+              t={t}
+              i18nKey="cloud_flexibility"
+              components={{
+                span: <span></span>,
+              }}
+            >
+              <span>Гнучкість:</span> Завдяки гнучким конфігураціям Cloud VPS ви можете
+              вибрати сервер, який ідеально відповідає вашим потребам та бюджету.
+            </Trans>
+          </li>
+        </ul>
+        <p className={s.description_headline}>{t('outdated_vps')}</p>
+        <p className={s.description_text}>{t('outdated_vps_descr')}</p>
+        <p className={s.description_headline}>
+          <Trans
+            t={t}
+            i18nKey="cloud_in_two_types"
+            components={{
+              span: <span className={s.description_category}></span>,
+            }}
+          >
+            Cloud VPS доступний у двох типах тарифів:{' '}
+            <span className={s.description_category}>Premium</span> та{' '}
+            <span className={s.description_category}>Basic</span>.
+          </Trans>
+        </p>
+        <p className={s.description_category}>Premium:</p>
+
+        <ul className={s.sublist}>
+          <li className={s.description_list_item}>
+            <span>{t('performance_and_flexibility')}</span>
+          </li>
+          <li className={s.description_list_item}>
+            <span>{t('includes')}:</span>
+            <ul className={s.sublist}>
+              <li className={s.sublist_item}>{t('powerful_processors')}</li>
+              <li className={s.sublist_item}>{t('more_ram')}</li>
+              <li className={s.sublist_item}>{t('more_disk_space')}</li>
+              <li className={s.sublist_item}>{t('additional_features')}</li>
+            </ul>
+          </li>
+        </ul>
+
+        <p className={s.description_category}>Basic:</p>
+        <ul className={s.sublist}>
+          <li className={s.description_list_item}>
+            <span>{t('affordable_and_reliable')}</span>
+          </li>
+          <li className={s.description_list_item}>
+            <span>{t('includes')}:</span>
+            <ul className={s.sublist}>
+              <li className={s.sublist_item}>{t('enough_power_for_web')}</li>
+              <li className={s.sublist_item}>{t('high_performance_and_reliability')}</li>
+              <li className={s.sublist_item}>{t('affordable_price')}</li>
+            </ul>
+          </li>
+        </ul>
+
+        <p className={s.description_headline}>{t('switch_to_cloud')}</p>
+        <p className={s.description_text}>{t('dont_miss_the_opportunity')}</p>
+      </div>
+
+      {/* <ul className={s.categories_list}>
         {formInfo?.flist.val.map(({ $key, $ }) => {
           return (
             <li
@@ -356,9 +467,9 @@ export default function VDSOrder() {
             </li>
           )
         })}
-      </ul>
+      </ul> */}
 
-      <p className={s.section_title}>{t('tariffs')}</p>
+      {/* <p className={s.section_title}>{t('tariffs')}</p>
       {formInfo && (
         <Formik
           enableReinitialize
@@ -667,46 +778,6 @@ export default function VDSOrder() {
                         disabled
                       />
                     </div>
-
-                    {/* <div ref={agreementEl}>
-                      <div className={s.agreement_wrapper}>
-                        <div className={s.checkbox_wrapper}>
-                          <input
-                            ref={checkboxEl}
-                            className={cn(s.checkbox, {
-                              [s.error]: errors.agreement && touched.agreement,
-                            })}
-                            type="checkbox"
-                            onClick={() =>
-                              setFieldValue(
-                                'agreement',
-                                values.agreement === 'on' ? 'off' : 'on',
-                              )
-                            }
-                          />
-                          {values.agreement === 'on' && (
-                            <Check className={s.icon_check} />
-                          )}
-                        </div>
-
-                        <p className={s.agreement_text}>
-                          {t('terms', { ns: 'dedicated_servers' })}{' '}
-                          <a
-                            className={s.link}
-                            target="_blank"
-                            href={PRIVACY_URL}
-                            rel="noreferrer"
-                          >
-                            &quot;{t('terms_2', { ns: 'dedicated_servers' })}&quot;
-                          </a>
-                        </p>
-                      </div>
-                      <ErrorMessage
-                        className={s.error_message}
-                        name="agreement"
-                        component="p"
-                      />
-                    </div> */}
                   </>
                 )}
 
@@ -788,7 +859,6 @@ export default function VDSOrder() {
                         €{roundToDecimal(values.finalTotalPrice - checkSaleMemory())}
                       </span>
                       {` ${translatePeriodName(period, t)}`}
-                      {/* {t(parametersInfo?.orderinfo?.$?.match(/EUR (.+?)(?= <br\/>)/)[1])} */}
                     </p>
                   )}
 
@@ -809,7 +879,31 @@ export default function VDSOrder() {
             )
           }}
         </Formik>
-      )}
+      )} */}
+      <FixedFooter isShown={true}>
+        <div className={s.redirect_btns_wrapper}>
+          <Button
+            className={s.buy_btn}
+            type="button"
+            isShadow
+            textClassName={s.buy_btn_text}
+            label={t('to_order', { ns: 'other' }) + ' Premium Cloud VPS'}
+            onClick={() => {
+              navigateToCloud('premium')
+            }}
+          />
+          <Button
+            className={s.buy_btn}
+            type="button"
+            isShadow
+            textClassName={s.buy_btn_text}
+            label={t('to_order', { ns: 'other' }) + ' Basic Cloud VPS'}
+            onClick={() => {
+              navigateToCloud('basic')
+            }}
+          />
+        </div>
+      </FixedFooter>
       {isLoading && <Loader local shown={isLoading} />}
     </div>
   )

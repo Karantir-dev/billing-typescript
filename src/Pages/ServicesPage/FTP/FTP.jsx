@@ -18,6 +18,7 @@ import {
   CheckBox,
   Loader,
   DeleteModal,
+  Button,
 } from '@components'
 import { ftpOperations, ftpSelectors, actions } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -249,7 +250,7 @@ export default function FTP() {
         )}
 
         <div className={s.btns_wrapper}>
-          {/* <Button
+          <Button
             disabled={!rights?.new}
             className={s.order_btn}
             isShadow
@@ -261,7 +262,7 @@ export default function FTP() {
                 replace: true,
               })
             }}
-          /> */}
+          />
 
           <div className={s.tools_container}>
             <div className={s.filterBtnBlock}>
