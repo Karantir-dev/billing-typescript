@@ -8,6 +8,7 @@ import {
   billingActions,
   authSelectors,
   userSelectors,
+  cartSelectors,
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
@@ -238,11 +239,9 @@ const setPaymentMethods =
     analyticsSaver()
 
     const store = getState()
-    const {
-      auth: { sessionId },
-      cart: { cartState },
-    } = store
 
+    const cartState = cartSelectors.getCartState(store)
+    const sessionId = authSelectors.getSessionId(store)
     const { $email, $realname } = userSelectors.getUserInfo(store)
 
     axiosInstance

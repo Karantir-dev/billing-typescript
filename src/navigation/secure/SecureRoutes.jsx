@@ -80,7 +80,7 @@ import { navigateIfFromSite } from '@utils'
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const cartState = useSelector(cartSelectors?.getCartIsOpened)
+  const cartState = useSelector(cartSelectors.getCartState)
   const promotionsList = useSelector(selectors.getPromotionsList)
   const paymentsList = useSelector(billingSelectors.getPaymentsReadOnlyList)
   const isModalCreatePaymentOpened = useSelector(
