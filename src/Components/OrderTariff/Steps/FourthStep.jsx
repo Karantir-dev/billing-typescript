@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,7 @@ import {
   cartActions,
   cartOperations,
   payersSelectors,
+  selectors,
   settingsOperations,
   settingsSelectors,
   userOperations,
@@ -52,10 +53,9 @@ export default function FourthStep({
     'domains',
   ])
 
-  const [salesList, setSalesList] = useState([])
-
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
   const payersData = useSelector(payersSelectors.getPayersData)
+  const promotionsList = useSelector(selectors.getPromotionsList)
 
   const filteredPayment_method = state.additionalPayMethodts?.find(
     e => e?.$key === state.selectedAddPaymentMethod,
@@ -98,7 +98,7 @@ export default function FourthStep({
 
   const getBasketInfo = () => {
     dispatch(cartOperations.getBasket(setCartData, paymentListhandler, false))
-    dispatch(cartOperations.getSalesList(setSalesList))
+    dispatch(cartOperations.getSalesList())
     dispatch(settingsOperations.getUserEdit(userInfo.$id))
   }
 
@@ -133,8 +133,6 @@ export default function FourthStep({
       setState({ userCountryCode: code })
     }
   }, [userEdit])
-
-  //isPersonalBalance
 
   const validationSchema = Yup.object().shape({
     payment_method:
@@ -301,35 +299,59 @@ export default function FourthStep({
     )
   }
 
+  /**
+   * In this useEffect we check for the dedic half year promotion
+   * if this promotion for dedic is enabled and it is dedic ordering -
+   * we disable promocode field
+   */
   useEffect(() => {
-    const cartConfigName = state.cartData?.elemList?.[0]?.pricelist_name.$?.slice(
-      0,
-      state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
-    )
+    const isItDedic =
+      state.cartData?.elemList?.[0]?.pricelist_name.$.toLowerCase().includes('config')
 
-    const foundSale = salesList.find(
-      sale =>
-        sale.promotion?.$ === 'Большие скидки на выделенные серверы' &&
-        sale.idname.$.includes(cartConfigName),
-    )
+    if (isItDedic) {
+      const cartConfigName = state.cartData?.elemList[0]?.pricelist_name.$?.slice(
+        0,
+        state.cartData?.elemList[0]?.pricelist_name.$.indexOf('/') - 1,
+      )
 
-    const cartDiscountPercent =
-      state.cartData?.elemList?.[0]?.discount_percent?.$.replace('%', '') || 0
-    const selectedPeriod = state.cartData?.elemList?.[0]?.['item.period']?.$
+      let foundSale
+      /**
+       * This if statement is for two versions of API
+       * This first block is for a new version
+       */
+      if (promotionsList?.[0]?.products) {
+        foundSale = promotionsList.find(sale => sale.products.$.includes(cartConfigName))
 
-    if (foundSale) {
-      if (
-        (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
-        (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
-        (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
-        cartDiscountPercent === 0
-      ) {
-        setState({ isDedicWithSale: false })
+        /**
+         * and this second block is for an old version,
+         * which should be removed after API updating
+         */
       } else {
-        setState({ isDedicWithSale: true })
+        foundSale = promotionsList.find(
+          sale =>
+            sale.promotion?.$ === 'Большие скидки на выделенные серверы' &&
+            sale.idname.$.includes(cartConfigName),
+        )
+      }
+
+      const cartDiscountPercent =
+        state.cartData?.elemList[0]?.discount_percent?.$.replace('%', '') || 0
+      const selectedPeriod = state.cartData?.elemList[0]?.['item.period']?.$
+
+      if (foundSale) {
+        if (
+          (selectedPeriod === '12' && Number(cartDiscountPercent) <= 8) ||
+          (selectedPeriod === '24' && Number(cartDiscountPercent) <= 10) ||
+          (selectedPeriod === '36' && Number(cartDiscountPercent) <= 12) ||
+          cartDiscountPercent === 0
+        ) {
+          setState({ isDedicWithSale: false })
+        } else {
+          setState({ isDedicWithSale: true })
+        }
       }
     }
-  }, [salesList])
+  }, [promotionsList, state.cartData?.elemList])
 
   const setCode = list => {
     const country = list.find(el => el === state.userCountryCode) || list[0]
@@ -640,9 +662,10 @@ export default function FourthStep({
                           value={values.promocode}
                           onChange={e => setState({ promocode: e.target.value })}
                         />
+                        {console.log(state)}
                         <button
                           onClick={() => setPromocodeToCart(values?.promocode)}
-                          disabled={values?.promocode?.length === 0}
+                          disabled={Boolean(!values?.promocode?.length)}
                           type="button"
                           className={s.promocodeBtn}
                         >
