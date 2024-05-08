@@ -7,6 +7,7 @@ import {
   userOperations,
   billingActions,
   authSelectors,
+  userSelectors,
 } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
@@ -16,6 +17,7 @@ import {
   fraudCheckSender,
   renameAddonFields,
   handleLoadersClosing,
+  sendTrustpilotEmail,
 } from '@utils'
 import * as routes from '@src/routes'
 
@@ -235,10 +237,13 @@ const setPaymentMethods =
     dispatch(actions.showLoader())
     analyticsSaver()
 
+    const store = getState()
     const {
       auth: { sessionId },
       cart: { cartState },
-    } = getState()
+    } = store
+
+    const { $email, $realname } = userSelectors.getUserInfo(store)
 
     axiosInstance
       .post(
@@ -370,6 +375,8 @@ const setPaymentMethods =
 
                 dispatch(billingOperations.getPaymentMethodPage(data.doc.ok.$))
               }
+
+              sendTrustpilotEmail($email, $realname, cartData)
 
               navigate &&
                 navigate(cartState?.redirectPath, {
