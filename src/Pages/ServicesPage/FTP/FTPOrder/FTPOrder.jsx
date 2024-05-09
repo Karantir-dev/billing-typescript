@@ -156,7 +156,7 @@ export default function FTPOrder() {
           className={s.ftp_img}
         />
 
-        <div className="noMore_ftp">
+        <div className={s.noMore_ftp}>
           <p className={s.comment}>{t('ftp_tariffs_stoped')}</p>
         </div>
 

@@ -27,41 +27,6 @@
   align-items: center;
 }
 
-.benefitsList {
-  display: grid;
-  gap: 5px;
-  justify-content: center;
-}
-
-.benefitsList_itemTitle {
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.benefitsList_item {
-  font-size: 16px;
-
-  padding-left: 20px;
-  position: relative;
-
-  &::before {
-    position: absolute;
-    content: '';
-    left: 0;
-    top: 5px;
-    border-radius: 50%;
-    width: 8px;
-    height: 8px;
-    background: var(--accent-color-light);
-  }
-}
-
-.alternativeText {
-  font-weight: 700;
-  margin: 20px 0 10px;
-  text-align: center;
-}
-
 //tariffs
 
 .tarifs_block {
@@ -314,9 +279,7 @@
 // ADAPTIVE
 
 @media screen and (min-width: 768px) {
-  .comment,
-  .benefitsList_item,
-  .benefitsList_itemTitle {
+  .comment {
     font-size: 18px;
   }
 
