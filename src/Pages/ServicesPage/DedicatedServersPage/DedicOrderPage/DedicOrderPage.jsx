@@ -425,8 +425,8 @@ export default function DedicOrderPage() {
   }
 
   useEffect(() => {
-    const price = +parameters?.list?.find(item => item.$name === 'pricelist_summary')
-      .elem[0].cost.price.cost.$
+    const price = +parameters?.list?.find(item => item.$name === 'total_summary').elem[0]
+      .cost.price.cost.$
 
     setPrice(roundToDecimal(price))
   }, [parameters])
