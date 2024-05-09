@@ -145,7 +145,7 @@ export default function InstanceItem({ item, editInstance }) {
           <span>{ip}</span>
           {ip && (
             <div className={s.fade_in}>
-              <CopyText text={ip} />
+              <CopyText text={ip} promptText={t('ip_address_copied')} />
             </div>
           )}
         </div>

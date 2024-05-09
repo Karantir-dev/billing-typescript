@@ -6,8 +6,16 @@ import animations from './animations.module.scss'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
-export default function CopyText({ text, className, promptText }) {
-  const { t } = useTranslation(['affiliate_program'])
+export default function CopyText({
+  text,
+  className,
+  promptText,
+  isBtnDisabled = false,
+  onMobileLeft,
+  onMobileRight,
+  toDown,
+}) {
+  const { t } = useTranslation(['other'])
   const [refLinkCopied, setRefLinkCopied] = useState(false)
 
   const showPrompt = () => {
@@ -24,16 +32,29 @@ export default function CopyText({ text, className, promptText }) {
   }
 
   return (
-    <button className={cn(s.copy_btn, className)} onClick={handleCopyText} type="button">
-      <Icon name="Copy" className={s.copy_icon} />
+    <button
+      className={cn(s.copy_btn, className)}
+      onClick={handleCopyText}
+      type="button"
+      disabled={isBtnDisabled}
+    >
+      <Icon name="Copy" className={cn(s.copy_icon, { [s.disabled]: isBtnDisabled })} />
       <CSSTransition
         in={refLinkCopied}
         classNames={animations}
         timeout={150}
         unmountOnExit
       >
-        <div className={s.copy_prompt}>
-          {promptText || t('about_section.link_copied')}
+        <div
+          className={cn(
+            s.copy_prompt,
+            { [s.onLeftSide]: onMobileLeft },
+            { [s.onRightSide]: onMobileRight },
+            { [s.onBottom]: toDown },
+          )}
+        >
+          <div className={s.prompt_pointer} />
+          {promptText || t('copied')}
         </div>
       </CSSTransition>
     </button>

@@ -114,7 +114,8 @@ export default function InstanceItemMobile({ item }) {
         <p className={s.mobile_item__param}>{t('Access IP')}</p>
         <p className={s.mobile_item__value} ref={ipCell}>
           <span className={s.ip_cell}>
-            <span>{ip}</span> {ip && <CopyText text={ip} />}
+            <span>{ip}</span>{' '}
+            {ip && <CopyText text={ip} promptText={t('ip_address_copied')} />}
           </span>
         </p>
       </div>
