@@ -40,6 +40,17 @@
   font-size: 14px;
   box-shadow: var(--forms3_shadow);
   background-color: var(--forms_bgc_1);
+
+  &.onBottom {
+    bottom: -60px;
+    top: unset;
+
+    & > .prompt_pointer {
+      transform: translate(-50%, 0);
+      bottom: 100%;
+      top: unset;
+    }
+  }
 }
 
 .prompt_pointer {
@@ -61,5 +72,25 @@
     background-color: var(--forms_bgc_1);
     transform: rotate(45deg);
     box-shadow: var(--forms3_shadow);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .copy_prompt {
+    &.onLeftSide {
+      left: -70px;
+
+      & > .prompt_pointer {
+        right: 10px;
+        left: unset;
+      }
+    }
+    &.onRightSide {
+      left: 85px;
+
+      & > .prompt_pointer {
+        left: 30px;
+      }
+    }
   }
 }

@@ -6,7 +6,15 @@ import animations from './animations.module.scss'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 
-export default function CopyText({ text, className, promptText, isBtnDisabled = false }) {
+export default function CopyText({
+  text,
+  className,
+  promptText,
+  isBtnDisabled = false,
+  onMobileLeft,
+  onMobileRight,
+  toDown,
+}) {
   const { t } = useTranslation(['other'])
   const [refLinkCopied, setRefLinkCopied] = useState(false)
 
@@ -37,7 +45,14 @@ export default function CopyText({ text, className, promptText, isBtnDisabled = 
         timeout={150}
         unmountOnExit
       >
-        <div className={s.copy_prompt}>
+        <div
+          className={cn(
+            s.copy_prompt,
+            { [s.onLeftSide]: onMobileLeft },
+            { [s.onRightSide]: onMobileRight },
+            { [s.onBottom]: toDown },
+          )}
+        >
           <div className={s.prompt_pointer} />
           {promptText || t('copied')}
         </div>

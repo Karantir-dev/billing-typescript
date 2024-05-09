@@ -130,6 +130,7 @@ export default function AboutAffiliateProgram() {
             <CopyText
               text={link}
               promptText={t('about_section.link_copied')}
+              onMobileLeft
               isBtnDisabled={!link}
             />
           </div>
@@ -152,7 +153,11 @@ export default function AboutAffiliateProgram() {
               value={promocode}
             />
 
-            <CopyText text={promocode} promptText={t('about_section.promocode_copied')} />
+            <CopyText
+              text={promocode}
+              promptText={t('about_section.promocode_copied')}
+              onMobileLeft
+            />
           </div>
         </div>
       </div>
