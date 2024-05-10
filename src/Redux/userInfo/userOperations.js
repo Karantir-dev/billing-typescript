@@ -188,10 +188,11 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
     axiosInstance.post(
       '/',
       qs.stringify({
-        func: 'item.count',
+        func: 'notify',
         out: 'json',
         lang: 'en',
         auth: sessionId,
+        notifiaction: 'count',
       }),
     ),
   ])
