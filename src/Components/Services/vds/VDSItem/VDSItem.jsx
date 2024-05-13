@@ -138,16 +138,6 @@ export default function VDSItem({
     },
   ]
 
-  console.log(
-    'server?.status: ',
-    server?.status,
-    (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
-      server?.status?.$ === '5' ||
-      server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
-      !rights?.prolong ||
-      server?.pricelist?.$?.toLowerCase()?.includes('ddos'),
-  )
-
   return (
     <div className={s.item_wrapper}>
       <CheckBox
