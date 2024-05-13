@@ -32,7 +32,6 @@ export default function Component(props) {
 
   const deleteOption = isUnpaidOrder(el, unpaidItems)
 
-  console.log('elems: ', el)
   const options = [
     deleteOption,
     {
