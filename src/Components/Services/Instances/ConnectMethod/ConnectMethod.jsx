@@ -25,25 +25,18 @@ export default function ConnectMethod({
   const isSSH = connectionType === 'ssh'
   const isPassword = connectionType === 'password'
 
-  const onEnter = (e, callback) => {
-    if (e.key === 'Enter') {
-      callback()
-    }
-  }
-
   return (
     <div className={s.list} name={name}>
       {!isWindows && (
-        <div
-          className={cn(s.item, { [s.selected]: isSSH })}
-          onClick={isSSH ? null : () => onChangeType('ssh')}
-          onKeyUp={isSSH ? null : e => onEnter(e, () => onChangeType('ssh'))}
-          tabIndex={0}
-          role="checkbox"
-          aria-checked={isSSH ? true : false}
-        >
+        <label className={cn(s.item, { [s.selected]: isSSH })} htmlFor="typeSSH">
           <div className={s.item__description}>
-            <CheckBox className={s.checkbox} tabIndex={-1} type="radio" value={isSSH} />
+            <CheckBox
+              className={s.checkbox}
+              onClick={isSSH ? null : () => onChangeType('ssh')}
+              type="radio"
+              value={isSSH}
+              id={'typeSSH'}
+            />
             <div className={s.item__text_wrapper}>
               <p className={s.item__name}>{t('ssh_key')}</p>
               <p className={s.item__text}>{t('pass_method_ssh')}</p>
@@ -71,22 +64,16 @@ export default function ConnectMethod({
               />
             </div>
           )}
-        </div>
+        </label>
       )}
-      <div
-        className={cn(s.item, { [s.selected]: isPassword })}
-        onClick={isPassword ? null : () => onChangeType('password')}
-        onKeyUp={isPassword ? null : e => onEnter(e, () => onChangeType('password'))}
-        tabIndex={0}
-        role="checkbox"
-        aria-checked={isPassword ? true : false}
-      >
+      <label className={cn(s.item, { [s.selected]: isPassword })} htmlFor="typePassword">
         <div className={s.item__description}>
           <CheckBox
             className={s.checkbox}
-            tabIndex={-1}
+            onClick={isPassword ? null : () => onChangeType('password')}
             type="radio"
             value={isPassword}
+            id="typePassword"
           />
           <div className={s.item__text_wrapper}>
             <p className={s.item__name}>{t('password', { ns: 'vds' })}</p>
@@ -112,7 +99,7 @@ export default function ConnectMethod({
             />
           </div>
         )}
-      </div>
+      </label>
     </div>
   )
 }
