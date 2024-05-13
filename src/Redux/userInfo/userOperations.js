@@ -108,13 +108,15 @@ const getActiveServices = (data, dispatch) => {
 
 const funcsArray = [
   userInfo,
-  userNotifications,
+  (...args) => {
+    userNotifications(...args)
+    getActiveServices(...args)
+  },
   currentSessionRights,
   userTickets,
   clearBasket,
   dashBoardInfo,
   getAvailableCredit,
-  getActiveServices,
 ]
 
 const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
@@ -137,6 +139,7 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
         out: 'json',
         lang: 'en',
         auth: sessionId,
+        notifiaction: 'count',
       }),
     ),
     axiosInstance.post(
@@ -180,15 +183,6 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
       '/',
       qs.stringify({
         func: 'dashboard.subaccount_credit',
-        out: 'json',
-        lang: 'en',
-        auth: sessionId,
-      }),
-    ),
-    axiosInstance.post(
-      '/',
-      qs.stringify({
-        func: 'item.count',
         out: 'json',
         lang: 'en',
         auth: sessionId,
