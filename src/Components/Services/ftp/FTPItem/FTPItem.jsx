@@ -61,7 +61,8 @@ export default function FTPItem({
     {
       label: t('prolong'),
       icon: 'Clock',
-      disabled: storage?.status?.$ === '1' || !rights?.prolong,
+      disabled:
+        storage?.status?.$ === '1' || storage?.status?.$ === '5' || !rights?.prolong,
       onClick: () => handleToolBtnClick(setElidForProlongModal),
     },
     {
