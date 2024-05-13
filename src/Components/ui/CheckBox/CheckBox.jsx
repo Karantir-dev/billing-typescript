@@ -13,9 +13,11 @@ export default function Component({
   name,
   type = 'checkbox',
   id,
+  tabIndex,
 }) {
   return (
     <button
+      tabIndex={tabIndex}
       disabled={disabled}
       className={cn(s[type], {
         [s.btn]: true,
@@ -47,4 +49,5 @@ Component.propTypes = {
   name: PropTypes.string,
   type: PropTypes.string,
   id: PropTypes.string,
+  tabIndex: PropTypes.number,
 }

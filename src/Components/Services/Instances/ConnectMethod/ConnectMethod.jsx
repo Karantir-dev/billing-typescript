@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import s from './ConnectMethod.module.scss'
 import { cloudVpsActions } from '@src/Redux'
 import { useDispatch } from 'react-redux'
+import cn from 'classnames'
 
 export default function ConnectMethod({
   connectionType,
@@ -21,15 +22,20 @@ export default function ConnectMethod({
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
 
+  const isSSH = connectionType === 'ssh'
+  const isPassword = connectionType === 'password'
+
   return (
     <div className={s.list} name={name}>
       {!isWindows && (
-        <div className={s.item}>
+        <label className={cn(s.item, { [s.selected]: isSSH })} htmlFor="typeSSH">
           <div className={s.item__description}>
             <CheckBox
+              className={s.checkbox}
+              onClick={isSSH ? null : () => onChangeType('ssh')}
               type="radio"
-              onClick={() => onChangeType('ssh')}
-              value={connectionType === 'ssh'}
+              value={isSSH}
+              id={'typeSSH'}
             />
             <div className={s.item__text_wrapper}>
               <p className={s.item__name}>{t('ssh_key')}</p>
@@ -37,7 +43,7 @@ export default function ConnectMethod({
             </div>
             <Icon name="Ssh_keys" />
           </div>
-          {connectionType === 'ssh' && (
+          {isSSH && (
             <div className={s.item__field}>
               <Select
                 name="ssh_keys"
@@ -58,14 +64,16 @@ export default function ConnectMethod({
               />
             </div>
           )}
-        </div>
+        </label>
       )}
-      <div className={s.item}>
+      <label className={cn(s.item, { [s.selected]: isPassword })} htmlFor="typePassword">
         <div className={s.item__description}>
           <CheckBox
+            className={s.checkbox}
+            onClick={isPassword ? null : () => onChangeType('password')}
             type="radio"
-            onClick={() => onChangeType('password')}
-            value={connectionType === 'password'}
+            value={isPassword}
+            id="typePassword"
           />
           <div className={s.item__text_wrapper}>
             <p className={s.item__name}>{t('password', { ns: 'vds' })}</p>
@@ -75,7 +83,7 @@ export default function ConnectMethod({
           </div>
           <Icon name="Lock" />
         </div>
-        {connectionType === 'password' && (
+        {isPassword && (
           <div className={s.item__field}>
             <InputField
               name="password"
@@ -91,7 +99,7 @@ export default function ConnectMethod({
             />
           </div>
         )}
-      </div>
+      </label>
     </div>
   )
 }
