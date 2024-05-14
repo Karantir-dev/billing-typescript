@@ -68,6 +68,7 @@ export { default as RadioTypeButton } from './ui/RadioTypeButton/RadioTypeButton
 export { default as CopyText } from './ui/CopyText/CopyText'
 export { default as Incrementer } from './ui/Incrementer/Incrementer'
 export { default as FixedFooter } from './ui/FixedFooter/FixedFooter'
+export { default as Error } from './ui/Error/Error'
 
 //==========================================ACCESS LOGS==========================================//
 

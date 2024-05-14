@@ -582,6 +582,7 @@ const getAllTariffsInfo =
           el.$.toLowerCase().includes('windows'),
         ).$key
 
+        console.log(data?.doc)
         const instanceTypePremium = data?.doc?.flist?.val.find(el =>
           el?.$.toLowerCase().includes('premium'),
         ).$key

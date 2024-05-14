@@ -2,9 +2,9 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '@components'
 import { AuthPageHeader } from '@pages'
-import s from './ErrorPayment.module.scss'
 import * as routes from '@src/routes'
 import { parseLang } from '@utils'
+import s from './ErrorPayment.module.scss'
 
 export default function Component({ title, text, isSupport = true }) {
   const { t, i18n } = useTranslation(['billing', 'other', 'payers'])
