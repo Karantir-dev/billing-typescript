@@ -25,6 +25,7 @@ export default function VPSCompareModal({ isOpen, closeModal }) {
           className={s.buy_btn}
           type="button"
           isShadow
+          textClassName={s.buy_btn_text}
           label={t('to_order', { ns: 'other' }) + ' Premium Cloud VPS'}
           onClick={() => {
             navigateToCloud('premium')
@@ -34,6 +35,7 @@ export default function VPSCompareModal({ isOpen, closeModal }) {
           className={s.buy_btn}
           type="button"
           isShadow
+          textClassName={s.buy_btn_text}
           label={t('to_order', { ns: 'other' }) + ' Basic Cloud VPS'}
           onClick={() => {
             navigateToCloud('basic')

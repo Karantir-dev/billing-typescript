@@ -79,6 +79,7 @@ export default function DedicMobileItem({
       icon: 'Clock',
       disabled:
         server?.status?.$ === '1' ||
+        server?.status?.$ === '5' ||
         !rights?.prolong ||
         isDisabledDedicTariff(server?.name?.$),
 
@@ -99,7 +100,8 @@ export default function DedicMobileItem({
     {
       label: t('ip_addresses'),
       icon: 'IP',
-      disabled: server.has_ip_pricelist?.$ !== 'on' || !rights?.ip,
+      disabled:
+        server.has_ip_pricelist?.$ !== 'on' || server?.status?.$ === '5' || !rights?.ip,
       onClick: () =>
         navigate(route.DEDICATED_SERVERS_IP, {
           state: { plid: server?.id?.$, isIpAllowedRender: rights?.ip },

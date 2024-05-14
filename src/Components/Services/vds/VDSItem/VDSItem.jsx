@@ -81,6 +81,7 @@ export default function VDSItem({
       icon: 'Clock',
       disabled:
         (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+        server?.status?.$ === '5' ||
         server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
         !rights?.prolong ||
         server?.pricelist?.$?.toLowerCase()?.includes('ddos'),

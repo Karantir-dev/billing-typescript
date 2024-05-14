@@ -48,7 +48,8 @@ export default function ForexMobileItem({
     {
       label: t('prolong'),
       icon: 'Clock',
-      disabled: server?.status?.$ === '1' || !pageRights?.prolong,
+      disabled:
+        server?.status?.$ === '1' || server?.status?.$ === '5' || !pageRights?.prolong,
       onClick: () => handleToolBtnClick(setElidForProlongModal),
     },
     {

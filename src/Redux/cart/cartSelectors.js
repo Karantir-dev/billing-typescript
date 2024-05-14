@@ -1,5 +1,5 @@
-const getCartIsOpened = state => state.cart.cartState
+const getCartState = state => state.cart.cartState
 
 export default {
-  getCartIsOpened,
+  getCartState,
 }

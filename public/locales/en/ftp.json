@@ -14,5 +14,7 @@
   "Dear,": "Dear,",
   "storage": "storage",
   "YOU DO NOT HAVE AN EXTERNAL FTP STORAGE YET": "YOU DO NOT HAVE AN EXTERNAL FTP STORAGE YET",
-  "no ftp services description": "Protect your business from unexpected information loss. FTP storage is a server with a dedicated area of disk space for storing files, backups with the possibility of subsequent recovery. Store data profitably."
+  "no ftp services description": "Protect your business from unexpected information loss. FTP storage is a server with a dedicated area of disk space for storing files, backups with the possibility of subsequent recovery. Store data profitably.",
+  "no_more_ftp": "All previous FTP Storage plans are sold out",
+  "ftp_tariffs_stoped": "At the moment we have suspended the FTP storage service. We recommend you to pay attention to cloud solutions with large disks (Cloud VPS). Buy Premium Cloud VPS at favorable prices. Ultimate and Supreme tariffs are provided with NVMe disks 300 and 400 Gb respectively, as well as powerful Xeon Gold processor and 1 Gbps channel."
 }

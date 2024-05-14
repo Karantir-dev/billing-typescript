@@ -7,6 +7,10 @@
     & .copy_icon {
       fill: url(#gradient);
     }
+
+    & .copy_icon.disabled {
+      fill: var(--inactive_icon_color);
+    }
   }
 }
 
@@ -14,6 +18,10 @@
   width: 100%;
   height: auto;
   fill: var(--inactive_icon_color);
+
+  &.disabled {
+    opacity: 0.5;
+  }
 }
 
 .copy_prompt {
@@ -26,8 +34,63 @@
   left: 50%;
   transform: translate(-50%, 0);
   width: 214px;
-  height: 41px;
-  border-radius: 25px;
-  color: #fff;
-  background: rgba(63, 63, 63, 0.43);
+  padding: 5px 10px;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 14px;
+  box-shadow: var(--forms3_shadow);
+  background-color: var(--forms_bgc_1);
+
+  &.onBottom {
+    bottom: -60px;
+    top: unset;
+
+    & > .prompt_pointer {
+      transform: translate(-50%, 0);
+      bottom: 100%;
+      top: unset;
+    }
+  }
+}
+
+.prompt_pointer {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 0) rotate(180deg);
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background-color: var(--forms_bgc_1);
+    transform: rotate(45deg);
+    box-shadow: var(--forms3_shadow);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .copy_prompt {
+    &.onLeftSide {
+      left: -70px;
+
+      & > .prompt_pointer {
+        right: 10px;
+        left: unset;
+      }
+    }
+    &.onRightSide {
+      left: 85px;
+
+      & > .prompt_pointer {
+        left: 30px;
+      }
+    }
+  }
 }

@@ -11,8 +11,13 @@
   text-transform: uppercase;
 }
 
+.buy_btn_text {
+  font-size: 16px;
+  text-wrap: balance;
+}
+
 @media screen and (min-width: 768px) {
-  .title {
-    font-size: 20px;
+  .buy_btn_text {
+    font-size: 18px;
   }
 }

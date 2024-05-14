@@ -125,6 +125,7 @@
   "server_size": "Розмір сервера",
   "server_type": "Тип сервера",
   "cloud_ipv6": "Тільки IPv6",
+  "ip_address_copied": "IP-адресу скопійовано",
   "price_per": "Ціна за",
   "authentication_method": "Виберіть метод підключення",
   "create_instance": "Створити сервер",

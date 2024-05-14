@@ -28,5 +28,5 @@
   "The maximum number of payers Company": "The maximum number of payers  'Company': 1. You have exceeded the limit. You can use the existing payer, or create a new payer of another type. Contact Technical support, if you need other variants",
   "eu_vat field has invalid value": "The VAT-number has invalid value",
   "set_valid_address": "Please change the address to a valid one",
-  "CNP": "Cod Numeric Personal (CNP)"
+  "CNP": "Personal ID Number (CNP)"
 }

@@ -57,6 +57,7 @@ export default function Component(props) {
       icon: 'Clock',
       disabled:
         (el?.status?.$ !== '3' && el?.status?.$ !== '2') ||
+        el?.status?.$ === '5' ||
         el?.item_status?.$?.trim() === 'Suspended by Administrator' ||
         !rights?.prolong,
       onClick: () => prolongSiteCareHandler(id),

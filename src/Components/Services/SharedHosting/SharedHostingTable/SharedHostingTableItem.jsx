@@ -60,7 +60,7 @@ export default function Component(props) {
     {
       label: t('prolong', { ns: 'vds' }),
       icon: 'Clock',
-      disabled: !rights?.prolong || el?.status?.$ === '1',
+      disabled: !rights?.prolong || el?.status?.$ === '1' || el?.status?.$ === '5',
       onClick: () => {
         prolongVhostHandler()
         setElidForProlongModal([id])
