@@ -37,7 +37,7 @@ export default function Component(props) {
     {
       label: t('prolong', { ns: 'vds' }),
       icon: 'Clock',
-      disabled: !rights?.prolong,
+      disabled: el?.status?.$ === '5' || !rights?.prolong,
       onClick: () => renewDomainHandler(id),
     },
     {

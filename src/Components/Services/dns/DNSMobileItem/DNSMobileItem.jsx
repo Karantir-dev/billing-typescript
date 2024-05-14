@@ -62,7 +62,8 @@ export default function DNSMobileItem({
     {
       label: t('prolong'),
       icon: 'Clock',
-      disabled: storage?.status?.$ === '1' || !pageRights?.prolong,
+      disabled:
+        storage?.status?.$ === '1' || storage?.status?.$ === '5' || !pageRights?.prolong,
       onClick: () => handleToolBtnClick(setElidForProlongModal),
     },
     {
