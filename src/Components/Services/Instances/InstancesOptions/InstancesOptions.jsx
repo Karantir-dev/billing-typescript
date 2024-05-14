@@ -114,7 +114,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
-            rebuild: { ...item, rebuild_action: 'bootimage' },
+            rebuild: { ...item, rebuild_action: 'rescue' },
           }),
         ),
     },

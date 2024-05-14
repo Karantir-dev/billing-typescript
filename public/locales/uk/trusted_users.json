@@ -382,7 +382,10 @@
       "instances_resume": "Активувати",
       "instances_suspend": "Деактивувати",
       "instances_filter#create": "Фільтр",
-      "": ""
+      "instances_fleio_rescue": "Відновити",
+      "instances_fleio_rebuild": "Змінити ОС",
+      "instances_fleio_changepassword": "Зміна пароля",
+      "instances_fleio_vnc": "Консоль управління"
     },
     "Allow_all": "Дозволити все",
     "Add": "Додати",

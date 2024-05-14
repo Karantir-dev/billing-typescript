@@ -382,7 +382,10 @@
       "instances_resume": "Активировать",
       "instances_suspend": "Деактивировать",
       "instances_filter#create": "Фильтр",
-      "": ""
+      "instances_fleio_rescue": "Восстановить",
+      "instances_fleio_rebuild": "Сменить ОС",
+      "instances_fleio_changepassword": "Сменить пароль",
+      "instances_fleio_vnc": "Консоль управления"
     },
     "Allow_all": "Разрешить все",
     "Add": "Добавить",

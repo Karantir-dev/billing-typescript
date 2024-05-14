@@ -382,7 +382,10 @@
       "instances_resume": "Enable",
       "instances_suspend": "Disable",
       "instances_filter#create": "Filter",
-      "": ""
+      "instances_fleio_rescue": "Rescue",
+      "instances_fleio_rebuild": "Rebuild",
+      "instances_fleio_changepassword": "Password change",
+      "instances_fleio_vnc": "Control console"
     },
     "Allow_all": "Allow all",
     "Add": "Add",
