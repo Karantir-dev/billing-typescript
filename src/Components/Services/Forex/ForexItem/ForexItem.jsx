@@ -73,7 +73,8 @@ export default function ForexItem({
     {
       label: t('edit', { ns: 'other' }),
       icon: 'Edit',
-      disabled: !pageRights?.edit || server?.status?.$ === '1',
+      disabled:
+        !pageRights?.edit || server?.status?.$ === '1' || server?.status?.$ === '5',
       onClick: () => handleToolBtnClick(setElidForEditModal),
     },
     {
