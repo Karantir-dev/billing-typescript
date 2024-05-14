@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BreadCrumbs, Button, Select, Icon, Loader, TariffConfig } from '@components'
@@ -88,6 +89,8 @@ export default function DedicOrderPage() {
   const [filteredTariffsList, setFilteredTariffsList] = useState()
   const [filterPrice, setFilterPrice] = useState([0, 0])
   const [maxPrice, setMaxPrice] = useState()
+  const [filterByPromotion, setFilterByPromotion] = useState(false)
+  const [filterByActivation, setFilterByActivation] = useState(false)
 
   useEffect(() => {
     /* set filters groups  */
@@ -130,7 +133,12 @@ export default function DedicOrderPage() {
           )
         }
 
-        const item = { ...dedic, filter: { tag } }
+        const hasSale = parsePrice(dedic.price.$)?.length === 3
+        const isTariffAvailable = !!dedicInfoList.find(
+          el => el.service_id === +dedic.pricelist.$,
+        )?.specs.count_exists
+
+        const item = { ...dedic, filter: { tag }, isTariffAvailable, hasSale }
 
         NEW_DEDICS.includes(configName)
           ? res.newDedicList.push({ ...item, isNew: true })
@@ -355,7 +363,12 @@ export default function DedicOrderPage() {
 
   const sortCategoriesByQuantity = (...args) =>
     args.map(arg =>
-      arg?.sort((a, b) => +a.$.replace(/\D/g, '') - +b.$.replace(/\D/g, '')),
+      arg?.sort((a, b) => {
+        if (a.$.toLowerCase().includes('unlimited')) {
+          return 1
+        }
+        return +a.$.replace(/\D/g, '') - +b.$.replace(/\D/g, '')
+      }),
     )
 
   const getFiltersItems = () => {
@@ -368,7 +381,13 @@ export default function DedicOrderPage() {
         return acc
       }, {}) || {}
 
-    sortCategoriesByQuantity(items.gen, items.ram, items.cpucores, items.drive)
+    sortCategoriesByQuantity(
+      items.gen,
+      items.ram,
+      items.cpucores,
+      items.drive,
+      items.traffic,
+    )
 
     items.drive?.sort((a, b) =>
       a.$.replace(/\d/g, '').localeCompare(b.$.replace(/\d/g, '')),
@@ -483,9 +502,14 @@ export default function DedicOrderPage() {
         ?.filter(item => item.order_available.$ === 'on')
         ?.filter(item => {
           const price = parsePrice(item.price.$).amount
-          return price >= filterPrice[0] && price <= filterPrice[1]
+          return (
+            price >= filterPrice[0] &&
+            price <= filterPrice[1] &&
+            (!filterByActivation || item.isTariffAvailable) &&
+            (!filterByPromotion || item.hasSale)
+          )
         }),
-    [filteredTariffsList, filterPrice],
+    [filteredTariffsList, filterPrice, filterByActivation, filterByPromotion],
   )
 
   return (
@@ -629,6 +653,10 @@ export default function DedicOrderPage() {
                   maxPrice={maxPrice}
                   setFilterPrice={setFilterPrice}
                   changeFilterHandler={changeFilterHandler}
+                  filterByActivation={filterByActivation}
+                  setFilterByActivation={setFilterByActivation}
+                  filterByPromotion={filterByPromotion}
+                  setFilterByPromotion={setFilterByPromotion}
                   clearFiltersHandler={clearFiltersHandler}
                 />
                 <Select

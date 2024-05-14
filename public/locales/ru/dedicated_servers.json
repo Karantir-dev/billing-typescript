@@ -169,5 +169,7 @@
   },
   "empty_dedic_tariffs_title": "Сервер не найден",
   "empty_dedic_tariffs_text": "Пожалуйста, измените критерии поиска, чтобы просмотреть доступные серверы",
-  "price": "Цена"
+  "price": "Цена",
+  "promotional": "Акционные",
+  "quick_activation": "Быстрая активация"
 }

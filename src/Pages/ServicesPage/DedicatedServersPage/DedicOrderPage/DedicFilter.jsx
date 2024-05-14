@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { CheckBox, Icon, InputRange } from '@components'
 import s from './DedicOrderPage.module.scss'
 import { useTranslation } from 'react-i18next'
@@ -16,6 +17,10 @@ export default function DedicFilter({
   setFilterPrice,
   changeFilterHandler,
   clearFiltersHandler,
+  filterByActivation,
+  setFilterByActivation,
+  filterByPromotion,
+  setFilterByPromotion,
 }) {
   const { t } = useTranslation(['dedicated_servers'])
   const [isFirstRender, setIsFirstRender] = useState(true)
@@ -63,7 +68,9 @@ export default function DedicFilter({
   const isFiltered =
     Object.values(filters).some(filter => filter.length) ||
     filterPrice[0] > 0 ||
-    filterPrice[1] < maxPrice
+    filterPrice[1] < maxPrice ||
+    filterByActivation ||
+    filterByPromotion
 
   const onClearHandler = () => {
     clearFiltersHandler()
@@ -71,8 +78,10 @@ export default function DedicFilter({
     setSecondOpenedCategory('')
     setRangeValues('clear')
     setFilterPrice([0, maxPrice])
+    setFilterByActivation(false)
+    setFilterByPromotion(false)
   }
-
+  console.log(filters, ' filtersCategories')
   return (
     <div className={s.filter__wrapper}>
       <div className={s.filter}>
@@ -89,6 +98,22 @@ export default function DedicFilter({
             withFields
             wrapperClassName={s.price__filed}
           />
+        </div>
+        <div>
+          <div className={s.filter__option}>
+            <CheckBox
+              value={filterByPromotion}
+              onClick={() => setFilterByPromotion(prev => !prev)}
+            />
+            <span className={s.filter__option_name}>{t('promotional')}</span>
+          </div>
+          <div className={s.filter__option}>
+            <CheckBox
+              value={filterByActivation}
+              onClick={() => setFilterByActivation(prev => !prev)}
+            />
+            <span className={s.filter__option_name}>{t('quick_activation')}</span>
+          </div>
         </div>
         {[...renderCategory]?.map(category => {
           const isOpened = openedCategory === category
@@ -128,6 +153,11 @@ export default function DedicFilter({
                 {filtersCategories[category]?.map((group, _, arr) => {
                   const isSecondOpened =
                     secondOpenedCategory === group || arr.length === 1
+                  const subcategoryItemsCount = Number(
+                    DEDIC_FILTER_RANGE_GROUPS.includes(group)
+                      ? !!filters[group]?.length
+                      : filters[group]?.length,
+                  )
                   return (
                     <div
                       className={cn(s.filter__option_wrapper, { [s.opened]: isOpened })}
@@ -147,7 +177,11 @@ export default function DedicFilter({
                           <span className={s.filter__label}>
                             {t(`subcategory.${group}`)}
                           </span>
-
+                          {!!subcategoryItemsCount && (
+                            <span className={s.filter_amount}>
+                              {subcategoryItemsCount}
+                            </span>
+                          )}
                           <Icon name="ArrowSign" className={s.filter__btn_icon} />
                         </button>
                       )}
@@ -192,7 +226,11 @@ export default function DedicFilter({
                                   onClick={() => changeFilterHandler(item?.$key, group)}
                                   disabled={!item.available}
                                 />
-                                <span className={s.filter__option_name}>
+                                <span
+                                  className={cn(s.filter__option_name, {
+                                    [s.disabled]: !item.available,
+                                  })}
+                                >
                                   {t(item?.$.split(':')[1])}
                                 </span>
                               </div>

@@ -175,8 +175,8 @@
   font-size: 15px;
   line-height: 130.5%;
   color: var(--main-text);
-  .disabled & {
-    color: red;
+  &.disabled {
+    color: var(--transparent-color);
   }
 }
 
