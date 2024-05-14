@@ -6,14 +6,12 @@
     "read_more": "Show more",
     "read_less": "Show less",
     "users_title": "Your users",
-
     "table_header": {
       "email": "Email",
       "name": "Full name or title",
       "full_access": "Full access",
       "status": "Status"
     },
-
     "user_cards": {
       "turn_on_field": "Turn on",
       "turn_off_field": "Turn off",
@@ -22,14 +20,12 @@
       "yes": "Yes",
       "no": "No",
       "warning_message": "This user has full access, if you wanna manage exact rights, plz turn off full access",
-
       "drop_list": {
         "settings": "Settings",
         "access_rights": "Access rights",
         "delete": "Delete"
       }
     },
-
     "alerts": {
       "remove": {
         "title": "Deleting a user",
@@ -58,7 +54,6 @@
         "btn_text_cancel": "Cancel"
       }
     },
-
     "form": {
       "title": "New user",
       "email": "Email",
@@ -90,11 +85,9 @@
       "password": "Required field",
       "conf_password": "Required field"
     },
-
     "rights_alert": {
       "title_short": "Access rights",
       "title_long": "Trusted user access rights",
-
       "TRANSLATION FOR CLIENT SECTION": "TRANSLATION FOR CLIENT SECTION",
       "customer": "Client",
       "clientoption": "Profile",
@@ -115,11 +108,9 @@
       "rights2_user_suspend": "$t(Disable)",
       "rights2_user_hardfilter": "$t(Filter)",
       "rights2_user_filter#create": "$t(Filter)",
-
       "coupon_use": "Use certificate",
       "coupon_use#read": "Form data reading is avalilable",
       "coupon_use#write": "Data saving is available",
-
       "profile": "Payers",
       "profile_add#create": "$t(Add)",
       "profile_edit": "$t(Edit)",
@@ -133,21 +124,18 @@
       "profile_edit#write": "Edit properties of the selected payer (data saving is available)",
       "profile_reconciliation#read": "Print the reconciliation report (data saving is available)",
       "profile_reconciliation#write": "Print the reconciliation report (data reading is available)",
-
       "service_profile": "Domain contacts",
       "service_profile_edit#create": "$t(Add)",
       "service_profile_edit": "$t(Edit)",
       "service_profile_delete": "$t(Delete)",
       "service_profile_edit#read": "Contact parameters (data reading is available)",
       "service_profile_edit#write": "Contact parameters (data saving is available)",
-
       "affiliate_client": "Affiliate program",
       "affiliate_client_reward": "Income",
       "affiliate_client#read": "Affiliate program (data saving is available)",
       "affiliate_client#write": "Affiliate program (data reading is available)",
       "affiliate_client_click": "$t(Statistics)",
       "affiliate_client_click_filter#create": "$t(Filter)",
-
       "contract": "Contracts",
       "contract_edit#create": "$t(Add)",
       "contract_edit": "$t(Edit)",
@@ -158,15 +146,12 @@
       "contract_filter#create": "$t(Filter)",
       "contract_edit#read": "Contract (data reading is available)",
       "contract_edit#write": "Contract (data saving is available)",
-
       "basket": "$t(Cart)",
       "basket#write": "Cart (data saving is available)",
       "basket#read": "Cart (data reading is available)",
-
       "order": "$t(Orders)",
       "order#read": "Orders (data reading is available)",
       "order#write": "Orders (data saving is available)",
-
       "payment_recurring_stored_methods": "Payment methods",
       "payment_recurring_stored_methods_edit#create": "$t(Add)",
       "payment_recurring_stored_methods_edit": "$t(Edit)",
@@ -174,13 +159,10 @@
       "payment_recurring_stored_methods_reconfigure": "Re-configure",
       "payment_recurring_stored_methods_edit#read": "Change the payment method (data reading is available)",
       "payment_recurring_stored_methods_edit#write": "Change the payment method (data saving is available)",
-
       "usrparam": "User settings",
       "usrparam#read": "User settings (data reading is available)",
       "usrparam#write": "User settings (data saving is available)",
-
       "account_discountinfo": "Discounts",
-
       "TRANSLATION FOR PRODUCTS/SERVICES SECTION": "TRANSLATION FOR PRODUCTS/SERVICES SECTION",
       "mainmenuservice": "Products/Services",
       "dedic": "Dedicated servers",
@@ -221,7 +203,6 @@
       "gotoserver#read": "Go to the control panel (data reading is available)",
       "gotoserver#write": "Go to the control panel (data saving is available)",
       "webconsole": "Web-console",
-
       "domain": "Domains",
       "domain_order_register#create": "Registration",
       "domain_order_transfer#create": "Transfer",
@@ -248,7 +229,6 @@
       "domain_doc_edit#write": "Document type (data saving is available)",
       "domain_order_register_new#create": "Registration",
       "domain_order_transfer_new#create": "Transfer",
-
       "vhost_order#create": "$t(Order)",
       "vhost_edit": "$t(Edit)",
       "vhost_delete": "$t(Delete)",
@@ -257,7 +237,6 @@
       "vhost_edit#read": "Edit properties of the selected service (data reading is available)",
       "vhost_edit#write": "Edit properties of the selected service (data saving is available)",
       "vhost_filter#create": "$t(Filter)",
-
       "dnshost": "DNS hosting",
       "dnshost_order#create": "$t(Order)",
       "dnshost_edit": "$t(Edit)",
@@ -267,7 +246,6 @@
       "dnshost_filter#create": "$t(Filter)",
       "dnshost_edit#read": "Edit properties of the selected service (data reading is available)",
       "dnshost_edit#write": "Edit properties of the selected service (data saving is available)",
-
       "storage": "FTP storage",
       "storage_order#create": "$t(Order)",
       "storage_edit": "$t(Edit)",
@@ -277,7 +255,6 @@
       "storage_filter#create": "$t(Filter)",
       "storage_edit#read": "Edit properties of the selected service (data reading is available)",
       "storage_edit#write": "Edit properties of the selected service (data saving is available)",
-
       "zabota-o-servere": "Site care service",
       "zabota-o-servere_order#create": "$t(Order)",
       "zabota-o-servere_edit": "$t(Edit)",
@@ -287,7 +264,6 @@
       "zabota-o-servere_filter#create": "$t(Filter)",
       "zabota-o-servere_edit#read": "Edit properties of the selected service (data reading is available)",
       "zabota-o-servere_edit#write": "Edit properties of the selected service (data saving is available)",
-
       "forexbox": "Forex server",
       "forexbox_order#create": "$t(Order)",
       "forexbox_edit": "$t(Edit)",
@@ -297,7 +273,6 @@
       "forexbox_filter#create": "$t(Filter)",
       "forexbox_edit#read": "Edit properties of the selected service (data reading is available)",
       "forexbox_edit#write": "Edit properties of the selected service (data saving is available)",
-
       "vds_order#create": "$t(Order)",
       "vds_edit": "$t(Edit)",
       "vds_delete": "$t(Delete)",
@@ -306,7 +281,6 @@
       "vds_filter#create": "$t(Filter)",
       "vds_edit#read": "Edit properties of the selected service (data reading is available)",
       "vds_edit#write": "Edit properties of the selected service (data saving is available)",
-
       "wuwuwuw_order#create": "$t(Order)",
       "wuwuwuw_edit": "$t(Edit)",
       "wuwuwuw_delete": "$t(Delete)",
@@ -315,7 +289,6 @@
       "wuwuwuw_filter#create": "$t(Filter)",
       "wuwuwuw_edit#read": "Edit properties of the selected service (data reading is available)",
       "wuwuwuw_edit#write": "Edit properties of the selected service (data saving is available)",
-
       "vpn": "VPN",
       "vpn_order": "Order",
       "vpn_order#create": "$t(Order)",
@@ -326,7 +299,6 @@
       "vpn_edit#read": "Edit properties of the selected service (data reading is available)",
       "vpn_edit#write": "Edit properties of the selected service (data saving is available)",
       "vpn_filter#create": "$t(Filter)",
-
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "finance": "Billing",
       "payment_recurring_settings": "Auto-replenishment of the balance",
@@ -336,7 +308,6 @@
       "services_autoprolong": "Automatic renewal of services",
       "payment_recurring_settings#read": "Auto-replenishment of the balance (data reading is available)",
       "payment_recurring_settings#write": "Auto-replenishment of the balance (data saving is available)",
-
       "payment_add#create": "$t(Add)",
       "payment_edit": "$t(Edit)",
       "payment_add_redirect": "$t(Pay)",
@@ -346,7 +317,6 @@
       "payment_orderinfo": "$t(Details)",
       "payment_history": "$t(History)",
       "payment_filter#create": "$t(Filter)",
-
       "payment_orderinfo_edit": "$t(Edit)",
       "payment_edit#read": "Payment properties (data reading is available)",
       "payment_edit#write": "Payment properties (data saving is available)",
@@ -366,13 +336,11 @@
       "promisepayment_add#write": "Activation of promised payment (data saving is available)",
       "services_autoprolong_set_paymethod#read": "Choosing a payment method (data reading is available)",
       "services_autoprolong_set_paymethod#write": "Choosing a payment method (data saving is available)",
-
       "TRANSLATION FOR SUPPORT SECTION": "TRANSLATION FOR SUPPORT SECTION",
       "support": "Support",
       "clientticket": "Support tickets",
       "clientticket_archive": "Archived tickets",
       "notification": "Notifications",
-
       "clientticket_edit#create": "$t(Add)",
       "clientticket_edit": "$t(Open)",
       "incident#create": "Buy support incidents",
@@ -387,32 +355,35 @@
       "notification_view#write": "View the notification (data saving is available)",
       "clientticket_edit#read": "Support ticket (data reading is available)",
       "clientticket_edit#write": "Support ticket (data saving is available)",
-
       "TRANSLATION FOR TOOLS SECTION": "TRANSLATION FOR TOOLS SECTION",
       "mainmenutool": "Tools",
       "profile_add": "Add a payer",
-
       "TRANSLATION FOR STATISTICS SECTION": "TRANSLATION FOR STATISTICS SECTION",
       "stat": "$t(Statistics)",
       "authlog": "Access log",
       "authlog_filter#create": "$t(Filter)",
-
       "TRANSLATION FOR HELP SECTION": "TRANSLATION FOR HELP SECTION",
       "mgrhelp": "Help",
       "clienthelp": "Help",
-
       "TRANSLATION FOR DASHBOARD SECTION": "TRANSLATION FOR DASHBOARD SECTION",
       "dashboard": "Dashboard",
       "dashboard_info": "Information",
       "dashboard_providers": "Providers",
-
       "TRANSLATION FOR PROMISED PAY SECTION": "TRANSLATION FOR PROMISED PAY SECTION",
-
       "TRANSLATION FOR RESELLING SECTION": "TRANSLATION FOR RESELLING SECTION",
       "reselling": "Service reselling",
-      "availableprice": "Service reselling functions"
+      "availableprice": "Service reselling functions",
+      "instances": "Cloud VPS",
+      "instances_order#create": "Order",
+      "instances_edit": "Edit",
+      "instances_edit#read": "Edit properties of the selected service (data reading is available)",
+      "instances_edit#write": "Edit properties of the selected service (data saving is available)",
+      "instances_delete": "Delete",
+      "instances_resume": "Enable",
+      "instances_suspend": "Disable",
+      "instances_filter#create": "Filter",
+      "": ""
     },
-
     "Allow_all": "Allow all",
     "Add": "Add",
     "Delete": "Delete",
