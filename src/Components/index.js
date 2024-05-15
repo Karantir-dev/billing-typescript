@@ -68,6 +68,8 @@ export { default as RadioTypeButton } from './ui/RadioTypeButton/RadioTypeButton
 export { default as CopyText } from './ui/CopyText/CopyText'
 export { default as Incrementer } from './ui/Incrementer/Incrementer'
 export { default as FixedFooter } from './ui/FixedFooter/FixedFooter'
+export { default as Error } from './ui/Error/Error'
+export { default as CountryButton } from './ui/CountryButton/CountryButton'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -238,3 +240,4 @@ export { default as ConnectMethod } from './Services/Instances/ConnectMethod/Con
 export { default as InstancesOptions } from './Services/Instances/InstancesOptions/InstancesOptions'
 export { InstanceFiltersModal } from './Services/Instances/Modals'
 export { default as TariffCard } from './Services/cloud/TariffCard/TariffCard'
+export { default as OsList } from './Services/cloud/OsList'

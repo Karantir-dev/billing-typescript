@@ -260,5 +260,6 @@
   "long_request": "Request processing failed, please try again",
   "Invalid SSH public key": "Invalid SSH public key",
   "A key already exists with the same name": "A key already exists with the same name",
-  "copied": "Copied"
+  "copied": "Copied",
+  "error_occured": "Error occured"
 }

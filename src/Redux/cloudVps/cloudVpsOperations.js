@@ -544,12 +544,20 @@ const getOsList =
   }
 
 const getAllTariffsInfo =
-  ({ signal, setIsLoading, needOsList, datacenter, setSshList }) =>
+  ({
+    signal,
+    setIsLoading,
+    needOsList,
+    datacenter,
+    setSshList,
+    needDcList = true,
+    isPremium,
+  }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
 
-    axiosInstance
+    return axiosInstance
       .post(
         '/',
         qs.stringify({
@@ -576,27 +584,48 @@ const getAllTariffsInfo =
          * because OS IDs differs between DC
          */
         const tariffs = allTariffs[datacenter]
-        const lastTariffID = tariffs[tariffs.length - 1].id.$
-
         const windowsTag = data.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
 
-        const instanceTypePremium = data?.doc?.flist?.val.find(el =>
-          el?.$.toLowerCase().includes('premium'),
+        const cloudPremiumTag = data?.doc?.flist?.val.find(el =>
+          el?.$.toLowerCase().includes('type:premium'),
         ).$key
+
+        /** This block will be refactored */
+        const checkIsItPremiumCloud = tags =>
+          tags?.some(tag => tag?.$.includes(cloudPremiumTag))
+
+        const premiumTariffs = []
+        const otherTariffs = []
+
+        tariffs?.forEach(tariff => {
+          const isItPremiumInstance = checkIsItPremiumCloud(tariff?.flabel?.tag)
+
+          isItPremiumInstance ? premiumTariffs.push(tariff) : otherTariffs.push(tariff)
+        })
+
+        let lastTariffID
+        if (isPremium) {
+          /** we pick last tariff in the list because first one doesn`t have Windows OS */
+          lastTariffID = premiumTariffs[premiumTariffs.length - 1].id.$
+        } else {
+          lastTariffID = otherTariffs[0].id.$
+        }
+        /** /This block will be refactored */
 
         if (needOsList) {
           await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
         }
 
         dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
-        dispatch(cloudVpsActions.setInstancesDCList(DClist))
+        needDcList && dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
-        dispatch(cloudVpsActions.setInstanceTypeTag(instanceTypePremium))
+        dispatch(cloudVpsActions.setCloudPremiumTag(cloudPremiumTag))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        return 'success'
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)

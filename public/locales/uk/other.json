@@ -260,5 +260,6 @@
   "long_request": "Обробка запиту не вдалась, спробуйте ще раз",
   "Invalid SSH public key": "Недійсне значення відкритого SSH ключа",
   "A key already exists with the same name": "Ключ з такою ж назвою вже існує",
-  "copied": "Скопійовано"
+  "copied": "Скопійовано",
+  "error_occured": "Виникла помилка"
 }
