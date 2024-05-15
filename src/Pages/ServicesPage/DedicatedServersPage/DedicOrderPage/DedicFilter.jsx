@@ -121,10 +121,9 @@ export default function DedicFilter({
           const categoryItems = filtersCategories[category]?.reduce(
             (acc, el) => {
               acc.count += DEDIC_FILTER_RANGE_GROUPS.includes(el)
-                ? filters[el]?.length
-                  ? 1
-                  : 0
+                ? Number(!!filters[el]?.length)
                 : filters[el]?.length
+
               acc.isAvailable =
                 acc.isAvailable || filtersItems[el]?.some(filter => filter.available)
 
@@ -153,11 +152,10 @@ export default function DedicFilter({
                 {filtersCategories[category]?.map((group, _, arr) => {
                   const isSecondOpened =
                     secondOpenedCategory === group || arr.length === 1
-                  const subcategoryItemsCount = Number(
-                    DEDIC_FILTER_RANGE_GROUPS.includes(group)
-                      ? !!filters[group]?.length
-                      : filters[group]?.length,
-                  )
+                  const subcategoryItemsCount = DEDIC_FILTER_RANGE_GROUPS.includes(group)
+                    ? Number(!!filters[group]?.length)
+                    : filters[group]?.length
+
                   return (
                     <div
                       className={cn(s.filter__option_wrapper, { [s.opened]: isOpened })}
