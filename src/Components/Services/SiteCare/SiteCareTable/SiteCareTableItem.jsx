@@ -4,7 +4,7 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { ServerState, CheckBox, Options } from '@components'
-import { isUnpaidOrder, useOutsideAlerter } from '@utils'
+import { creteTicketOption, isUnpaidOrder, useOutsideAlerter } from '@utils'
 import s from './SiteCareTable.module.scss'
 
 export default function Component(props) {
@@ -42,6 +42,7 @@ export default function Component(props) {
   const toggleIsActiveHandler = () => setSelctedItem(!isActive, el)
 
   const deleteOption = isUnpaidOrder(el, unpaidItems)
+  const createTicketOption = creteTicketOption(id)
 
   const options = [
     deleteOption,
@@ -64,6 +65,7 @@ export default function Component(props) {
       disabled: !rights?.history,
       onClick: () => historySiteCareHandler(id),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',

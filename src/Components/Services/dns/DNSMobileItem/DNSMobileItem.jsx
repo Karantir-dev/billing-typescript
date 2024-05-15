@@ -6,7 +6,7 @@ import { CheckBox, ServerState, Options } from '@components'
 
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
-import { isUnpaidOrder } from '@utils'
+import { creteTicketOption, isUnpaidOrder } from '@utils'
 
 export default function DNSMobileItem({
   storage,
@@ -28,6 +28,7 @@ export default function DNSMobileItem({
   }
 
   const deleteOption = isUnpaidOrder(storage, unpaidItems)
+  const createTicketOption = creteTicketOption(storage.id.$)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
@@ -78,6 +79,7 @@ export default function DNSMobileItem({
       disabled: !pageRights?.history || storage?.status?.$ === '1',
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
   ]
 
   return (

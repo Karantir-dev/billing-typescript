@@ -5,7 +5,7 @@ import cn from 'classnames'
 import s from './ForexItem.module.scss'
 
 import { CheckBox, EditCell, ServerState, Options } from '@components'
-import { isUnpaidOrder } from '@utils'
+import { creteTicketOption, isUnpaidOrder } from '@utils'
 
 export default function ForexItem({
   server,
@@ -50,6 +50,7 @@ export default function ForexItem({
     fn()
   }
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = creteTicketOption(server.id.$)
 
   useEffect(() => {
     setServerName(server?.server_name?.$ || '')
@@ -82,6 +83,7 @@ export default function ForexItem({
       disabled: !pageRights?.history || server?.status?.$ === '1',
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',

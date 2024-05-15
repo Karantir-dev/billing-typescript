@@ -4,7 +4,7 @@ import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { ServerState, CheckBox, Options } from '@components'
-import { isUnpaidOrder } from '@utils'
+import { creteTicketOption, isUnpaidOrder } from '@utils'
 
 export default function Component(props) {
   const {
@@ -31,6 +31,7 @@ export default function Component(props) {
   const toggleIsActiveHandler = () => setSelctedItem(!isActive, el)
 
   const deleteOption = isUnpaidOrder(el, unpaidItems)
+  const createTicketOption = creteTicketOption(id)
 
   const options = [
     deleteOption,
@@ -64,6 +65,7 @@ export default function Component(props) {
       disabled: !rights?.ns,
       onClick: () => NSDomainHandler(id),
     },
+    createTicketOption,
   ]
 
   return (
