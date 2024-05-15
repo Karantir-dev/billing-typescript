@@ -1,8 +1,7 @@
+import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
   Loader,
-  SoftwareOSSelect,
-  SoftwareOSBtn,
   CheckBox,
   RadioTypeButton,
   TariffCard,
@@ -16,6 +15,8 @@ import {
   HintWrapper,
   Icon,
   Error,
+  OsList,
+  CountryButton,
 } from '@components'
 import * as Yup from 'yup'
 import { useLocation, useParams, useNavigate } from 'react-router-dom'
@@ -41,13 +42,11 @@ import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { PASS_REGEX, PASS_REGEX_ASCII, DISALLOW_SPACE } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
-import { Modals } from '@src/Components/Services/Instances/Modals/Modals'
+import { Modals } from '@components/Services/Instances/Modals/Modals'
 import * as route from '@src/routes'
+import crown from '@images/crown.svg'
 
 import s from './CreateInstancePage.module.scss'
-
-import crown from '@images/crown.svg'
-import { ErrorBoundary } from 'react-error-boundary'
 
 const IPv4_DAILY_COST = 1 / 30
 const IPv4_MONTHLY_COST = 1
@@ -75,7 +74,7 @@ export default function CreateInstancePage() {
   const tariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
-  const instanceTypeTag = useSelector(cloudVpsSelectors.getInstanceTypeTag)
+  const cloudPremiumTag = useSelector(cloudVpsSelectors.getCloudPremiumTag)
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
   const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
@@ -89,9 +88,9 @@ export default function CreateInstancePage() {
 
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
-      const location = dataFromSite.location
+      const dcLocation = dataFromSite.location
 
-      const dcFromSite = dcList.find(el => el.$key === location)
+      const dcFromSite = dcList.find(el => el.$key === dcLocation)
       dcFromSite ? setCurrentDC(dcFromSite) : setCurrentDC(dcList?.[0])
     }
   }, [dcList])
@@ -106,6 +105,8 @@ export default function CreateInstancePage() {
     )
   }
 
+  const isItPremiumPage = location?.pathname.includes('premium')
+
   useEffect(() => {
     if (
       (dataFromSite.location && !tariffs[dataFromSite.location]) ||
@@ -118,6 +119,7 @@ export default function CreateInstancePage() {
           needOsList: !operationSystems,
           setSshList: getAllSSHList,
           datacenter: dataFromSite.location || '',
+          isPremium: isItPremiumPage,
         }),
       )
     } else if (tariffs && (!operationSystems || !allSshList.length)) {
@@ -137,78 +139,6 @@ export default function CreateInstancePage() {
     }
   }, [])
 
-  const renderSoftwareOSFields = ({
-    fieldName,
-    value,
-    list,
-    onOSchange,
-    onRecipeChange,
-    OSfieldName,
-  }) => {
-    const elemsData = {}
-
-    list?.forEach(element => {
-      const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
-
-      if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
-        elemsData[itemName] = [element]
-      } else {
-        elemsData[itemName].push(element)
-      }
-    })
-
-    return Object.entries(elemsData).map(([name, el]) => {
-      if (el.length > 1) {
-        const optionsList = el.map(({ $key, $ }) => ({
-          value: $key,
-          label: $,
-        }))
-
-        return (
-          // <HintWrapper
-          //   label={t('windows_disabled')}
-          //   key={optionsList[0].value}
-          //   disabled={!el[0].disabled}
-          //   hintDelay={200}
-          // >
-          <SoftwareOSSelect
-            key={el[0].$key}
-            // disabled={el[0].disabled}
-            iconName={name.toLowerCase()}
-            itemsList={optionsList}
-            state={value}
-            getElement={value => {
-              if (fieldName === OSfieldName) {
-                onOSchange(value)
-              } else {
-                onRecipeChange(value)
-              }
-            }}
-          />
-          // </HintWrapper>
-        )
-      } else {
-        return (
-          <SoftwareOSBtn
-            key={el[0].$key}
-            // disabled={el[0].disabled}
-            value={el[0].$key}
-            state={value}
-            iconName={name.toLowerCase()}
-            label={el[0].$}
-            onClick={value => {
-              if (fieldName === OSfieldName) {
-                onOSchange(value)
-              } else {
-                onRecipeChange(value)
-              }
-            }}
-          />
-        )
-      }
-    })
-  }
-
   const onFormSubmit = async values => {
     const {
       servername,
@@ -222,6 +152,7 @@ export default function CreateInstancePage() {
     } = values
 
     let ipv6_parametr
+
     if (network_ipv6) {
       ipv6_parametr = await dispatch(
         cloudVpsOperations.getTariffParams({
@@ -262,8 +193,8 @@ export default function CreateInstancePage() {
       .includes('windows')
   }
 
-  const checkIsItPremiumInstance = tags =>
-    tags?.some(tag => tag?.$.includes(instanceTypeTag))
+  const checkIsItPremiumCloud = tags =>
+    tags?.some(tag => tag?.$.includes(cloudPremiumTag))
 
   const validationSchema = Yup.object().shape({
     password: Yup.string().when('connectionType', {
@@ -341,20 +272,32 @@ export default function CreateInstancePage() {
                 setFieldValue('ssh_keys', allSshList?.[0]?.elid.$)
               }, [allSshList])
 
-              const onDCchange = dc => {
+              useEffect(() => {
+                setFieldValue(
+                  'instances_os',
+                  operationSystems?.[currentDC.$key]?.[0]?.$key,
+                )
+              }, [operationSystems?.[currentDC.$key]])
+
+              const onDCchange = async dc => {
+                /** this fns should be executed after 'getAllTariffsInfo' request */
                 setCurrentDC(dc)
                 setFieldValue('tariff_id', null)
                 setFieldValue('instances_os', null)
 
-                if (!operationSystems[dc.$key]) {
-                  dispatch(
-                    cloudVpsOperations.getOsList({
+                if (!tariffs[dc.$key]) {
+                  // check this result
+                  // const result =
+                  await dispatch(
+                    cloudVpsOperations.getAllTariffsInfo({
                       signal,
                       setIsLoading,
-                      closeLoader: () => setIsLoading(false),
                       datacenter: dc.$key,
+                      needOsList: !operationSystems[dc.$key],
+                      needDcList: false,
                     }),
                   )
+                  // console.log(result)
                 }
               }
 
@@ -409,11 +352,14 @@ export default function CreateInstancePage() {
 
               const filteredTariffsList = filterTariffsList(isItWindows)
 
+              /** better move this sorting outside the Formik
+               * and store it in some state
+               */
               const premiumTariffs = []
               const otherTariffs = []
 
-              filteredTariffsList.forEach(tariff => {
-                const isItPremiumInstance = checkIsItPremiumInstance(tariff?.flabel?.tag)
+              filteredTariffsList?.forEach(tariff => {
+                const isItPremiumInstance = checkIsItPremiumCloud(tariff?.flabel?.tag)
 
                 isItPremiumInstance
                   ? premiumTariffs.push(tariff)
@@ -425,7 +371,7 @@ export default function CreateInstancePage() {
                 : otherTariffs
 
               useEffect(() => {
-                if (instanceTypeTag) {
+                if (cloudPremiumTag) {
                   if (tariffFromSite) {
                     onTariffChange(tariffFromSite)
                     localStorage.removeItem('site_cart')
@@ -438,7 +384,7 @@ export default function CreateInstancePage() {
                     onTariffChange(tariffChosen)
                   }
                 }
-              }, [isPremiumShouldRender, instanceTypeTag])
+              }, [isPremiumShouldRender, cloudPremiumTag])
 
               const onOSchange = value => {
                 setFieldValue('instances_os', value)
@@ -540,29 +486,12 @@ export default function CreateInstancePage() {
                     <ul className={s.grid}>
                       {dcList?.map(dc => {
                         return (
-                          <li
-                            className={cn(s.category_item, {
-                              [s.selected]: currentDC.$key === dc.$key,
-                            })}
+                          <CountryButton
                             key={dc.$key}
-                          >
-                            <button
-                              className={cn(s.category_btn)}
-                              type="button"
-                              onClick={() => onDCchange(dc)}
-                            >
-                              <img
-                                className={s.flag}
-                                src={require(`@images/countryFlags/${getFlagFromCountryName(
-                                  formatCountryName(dc.$),
-                                )}.png`)}
-                                width={20}
-                                height={14}
-                                alt={formatCountryName(dc.$)}
-                              />
-                              {t(formatCountryName(dc.$), { ns: 'countries' })}
-                            </button>
-                          </li>
+                            currentItem={currentDC}
+                            item={dc}
+                            onChange={onDCchange}
+                          />
                         )
                       })}
                     </ul>
@@ -582,6 +511,18 @@ export default function CreateInstancePage() {
                           type="button"
                           onClick={() => {
                             navigateToCloud('premium')
+                            dispatch(
+                              cloudVpsOperations.getOsList({
+                                signal,
+                                setIsLoading,
+                                closeLoader: () => setIsLoading(false),
+                                datacenter: dcList?.[0]?.$key,
+                                setSshList: getAllSSHList,
+                                /** we pick last tariff in the list because first one doesn`t have Windows OS */
+                                lastTariffID:
+                                  premiumTariffs[premiumTariffs.length - 1].id.$,
+                              }),
+                            )
                           }}
                         >
                           <img
@@ -605,6 +546,17 @@ export default function CreateInstancePage() {
                           type="button"
                           onClick={() => {
                             navigateToCloud('basic')
+
+                            dispatch(
+                              cloudVpsOperations.getOsList({
+                                signal,
+                                setIsLoading,
+                                closeLoader: () => setIsLoading(false),
+                                datacenter: dcList?.[0]?.$key,
+                                setSshList: getAllSSHList,
+                                lastTariffID: otherTariffs?.[0]?.id.$,
+                              }),
+                            )
                           }}
                         >
                           Basic VPS
@@ -617,13 +569,11 @@ export default function CreateInstancePage() {
                     <h3 className={s.section_title}>{t('server_image')}</h3>
 
                     <div className={s.os_list}>
-                      {renderSoftwareOSFields({
-                        fieldName: 'instances_os',
-                        list: filteredOSlist,
-                        value: values.instances_os,
-                        onOSchange,
-                        OSfieldName: 'instances_os',
-                      })}
+                      <OsList
+                        list={filteredOSlist}
+                        value={values.instances_os}
+                        onOSchange={onOSchange}
+                      />
                     </div>
                   </section>
 
