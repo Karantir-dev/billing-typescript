@@ -346,7 +346,7 @@ const changeInstancePassword =
           elid,
           lang: 'en',
           clicked_button: 'ok',
-          changepassword: password,
+          password,
         }),
         { signal },
       )
