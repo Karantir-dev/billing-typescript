@@ -68,7 +68,6 @@ export default function DedicOrderPage() {
   const isDedicOrderAllowed = location?.state?.isDedicOrderAllowed
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const tarifsList = useSelector(dedicSelectors.getTafifList)
-  const vdsList = useSelector(dedicSelectors.getVDSList)
   const { t } = useTranslation(['dedicated_servers', 'other', 'vds', 'autoprolong'])
   const tabletOrHigher = useMediaQuery({ query: '(min-width: 768px)' })
   const deskOrHigher = useMediaQuery({ query: '(min-width: 1549px)' })
@@ -123,15 +122,6 @@ export default function DedicOrderPage() {
           return dedic.filter.tag.find(tagItem => plist.$key === tagItem.$)
         })
 
-        /* Config 41 has additional filters tags to filter VDS tariffs,
-          here we remove those tags form config 41 to filter works correct  */
-        if (dedic.desc.$.includes('Config 41')) {
-          const drive = params.find(el => el.includes('SSD')).replace(' SSD', '')
-          tag = tag.filter(el =>
-            el.$.includes('drive:') ? drive === el.$.replace('drive:', '') : el,
-          )
-        }
-
         const hasSale = parsePrice(dedic.price.$)?.length === 3
         const isTariffAvailable = !!dedicInfoList.find(
           el => el.service_id === +dedic.pricelist.$,
@@ -151,57 +141,8 @@ export default function DedicOrderPage() {
       },
     )
 
-    const newVdsList = [...vdsList]?.map(el => {
-      const params = getParams(el)
-
-      const gen = params.find(param => param.includes('HP G')).replace('HP ', '')
-      const ram = params.find(param => param.includes(' RAM DDR')).split(' RAM')[0]
-      const ramtype = params.find(param => param.includes(' RAM DDR')).split('RAM ')[1]
-      const drive = params.find(param => param.includes('NVMe')).split(' NVMe')[0]
-      const cpucores = params
-        .find(param => param.includes('vCPU'))
-        .split(' vCPU')[0]
-        .trim()
-      const cpu = 'Xeon Silver 4116'
-      const cpumanuf = 'Intel'
-      const drivetype = 'NVMe'
-      const raid = 'No HW'
-      const gpu = 'none'
-      const traffic = '100TB'
-
-      const tag = tarifsList?.fpricelist.filter(plist => {
-        const [key, value] = plist.$.split(':')
-        switch (key) {
-          case 'gen':
-            return value === gen
-          case 'cpu':
-            return value === cpu
-          case 'cpucores':
-            return value === cpucores
-          case 'cpumanuf':
-            return value === cpumanuf
-          case 'ram':
-            return value === ram
-          case 'ramtype':
-            return value === ramtype
-          case 'drive':
-            return value === drive
-          case 'drivetype':
-            return value === drivetype
-          case 'raid':
-            return value === raid
-          case 'gpu':
-            return value === gpu
-          case 'traffic':
-            return value === traffic
-        }
-      })
-      return { ...el, filter: { tag } }
-    })
-
     const newArrTarifList = [
       ...separatedDedicList.newDedicList,
-      ...newVdsList,
       ...separatedDedicList.dedicList,
     ]
 
@@ -398,15 +339,6 @@ export default function DedicOrderPage() {
   const validationSchema = Yup.object().shape({
     tarif: Yup.string().required('tariff is required'),
   })
-
-  // VDS
-  // const setNewVds = data => {
-  //   const vdsList = data
-  //     .filter(el => VDS_IDS_TO_ORDER.includes(el.pricelist.$))
-  //     .map(el => ({ ...el, isVds: true }))
-
-  //   dispatch(dedicActions.setVDSList(vdsList))
-  // }
 
   const handleSubmit = () => {
     const { register, ostempl, recipe, domain, server_name } = parameters
@@ -670,7 +602,6 @@ export default function DedicOrderPage() {
                     dispatch(
                       dedicOperations.getTarifs(
                         item,
-                        // setNewVds,
                         setDedicInfoList,
                         signal,
                         setIsLoading,
