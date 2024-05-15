@@ -69,13 +69,14 @@ export default function Component(props) {
     {
       label: t('edit', { ns: 'other' }),
       icon: 'Edit',
-      disabled: !rights?.edit,
+      disabled: el?.status?.$ === '5' || !rights?.edit,
       onClick: () => editVhostHandler(),
     },
     {
       label: t('trusted_users.Change tariff', { ns: 'trusted_users' }),
       icon: 'ChangeTariff',
-      disabled: !rights?.changepricelist || el?.status?.$ === '1',
+      disabled:
+        !rights?.changepricelist || el?.status?.$ === '1' || el?.status?.$ === '5',
       onClick: changeTariffVhostHandler,
     },
     {
