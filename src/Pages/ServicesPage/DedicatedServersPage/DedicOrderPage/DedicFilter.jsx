@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { CheckBox, Icon, InputRange } from '@components'
 import s from './DedicOrderPage.module.scss'
 import { useTranslation } from 'react-i18next'
@@ -81,7 +80,7 @@ export default function DedicFilter({
     setFilterByActivation(false)
     setFilterByPromotion(false)
   }
-  console.log(filters, ' filtersCategories')
+
   return (
     <div className={s.filter__wrapper}>
       <div className={s.filter}>
