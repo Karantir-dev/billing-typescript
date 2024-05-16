@@ -17,9 +17,10 @@ import {
   Error,
   OsList,
   CountryButton,
+  CloudTypeSection,
 } from '@components'
 import * as Yup from 'yup'
-import { useLocation, useParams, useNavigate } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -43,8 +44,6 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { PASS_REGEX, PASS_REGEX_ASCII, DISALLOW_SPACE } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
-import * as route from '@src/routes'
-import crown from '@images/crown.svg'
 
 import s from './CreateInstancePage.module.scss'
 
@@ -57,7 +56,6 @@ export default function CreateInstancePage() {
 
   const location = useLocation()
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
 
   const PERIODS_LIST = [
@@ -241,14 +239,15 @@ export default function CreateInstancePage() {
     setShowCaption(prev => (value === prev ? false : value))
   }
 
-  const navigateToCloud = type => navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}/${type}`)
-
   return (
     <div className={s.page_padding}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
-      <ErrorBoundary FallbackComponent={Error}>
+      <ErrorBoundary
+        FallbackComponent={Error}
+        onError={err => console.log('ErrorBoundary', err)}
+      >
         {tariffs && operationSystems && currentDC && (
           <Formik
             initialValues={{
@@ -497,73 +496,7 @@ export default function CreateInstancePage() {
                     </ul>
                   </section>
 
-                  <section className={s.section}>
-                    <h3 className={s.section_title}>{t('server_type')}</h3>
-
-                    <ul className={s.grid}>
-                      <li
-                        className={cn(s.category_item, {
-                          [s.selected]: isPremiumShouldRender,
-                        })}
-                      >
-                        <button
-                          className={cn(s.category_btn, s.serverType_btn)}
-                          type="button"
-                          onClick={() => {
-                            navigateToCloud('premium')
-                            dispatch(
-                              cloudVpsOperations.getOsList({
-                                signal,
-                                setIsLoading,
-                                closeLoader: () => setIsLoading(false),
-                                datacenter: dcList?.[0]?.$key,
-                                setSshList: getAllSSHList,
-                                /** we pick last tariff in the list because first one doesn`t have Windows OS */
-                                lastTariffID:
-                                  premiumTariffs[premiumTariffs.length - 1].id.$,
-                              }),
-                            )
-                          }}
-                        >
-                          <img
-                            className={s.serverType_icon}
-                            src={crown}
-                            width={20}
-                            height={14}
-                            alt={'Premium VPS crown'}
-                          />
-                          Premium VPS
-                        </button>
-                      </li>
-
-                      <li
-                        className={cn(s.category_item, s.serverType_item, {
-                          [s.selected]: !isPremiumShouldRender,
-                        })}
-                      >
-                        <button
-                          className={cn(s.category_btn, s.serverType_btn)}
-                          type="button"
-                          onClick={() => {
-                            navigateToCloud('basic')
-
-                            dispatch(
-                              cloudVpsOperations.getOsList({
-                                signal,
-                                setIsLoading,
-                                closeLoader: () => setIsLoading(false),
-                                datacenter: dcList?.[0]?.$key,
-                                setSshList: getAllSSHList,
-                                lastTariffID: otherTariffs?.[0]?.id.$,
-                              }),
-                            )
-                          }}
-                        >
-                          Basic VPS
-                        </button>
-                      </li>
-                    </ul>
-                  </section>
+                  <CloudTypeSection signal={signal} setIsLoading={setIsLoading} />
 
                   <section className={s.section}>
                     <h3 className={s.section_title}>{t('server_image')}</h3>

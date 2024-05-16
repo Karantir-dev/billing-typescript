@@ -241,3 +241,4 @@ export { default as InstancesOptions } from './Services/Instances/InstancesOptio
 export { InstanceFiltersModal } from './Services/Instances/Modals'
 export { default as TariffCard } from './Services/cloud/TariffCard/TariffCard'
 export { default as OsList } from './Services/cloud/OsList'
+export { default as CloudTypeSection } from './Services/cloud/CloudTypeSection'
