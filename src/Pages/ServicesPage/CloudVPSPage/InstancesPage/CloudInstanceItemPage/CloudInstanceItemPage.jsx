@@ -181,7 +181,7 @@ export default function CloudInstanceItemPage() {
                 className={cn(
                   s.status,
                   s[
-                    item?.fotbo_status?.$.trim().toLowerCase() ||
+                    item?.instance_status?.$.trim().toLowerCase() ||
                       item?.item_status?.$.trim().toLowerCase()
                   ],
                 )}
@@ -195,7 +195,7 @@ export default function CloudInstanceItemPage() {
               className={cn(
                 s.status,
                 s[
-                  item.fotbo_status?.$.trim().toLowerCase() ||
+                  item.instance_status?.$.trim().toLowerCase() ||
                     item.item_status?.$.trim().toLowerCase()
                 ],
               )}
