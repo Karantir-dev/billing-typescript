@@ -104,10 +104,12 @@
   "rebuild_modal": {
     "title": {
       "bootimage": "Rescue",
+      "rescue": "Rescue",
       "rebuild": "Rebuild instance"
     },
     "text": {
       "bootimage": "Select distribution",
+      "rescue": "Select distribution",
       "rebuild": "Select boot source"
     },
     "warning": {

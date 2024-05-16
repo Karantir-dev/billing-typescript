@@ -339,14 +339,14 @@ const changeInstancePassword =
       .post(
         '/',
         qs.stringify({
-          func: 'instances.fotbo.fotbochangepassword',
+          func: 'instances.fleio.changepassword',
           out: 'json',
           sok: 'ok',
           auth: sessionId,
           elid,
           lang: 'en',
           clicked_button: 'ok',
-          fotbochangepassword: password,
+          password,
         }),
         { signal },
       )
@@ -374,7 +374,7 @@ const rebuildInstance =
       .post(
         '/',
         qs.stringify({
-          func: `instances.fotbo.${action}`,
+          func: `instances.fleio.${action}`,
           out: 'json',
           auth: sessionId,
           elid,
@@ -404,7 +404,7 @@ const openConsole =
       .post(
         '/',
         qs.stringify({
-          func: 'instances.fotbovnc',
+          func: 'instances.fleio.vnc',
           out: 'json',
           auth: sessionId,
           elid,
