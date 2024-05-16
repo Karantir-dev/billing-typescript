@@ -51,8 +51,8 @@ const IPv4_DAILY_COST = 1 / 30
 const IPv4_MONTHLY_COST = 1
 
 export default function CreateInstancePage() {
-  const { type } = useParams()
-  const isPremiumShouldRender = type === 'premium'
+  const { type: cloudType } = useParams()
+  const isPremiumShouldRender = cloudType === 'premium'
 
   const location = useLocation()
   const dispatch = useDispatch()
@@ -496,7 +496,7 @@ export default function CreateInstancePage() {
                     </ul>
                   </section>
 
-                  <CloudTypeSection signal={signal} setIsLoading={setIsLoading} />
+                  <CloudTypeSection value={} signal={signal} setIsLoading={setIsLoading} />
 
                   <section className={s.section}>
                     <h3 className={s.section_title}>{t('server_image')}</h3>
