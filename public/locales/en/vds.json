@@ -70,6 +70,7 @@
   "attention": "Attention",
   "delete_message": "Do you really want to delete the selected service",
   "warn_message": "The service will be removed after the expiration date",
+  "warn_message_dedic": "The service will be marked for deletion and will be deleted after the expiration date. For immediate server removal, please contact technical support.",
   "password_change_desc": "VPS reboot is needed to apply the changes (it will be suspended for some time).",
   "new_password": "New password",
   "new_password_placeholder": "Enter new password",
