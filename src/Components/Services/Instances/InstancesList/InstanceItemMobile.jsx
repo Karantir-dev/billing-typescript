@@ -54,7 +54,7 @@ export default function InstanceItemMobile({ item }) {
                     s[
                       isDeleting
                         ? 'deletion_in_progress'
-                        : item?.fotbo_status?.$.trim().toLowerCase() ||
+                        : item?.instance_status?.$.trim().toLowerCase() ||
                           item?.item_status?.$.trim().toLowerCase()
                     ],
                   )}
@@ -68,7 +68,7 @@ export default function InstanceItemMobile({ item }) {
                 className={cn(
                   s.status,
                   s[
-                    item.fotbo_status?.$.trim().toLowerCase() ||
+                    item.instance_status?.$.trim().toLowerCase() ||
                       item.item_status?.$.trim().toLowerCase()
                   ],
                 )}
