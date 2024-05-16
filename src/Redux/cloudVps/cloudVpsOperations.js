@@ -809,8 +809,6 @@ const editSsh =
               console.error(`${errorMessage}: ${specifiedErrorDescr}`)
               throw new Error(specifiedErrorDescr)
             }
-          } else {
-            console.error(data)
           }
           handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         }
