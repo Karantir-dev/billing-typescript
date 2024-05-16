@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { CheckBox, ServerState, Options } from '@components'
 import s from './SharedHostingTable.module.scss'
-import { isUnpaidOrder, creteTicketOption } from '@src/utils'
+import { isUnpaidOrder, useCreateTicketOption } from '@src/utils'
 
 export default function Component(props) {
   const {
@@ -42,7 +42,7 @@ export default function Component(props) {
   }
 
   const deleteOption = isUnpaidOrder(el, unpaidItems)
-  const createTicketOption = creteTicketOption(id)
+  const createTicketOption = useCreateTicketOption(id)
 
   const options = [
     deleteOption,

@@ -6,7 +6,7 @@ import { CheckBox, ServerState, Options } from '@components'
 
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
-import { creteTicketOption, isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function DNSMobileItem({
   storage,
@@ -28,7 +28,7 @@ export default function DNSMobileItem({
   }
 
   const deleteOption = isUnpaidOrder(storage, unpaidItems)
-  const createTicketOption = creteTicketOption(storage.id.$)
+  const createTicketOption = useCreateTicketOption(storage.id.$)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(

@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 
-export default function creteTicketOption(id) {
+export default function useCreateTicketOption(id) {
   const { t } = useTranslation(['support'])
   const navigate = useNavigate()
 

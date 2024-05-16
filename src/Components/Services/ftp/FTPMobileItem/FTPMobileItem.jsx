@@ -4,7 +4,7 @@ import s from './FTPMobileItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
-import { creteTicketOption, isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function FTPMobileItem({
   storage,
@@ -38,7 +38,7 @@ export default function FTPMobileItem({
   }
 
   const deleteOption = isUnpaidOrder(storage, unpaidItems)
-  const createTicketOption = creteTicketOption(storage.id.$)
+  const createTicketOption = useCreateTicketOption(storage.id.$)
 
   const options = [
     deleteOption,

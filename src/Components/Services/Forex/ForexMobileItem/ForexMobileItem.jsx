@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import s from './ForexMobileItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
-import { creteTicketOption, isUnpaidOrder } from '@src/utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@src/utils'
 
 export default function ForexMobileItem({
   server,
@@ -24,7 +24,7 @@ export default function ForexMobileItem({
   }
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
-  const createTicketOption = creteTicketOption(server.id.$)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(

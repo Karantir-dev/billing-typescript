@@ -8,7 +8,7 @@ import * as route from '@src/routes'
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
-import { creteTicketOption, isDisabledDedicTariff, isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isDisabledDedicTariff, isUnpaidOrder } from '@utils'
 
 export default function DedicMobileItem({
   server,
@@ -32,7 +32,7 @@ export default function DedicMobileItem({
   const [originName, setOriginName] = useState('')
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
-  const createTicketOption = creteTicketOption(server.id.$)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   const handleToolBtnClick = fn => {
     fn()

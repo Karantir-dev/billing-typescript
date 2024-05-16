@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import s from './VDSItem.module.scss'
-import { creteTicketOption, isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function VDSItem({
   server,
@@ -31,7 +31,7 @@ export default function VDSItem({
   const [originName, setOriginName] = useState('')
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
-  const createTicketOption = creteTicketOption(server.id.$)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   useEffect(() => {
     if (server?.server_name?.$) {

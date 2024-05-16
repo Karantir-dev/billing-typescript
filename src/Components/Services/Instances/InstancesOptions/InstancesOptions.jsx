@@ -1,6 +1,6 @@
 import { Options } from '@components'
 import { cloudVpsActions, cloudVpsOperations } from '@src/Redux'
-import { creteTicketOption, getInstanceMainInfo } from '@src/utils'
+import { useCreateTicketOption, getInstanceMainInfo } from '@src/utils'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import s from './InstancesOptions..module.scss'
@@ -20,7 +20,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
   } = getInstanceMainInfo(item)
 
   const isHideMostItems = isResized || isRescued
-  const createTicketOption = creteTicketOption(item.id.$)
+  const createTicketOption = useCreateTicketOption(item.id.$)
 
   const options = [
     {

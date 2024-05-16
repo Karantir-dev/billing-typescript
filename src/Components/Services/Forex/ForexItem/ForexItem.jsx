@@ -5,7 +5,7 @@ import cn from 'classnames'
 import s from './ForexItem.module.scss'
 
 import { CheckBox, EditCell, ServerState, Options } from '@components'
-import { creteTicketOption, isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function ForexItem({
   server,
@@ -50,7 +50,7 @@ export default function ForexItem({
     fn()
   }
   const deleteOption = isUnpaidOrder(server, unpaidItems)
-  const createTicketOption = creteTicketOption(server.id.$)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   useEffect(() => {
     setServerName(server?.server_name?.$ || '')

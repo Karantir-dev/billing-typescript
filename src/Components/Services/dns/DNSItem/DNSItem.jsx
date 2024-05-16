@@ -6,7 +6,7 @@ import s from './DNSItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
-import { creteTicketOption, isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function DNSItem({
   storage,
@@ -24,7 +24,7 @@ export default function DNSItem({
   const dispatch = useDispatch()
 
   const deleteOption = isUnpaidOrder(storage, unpaidItems)
-  const createTicketOption = creteTicketOption(storage.id.$)
+  const createTicketOption = useCreateTicketOption(storage.id.$)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
