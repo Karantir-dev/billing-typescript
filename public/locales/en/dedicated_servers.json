@@ -168,5 +168,7 @@
   },
   "empty_dedic_tariffs_title": "No server found",
   "empty_dedic_tariffs_text": "Please change your search criteria to view available servers",
-  "price": "Price"
+  "price": "Price",
+  "promotional": "Promotional",
+  "quick_activation": "Quick activation"
 }
