@@ -44,7 +44,7 @@
   "Disabled": "Вимкнути",
   "Transfer": "Трансфер",
   "Getting information about a domain using the whois protocol": "Отримання інформації про домен за протоколом whois",
-  "View/change the list of nameservers": "Переглянути/змінити список серверів імен",
+  "ns_settings": "Налаштування NS",
   "Domain name transfer": "Трансфер доменного імені",
   "Domain name only Latin": "Доменне ім'я може містити лише латинські літери",
   "latin_only": "Лише латинські символи",
@@ -72,13 +72,11 @@
   "Domain has been registered and delegated": "Домен зареєстрований та делегований",
   "Domain has been registered, but it is not delegated": "Домен зареєстрований, але не делегований",
   "Domain is not registered with registrar": "Домен не зареєстрований у реєстратора",
-
   "Domain registration in progress": "Виконується реєстрація домену",
   "Changing registrar for this domain": "Зміна реєстратора для цього домену",
   "Domain renewal in progress": "Виконується продовження домену",
   "Domain delegation has expired": "Термін делегування домену минув",
   "Service editing": "Редагування послуги",
-
   "Main": "Основне",
   "Service profiles": "Профілі послуги",
   "Additionally": "Додатково",
@@ -87,40 +85,30 @@
   "Date of creation": "Дата створення",
   "This profile is used by one or several services": "Профіль, що редагується, використовується однією або декількома послугами. У разі зміни даних профілю, внесені зміни будуть автоматично передані реєстратору доменів.",
   "Main parameters": "Основні параметри",
-
   "Enter IP address": "Введіть IP-адресу",
   "Data center": "Дата-центр",
   "Site care deleted successfully": "Догляд за сайтом успішно видалено",
-
   "Instruction": "Інструкція",
   "YOU DO NOT HAVE A DOMAIN YET": "У ВАС ЩЕ НЕМАЄ ДОМЕНА",
   "no services description": "Зареєструйте домен в Zomro швидко, недорого і зручно",
   "Domain has been registered, but it is not  delegated": "Домен зареєстрований, але не делегований",
-
   "Select": "Вибрати",
   "Selected": "Вибрані",
-  "View/change the list of name servers": "Переглянути/змінити список серверів імен",
   "record_format": "Формат запису \"ns.example.com\" або \"ns.example.com/1.1.1.1\" або \"ns.example.com/1.1.1.1,2.2.2.2\"",
   "Add NS": "Додати NS",
-
   "Configuring": "Налаштування",
-
   "and": "і",
-
   "Name can only contain Latin letters": "Імʼя може містити лише латинські літери",
   "Lastname can only contain Latin letters": "Прізвище може містити лише латинські літери",
   "Midlename can only contain Latin letters": "По батькові може містити лише латинські літери",
   "Index can contain only": "Індекс може містити лише латинські літери, цифри та символ -",
-
   "Apply to all": "Застосувати до всіх",
   "Provide for each domain name": "Вкажіть для кожного доменного імені",
-
   "ns0": "NS 1",
   "ns1": "NS 2",
   "ns2": "NS 3",
   "ns3": "NS 4",
   "ns_additional": "Додатковий NS",
-
   "Use the name servers": "Використовуйте сервери імен",
   "The tariff plan has been changed": "Змінено тариф",
   "The old plan": "Старий тариф",
@@ -128,10 +116,8 @@
   "Provider's employee or system": "Співробітник або система постачальника",
   "base price": "базова ціна",
   "Total amount": "Загальна сума",
-
   "ns_format": "Формат запису \"ns.example.com\"",
   "choose_min_one_domain": "Виберіть хоча б один домен",
-
   "Domain name must be at least 2 characters long": "Доменне ім'я повинно мати довжину не менше 2 символів",
   "Domain name must be at most 63 characters long": "Доменне ім'я повинно мати довжину не більше 63 символів",
   "premium_check_failed": "Перевірка на преміальність домену не пройшла. Але ви можете продовжити покупку, якщо обраний домен виявиться преміальним, вам повернуть за нього кошти"

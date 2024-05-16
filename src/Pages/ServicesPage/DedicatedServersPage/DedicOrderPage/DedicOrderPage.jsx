@@ -135,7 +135,7 @@ export default function DedicOrderPage() {
         const hasSale = parsePrice(dedic.price.$)?.length === 3
         const isTariffAvailable = !!dedicInfoList.find(
           el => el.service_id === +dedic.pricelist.$,
-        )?.specs.count_exists
+        )?.specs?.count_exists
 
         const item = { ...dedic, filter: { tag }, isTariffAvailable, hasSale }
 

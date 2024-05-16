@@ -64,7 +64,7 @@ export default function VDS(props) {
             />
           </HintWrapper>
 
-          <HintWrapper label={t('View/change the list of nameservers')}>
+          <HintWrapper label={t('ns_settings')}>
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -83,7 +83,8 @@ export default function VDS(props) {
       <p className={s.total_price}>
         {t('total', { ns: 'other' })}:{' '}
         <span className={s.tools_footer_value}>
-          {roundToDecimal(domainsTotalPrice) || '0'} EUR / {t('short_month', { ns: 'other' })}
+          {roundToDecimal(domainsTotalPrice) || '0'} EUR /{' '}
+          {t('short_month', { ns: 'other' })}
         </span>
       </p>
     </div>

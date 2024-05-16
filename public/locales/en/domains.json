@@ -45,7 +45,7 @@
   "Configuring": "Configuring",
   "Transfer": "Transfer",
   "Getting information about a domain using the whois protocol": "Getting information about a domain using the whois protocol",
-  "View/change the list of nameservers": "View/change the list of nameservers",
+  "ns_settings": "NS settings",
   "Domain name transfer": "Domain name transfer",
   "Domain name only Latin": "Domain name can only contain Latin characters",
   "latin_only": "Only Latin characters",
@@ -73,7 +73,6 @@
   "Domain has been registered and delegated": "Domain has been registered and delegated",
   "Domain has been registered, but it is not  delegated": "Domain has been registered, but it is not delegated",
   "Domain is not registered with registrar": "Domain is not registered with registrar",
-
   "Domain registration in progress": "Domain registration in progress",
   "Changing registrar for this domain": "Changing registrar for this domain",
   "Domain renewal in progress": "Domain renewal in progress",
@@ -93,24 +92,17 @@
   "Instruction": "Instruction",
   "YOU DO NOT HAVE A DOMAIN YET": "YOU DO NOT HAVE A DOMAIN YET",
   "no services description": "Register a domain with Zomro quickly, cheaply and conveniently",
-
   "Select": "Select",
   "Selected": "Selected",
-
-  "View/change the list of name servers": "View/change the list of name servers",
   "record_format": "Record format \"ns.example.com\" or \"ns.example.com/1.1.1.1\" or \"ns.example.com/1.1.1.1,2.2.2.2\"",
   "Add NS": "Add NS",
-
   "and": "and",
-
   "Name can only contain Latin letters": "Name can only contain Latin letters",
   "Lastname can only contain Latin letters": "Lastname can only contain Latin letters",
   "Midlename can only contain Latin letters": "Midlename can only contain Latin letters",
   "Index can contain only": "An index can contain only Latin letters, numbers, and the - symbol",
-
   "Apply to all": "Apply to all",
   "Provide for each domain name": "Provide for each domain name",
-
   "ns0": "NS 1",
   "ns1": "NS 2",
   "ns2": "NS 3",
@@ -119,10 +111,8 @@
   "Use the name servers": "Use the name servers",
   "base price": "base price",
   "Total amount": "Total amount",
-
   "ns_format": "Record format \"ns.example.com\"",
   "choose_min_one_domain": "Select at least one domain",
-
   "Domain name must be at least 2 characters long": "Domain name must be at least 2 characters long",
   "Domain name must be at most 63 characters long": "Domain name must be at most 63 characters long",
   "premium_check_failed": "The domain has not been checked for premium status. But you can continue the purchase, if the selected domain turns out to be premium, you will be refunded for it"
