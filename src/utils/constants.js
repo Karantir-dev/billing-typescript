@@ -246,3 +246,6 @@ Below ID and names of all services
 "27140": "VPN"
 "27156": "Instances"
 */
+
+export const PREMIUM_TYPE = 'premium'
+export const BASIC_TYPE = 'basic'

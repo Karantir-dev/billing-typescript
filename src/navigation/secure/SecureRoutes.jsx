@@ -248,10 +248,12 @@ const Component = ({ fromPromotionLink }) => {
             <Route index element={<CloudVPSInstancesPageLazy />} />
             <Route path="ssh_keys" element={<CloudVPSSSHKeysPageLazy />} />
           </Route>
-          <Route path={route.CLOUD_VPS_CREATE_INSTANCE}>
-            <Route index element={<Navigate to={'./premium'} replace={true} />} />
-            <Route path={':type'} element={<CreateInstancePageLazy />} />
-          </Route>
+
+          <Route
+            path={route.CLOUD_VPS_CREATE_INSTANCE}
+            element={<CreateInstancePageLazy />}
+          />
+
           <Route path={`${route.CLOUD_VPS}/:id`} element={<CloudInstanceItemPageLazy />}>
             <Route index element={<InstanceDetailsOverviewLazy />} />
           </Route>

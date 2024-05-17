@@ -1,14 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import cloudVpsActions from './cloudVpsActions'
-import { TARIFFS_PRICES } from '@src/utils/constants'
+import { rewriteCloudsPrices } from '@src/utils'
 
 const initialState = {
   itemForModalsReducer: {},
   instances: null,
   instancesCount: 0,
   instancesFilters: {},
-  instancesTariffs: {},
+
+  premiumTariffs: {},
+  basicTariffs: {},
+
   instancesDcList: null,
   windowsTag: '',
   cloudPremiumTag: '',
@@ -36,22 +39,15 @@ const instancesFilters = createReducer(initialState.instancesFilters, {
   [cloudVpsActions.setInstancesFilters]: (_, { payload }) => payload,
 })
 
-const instancesTariffs = createReducer(initialState.instancesTariffs, {
-  [cloudVpsActions.setInstancesTariffs]: (state, { payload }) => {
-    /** 13 it is hardcoded dc id - it must be refactored */
-    const key = Object.keys(payload)[0]
-    console.log('DC key', key)
+const premiumTariffs = createReducer(initialState.premiumTariffs, {
+  [cloudVpsActions.setPremiumTariffs]: (state, { payload }) => {
+    return { ...state, ...rewriteCloudsPrices(payload) }
+  },
+})
 
-    payload[key] = payload[key]?.map(el => {
-      const newDayPrice = TARIFFS_PRICES[el.title.main.$]?.day
-      const newMonthPrice = TARIFFS_PRICES[el.title.main.$]?.month
-      el.prices.price.cost.$ = String(newDayPrice)
-      el.prices.price.cost.month = String(newMonthPrice)
-
-      return el
-    })
-
-    return { ...state, ...payload }
+const basicTariffs = createReducer(initialState.basicTariffs, {
+  [cloudVpsActions.setBasicTariffs]: (state, { payload }) => {
+    return { ...state, ...rewriteCloudsPrices(payload) }
   },
 })
 
@@ -90,7 +86,8 @@ const cloudVpsReducer = combineReducers({
   instances,
   instancesCount,
   instancesFilters,
-  instancesTariffs,
+  premiumTariffs,
+  basicTariffs,
   instancesDcList,
   windowsTag,
   cloudPremiumTag,

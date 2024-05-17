@@ -4,7 +4,9 @@ const setItemForModals = createAction('SET_ITEM_FOR_MODALS')
 const setInstancesList = createAction('SET_INSTANCES_LIST')
 const setInstancesCount = createAction('SET_INSTANCES_COUNT')
 const setInstancesFilters = createAction('SET_INSTANCES_FILTERS')
-const setInstancesTariffs = createAction('SET_INSTANCES_TARIFFS')
+
+const setPremiumTariffs = createAction('SET_PREMIUM_TARIFFS')
+const setBasicTariffs = createAction('SET_BASIC_TARIFFS')
 const setInstancesDCList = createAction('SET_INSTANCES_DC_LIST')
 const setWindowsTag = createAction('SET_WINDOWS_TAG')
 const setCloudPremiumTag = createAction('SET_CLOUD_PREMIUM_TAG')
@@ -18,7 +20,8 @@ export default {
   setInstancesList,
   setInstancesCount,
   setInstancesFilters,
-  setInstancesTariffs,
+  setPremiumTariffs,
+  setBasicTariffs,
   setInstancesDCList,
   setWindowsTag,
   setCloudPremiumTag,

@@ -20,7 +20,7 @@ import {
   CloudTypeSection,
 } from '@components'
 import * as Yup from 'yup'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -41,7 +41,12 @@ import {
 } from '@utils'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { PASS_REGEX, PASS_REGEX_ASCII, DISALLOW_SPACE } from '@utils/constants'
+import {
+  PASS_REGEX,
+  PASS_REGEX_ASCII,
+  DISALLOW_SPACE,
+  PREMIUM_TYPE,
+} from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 
@@ -51,8 +56,14 @@ const IPv4_DAILY_COST = 1 / 30
 const IPv4_MONTHLY_COST = 1
 
 export default function CreateInstancePage() {
-  const { type: cloudType } = useParams()
-  const isPremiumShouldRender = cloudType === 'premium'
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
+
+  const switchCloudType = type => {
+    setSearchParams({ type })
+    setCloudType(type)
+  }
 
   const location = useLocation()
   const dispatch = useDispatch()
@@ -132,6 +143,7 @@ export default function CreateInstancePage() {
       )
     }
 
+    /** Cleans data from site when we leave the page */
     return () => {
       localStorage.removeItem('site_cart')
     }
@@ -365,25 +377,23 @@ export default function CreateInstancePage() {
                   : otherTariffs.push(tariff)
               })
 
-              const tariffsToRender = isPremiumShouldRender
-                ? premiumTariffs
-                : otherTariffs
+              const tariffsToRender = cloudType ? premiumTariffs : otherTariffs
 
-              useEffect(() => {
-                if (cloudPremiumTag) {
-                  if (tariffFromSite) {
-                    onTariffChange(tariffFromSite)
-                    localStorage.removeItem('site_cart')
-                  } else {
-                    const renderTariffs = isPremiumShouldRender
-                      ? premiumTariffs
-                      : otherTariffs
-                    const tariffChosen = renderTariffs.filter(el => !el.disabled)?.[0]
+              // useEffect(() => {
+              //   if (cloudPremiumTag) {
+              //     if (tariffFromSite) {
+              //       onTariffChange(tariffFromSite)
+              //       localStorage.removeItem('site_cart')
+              //     } else {
+              //       const renderTariffs = isPremiumShouldRender
+              //         ? premiumTariffs
+              //         : otherTariffs
+              //       const tariffChosen = renderTariffs.filter(el => !el.disabled)?.[0]
 
-                    onTariffChange(tariffChosen)
-                  }
-                }
-              }, [isPremiumShouldRender, cloudPremiumTag])
+              //       onTariffChange(tariffChosen)
+              //     }
+              //   }
+              // }, [isPremiumShouldRender, cloudPremiumTag])
 
               const onOSchange = value => {
                 setFieldValue('instances_os', value)
@@ -479,6 +489,13 @@ export default function CreateInstancePage() {
                     </WarningMessage>
                   )}
 
+                  <CloudTypeSection
+                    value={cloudType}
+                    switchCloudType={switchCloudType}
+                    signal={signal}
+                    setIsLoading={setIsLoading}
+                  />
+
                   <section className={s.section}>
                     <h3 className={s.section_title}>{t('server_location')}</h3>
 
@@ -495,8 +512,6 @@ export default function CreateInstancePage() {
                       })}
                     </ul>
                   </section>
-
-                  <CloudTypeSection value={} signal={signal} setIsLoading={setIsLoading} />
 
                   <section className={s.section}>
                     <h3 className={s.section_title}>{t('server_image')}</h3>

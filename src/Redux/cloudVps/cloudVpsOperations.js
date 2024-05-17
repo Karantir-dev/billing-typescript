@@ -13,10 +13,11 @@ import {
   handleLoadersClosing,
   renameAddonFields,
   cookies,
+  sortCloudsByType,
 } from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
-import { FOTBO_STATUSES_LIST } from '@utils/constants'
+import { BASIC_TYPE, FOTBO_STATUSES_LIST, PREMIUM_TYPE } from '@utils/constants'
 
 const getInstances =
   ({
@@ -493,13 +494,6 @@ const getInstanceInfo =
       })
   }
 
-const writeTariffsWithDC = data => {
-  return {
-    [data.doc.datacenter.$]:
-      data.doc.list.find(el => el.$name === 'pricelist').elem || [],
-  }
-}
-
 const getOsList =
   ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
   (dispatch, getState) => {
@@ -543,6 +537,13 @@ const getOsList =
       })
   }
 
+const writeTariffsWithDC = data => {
+  return {
+    [data.doc.datacenter.$]:
+      data.doc.list.find(el => el.$name === 'pricelist').elem || [],
+  }
+}
+
 const getAllTariffsInfo =
   ({
     signal,
@@ -573,6 +574,9 @@ const getAllTariffsInfo =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         const datacenter = data.doc.datacenter.$
+        // --------------------------------------------_
+        const { basicTariffs, premiumTariffs } = sortCloudsByType(data)
+        // --------------------------------------------_
         const allTariffs = {
           ...writeTariffsWithDC(data),
         }
@@ -588,9 +592,9 @@ const getAllTariffsInfo =
           el.$.toLowerCase().includes('windows'),
         ).$key
 
-        const cloudPremiumTag = data?.doc?.flist?.val.find(el =>
-          el?.$.toLowerCase().includes('type:premium'),
-        )?.$key
+        // const cloudPremiumTag = data?.doc?.flist?.val.find(el =>
+        //   el?.$.toLowerCase().includes('type:premium'),
+        // )?.$key
 
         let lastTariffID
         if (cloudPremiumTag) {
