@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { dedicOperations } from '@redux'
-import { isDisabledDedicTariff, isUnpaidOrder } from '@utils'
+import { isDisabledDedicTariff, isUnpaidOrder, useCreateTicketOption } from '@utils'
 
 export default function DedicItem({
   server,
@@ -32,6 +32,7 @@ export default function DedicItem({
   const [originName, setOriginName] = useState('')
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   useEffect(() => {
     if (server?.server_name?.$) {
@@ -114,6 +115,7 @@ export default function DedicItem({
       disabled: server?.status?.$ === '1' || !rights?.history,
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',

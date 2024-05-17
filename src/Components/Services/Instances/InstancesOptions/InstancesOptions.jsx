@@ -1,15 +1,12 @@
 import { Options } from '@components'
 import { cloudVpsActions, cloudVpsOperations } from '@src/Redux'
-import * as route from '@src/routes'
-import { getInstanceMainInfo } from '@src/utils'
+import { useCreateTicketOption, getInstanceMainInfo } from '@src/utils'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import s from './InstancesOptions..module.scss'
 
 export default function InstancesOptions({ item, isMobile, buttonClassName }) {
   const { t } = useTranslation(['cloud_vps'])
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const {
@@ -23,6 +20,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
   } = getInstanceMainInfo(item)
 
   const isHideMostItems = isResized || isRescued
+  const createTicketOption = useCreateTicketOption(item.id.$)
 
   const options = [
     {
@@ -136,15 +134,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
           }),
         ),
     },
-    {
-      label: t('Create ticket'),
-      icon: 'Headphone',
-      disabled: isDeleting,
-      onClick: () =>
-        navigate(`${route.SUPPORT}/requests`, {
-          state: { id: item.id.$, openModal: true },
-        }),
-    },
+    createTicketOption,
     {
       label: t('Rename'),
       icon: 'Rename',

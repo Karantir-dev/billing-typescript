@@ -49,5 +49,6 @@
   "Ticket was moved to Archive": "Запит був переміщений до архіву",
   "Ticket was removed from Archive": "Заявка була видалена з архіву",
   "The ticket was split. New discussion in the ticket": "Квиток був розділений. Нова дискусія у квитку {{ticket}}",
-  "The ticket was split. Previous discussion in the ticket": "Квиток був розділений. Попередня дискусія у квитку {{ticket}}"
+  "The ticket was split. Previous discussion in the ticket": "Квиток був розділений. Попередня дискусія у квитку {{ticket}}",
+  "create_ticket": "Створити тікет"
 }
