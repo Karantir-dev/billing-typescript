@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-// import { InputField, Button, Icon, Modal } from '@components'
 import { InputField, Button, Modal } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsNSModal.module.scss'
@@ -14,8 +13,6 @@ export default function Component(props) {
   const { names, closeModal, NSData, NSEditDomainHandler, isOpen } = props
 
   const [shownElem, setShownElem] = useState(1)
-
-  // const dropdownDescription = useRef(null)
 
   const [more, setMore] = useState(false)
   const [namesToRender, setNamesToRender] = useState(
