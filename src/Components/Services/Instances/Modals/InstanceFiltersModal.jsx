@@ -119,7 +119,7 @@ export const InstanceFiltersModal = ({
                     className={s.select}
                   />
 
-                  <Select
+                  {/* <Select
                     dropdownClass={s.input_bgc}
                     inputClassName={s.input_bgc}
                     label={`${t('datacenter', { ns: 'dedicated_servers' })}:`}
@@ -136,9 +136,9 @@ export const InstanceFiltersModal = ({
                         value: $key,
                       }))}
                     className={s.select}
-                  />
+                  /> */}
 
-                  <DoubleInputField
+                  {/* <DoubleInputField
                     inputWrapperClass={cn(s.inputHeight, s.input_bgc)}
                     className={s.input}
                     nameLeft="cost_from"
@@ -155,7 +155,7 @@ export const InstanceFiltersModal = ({
                     maxLengthLeft={5}
                     maxLengthRight={5}
                     isShadow
-                  />
+                  /> */}
 
                   <DoubleInputField
                     inputWrapperClass={cn(s.inputHeight, s.input_bgc)}
