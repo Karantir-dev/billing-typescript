@@ -45,7 +45,7 @@ import {
   PASS_REGEX,
   PASS_REGEX_ASCII,
   DISALLOW_SPACE,
-  PREMIUM_TYPE,
+  BASIC_TYPE,
 } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
@@ -58,7 +58,7 @@ const IPv4_MONTHLY_COST = 1
 export default function CreateInstancePage() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
+  const [cloudType, setCloudType] = useState(searchParams.get('type') || BASIC_TYPE)
 
   const switchCloudType = type => {
     setSearchParams({ type })
@@ -114,8 +114,6 @@ export default function CreateInstancePage() {
     )
   }
 
-  const isItPremiumPage = location?.pathname.includes('premium')
-
   useEffect(() => {
     if (
       (dataFromSite.location && !tariffs[dataFromSite.location]) ||
@@ -128,7 +126,7 @@ export default function CreateInstancePage() {
           needOsList: !operationSystems,
           setSshList: getAllSSHList,
           datacenter: dataFromSite.location || '',
-          isPremium: isItPremiumPage,
+          isBasic: cloudType === BASIC_TYPE,
         }),
       )
     } else if (tariffs && (!operationSystems || !allSshList.length)) {

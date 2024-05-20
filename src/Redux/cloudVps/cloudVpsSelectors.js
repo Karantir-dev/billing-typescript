@@ -9,7 +9,7 @@ const getOperationSystems = state => state.cloudVps.operationSystems
 const getSshList = state => state.cloudVps.sshList
 const getSshCount = state => state.cloudVps.sshCount
 const getAllSshList = state => state.cloudVps.allSshList
-const getCloudPremiumTag = state => state.cloudVps.cloudPremiumTag
+const getCloudBasicTag = state => state.cloudVps.cloudBasicTag
 
 export default {
   getItemForModals,
@@ -19,7 +19,7 @@ export default {
   getInstancesTariffs,
   getDClist,
   getWindowsTag,
-  getCloudPremiumTag,
+  getCloudBasicTag,
   getOperationSystems,
   getSshList,
   getSshCount,

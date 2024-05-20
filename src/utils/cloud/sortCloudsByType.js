@@ -1,20 +1,33 @@
-export default function sortCloudsByType(data) {
+export default function sortCloudsByType(data, cloudBasicTag) {
   const dcID = data.doc.datacenter.$
 
-  const premiumTariffs = { [dcID]: [] }
-  const basicTariffs = { [dcID]: [] }
+  let premiumTariffs = null
+  let basicTariffs = null
+  //   let premiumTariffs = { [dcID]: [] }
+  //   let basicTariffs = { [dcID]: [] }
 
   const tariffs = data.doc.list.find(el => el.$name === 'pricelist').elem
-  const cloudBasicTag = data?.doc?.flist?.val.find(el =>
-    el?.$.toLowerCase().includes('type:basic'),
-  )?.$key
 
   const checkIsItBasicCloud = tags => tags?.some(tag => tag?.$.includes(cloudBasicTag))
 
   tariffs.forEach(el => {
     const isBasic = checkIsItBasicCloud(el?.flabel?.tag)
 
-    isBasic ? basicTariffs[dcID].push(el) : premiumTariffs[dcID].push(el)
+    if (isBasic) {
+      if (basicTariffs?.[dcID]) {
+        basicTariffs[dcID].push(el)
+      } else {
+        basicTariffs = { [dcID]: [] }
+        basicTariffs[dcID].push(el)
+      }
+    } else {
+      if (premiumTariffs?.[dcID]) {
+        premiumTariffs[dcID].push(el)
+      } else {
+        premiumTariffs = { [dcID]: [] }
+        premiumTariffs[dcID].push(el)
+      }
+    }
   })
 
   return { premiumTariffs, basicTariffs }

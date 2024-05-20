@@ -9,7 +9,7 @@ const setPremiumTariffs = createAction('SET_PREMIUM_TARIFFS')
 const setBasicTariffs = createAction('SET_BASIC_TARIFFS')
 const setInstancesDCList = createAction('SET_INSTANCES_DC_LIST')
 const setWindowsTag = createAction('SET_WINDOWS_TAG')
-const setCloudPremiumTag = createAction('SET_CLOUD_PREMIUM_TAG')
+const setCloudBasicTag = createAction('SET_CLOUD_BASIC_TAG')
 const setOperationSystems = createAction('SET_OS_LIST')
 const setSshList = createAction('SET_SSH_LIST')
 const setSshCount = createAction('SET_SSH_COUNT')
@@ -24,7 +24,7 @@ export default {
   setBasicTariffs,
   setInstancesDCList,
   setWindowsTag,
-  setCloudPremiumTag,
+  setCloudBasicTag,
   setOperationSystems,
   setSshList,
   setSshCount,
