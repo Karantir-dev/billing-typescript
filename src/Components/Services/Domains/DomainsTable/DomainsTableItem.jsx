@@ -60,7 +60,7 @@ export default function Component(props) {
       onClick: () => whoisDomainHandler(id),
     },
     {
-      label: t('View/change the list of name servers'),
+      label: t('ns_settings'),
       icon: 'DomainsListName',
       disabled: !rights?.ns,
       onClick: () => NSDomainHandler(id),
