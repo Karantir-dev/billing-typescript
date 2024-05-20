@@ -13,6 +13,7 @@ import s from '../../../Pages/ServicesPage/CloudVPSPage/InstancesPage/CreateInst
 export default function CloudTypeSection({
   signal,
   setIsLoading,
+  getOsListHandler,
   dcKey,
   value,
   switchCloudType,
@@ -42,19 +43,8 @@ export default function CloudTypeSection({
                 className={cn(s.category_btn, s.serverType_btn)}
                 type="button"
                 onClick={() => {
+                  getOsListHandler(type)
                   switchCloudType(type)
-
-                  //   dispatch(
-                  //     cloudVpsOperations.getOsList({
-                  //       signal,
-                  //       setIsLoading,
-                  //       closeLoader: () => setIsLoading(false),
-                  //       datacenter: dcKey,
-                  //       setSshList: getAllSSHList,
-                  //       /** we pick last tariff in the list because first one doesn`t have Windows OS */
-                  //       lastTariffID: premiumTariffs[premiumTariffs.length - 1].id.$,
-                  //     }),
-                  //   )
                 }}
               >
                 {type === PREMIUM_TYPE && (

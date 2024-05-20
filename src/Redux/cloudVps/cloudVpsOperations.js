@@ -1,11 +1,6 @@
+/* eslint-disable no-unused-vars */
 import qs from 'qs'
-import {
-  actions,
-  authSelectors,
-  cartActions,
-  cloudVpsActions,
-  cloudVpsSelectors,
-} from '@redux'
+import { actions, authSelectors, cartActions, cloudVpsActions } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import {
@@ -17,7 +12,7 @@ import {
 } from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
-import { BASIC_TYPE, FOTBO_STATUSES_LIST, PREMIUM_TYPE } from '@utils/constants'
+import { FOTBO_STATUSES_LIST } from '@utils/constants'
 
 const getInstances =
   ({
@@ -495,16 +490,25 @@ const getInstanceInfo =
   }
 
 const getOsList =
-  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
+  ({
+    signal,
+    setIsLoading,
+    lastTariffID,
+    closeLoader,
+    datacenter,
+    setSshList,
+    isBasic,
+  }) =>
+  // eslint-disable-next-line no-unused-vars
   (dispatch, getState) => {
     setIsLoading && setIsLoading(true)
 
-    if (!lastTariffID) {
-      const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
+    // if (!lastTariffID) {
+    //   const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
 
-      const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
-      lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
-    }
+    //   const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
+    //   lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
+    // }
 
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
@@ -526,7 +530,11 @@ const getOsList =
 
         const operationSystems = { [data.doc.datacenter.$]: osList }
 
-        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
+        if (isBasic) {
+          dispatch(cloudVpsActions.setBasicOperationSystems(operationSystems))
+        } else {
+          dispatch(cloudVpsActions.setPremiumOperationSystems(operationSystems))
+        }
         setSshList && setSshList(formatedSshList)
 
         closeLoader && closeLoader()
@@ -602,15 +610,14 @@ const getAllTariffsInfo =
 
         if (needOsList) {
           await dispatch(
-            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList }),
+            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList, isBasic }),
           )
         }
 
-        dispatch(cloudVpsActions.setBasicTariffs(basicTariffs))
+        basicTariffs && dispatch(cloudVpsActions.setBasicTariffs(basicTariffs))
         dispatch(cloudVpsActions.setPremiumTariffs(premiumTariffs))
         needDcList && dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
-        dispatch(cloudVpsActions.setCloudBasicTag(cloudBasicTag))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)

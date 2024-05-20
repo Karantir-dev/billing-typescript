@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
@@ -46,6 +47,7 @@ import {
   PASS_REGEX_ASCII,
   DISALLOW_SPACE,
   BASIC_TYPE,
+  PREMIUM_TYPE,
 } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
@@ -58,7 +60,8 @@ const IPv4_MONTHLY_COST = 1
 export default function CreateInstancePage() {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const [cloudType, setCloudType] = useState(searchParams.get('type') || BASIC_TYPE)
+  const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
+  const isBasic = cloudType === BASIC_TYPE
 
   const switchCloudType = type => {
     setSearchParams({ type })
@@ -80,11 +83,19 @@ export default function CreateInstancePage() {
 
   const warningEl = useRef()
 
-  const tariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
+  const premiumTariffs = useSelector(cloudVpsSelectors.getPremiumTariffs)
+  const basicTariffs = useSelector(cloudVpsSelectors.getBasicTariffs)
+  const tariffs = isBasic ? basicTariffs : premiumTariffs
+
+  const premiumOperationSystems = useSelector(
+    cloudVpsSelectors.getPremiumOperationSystems,
+  )
+  const basicOperationSystems = useSelector(cloudVpsSelectors.getBasicOperationSystems)
+  const operationSystems = isBasic ? basicOperationSystems : premiumOperationSystems
+
   const dcList = useSelector(cloudVpsSelectors.getDClist)
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
-  const cloudPremiumTag = useSelector(cloudVpsSelectors.getCloudPremiumTag)
-  const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
+
   const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
 
@@ -114,10 +125,46 @@ export default function CreateInstancePage() {
     )
   }
 
+  const getOsListHandler = (cloudType, needSshList = false) => {
+    const isBasic = cloudType === BASIC_TYPE
+
+    let haveOS
+    if (isBasic) {
+      haveOS = basicOperationSystems?.[currentDC?.$key]
+    } else {
+      haveOS = premiumOperationSystems?.[currentDC?.$key]
+    }
+
+    if (!haveOS) {
+      const lastTariffID = getLastTariffID(isBasic)
+      dispatch(
+        cloudVpsOperations.getOsList({
+          signal,
+          setIsLoading,
+          closeLoader: () => setIsLoading(false),
+          datacenter: currentDC?.$key,
+          setSshList: needSshList ? getAllSSHList : null,
+          lastTariffID,
+          isBasic,
+        }),
+      )
+    }
+  }
+
+  const getLastTariffID = isBasic => {
+    const tariffs = isBasic ? basicTariffs : premiumTariffs
+    const list = tariffs?.[currentDC?.$key]
+    const lastTariffID = list?.[list?.length - 1]?.id?.$
+    return lastTariffID
+  }
+
+  /** First render useEffect */
   useEffect(() => {
     if (
-      (dataFromSite.location && !tariffs[dataFromSite.location]) ||
-      !Object.keys(tariffs).length
+      /** if we have DC ID from site and don`t have the tariffs list */
+      // (dataFromSite.location && !tariffs?.[dataFromSite.location]) ||
+      /** or if we don`t have tariffs list for current DC */
+      !tariffs?.[currentDC?.$key]?.length
     ) {
       dispatch(
         cloudVpsOperations.getAllTariffsInfo({
@@ -126,19 +173,16 @@ export default function CreateInstancePage() {
           needOsList: !operationSystems,
           setSshList: getAllSSHList,
           datacenter: dataFromSite.location || '',
-          isBasic: cloudType === BASIC_TYPE,
+          isBasic,
         }),
       )
-    } else if (tariffs && (!operationSystems || !allSshList.length)) {
-      dispatch(
-        cloudVpsOperations.getOsList({
-          signal,
-          setIsLoading,
-          closeLoader: () => setIsLoading(false),
-          datacenter: dcList?.[0]?.$key,
-          setSshList: getAllSSHList,
-        }),
-      )
+
+      /** if we have tariffs but don`t have OSs for them or ssh keys */
+    } else if (
+      tariffs?.[currentDC?.$key] &&
+      (!operationSystems?.[currentDC?.$key] || !allSshList.length)
+    ) {
+      getOsListHandler(cloudType, true)
     }
 
     /** Cleans data from site when we leave the page */
@@ -201,9 +245,6 @@ export default function CreateInstancePage() {
       .includes('windows')
   }
 
-  const checkIsItPremiumCloud = tags =>
-    tags?.some(tag => tag?.$.includes(cloudPremiumTag))
-
   const validationSchema = Yup.object().shape({
     password: Yup.string().when('connectionType', {
       is: type => type === 'password',
@@ -258,7 +299,7 @@ export default function CreateInstancePage() {
         FallbackComponent={Error}
         onError={err => console.log('ErrorBoundary', err)}
       >
-        {tariffs && operationSystems && currentDC && (
+        {tariffs?.[currentDC?.$key] && operationSystems && currentDC && (
           <Formik
             initialValues={{
               instances_os: operationSystems?.[currentDC.$key]?.[0]?.$key,
@@ -289,14 +330,7 @@ export default function CreateInstancePage() {
               }, [operationSystems?.[currentDC.$key]])
 
               const onDCchange = async dc => {
-                /** this fns should be executed after 'getAllTariffsInfo' request */
-                setCurrentDC(dc)
-                setFieldValue('tariff_id', null)
-                setFieldValue('instances_os', null)
-
                 if (!tariffs[dc.$key]) {
-                  // check this result
-                  // const result =
                   await dispatch(
                     cloudVpsOperations.getAllTariffsInfo({
                       signal,
@@ -304,10 +338,12 @@ export default function CreateInstancePage() {
                       datacenter: dc.$key,
                       needOsList: !operationSystems[dc.$key],
                       needDcList: false,
+                      isBasic,
                     }),
                   )
-                  // console.log(result)
                 }
+
+                setCurrentDC(dc)
               }
 
               const onTariffChange = tariff => {
@@ -361,21 +397,9 @@ export default function CreateInstancePage() {
 
               const filteredTariffsList = filterTariffsList(isItWindows)
 
-              /** better move this sorting outside the Formik
-               * and store it in some state
-               */
-              const premiumTariffs = []
-              const otherTariffs = []
-
-              filteredTariffsList?.forEach(tariff => {
-                const isItPremiumInstance = checkIsItPremiumCloud(tariff?.flabel?.tag)
-
-                isItPremiumInstance
-                  ? premiumTariffs.push(tariff)
-                  : otherTariffs.push(tariff)
-              })
-
-              const tariffsToRender = cloudType ? premiumTariffs : otherTariffs
+              useEffect(() => {
+                onTariffChange(filteredTariffsList[0])
+              }, [currentDC?.$key, cloudType])
 
               // useEffect(() => {
               //   if (cloudPremiumTag) {
@@ -490,6 +514,8 @@ export default function CreateInstancePage() {
                   <CloudTypeSection
                     value={cloudType}
                     switchCloudType={switchCloudType}
+                    getOsListHandler={getOsListHandler}
+                    dcKey={currentDC.$key}
                     signal={signal}
                     setIsLoading={setIsLoading}
                   />
@@ -578,7 +604,7 @@ export default function CreateInstancePage() {
                       </div>
                     )}
                     <ul className={s.grid}>
-                      {tariffsToRender?.map(tariff => {
+                      {filteredTariffsList?.map(tariff => {
                         const price = calculatePrice(tariff, values)
 
                         return (

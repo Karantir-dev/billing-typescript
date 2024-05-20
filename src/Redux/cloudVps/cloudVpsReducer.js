@@ -4,18 +4,18 @@ import cloudVpsActions from './cloudVpsActions'
 import { rewriteCloudsPrices } from '@src/utils'
 
 const initialState = {
+  premiumTariffs: null,
+  basicTariffs: null,
+  premiumOperationSystems: null,
+  basicOperationSystems: null,
+
   itemForModalsReducer: {},
   instances: null,
   instancesCount: 0,
   instancesFilters: {},
-
-  premiumTariffs: {},
-  basicTariffs: {},
-
   instancesDcList: null,
   windowsTag: '',
-  cloudBasicTag: '',
-  operationSystems: null,
+  // cloudBasicTag: '',
   sshList: null,
   sshCount: 0,
   allSshList: [],
@@ -41,12 +41,13 @@ const instancesFilters = createReducer(initialState.instancesFilters, {
 
 const premiumTariffs = createReducer(initialState.premiumTariffs, {
   [cloudVpsActions.setPremiumTariffs]: (state, { payload }) => {
+    console.log(rewriteCloudsPrices(payload))
     return { ...state, ...rewriteCloudsPrices(payload) }
   },
 })
-
 const basicTariffs = createReducer(initialState.basicTariffs, {
   [cloudVpsActions.setBasicTariffs]: (state, { payload }) => {
+    console.log(rewriteCloudsPrices(payload))
     return { ...state, ...rewriteCloudsPrices(payload) }
   },
 })
@@ -59,14 +60,21 @@ const windowsTag = createReducer(initialState.windowsTag, {
   [cloudVpsActions.setWindowsTag]: (_, { payload }) => payload,
 })
 
-const cloudBasicTag = createReducer(initialState.cloudBasicTag, {
-  [cloudVpsActions.setCloudBasicTag]: (_, { payload }) => payload,
-})
+// const cloudBasicTag = createReducer(initialState.cloudBasicTag, {
+//   [cloudVpsActions.setCloudBasicTag]: (_, { payload }) => payload,
+// })
 
-const operationSystems = createReducer(initialState.operationSystems, {
-  [cloudVpsActions.setOperationSystems]: (state, { payload }) => {
-    return { ...state, ...payload }
-  },
+const premiumOperationSystems = createReducer(initialState.premiumOperationSystems, {
+  [cloudVpsActions.setPremiumOperationSystems]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
+})
+const basicOperationSystems = createReducer(initialState.basicOperationSystems, {
+  [cloudVpsActions.setBasicOperationSystems]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
 })
 
 const sshList = createReducer(initialState.sshList, {
@@ -82,16 +90,17 @@ const sshCount = createReducer(initialState.sshCount, {
 })
 
 const cloudVpsReducer = combineReducers({
+  premiumTariffs,
+  basicTariffs,
+  premiumOperationSystems,
+  basicOperationSystems,
   itemForModalsReducer,
   instances,
   instancesCount,
   instancesFilters,
-  premiumTariffs,
-  basicTariffs,
   instancesDcList,
   windowsTag,
-  cloudBasicTag,
-  operationSystems,
+  // cloudBasicTag,
   sshList,
   sshCount,
   allSshList,
