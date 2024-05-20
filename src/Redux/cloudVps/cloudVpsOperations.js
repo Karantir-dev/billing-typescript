@@ -81,13 +81,13 @@ const getInstances =
           datacenter: data.doc?.slist?.find(el => el.$name === 'datacenter')?.val,
           period: data.doc?.slist?.find(el => el.$name === 'period')?.val,
           pricelist: data.doc?.slist?.find(el => el.$name === 'pricelist')?.val,
-          fotbo_status: FOTBO_STATUSES_LIST,
+          instance_status: FOTBO_STATUSES_LIST,
         }
         const active = {
           id: data.doc?.id?.$ || '',
           ip: data.doc?.ip?.$ || '',
           pricelist: data.doc?.pricelist?.$ || '',
-          fotbo_status: data.doc?.fotbo_status?.$ || '',
+          instance_status: data.doc?.instance_status?.$ || '',
           orderdatefrom: data.doc?.orderdatefrom?.$ || '',
           orderdateto: data.doc?.orderdateto?.$ || '',
           cost_from: data.doc?.cost_from?.$ || '',
@@ -131,7 +131,7 @@ const setInstancesFilter =
           orderdateto: values?.orderdateto || '',
           period: values?.period || '',
           pricelist: values?.pricelist || '',
-          fotbo_status: values?.fotbo_status || '',
+          instance_status: values?.instance_status || '',
         }),
         { signal },
       )
@@ -340,14 +340,14 @@ const changeInstancePassword =
       .post(
         '/',
         qs.stringify({
-          func: 'instances.fotbo.fotbochangepassword',
+          func: 'instances.fleio.changepassword',
           out: 'json',
           sok: 'ok',
           auth: sessionId,
           elid,
           lang: 'en',
           clicked_button: 'ok',
-          fotbochangepassword: password,
+          password,
         }),
         { signal },
       )
@@ -375,7 +375,7 @@ const rebuildInstance =
       .post(
         '/',
         qs.stringify({
-          func: `instances.fotbo.${action}`,
+          func: `instances.fleio.${action}`,
           out: 'json',
           auth: sessionId,
           elid,
@@ -405,7 +405,7 @@ const openConsole =
       .post(
         '/',
         qs.stringify({
-          func: 'instances.fotbovnc',
+          func: 'instances.fleio.vnc',
           out: 'json',
           auth: sessionId,
           elid,

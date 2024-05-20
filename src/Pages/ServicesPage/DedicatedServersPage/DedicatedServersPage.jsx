@@ -479,6 +479,7 @@ export default function DedicatedServersPage() {
           closeModal={() => setIdForDeleteModal([])}
           isDeleteLater
           isOpen
+          isDedic
         />
       )}
 

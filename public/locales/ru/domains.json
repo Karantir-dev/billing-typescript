@@ -44,7 +44,7 @@
   "Disabled": "Отключить",
   "Transfer": "Трансфер",
   "Getting information about a domain using the whois protocol": "Получение информации о домене по протоколу whois",
-  "View/change the list of nameservers": "Просмотреть/изменить список серверов имен",
+  "ns_settings": "Настройки NS",
   "Domain name transfer": "Трансфер доменного имени",
   "Domain name only Latin": "Имя домена может содержать только латинские символы",
   "latin_only": "Только латинские символы",
@@ -72,13 +72,11 @@
   "Domain has been registered and delegated": "Домен зарегистрирован и делегирован",
   "Domain has been registered, but it is not  delegated": "Домен зарегистрирован, но не делегирован",
   "Domain is not registered with registrar": "Домен не зарегистрирован у регистратора",
-
   "Domain registration in progress": "Выполняется регистрация домена",
   "Changing registrar for this domain": "Смена регистратора для этого домена",
   "Domain renewal in progress": "Выполняется продление домена",
   "Domain delegation has expired": "Срок делегирования домена истек",
   "Service editing": "Редактирование услуги",
-
   "Main": "Основное",
   "Service profiles": "Профили услуги",
   "Additionally": "Дополнительно",
@@ -87,40 +85,30 @@
   "Date of creation": "Дата создания",
   "This profile is used by one or several services": "Редактируемый профиль используется одной или несколькими услугами. В случае изменения данных профиля, внесенные изменения будут автоматически переданы регистратору доменов.",
   "Main parameters": "Основные параметры",
-
   "Enter IP address": "Введите IP-адрес",
   "Data center": "Дата-центр",
   "Site care deleted successfully": "Уход за сайтом успешно удален",
   "Instruction": "Инструкция",
   "YOU DO NOT HAVE A DOMAIN YET": "У ВАС ЕЩЕ НЕТ ДОМЕНА",
   "no services description": "Зарегестрируйте домен в Zomro быстро, недорого и удобно",
-
   "Select": "Выбрать",
   "Selected": "Выбрано",
-  "View/change the list of name servers": "Посмотреть/изменить список серверов имен",
   "record_format": "Формат записи \"ns.example.com\" или \"ns.example.com/1.1.1.1\" или \"ns.example.com/1.1.1.1,2.2.2.2\"",
   "Add NS": "Добавить NS",
-
   "Configuring": "Настройка",
-
   "and": "и",
-
   "Name can only contain Latin letters": "Имя может содержать только латинские буквы",
   "Lastname can only contain Latin letters": "Фамилия может содержать только латинские буквы",
   "Midlename can only contain Latin letters": "Отчество может содержать только латинские буквы",
   "Index can contain only": "Индекс может содержать только латинские буквы, цифры и символ -",
-
   "Apply to all": "Применить ко всему",
   "Provide for each domain name": "Укажите для каждого доменного имени",
-
   "ns0": "NS 1",
   "ns1": "NS 2",
   "ns2": "NS 3",
   "ns3": "NS 4",
   "ns_additional": "Дополнительный NS",
-
   "Use the name servers": "Используйте серверы имен",
-
   "The tariff plan has been changed": "Изменен тариф",
   "The old plan": "Старый тариф",
   "The new plan": "Новый тариф",
@@ -129,7 +117,6 @@
   "Total amount": "Общая сумма",
   "ns_format": "Формат записи \"ns.example.com\"",
   "choose_min_one_domain": "Выберите хотя бы один домен",
-
   "Domain name must be at least 2 characters long": "Доменное имя должно состоять не менее чем из 2 символов",
   "Domain name must be at most 63 characters long": "Доменное имя должно состоять не более чем из 63 символов",
   "premium_check_failed": "Проверка на премиальность домена не прошла. Но вы можете продолжить покупку, если выбранный домен окажется премиальным, вам вернут за него средства"

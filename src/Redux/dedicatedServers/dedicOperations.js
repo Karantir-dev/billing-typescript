@@ -1362,17 +1362,33 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
   const {
     auth: { sessionId },
   } = getState()
+
   axiosInstance
     .post(
       '/',
       qs.stringify({
-        func: 'dedic.delete',
-        auth: sessionId,
-        elid: id.join(', '),
+        func: 'dedic.edit',
         out: 'json',
+        auth: sessionId,
         lang: 'en',
+        elid: id.join(', '),
+        autoprolong: 'null',
+        clicked_button: 'basket',
+        sok: 'ok',
       }),
     )
+    .then(() => {
+      return axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'dedic.delete',
+          auth: sessionId,
+          elid: id.join(', '),
+          out: 'json',
+          lang: 'en',
+        }),
+      )
+    })
     .then(({ data }) => {
       if (data.doc.error) {
         if (data.doc.error.$type === 'pricelist_min_order') {
@@ -1402,7 +1418,7 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
               { ns: 'other', min: min, left: left },
             )}`,
           )
-
+          dispatch(getServersList({ p_num: 1 }, signal, setIsLoading))
           closeFn()
           dispatch(actions.hideLoader())
           return

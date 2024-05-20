@@ -63,7 +63,7 @@
   "Stopped": "Зупинений",
   "Verify Resize": "Підтвердити зміну",
   "Not selected": "Не обрано",
-  "fotbo_status": "Статус",
+  "instance_status": "Статус",
   "pricelist": "Тарифний план",
   "period": "Період",
   "datacenter": "Дата-центр",
@@ -104,10 +104,12 @@
   "rebuild_modal": {
     "title": {
       "bootimage": "Відновлення сервера",
+      "rescue": "Відновлення сервера",
       "rebuild": "Змінити ОС"
     },
     "text": {
       "bootimage": "Оберіть дистрибутив",
+      "rescue": "Оберіть дистрибутив",
       "rebuild": "Оберіть джерело завантаження"
     },
     "warning": {

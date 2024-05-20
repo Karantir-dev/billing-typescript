@@ -6,7 +6,7 @@ import s from './FTPItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
-import { isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function FTPItem({
   storage,
@@ -40,6 +40,7 @@ export default function FTPItem({
   }
 
   const deleteOption = isUnpaidOrder(storage, unpaidItems)
+  const createTicketOption = useCreateTicketOption(storage.id.$)
 
   const options = [
     deleteOption,
@@ -77,6 +78,7 @@ export default function FTPItem({
       disabled: !rights?.history || storage?.status?.$ === '1',
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',
