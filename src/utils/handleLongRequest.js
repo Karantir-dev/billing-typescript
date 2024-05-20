@@ -9,7 +9,7 @@ export default async function handleLongRequest(data, errorHandler, successCallb
       const responseData = response.data
 
       if (responseData) {
-        await handleLongRequest(responseData, errorHandler, successCallback)
+        handleLongRequest(responseData, errorHandler, successCallback)
       } else {
         errorHandler('No data received from the server')
       }

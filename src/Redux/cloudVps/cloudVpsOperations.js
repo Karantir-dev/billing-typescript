@@ -798,7 +798,7 @@ const editSsh =
         function errorHandler(data) {
           if (data.doc?.error) {
             /* Get and parse errors */
-            const errorMessage = data.doc?.error?.msg?.$
+            let errorMessage = data.doc?.error?.msg?.$
             const errorObject = JSON.parse(data.doc?.error?.$object)
             /* Get the first key */
             const errorKey = Object.keys(errorObject)?.[0]
@@ -806,11 +806,16 @@ const editSsh =
             if (errorKey) {
               const specifiedErrorDescr = errorObject[errorKey]?.[0]
               toast.error(t(specifiedErrorDescr, { ns: 'other' }))
-              console.error(`${errorMessage}: ${specifiedErrorDescr}`)
-              throw new Error(specifiedErrorDescr)
+              errorMessage = `${errorMessage}: ${specifiedErrorDescr}`
+              console.error(errorMessage)
+            } else if (data.doc.error.$type) {
+              console.error(`${errorMessage}: ${data.doc.error?.$type}`)
+            } else {
+              console.error(errorMessage)
             }
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+            throw new Error(errorMessage)
           }
-          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
         }
 
         const successCallback = () => {
@@ -825,7 +830,6 @@ const editSsh =
               setIsLoading,
             }),
           )
-          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
           toast.success(t('Changes saved successfully', { ns: 'other' }))
         }
 
