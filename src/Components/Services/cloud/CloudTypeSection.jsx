@@ -1,28 +1,17 @@
 /* eslint-disable no-unused-vars */
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-
 import crown from '@images/crown.svg'
-import { useDispatch } from 'react-redux'
-import { cloudVpsOperations } from '@src/Redux'
 import { useRef } from 'react'
 import { BASIC_TYPE, PREMIUM_TYPE } from '@src/utils/constants'
 
 import s from '../../../Pages/ServicesPage/CloudVPSPage/InstancesPage/CreateInstancePage/CreateInstancePage.module.scss'
 
-export default function CloudTypeSection({
-  signal,
-  setIsLoading,
-  getOsListHandler,
-  dcKey,
-  value,
-  switchCloudType,
-}) {
+export default function CloudTypeSection({ getOsListHandler, value, switchCloudType }) {
   const CATEGORIES = useRef([
     { type: PREMIUM_TYPE, label: 'Premium VPS' },
     { type: BASIC_TYPE, label: 'Basic VPS' },
   ])
-  const dispatch = useDispatch()
 
   const { t } = useTranslation(['cloud_vps'])
 
@@ -42,8 +31,9 @@ export default function CloudTypeSection({
               <button
                 className={cn(s.category_btn, s.serverType_btn)}
                 type="button"
-                onClick={() => {
-                  getOsListHandler(type)
+                onClick={async () => {
+                  await getOsListHandler(type)
+
                   switchCloudType(type)
                 }}
               >

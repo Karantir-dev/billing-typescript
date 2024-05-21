@@ -499,16 +499,8 @@ const getOsList =
     setSshList,
     isBasic,
   }) =>
-  // eslint-disable-next-line no-unused-vars
-  (dispatch, getState) => {
+  dispatch => {
     setIsLoading && setIsLoading(true)
-
-    // if (!lastTariffID) {
-    //   const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
-
-    //   const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
-    //   lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
-    // }
 
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
@@ -544,13 +536,6 @@ const getOsList =
         handleLoadersClosing(err?.message, dispatch, setIsLoading)
       })
   }
-
-// const writeTariffsWithDC = data => {
-//   return {
-//     [data.doc.datacenter.$]:
-//       data.doc.list.find(el => el.$name === 'pricelist').elem || [],
-//   }
-// }
 
 const getAllTariffsInfo =
   ({
