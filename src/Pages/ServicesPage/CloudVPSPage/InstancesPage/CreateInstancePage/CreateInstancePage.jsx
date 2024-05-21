@@ -402,6 +402,8 @@ export default function CreateInstancePage() {
                 useEffect(() => {
                   if (!tariffFromSite) {
                     onTariffChange(filteredTariffsList[0])
+                  } else {
+                    localStorage.removeItem('site_cart')
                   }
                 }, [currentDC?.$key, cloudType])
 
