@@ -41,13 +41,11 @@ const instancesFilters = createReducer(initialState.instancesFilters, {
 
 const premiumTariffs = createReducer(initialState.premiumTariffs, {
   [cloudVpsActions.setPremiumTariffs]: (state, { payload }) => {
-    console.log(rewriteCloudsPrices(payload))
     return { ...state, ...rewriteCloudsPrices(payload) }
   },
 })
 const basicTariffs = createReducer(initialState.basicTariffs, {
   [cloudVpsActions.setBasicTariffs]: (state, { payload }) => {
-    console.log(rewriteCloudsPrices(payload))
     return { ...state, ...rewriteCloudsPrices(payload) }
   },
 })

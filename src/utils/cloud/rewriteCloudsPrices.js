@@ -3,7 +3,6 @@ import { TARIFFS_PRICES } from '../constants'
 export default function rewriteCloudsPrices(payload) {
   if (payload) {
     const key = Object.keys(payload)[0]
-    console.log('DC key', key)
 
     payload[key] = payload[key]?.map(el => {
       const newDayPrice = TARIFFS_PRICES[el.title.main.$]?.day

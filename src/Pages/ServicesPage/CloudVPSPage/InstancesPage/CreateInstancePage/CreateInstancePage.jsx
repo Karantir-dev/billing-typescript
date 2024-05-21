@@ -610,14 +610,9 @@ export default function CreateInstancePage() {
                         </div>
                       )}
                       <ul className={s.grid}>
-                        {console.log(values.tariffData)}
                         {filteredTariffsList?.map(tariff => {
                           const price = calculatePrice(tariff, values)
-                          // console.log(
-                          //   values.tariff_id,
-                          //   values.tariff_id === tariff.id.$,
-                          //   tariff,
-                          // )
+
                           return (
                             <TariffCard
                               key={tariff.id.$}
