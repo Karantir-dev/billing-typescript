@@ -12,6 +12,7 @@ export default function DeleteModal({
   isDeleteLater = false,
   deleteFn,
   isOpen,
+  isDedic,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const [namesOpened, setNamesOpened] = useState(false)
@@ -42,7 +43,12 @@ export default function DeleteModal({
       <Modal.Body>
         <p className={s.title}>{t('attention')}!</p>
         <p className={s.text}>{t('delete_message')}?</p>
-        {isDeleteLater && <p className={s.warn}>{t('warn_message')}</p>}
+        {isDeleteLater &&
+          (isDedic ? (
+            <p className={s.warn}>{t('warn_message_dedic')}</p>
+          ) : (
+            <p className={s.warn}>{t('warn_message')}</p>
+          ))}
         <div>
           <p className={cn(s.names_block, { [s.opened]: namesOpened })} ref={namesBlock}>
             {names.map((name, idx) => {

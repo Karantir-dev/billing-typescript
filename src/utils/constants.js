@@ -179,7 +179,7 @@ export const DC_ID_IN = { poland: 13, netherlands: 12 }
 
 export const CLOUD_SORT_LIST = [
   { label: 'Name', isSort: true, value: 'servername' },
-  { label: 'Status', isSort: true, value: 'fotbo_status' },
+  { label: 'Status', isSort: true, value: 'instance_status' },
   { label: 'Flavor', isSort: true, value: 'pricelist' },
   { label: 'Price', isSort: true, value: 'cost' },
   { label: 'Region', isSort: true, value: 'datacentername' },

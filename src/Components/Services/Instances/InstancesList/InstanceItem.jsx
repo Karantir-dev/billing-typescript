@@ -86,7 +86,7 @@ export default function InstanceItem({ item, editInstance }) {
                   s[
                     isDeleting
                       ? 'deletion_in_progress'
-                      : item?.fotbo_status?.$.trim().toLowerCase() ||
+                      : item?.instance_status?.$.trim().toLowerCase() ||
                         item?.item_status?.$.trim().toLowerCase()
                   ],
                 )}
@@ -100,7 +100,7 @@ export default function InstanceItem({ item, editInstance }) {
               className={cn(
                 s.status,
                 s[
-                  item?.fotbo_status?.$.trim().toLowerCase() ||
+                  item?.instance_status?.$.trim().toLowerCase() ||
                     item?.item_status?.$.trim().toLowerCase()
                 ],
               )}

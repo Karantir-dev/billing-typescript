@@ -6,14 +6,12 @@
     "read_more": "Читать больше",
     "read_less": "Скрыть",
     "users_title": "Ваши пользователи",
-
     "table_header": {
       "email": "Email",
       "name": "ФИО или название",
       "full_access": "Полный доступ",
       "status": "Статус"
     },
-
     "user_cards": {
       "turn_on_field": "Вкл.",
       "turn_off_field": "Выкл.",
@@ -22,14 +20,12 @@
       "yes": "Да",
       "no": "Нет",
       "warning_message": "Этот пользователь имеет полный доступ, если Вы хотите управлять конкретными правами, пожалуйста отключите полный доступ",
-
       "drop_list": {
         "settings": "Настройки",
         "access_rights": "Права доступа",
         "delete": "Удалить"
       }
     },
-
     "alerts": {
       "remove": {
         "title": "Удаление пользователя",
@@ -89,11 +85,9 @@
       "password": "Обязательное поле для заполнения",
       "conf_password": "Обязательное поле для заполнения"
     },
-
     "rights_alert": {
       "title_short": "Права доступа",
       "title_long": "Права доступа доверенного пользователя",
-
       "TRANSLATION FOR CLIENT SECTION": "TRANSLATION FOR CLIENT SECTION",
       "customer": "Клиент",
       "clientoption": "Профиль",
@@ -114,11 +108,9 @@
       "rights2_user_suspend": "$t(Деактивировать)",
       "rights2_user_hardfilter": "$t(Фильтр)",
       "rights2_user_filter#create": "$t(Фильтр)",
-
       "coupon_use": "Использовать сертификат",
       "coupon_use#read": "Доступно чтение данных формы",
       "coupon_use#write": "Доступно сохранение данных",
-
       "profile": "Плательщики",
       "profile_add#create": "$t(Добавить)",
       "profile_edit": "$t(Редактировать)",
@@ -132,21 +124,18 @@
       "profile_edit#write": "Редактирование информации о плательщике (доступ к сохранению данных)",
       "profile_reconciliation#read": "Печать для сверки (доступ к чтению данных формы)",
       "profile_reconciliation#write": "Печать для сверки (доступ к сохранению данных)",
-
       "service_profile": "Контакты домена",
       "service_profile_edit#create": "$t(Добавить)",
       "service_profile_edit": "$t(Редактировать)",
       "service_profile_delete": "$t(Удалить)",
       "service_profile_edit#read": "Параметры контакта (доступ к чтению данных формы)",
       "service_profile_edit#write": "Параметры контакта (доступ к сохранению данных)",
-
       "affiliate_client": "Реферальная программа",
       "affiliate_client_reward": "Доход",
       "affiliate_client#read": "Реферальная программа (доступно чтение данных форм)",
       "affiliate_client#write": "Реферальная программа (доступно сохранение данных)",
       "affiliate_client_click": "$t(Статистика)",
       "affiliate_client_click_filter#create": "$t(Фильтр)",
-
       "contract": "Договоры",
       "contract_edit#create": "$t(Добавить)",
       "contract_edit": "$t(Редактировать)",
@@ -157,15 +146,12 @@
       "contract_filter#create": "$t(Фильтр)",
       "contract_edit#read": "Договор (доступно чтение данных форм)",
       "contract_edit#write": "Договор (доступно сохранение данных)",
-
       "basket": "$t(Корзина)",
       "basket#write": "Корзина (доступно сохранение данных)",
       "basket#read": "Корзина  (доступно чтение данных форм)",
-
       "order": "$t(Заказы)",
       "order#read": "Заказы (доступно чтение данных форм)",
       "order#write": "Заказы (доступно сохранение данных)",
-
       "payment_recurring_stored_methods": "Способы оплаты",
       "payment_recurring_stored_methods_edit#create": "$t(Добавить)",
       "payment_recurring_stored_methods_edit": "$t(Редактировать)",
@@ -173,13 +159,10 @@
       "payment_recurring_stored_methods_reconfigure": "Настроить повторно",
       "payment_recurring_stored_methods_edit#read": "Изменить способ оплаты (доступно чтение данных форм)",
       "payment_recurring_stored_methods_edit#write": "Изменить способ оплаты (доступно сохранение данных)",
-
       "usrparam": "Настойки пользователя",
       "usrparam#read": "Настройки пользователя (доступно чтение данных форм)",
       "usrparam#write": "Настройки пользователя(доступно сохранение данных)",
-
       "account_discountinfo": "Скидки",
-
       "TRANSLATION FOR PRODUCTS/SERVICES SECTION": "TRANSLATION FOR PRODUCTS/SERVICES SECTION",
       "mainmenuservice": "Товары/Услуги",
       "dedic": "Выделенные серверы",
@@ -220,7 +203,6 @@
       "gotoserver#read": "Переход в панель управления (доступ к чтению данных формы)",
       "gotoserver#write": "Переход в панель управления (доступ к сохранению данных)",
       "webconsole": "Консоль",
-
       "domain": "Домены",
       "domain_order_register#create": "Регистрация",
       "domain_order_transfer#create": "Передача",
@@ -247,7 +229,6 @@
       "domain_doc_edit#write": "Тип документа (доступ к сохранению данных)",
       "domain_order_register_new#create": "Регистрация",
       "domain_order_transfer_new#create": "Перенос",
-
       "vhost_order#create": "$t(Заказать)",
       "vhost_edit": "$t(Редактировать)",
       "vhost_delete": "$t(Удалить)",
@@ -256,7 +237,6 @@
       "vhost_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "vhost_edit#write": "Редактирование услуги (доступно сохранение данных)",
       "vhost_filter#create": "$t(Фильтр)",
-
       "dnshost": "DNS-хостинг",
       "dnshost_order#create": "$t(Заказать)",
       "dnshost_edit": "$t(Редактировать)",
@@ -266,7 +246,6 @@
       "dnshost_filter#create": "$t(Фильтр)",
       "dnshost_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "dnshost_edit#write": "Редактирование услуги (доступно сохранение данных)",
-
       "storage": "FTP-хранилище",
       "storage_order#create": "$t(Заказать)",
       "storage_edit": "$t(Редактировать)",
@@ -276,7 +255,6 @@
       "storage_filter#create": "$t(Фильтр)",
       "storage_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "storage_edit#write": "Редактирование услуги (доступно сохранение данных)",
-
       "zabota-o-servere": "Служба ухода за сайтом",
       "zabota-o-servere_order#create": "$t(Заказать)",
       "zabota-o-servere_edit": "$t(Редактировать)",
@@ -286,7 +264,6 @@
       "zabota-o-servere_filter#create": "$t(Фильтр)",
       "zabota-o-servere_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "zabota-o-servere_edit#write": "Редактирование услуги (доступно сохранение данных)",
-
       "forexbox": "Forex сервер",
       "forexbox_order#create": "$t(Заказать)",
       "forexbox_edit": "$t(Редактировать)",
@@ -296,7 +273,6 @@
       "forexbox_filter#create": "$t(Фильтр)",
       "forexbox_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "forexbox_edit#write": "Редактирование услуги (доступно сохранение данных)",
-
       "vds_order#create": "$t(Заказать)",
       "vds_edit": "$t(Редактировать)",
       "vds_delete": "$t(Удалить)",
@@ -305,7 +281,6 @@
       "vds_filter#create": "$t(Фильтр)",
       "vds_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "vds_edit#write": "Редактирование услуги (доступно сохранение данных)",
-
       "wuwuwuw_order#create": "$t(Заказать)",
       "wuwuwuw_edit": "$t(Редактировать)",
       "wuwuwuw_delete": "$t(Удалить)",
@@ -314,7 +289,6 @@
       "wuwuwuw_filter#create": "$t(Фильтр)",
       "wuwuwuw_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "wuwuwuw_edit#write": "Редактирование услуги (доступно сохранение данных)",
-
       "vpn": "VPN",
       "vpn_order": "Заказать",
       "vpn_order#create": "$t(Заказать)",
@@ -325,7 +299,6 @@
       "vpn_edit#read": "Редактирование услуги (доступно чтение данных формы)",
       "vpn_edit#write": "Редактирование услуги (доступно сохранение данных)",
       "vpn_filter#create": "$t(Фильтр)",
-
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "finance": "Финансы",
       "payment_recurring_settings": "Автоматическое пополнение баланса",
@@ -335,7 +308,6 @@
       "services_autoprolong": "Автопродление услуг",
       "payment_recurring_settings#read": "Автоматическое пополнение баланса (доступно чтение данных форм)",
       "payment_recurring_settings#write": "Автоматическое пополнение баланса (доступно сохранение данных)",
-
       "payment_add#create": "$t(Добавить)",
       "payment_edit": "$t(Редактировать)",
       "payment_add_redirect": "$t(Оплатить)",
@@ -345,7 +317,6 @@
       "payment_orderinfo": "$t(Детали)",
       "payment_history": "$t(История)",
       "payment_filter#create": "$t(Фильтр)",
-
       "payment_orderinfo_edit": "$t(Редактировать)",
       "payment_edit#read": "Свойства платежа (доступно чтение данных форм)",
       "payment_edit#write": "Свойства платежа (доступно сохранение данных)",
@@ -365,13 +336,11 @@
       "promisepayment_add#write": "Активация обещанного платежа (доступно сохранение данных)",
       "services_autoprolong_set_paymethod#read": "Выбор способа оплаты (доступно чтение данных форм)",
       "services_autoprolong_set_paymethod#write": "Выбор способа оплаты (доступно сохранение данных)",
-
       "TRANSLATION FOR SUPPORT SECTION": "TRANSLATION FOR SUPPORT SECTION",
       "support": "Поддержка",
       "clientticket": "Запросы",
       "clientticket_archive": "Архив запросов",
       "notification": "Уведомления",
-
       "clientticket_edit#create": "$t(Добавить)",
       "clientticket_edit": "$t(Открыть)",
       "incident#create": "Купить обращения",
@@ -386,30 +355,37 @@
       "notification_view#write": "Запрос (доступ к сохранению данных)",
       "clientticket_edit#read": "Запрос (доступ к чтению данных формы)",
       "clientticket_edit#write": "Запрос (доступ к сохранению данных)",
-
       "TRANSLATION FOR TOOLS SECTION": "TRANSLATION FOR TOOLS SECTION",
       "mainmenutool": "Инструменты",
       "profile_add": "Добавить плательщика",
-
       "TRANSLATION FOR STATISTICS SECTION": "TRANSLATION FOR STATISTICS SECTION",
       "stat": "$t(Статистика)",
       "authlog": "Журнал посещений",
       "authlog_filter#create": "$t(Фильтр)",
-
       "TRANSLATION FOR HELP SECTION": "TRANSLATION FOR HELP SECTION",
       "mgrhelp": "Справка",
       "clienthelp": "Справка",
-
       "TRANSLATION FOR DASHBOARD SECTION": "TRANSLATION FOR DASHBOARD SECTION",
       "dashboard": "Главная",
       "dashboard_info": "Информация",
       "dashboard_providers": "Провайдеры",
-
       "TRANSLATION FOR PROMISED PAY SECTION": "TRANSLATION FOR PROMISED PAY SECTION",
-
       "TRANSLATION FOR RESELLING SECTION": "TRANSLATION FOR RESELLING SECTION",
       "reselling": "Перепродажа услуг",
-      "availableprice": "Функции перепродажи услуг"
+      "availableprice": "Функции перепродажи услуг",
+      "instances": "Cloud VPS",
+      "instances_order#create": "Заказать",
+      "instances_edit": "Редактировать",
+      "instances_edit#read": "Редактирование услуги (доступно чтение данных формы)",
+      "instances_edit#write": "Редактирование услуги (доступно сохранение данных)",
+      "instances_delete": "Удалить",
+      "instances_resume": "Активировать",
+      "instances_suspend": "Деактивировать",
+      "instances_filter#create": "Фильтр",
+      "instances_fleio_rescue": "Восстановить",
+      "instances_fleio_rebuild": "Сменить ОС",
+      "instances_fleio_changepassword": "Сменить пароль",
+      "instances_fleio_vnc": "Консоль управления"
     },
     "Allow_all": "Разрешить все",
     "Add": "Добавить",

@@ -63,7 +63,7 @@
   "Stopped": "Stopped",
   "Verify Resize": "Verify Resize",
   "Not selected": "Not selected",
-  "fotbo_status": "Status",
+  "instance_status": "Status",
   "pricelist": "Tariff plan",
   "period": "Period",
   "datacenter": "Datacenter",
@@ -104,10 +104,12 @@
   "rebuild_modal": {
     "title": {
       "bootimage": "Rescue",
+      "rescue": "Rescue",
       "rebuild": "Rebuild instance"
     },
     "text": {
       "bootimage": "Select distribution",
+      "rescue": "Select distribution",
       "rebuild": "Select boot source"
     },
     "warning": {

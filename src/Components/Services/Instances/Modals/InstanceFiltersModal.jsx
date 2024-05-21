@@ -38,7 +38,7 @@ export const InstanceFiltersModal = ({
           id: filters?.id || '',
           ip: filters?.ip || '',
           pricelist: filters?.pricelist || '',
-          fotbo_status: filters?.fotbo_status || '',
+          instance_status: filters?.instance_status || '',
           orderdatefrom: filters?.orderdatefrom || '',
           orderdateto: filters?.orderdateto || '',
           cost_from: filters?.cost_from || '',
@@ -109,17 +109,17 @@ export const InstanceFiltersModal = ({
                     inputClassName={s.input_bgc}
                     label={`${t('status', { ns: 'other' })}:`}
                     placeholder={t('Not selected', { ns: 'other' })}
-                    value={values.fotbo_status}
-                    getElement={item => setFieldValue('fotbo_status', item)}
+                    value={values.instance_status}
+                    getElement={item => setFieldValue('instance_status', item)}
                     isShadow
-                    itemsList={filtersList?.fotbo_status?.map(({ $key, $ }) => ({
+                    itemsList={filtersList?.instance_status?.map(({ $key, $ }) => ({
                       label: t($.trim(), { ns: 'cloud_vps' }),
                       value: $key,
                     }))}
                     className={s.select}
                   />
 
-                  <Select
+                  {/* <Select
                     dropdownClass={s.input_bgc}
                     inputClassName={s.input_bgc}
                     label={`${t('datacenter', { ns: 'dedicated_servers' })}:`}
@@ -136,9 +136,9 @@ export const InstanceFiltersModal = ({
                         value: $key,
                       }))}
                     className={s.select}
-                  />
+                  /> */}
 
-                  <DoubleInputField
+                  {/* <DoubleInputField
                     inputWrapperClass={cn(s.inputHeight, s.input_bgc)}
                     className={s.input}
                     nameLeft="cost_from"
@@ -155,7 +155,7 @@ export const InstanceFiltersModal = ({
                     maxLengthLeft={5}
                     maxLengthRight={5}
                     isShadow
-                  />
+                  /> */}
 
                   <DoubleInputField
                     inputWrapperClass={cn(s.inputHeight, s.input_bgc)}

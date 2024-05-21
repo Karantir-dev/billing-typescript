@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 
 import s from './VDSmobileItem.module.scss'
-import { isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function VDSmobileItem({
   server,
@@ -31,6 +31,7 @@ export default function VDSmobileItem({
   const [originName, setOriginName] = useState('')
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   useEffect(() => {
     if (server?.server_name?.$) {
@@ -126,6 +127,7 @@ export default function VDSmobileItem({
         (server?.status?.$ !== '3' && server?.status?.$ !== '2') || !rights?.history,
       onClick: () => handleToolBtnClick(setIdForHistory),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',

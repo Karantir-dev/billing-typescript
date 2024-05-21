@@ -4,6 +4,7 @@ export { default as useScrollToElement } from './hooks/useScrollToElement'
 export { default as useCancelRequest } from './hooks/useCancelRequest'
 export { default as useAnalyticsSender } from './hooks/useAnalyticsSender'
 export { default as useFormFraudCheckData } from './hooks/useFormFraudCheckData'
+export { default as useCreateTicketOption } from './hooks/useCreateTicketOption'
 
 export { default as useTrustpilot } from './trustpilot/useTrustpilot'
 export { default as sendTrustpilotEmail } from './trustpilot/sendTrustpilotEmail'

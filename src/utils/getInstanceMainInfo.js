@@ -1,5 +1,5 @@
 export default function getInstanceMainInfo(item) {
-  const fotboStatus = item.fotbo_status?.$.trim()
+  const fotboStatus = item.instance_status?.$.trim()
   const billingStatus = item.item_status?.$.trim()
 
   const isStopped = fotboStatus === 'stopped'
