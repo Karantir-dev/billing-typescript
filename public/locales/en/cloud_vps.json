@@ -154,5 +154,6 @@
   "insufficient_funds": "Insufficient balance. Total price including VAT is {{price}} euros. Please <button>top up</button> your balance and try again.",
   "choose_tariff": "Choose new tariff",
   "upgrade_cost": "Upgrade cost:",
-  "resize_explanation": "The upgrade cost is the difference between the cost of the current and new tariff."
+  "resize_explanation": "The upgrade cost is the difference between the cost of the current and new tariff.",
+  "windows_os_notice": "Please note: Windows-based servers only include a trial license type. To obtain a license for Microsoft Windows products, please contact the vendors"
 }

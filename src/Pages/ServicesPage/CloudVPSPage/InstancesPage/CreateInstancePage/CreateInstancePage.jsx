@@ -308,6 +308,8 @@ export default function CreateInstancePage() {
 
               const isItWindows = checkIsItWindows(values.instances_os)
 
+              console.log('isItWindows: ', isItWindows)
+
               const filterOSlist = () => {
                 let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
 
@@ -575,6 +577,11 @@ export default function CreateInstancePage() {
                         onOSchange={onOSchange}
                       />
                     </div>
+                    {isItWindows && (
+                      <WarningMessage className={s.notice_wrapper}>
+                        {t('windows_os_notice')}
+                      </WarningMessage>
+                    )}
                   </section>
 
                   <section className={s.section}>
