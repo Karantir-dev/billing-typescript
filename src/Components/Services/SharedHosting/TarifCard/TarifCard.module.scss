@@ -5,6 +5,7 @@
   max-width: 252px;
   margin-top: 20px;
   cursor: pointer;
+  margin-right: 15px;
 
   .cardBlock {
     display: flex;
@@ -130,7 +131,6 @@
 @media screen and (min-width: 768px) {
   .cardBg {
     flex-basis: 46%;
-    margin-right: 15px;
   }
 }
 
