@@ -11,7 +11,6 @@ const setInstancesCount = createAction('SET_INSTANCES_COUNT')
 const setInstancesFilters = createAction('SET_INSTANCES_FILTERS')
 const setInstancesDCList = createAction('SET_INSTANCES_DC_LIST')
 const setWindowsTag = createAction('SET_WINDOWS_TAG')
-const setCloudBasicTag = createAction('SET_CLOUD_BASIC_TAG')
 const setSshList = createAction('SET_SSH_LIST')
 const setSshCount = createAction('SET_SSH_COUNT')
 const setAllSshList = createAction('SET_ALL_SSH_COUNT')
@@ -27,7 +26,6 @@ export default {
   setInstancesFilters,
   setInstancesDCList,
   setWindowsTag,
-  setCloudBasicTag,
   setSshList,
   setSshCount,
   setAllSshList,

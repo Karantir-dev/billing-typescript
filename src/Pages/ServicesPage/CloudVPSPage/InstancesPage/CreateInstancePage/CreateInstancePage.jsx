@@ -1,4 +1,3 @@
-/* eslint-disable no-debugger */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
@@ -161,9 +160,7 @@ export default function CreateInstancePage() {
   /** First render useEffect */
   useEffect(() => {
     if (
-      /** if we have DC ID from site and don`t have the tariffs list */
-      // (dataFromSite.location && !tariffs?.[dataFromSite.location]) ||
-      /** or if we don`t have tariffs list for current DC */
+      /** if we don`t have tariffs list for current DC */
       !tariffs?.[currentDC?.$key]?.length
     ) {
       dispatch(
@@ -338,27 +335,27 @@ export default function CreateInstancePage() {
 
                 const isItWindows = checkIsItWindows(values.instances_os)
 
-                const filterOSlist = () => {
-                  let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
+                // const filterOSlist = () => {
+                //   let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
 
-                  if (tariffHasWindows) {
-                    return operationSystems[currentDC.$key]
-                  } else {
-                    const osList = operationSystems[currentDC.$key]?.map(el => {
-                      let newEl = { ...el }
-                      if (el.$.toLowerCase().includes('windows')) {
-                        newEl.disabled = true
-                      }
+                //   if (tariffHasWindows) {
+                //     return operationSystems[currentDC.$key]
+                //   } else {
+                //     const osList = operationSystems[currentDC.$key]?.map(el => {
+                //       let newEl = { ...el }
+                //       if (el.$.toLowerCase().includes('windows')) {
+                //         newEl.disabled = true
+                //       }
 
-                      return newEl
-                    })
+                //       return newEl
+                //     })
 
-                    return osList
-                  }
-                }
+                //     return osList
+                //   }
+                // }
 
                 /** if we have selected tariff without Windows - we disable this OS */
-                const filteredOSlist = filterOSlist()
+                // const filteredOSlist = filterOSlist()
 
                 /** if we have selected OS Windows - we disable tariffs that don`t support this OS */
                 const filterTariffsList = isItWindows => {
@@ -406,22 +403,6 @@ export default function CreateInstancePage() {
                     localStorage.removeItem('site_cart')
                   }
                 }, [currentDC?.$key, cloudType])
-
-                // useEffect(() => {
-                //   if (cloudPremiumTag) {
-                //     if (tariffFromSite) {
-                //       onTariffChange(tariffFromSite)
-                //       localStorage.removeItem('site_cart')
-                //     } else {
-                //       const renderTariffs = isPremiumShouldRender
-                //         ? premiumTariffs
-                //         : otherTariffs
-                //       const tariffChosen = renderTariffs.filter(el => !el.disabled)?.[0]
-
-                //       onTariffChange(tariffChosen)
-                //     }
-                //   }
-                // }, [isPremiumShouldRender, cloudPremiumTag])
 
                 const onOSchange = value => {
                   setFieldValue('instances_os', value)
@@ -548,7 +529,7 @@ export default function CreateInstancePage() {
 
                       <div className={s.os_list}>
                         <OsList
-                          list={filteredOSlist}
+                          list={operationSystems[currentDC.$key]}
                           value={values.instances_os}
                           onOSchange={onOSchange}
                         />

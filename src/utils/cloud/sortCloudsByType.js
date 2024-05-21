@@ -1,10 +1,12 @@
 export default function sortCloudsByType(data, cloudBasicTag) {
   const dcID = data.doc.datacenter.$
 
+  /**
+   * let premiumTariffs = { [dcID]: [] }
+   * let basicTariffs = { [dcID]: [] }
+   */
   let premiumTariffs = null
   let basicTariffs = null
-  //   let premiumTariffs = { [dcID]: [] }
-  //   let basicTariffs = { [dcID]: [] }
 
   const tariffs = data.doc.list.find(el => el.$name === 'pricelist').elem
 

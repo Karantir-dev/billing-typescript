@@ -15,7 +15,6 @@ const initialState = {
   instancesFilters: {},
   instancesDcList: null,
   windowsTag: '',
-  // cloudBasicTag: '',
   sshList: null,
   sshCount: 0,
   allSshList: [],
@@ -58,9 +57,7 @@ const windowsTag = createReducer(initialState.windowsTag, {
   [cloudVpsActions.setWindowsTag]: (_, { payload }) => payload,
 })
 
-// const cloudBasicTag = createReducer(initialState.cloudBasicTag, {
-//   [cloudVpsActions.setCloudBasicTag]: (_, { payload }) => payload,
-// })
+
 
 const premiumOperationSystems = createReducer(initialState.premiumOperationSystems, {
   [cloudVpsActions.setPremiumOperationSystems]: (state, { payload }) => ({
@@ -98,7 +95,6 @@ const cloudVpsReducer = combineReducers({
   instancesFilters,
   instancesDcList,
   windowsTag,
-  // cloudBasicTag,
   sshList,
   sshCount,
   allSshList,

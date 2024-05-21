@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import crown from '@images/crown.svg'
