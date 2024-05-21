@@ -308,8 +308,6 @@ export default function CreateInstancePage() {
 
               const isItWindows = checkIsItWindows(values.instances_os)
 
-              console.log('isItWindows: ', isItWindows)
-
               const filterOSlist = () => {
                 let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
 
