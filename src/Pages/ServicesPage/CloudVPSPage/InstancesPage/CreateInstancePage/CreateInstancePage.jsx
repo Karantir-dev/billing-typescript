@@ -40,7 +40,12 @@ import {
 } from '@utils'
 import cn from 'classnames'
 import { ErrorMessage, Form, Formik } from 'formik'
-import { PASS_REGEX, PASS_REGEX_ASCII, DISALLOW_SPACE } from '@utils/constants'
+import {
+  PASS_REGEX,
+  PASS_REGEX_ASCII,
+  DISALLOW_SPACE,
+  DISALLOW_HASH,
+} from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 import * as route from '@src/routes'
@@ -205,6 +210,7 @@ export default function CreateInstancePage() {
         .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
         .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .matches(DISALLOW_SPACE, t('warnings.disallow_space', { ns: 'auth' }))
+        .matches(DISALLOW_HASH, t('warnings.disallow_hash', { ns: 'auth' }))
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
     connectionType: Yup.string().required(t('Is a required field', { ns: 'other' })),
