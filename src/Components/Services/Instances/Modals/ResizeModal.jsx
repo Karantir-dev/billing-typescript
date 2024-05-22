@@ -30,7 +30,23 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
 
   const [price, setPrice] = useState(0)
 
-  const instancesTariffs = useSelector(cloudVpsSelectors.getInstancesTariffs)
+  const premiumTariffs = useSelector(cloudVpsSelectors.getPremiumTariffs)
+  const basicTariffs = useSelector(cloudVpsSelectors.getBasicTariffs)
+
+  let allTariffs
+  if (premiumTariffs && basicTariffs) {
+    let commonObj = { ...premiumTariffs }
+    for (const basicKey in basicTariffs) {
+      if (commonObj?.[basicKey]) {
+        commonObj[basicKey] = commonObj[basicKey].concat(basicTariffs[basicKey])
+      } else {
+        commonObj[basicKey] = basicTariffs[basicKey]
+      }
+    }
+
+    allTariffs = commonObj
+  }
+
   const { displayName } = getInstanceMainInfo(item)
 
   const warningEl = useRef()
@@ -44,7 +60,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
   const currentTariffPrice = item.item_cost.$
 
   useEffect(() => {
-    if (!instancesTariffs[datacenter]) {
+    if (!allTariffs?.[datacenter]) {
       dispatch(
         cloudVpsOperations.getAllTariffsInfo({
           datacenter,
@@ -87,7 +103,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
 
   return (
     <Modal
-      isOpen={!!item && !!tariffsForResize && !!instancesTariffs[datacenter]}
+      isOpen={!!item && !!tariffsForResize && !!allTariffs?.[datacenter]}
       closeModal={closeModal}
       className={s.resize_modal}
     >
@@ -105,7 +121,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
           validationSchema={validateSchema}
         >
           {({ values, setFieldValue }) => {
-            const filledTariffsList = instancesTariffs[datacenter]?.filter(el =>
+            const filledTariffsList = allTariffs?.[datacenter]?.filter(el =>
               tariffsForResize.some(tariff => tariff.$key === el.id.$),
             )
 

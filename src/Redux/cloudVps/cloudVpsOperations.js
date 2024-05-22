@@ -254,9 +254,11 @@ const changeInstanceState =
 const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
+
   serviceActionRequest({ elid, action: 'changepricelist', sessionId })
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
       const tariffs = data.doc.slist.find(item => item.$name === 'pricelist')?.val
       setTariffs(tariffs)
       dispatch(actions.hideLoader())
@@ -267,6 +269,7 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
       dispatch(actions.hideLoader())
     })
 }
+
 const changeTariff =
   ({ elid, pricelist, successCallback }) =>
   (dispatch, getState) => {
@@ -584,16 +587,15 @@ const getAllTariffsInfo =
          * and the Tariff must be from selected DC,
          * because OS IDs differs between DC
          */
-        let lastTariffID
-
-        if (isBasic) {
-          lastTariffID = basicTariffs[dcID][0].id.$
-        } else {
-          /** we pick last tariff in the list because first one doesn`t have Windows OS */
-          lastTariffID = premiumTariffs[dcID][premiumTariffs[dcID].length - 1].id.$
-        }
-
         if (needOsList) {
+          let lastTariffID
+
+          if (isBasic) {
+            lastTariffID = basicTariffs[dcID][0].id.$
+          } else {
+            /** we pick last tariff in the list because first one doesn`t have Windows OS */
+            lastTariffID = premiumTariffs[dcID][premiumTariffs[dcID].length - 1].id.$
+          }
           await dispatch(
             getOsList({ signal, lastTariffID, datacenter: dcID, setSshList, isBasic }),
           )
