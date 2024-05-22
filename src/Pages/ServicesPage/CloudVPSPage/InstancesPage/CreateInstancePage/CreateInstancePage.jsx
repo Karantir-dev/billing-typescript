@@ -536,6 +536,11 @@ export default function CreateInstancePage() {
                           onOSchange={onOSchange}
                         />
                       </div>
+                      {isItWindows && (
+                        <WarningMessage className={s.notice_wrapper}>
+                          {t('windows_os_notice')}
+                        </WarningMessage>
+                      )}
                     </section>
 
                     <section className={s.section}>
