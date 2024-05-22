@@ -4,13 +4,17 @@ export default async function handleLongRequest(data, errorHandler, successCallb
   if (typeof data === 'string' && data.trim() !== '') {
     const longUrl = data.match(/long.+billmgr/)?.[0]
 
-    const response = await axiosInstance.get(longUrl)
-    const responseData = response.data
+    try {
+      const response = await axiosInstance.get(longUrl)
+      const responseData = response.data
 
-    if (responseData) {
-      handleLongRequest(responseData, errorHandler, successCallback)
-    } else {
-      errorHandler('No data received from the server')
+      if (responseData) {
+        handleLongRequest(responseData, errorHandler, successCallback)
+      } else {
+        errorHandler('No data received from the server')
+      }
+    } catch (error) {
+      errorHandler(error.message)
     }
   } else {
     if (typeof errorHandler === 'function') {
