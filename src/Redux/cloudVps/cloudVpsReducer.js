@@ -1,18 +1,20 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import cloudVpsActions from './cloudVpsActions'
-import { TARIFFS_PRICES } from '@src/utils/constants'
+import { rewriteCloudsPrices } from '@src/utils'
 
 const initialState = {
+  premiumTariffs: null,
+  basicTariffs: null,
+  premiumOperationSystems: null,
+  basicOperationSystems: null,
+
   itemForModalsReducer: {},
   instances: null,
   instancesCount: 0,
   instancesFilters: {},
-  instancesTariffs: {},
   instancesDcList: null,
   windowsTag: '',
-  cloudPremiumTag: '',
-  operationSystems: null,
   sshList: null,
   sshCount: 0,
   allSshList: [],
@@ -36,22 +38,14 @@ const instancesFilters = createReducer(initialState.instancesFilters, {
   [cloudVpsActions.setInstancesFilters]: (_, { payload }) => payload,
 })
 
-const instancesTariffs = createReducer(initialState.instancesTariffs, {
-  [cloudVpsActions.setInstancesTariffs]: (state, { payload }) => {
-    /** 13 it is hardcoded dc id - it must be refactored */
-    const key = Object.keys(payload)[0]
-    console.log('DC key', key)
-
-    payload[key] = payload[key]?.map(el => {
-      const newDayPrice = TARIFFS_PRICES[el.title.main.$]?.day
-      const newMonthPrice = TARIFFS_PRICES[el.title.main.$]?.month
-      el.prices.price.cost.$ = String(newDayPrice)
-      el.prices.price.cost.month = String(newMonthPrice)
-
-      return el
-    })
-
-    return { ...state, ...payload }
+const premiumTariffs = createReducer(initialState.premiumTariffs, {
+  [cloudVpsActions.setPremiumTariffs]: (state, { payload }) => {
+    return { ...state, ...rewriteCloudsPrices(payload) }
+  },
+})
+const basicTariffs = createReducer(initialState.basicTariffs, {
+  [cloudVpsActions.setBasicTariffs]: (state, { payload }) => {
+    return { ...state, ...rewriteCloudsPrices(payload) }
   },
 })
 
@@ -63,14 +57,19 @@ const windowsTag = createReducer(initialState.windowsTag, {
   [cloudVpsActions.setWindowsTag]: (_, { payload }) => payload,
 })
 
-const cloudPremiumTag = createReducer(initialState.cloudPremiumTag, {
-  [cloudVpsActions.setCloudPremiumTag]: (_, { payload }) => payload,
-})
 
-const operationSystems = createReducer(initialState.operationSystems, {
-  [cloudVpsActions.setOperationSystems]: (state, { payload }) => {
-    return { ...state, ...payload }
-  },
+
+const premiumOperationSystems = createReducer(initialState.premiumOperationSystems, {
+  [cloudVpsActions.setPremiumOperationSystems]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
+})
+const basicOperationSystems = createReducer(initialState.basicOperationSystems, {
+  [cloudVpsActions.setBasicOperationSystems]: (state, { payload }) => ({
+    ...state,
+    ...payload,
+  }),
 })
 
 const sshList = createReducer(initialState.sshList, {
@@ -86,15 +85,16 @@ const sshCount = createReducer(initialState.sshCount, {
 })
 
 const cloudVpsReducer = combineReducers({
+  premiumTariffs,
+  basicTariffs,
+  premiumOperationSystems,
+  basicOperationSystems,
   itemForModalsReducer,
   instances,
   instancesCount,
   instancesFilters,
-  instancesTariffs,
   instancesDcList,
   windowsTag,
-  cloudPremiumTag,
-  operationSystems,
   sshList,
   sshCount,
   allSshList,
