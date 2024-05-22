@@ -17,10 +17,8 @@ export default async function handleLongRequest(data, errorHandler, successCallb
       errorHandler(error.message)
     }
   } else {
-    if (typeof errorHandler === 'function') {
+    if (typeof errorHandler === 'function' && data.doc.error) {
       errorHandler(data)
-    } else {
-      console.error('Invalid errorHandler function')
     }
 
     successCallback()
