@@ -16,11 +16,9 @@ export default async function handleLongRequest(data, errorHandler, successCallb
     } catch (error) {
       errorHandler(error.message)
     }
+  } else if (data.doc.error) {
+    errorHandler(data)
   } else {
-    if (typeof errorHandler === 'function' && data.doc.error) {
-      errorHandler(data)
-    }
-
     successCallback()
   }
 }
