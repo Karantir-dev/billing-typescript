@@ -1,11 +1,5 @@
 import qs from 'qs'
-import {
-  actions,
-  authSelectors,
-  cartActions,
-  cloudVpsActions,
-  cloudVpsSelectors,
-} from '@redux'
+import { actions, authSelectors, cartActions, cloudVpsActions } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import {
@@ -13,6 +7,7 @@ import {
   handleLoadersClosing,
   renameAddonFields,
   cookies,
+  sortCloudsByType,
 } from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
@@ -493,24 +488,18 @@ const getInstanceInfo =
       })
   }
 
-const writeTariffsWithDC = data => {
-  return {
-    [data.doc.datacenter.$]:
-      data.doc.list.find(el => el.$name === 'pricelist').elem || [],
-  }
-}
-
 const getOsList =
-  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
-  (dispatch, getState) => {
+  ({
+    signal,
+    setIsLoading,
+    lastTariffID,
+    closeLoader,
+    datacenter,
+    setSshList,
+    isBasic,
+  }) =>
+  dispatch => {
     setIsLoading && setIsLoading(true)
-
-    if (!lastTariffID) {
-      const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
-
-      const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
-      lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
-    }
 
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
@@ -532,7 +521,11 @@ const getOsList =
 
         const operationSystems = { [data.doc.datacenter.$]: osList }
 
-        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
+        if (isBasic) {
+          dispatch(cloudVpsActions.setBasicOperationSystems(operationSystems))
+        } else {
+          dispatch(cloudVpsActions.setPremiumOperationSystems(operationSystems))
+        }
         setSshList && setSshList(formatedSshList)
 
         closeLoader && closeLoader()
@@ -551,7 +544,7 @@ const getAllTariffsInfo =
     datacenter,
     setSshList,
     needDcList = true,
-    isPremium,
+    isBasic,
   }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
@@ -572,56 +565,43 @@ const getAllTariffsInfo =
       .then(async ({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        const datacenter = data.doc.datacenter.$
-        const allTariffs = {
-          ...writeTariffsWithDC(data),
-        }
+        const dcID = data.doc.datacenter.$
         const DClist = data.doc.slist.find(el => el.$name === 'datacenter').val
 
-        /**
-         * it is important to get ID of the last Tariff because it must have full list of OS,
-         * and the Tariff must be from selected DC,
-         * because OS IDs differs between DC
-         */
-        const tariffs = allTariffs[datacenter]
+        const cloudBasicTag = data?.doc?.flist?.val.find(el =>
+          el?.$.toLowerCase().includes('type:basic'),
+        )?.$key
         const windowsTag = data.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
 
-        const cloudPremiumTag = data?.doc?.flist?.val.find(el =>
-          el?.$.toLowerCase().includes('type:premium'),
-        ).$key
+        const { basicTariffs, premiumTariffs } = sortCloudsByType(data, cloudBasicTag)
 
-        /** This block will be refactored */
-        const checkIsItPremiumCloud = tags =>
-          tags?.some(tag => tag?.$.includes(cloudPremiumTag))
-
-        const premiumTariffs = []
-        const otherTariffs = []
-
-        tariffs?.forEach(tariff => {
-          const isItPremiumInstance = checkIsItPremiumCloud(tariff?.flabel?.tag)
-
-          isItPremiumInstance ? premiumTariffs.push(tariff) : otherTariffs.push(tariff)
-        })
-
+        /**
+         * it is important to get ID of the last Tariff for Premium type
+         * because it must have full list of OS,
+         * and the Tariff must be from selected DC,
+         * because OS IDs differs between DC
+         */
         let lastTariffID
-        if (isPremium) {
-          /** we pick last tariff in the list because first one doesn`t have Windows OS */
-          lastTariffID = premiumTariffs[premiumTariffs.length - 1].id.$
+
+        if (isBasic) {
+          lastTariffID = basicTariffs[dcID][0].id.$
         } else {
-          lastTariffID = otherTariffs[0].id.$
+          /** we pick last tariff in the list because first one doesn`t have Windows OS */
+          lastTariffID = premiumTariffs[dcID][premiumTariffs[dcID].length - 1].id.$
         }
-        /** /This block will be refactored */
 
         if (needOsList) {
-          await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
+          await dispatch(
+            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList, isBasic }),
+          )
         }
 
-        dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
+        basicTariffs && dispatch(cloudVpsActions.setBasicTariffs(basicTariffs))
+        dispatch(cloudVpsActions.setPremiumTariffs(premiumTariffs))
         needDcList && dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
-        dispatch(cloudVpsActions.setCloudPremiumTag(cloudPremiumTag))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
