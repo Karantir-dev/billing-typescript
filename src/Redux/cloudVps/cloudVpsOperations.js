@@ -8,6 +8,7 @@ import {
   renameAddonFields,
   cookies,
   sortCloudsByType,
+  handleLongRequest,
 } from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
@@ -773,34 +774,46 @@ const editSsh =
         }),
         { signal },
       )
-      .then(({ data }) => {
-        if (data.doc?.error) {
-          /* Get and parse errors */
-          const errorObject = JSON.parse(data.doc.error.msg.$)
-          /* Get the first key */
-          const firstKey = Object.keys(errorObject)[0]
-          if (firstKey) {
-            const errorMessage = errorObject[firstKey]
+      .then(async ({ data }) => {
+        function errorHandler(data) {
+          if (data.doc?.error) {
+            /* Get and parse errors */
+            let errorMessage = data.doc?.error?.msg?.$
+            const errorObject = JSON.parse(data.doc?.error?.$object)
+            /* Get the first key */
+            const errorKey = Object.keys(errorObject)?.[0]
+
+            if (errorKey) {
+              const specifiedErrorDescr = errorObject[errorKey]?.[0]
+              toast.error(t(specifiedErrorDescr, { ns: 'other' }))
+              errorMessage = `${errorMessage}: ${specifiedErrorDescr}`
+              console.error(errorMessage)
+            } else if (data.doc.error.$type) {
+              console.error(`${errorMessage}: ${data.doc.error?.$type}`)
+            } else {
+              console.error(errorMessage)
+            }
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
             throw new Error(errorMessage)
           }
-        } else if (typeof data === 'string') {
-          /* if long request - throw Error */
-          throw new Error('Request in process, please wait')
         }
 
-        dispatch(
-          getSshKeys({
-            p_col,
-            p_num,
-            p_cnt,
-            setTotalElems,
-            setAllSshItems,
-            signal,
-            setIsLoading,
-          }),
-        )
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('Changes saved successfully', { ns: 'other' }))
+        const successCallback = () => {
+          dispatch(
+            getSshKeys({
+              p_col,
+              p_num,
+              p_cnt,
+              setTotalElems,
+              setAllSshItems,
+              signal,
+              setIsLoading,
+            }),
+          )
+          toast.success(t('Changes saved successfully', { ns: 'other' }))
+        }
+
+        await handleLongRequest(data, errorHandler, successCallback)
       })
       .catch(error => {
         closeModal()
