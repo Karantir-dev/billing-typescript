@@ -316,8 +316,8 @@ const logout = () => (dispatch, getState) => {
         throw new Error(data.doc.error.msg.$)
       }
     })
-    .catch(e => {
-      checkIfTokenAlive(e.message, dispatch)
+    .catch(err => {
+      checkIfTokenAlive(err.message, dispatch)
 
       dispatch(actions.hideLoader())
     })
