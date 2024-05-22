@@ -4,7 +4,12 @@ import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import { getInstanceMainInfo } from '@utils'
-import { DISALLOW_SPACE, PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
+import {
+  DISALLOW_SPACE,
+  PASS_REGEX,
+  PASS_REGEX_ASCII,
+  DISALLOW_HASH,
+} from '@utils/constants'
 
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth'])
@@ -17,6 +22,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
       .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
       .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
       .matches(DISALLOW_SPACE, t('warnings.disallow_space', { ns: 'auth' }))
+      .matches(DISALLOW_HASH, t('warnings.disallow_hash', { ns: 'auth' }))
       .required(t('warnings.password_required', { ns: 'auth' })),
   })
 

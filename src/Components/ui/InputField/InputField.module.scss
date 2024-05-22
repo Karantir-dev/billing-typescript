@@ -203,6 +203,8 @@
   color: var(--main-text);
   text-align: start;
   transition: 0.05s linear;
+  text-wrap: balance;
+
   &::after {
     content: '';
     position: absolute;
