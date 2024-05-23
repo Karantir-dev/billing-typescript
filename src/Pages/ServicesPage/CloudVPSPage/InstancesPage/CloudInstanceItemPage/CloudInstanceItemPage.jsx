@@ -98,7 +98,7 @@ export default function CloudInstanceItemPage() {
     return pathnames
   }
 
-  const tavBarSections = [
+  const tabBarSections = [
     {
       route: `${route.CLOUD_VPS}/${params.id}`,
       label: 'Info',
@@ -212,8 +212,7 @@ export default function CloudInstanceItemPage() {
           )}
         </div>
 
-        {/* Commented until only one tab exist: */}
-        <PageTabBar sections={tavBarSections} />
+        <PageTabBar sections={tabBarSections} />
 
         <div className={s.page_content}>
           <Outlet />

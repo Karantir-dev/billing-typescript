@@ -19,7 +19,7 @@ export default function DedicPage() {
     return pathnames
   }
 
-  const tavBarSections = [
+  const tabBarSections = [
     {
       route: `${route.DEDICATED_SERVERS}`,
       label: t('burger_menu.services.services_list.dedicated', {
@@ -44,7 +44,7 @@ export default function DedicPage() {
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.dedicated_servers', { ns: 'container' })}
       </h2>
-      {isVdsXLOrdered && <PageTabBar sections={tavBarSections} />}
+      {isVdsXLOrdered && <PageTabBar sections={tabBarSections} />}
       <div className={s.content}>
         <Outlet />
       </div>
