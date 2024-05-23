@@ -162,9 +162,9 @@ const getDomainsOrderName =
               const responseData = response.data
 
               if (responseData) {
-                handleLongRequest(responseData)
+                await handleLongRequest(responseData)
               } else {
-                errorHandler(response)
+                errorHandler('No data received from the server')
               }
             } catch (error) {
               errorHandler(error)
