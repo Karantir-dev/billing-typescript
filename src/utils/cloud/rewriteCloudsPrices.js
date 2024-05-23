@@ -20,6 +20,7 @@ export default function rewriteCloudsPrices(payload) {
       return payload
     } catch (err) {
       console.error(err.message)
+      throw err
     }
   } else {
     return {}
