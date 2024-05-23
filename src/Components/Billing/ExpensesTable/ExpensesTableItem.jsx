@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { HintWrapper } from '@components'
+// import { Tooltip } from 'react-tooltip'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { expensesTranslateFn } from '@utils'
@@ -26,14 +27,26 @@ export default function Component(props) {
 
       <div className={s.tableBlockSecond}>
         {mobile && <div className={s.item_title}>{t('Name', { ns: 'other' })}:</div>}
-        <HintWrapper
+        {/* <HintWrapper
           wrapperClassName={s.transferBtn}
           label={expensesTranslateFn(name, t)}
         >
-          <div className={cn(s.item_text, s.second_item)}>
-            {expensesTranslateFn(name, t)}
-          </div>
-        </HintWrapper>
+      </HintWrapper> */}
+
+        <div className={cn(s.item_text, s.second_item)} id={`id${id}`}>
+          {expensesTranslateFn(name, t)}
+        </div>
+        <HintWrapper forId={`id${id}`} label={expensesTranslateFn(name, t)} />
+        {/* <Tooltip
+          anchorSelect={`#id${id}`}
+          className={s.transferBtn}
+          place="top"
+          effect="solid"
+          type="dark"
+          content={expensesTranslateFn(name, t)}
+          positionStrategy="fixed"
+          delayShow={500}
+        /> */}
       </div>
 
       <div className={s.tableBlockThird}>

@@ -1,49 +1,54 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useEffect, useState, useRef } from 'react'
+/* eslint-disable no-unused-vars */
+// import { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
+import { Tooltip } from 'react-tooltip'
 
 import s from './HintWrapper.module.scss'
 import cn from 'classnames'
 
 /**
  * @param hintDelay - delay in miliseconds
+ * @param place - top top-start top-end right right-start right-end bottom bottom-start bottom-end left left-start left-end
  */
 export default function HintWrapper({
   label,
-  children,
+  forId,
   popupClassName,
-  wrapperClassName,
-  bottom,
-  disabled,
-  hintDelay = 500,
+  delayShow = 500,
+  place = 'top',
+  effect = 'solid',
+  // children,
+  // wrapperClassName,
+  // bottom,
+  // disabled,
 }) {
-  const ref = useRef(null)
-  const [elemWidth, setElemWidth] = useState(0)
-  const [pageWidth, setPageWidth] = useState(0)
+  // const ref = useRef(null)
+  // const [elemWidth, setElemWidth] = useState(0)
+  // const [pageWidth, setPageWidth] = useState(0)
 
-  useEffect(() => {
-    setElemWidth(ref.current?.offsetWidth)
-    setPageWidth(window.screen.width)
-  }, [children, pageWidth, setElemWidth])
+  // useEffect(() => {
+  //   setElemWidth(ref.current?.offsetWidth)
+  //   setPageWidth(window.screen.width)
+  // }, [children, pageWidth, setElemWidth])
 
-  const handleClick = e => {
-    // is it mobile device and width of the screen is less than 1024
-    const isMobileDevice =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/i.test(
-        navigator.userAgent,
-      ) && pageWidth < 1024
+  // const handleClick = e => {
+  //   // is it mobile device and width of the screen is less than 1024
+  //   const isMobileDevice =
+  //     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile Safari/i.test(
+  //       navigator.userAgent,
+  //     ) && pageWidth < 1024
 
-    // Check is it Google Chrome for mobile devices
-    const isMobileChrome = /CriOS/i.test(navigator.userAgent)
+  //   // Check is it Google Chrome for mobile devices
+  //   const isMobileChrome = /CriOS/i.test(navigator.userAgent)
 
-    if (isMobileDevice || isMobileChrome) {
-      e.stopPropagation()
-    }
-  }
+  //   if (isMobileDevice || isMobileChrome) {
+  //     e.stopPropagation()
+  //   }
+  // }
 
   return (
     <>
-      {disabled ? (
+      {/* {disabled ? (
         children
       ) : (
         // eslint-disable-next-line jsx-a11y/no-static-element-interactions
@@ -69,14 +74,25 @@ export default function HintWrapper({
             {label}
           </div>
         </div>
-      )}
+      )} */}
+      <Tooltip
+        anchorSelect={forId}
+        content={label}
+        className={cn(s.hint_popup, popupClassName)}
+        place={place}
+        effect={effect}
+        type="dark"
+        positionStrategy="fixed"
+        delayShow={delayShow}
+      />
     </>
   )
 }
 
 HintWrapper.propTypes = {
   label: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
+  // content: PropTypes.string.isRequired,
+  // children: PropTypes.element.isRequired,
   popupClassName: PropTypes.string,
   wrapperClassName: PropTypes.string,
   bottom: PropTypes.bool,
