@@ -157,9 +157,18 @@ const getDomainsOrderName =
           if (typeof data === 'string') {
             const longUrl = data.match(/long.+billmgr/)?.[0]
 
-            await axiosInstance.get(longUrl).then(({ data }) => {
-              handleLongRequest(data)
-            })
+            try {
+              const response = await axiosInstance.get(longUrl)
+              const responseData = response.data
+
+              if (responseData) {
+                handleLongRequest(responseData)
+              } else {
+                errorHandler(response)
+              }
+            } catch (error) {
+              errorHandler(error)
+            }
           } else {
             domainData = data?.doc
           }
