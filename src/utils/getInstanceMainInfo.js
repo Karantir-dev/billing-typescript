@@ -1,4 +1,5 @@
 export default function getInstanceMainInfo(item) {
+  if (!item) return {}
   const fotboStatus = item.instance_status?.$.trim()
   const billingStatus = item.item_status?.$.trim()
 

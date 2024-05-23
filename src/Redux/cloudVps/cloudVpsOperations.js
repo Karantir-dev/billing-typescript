@@ -896,6 +896,37 @@ const generateSsh =
       })
   }
 
+const getMetrics =
+  ({ elid, setData, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.fleio.measures',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          hours: 24,
+          metric: 'interface_traffic',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setData(data.doc.measures)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -918,4 +949,5 @@ export default {
   setOrderData,
   getTariffParamsRequest,
   generateSsh,
+  getMetrics,
 }

@@ -1,4 +1,12 @@
-import { BreadCrumbs, HintWrapper, Icon, Loader, InstancesOptions } from '@components'
+import {
+  BreadCrumbs,
+  HintWrapper,
+  Icon,
+  Loader,
+  InstancesOptions,
+  PageTabBar,
+} from '@components'
+import { CloudInstanceItemProvider } from './CloudInstanceItemContext'
 import { useLocation, useParams, Outlet, useNavigate } from 'react-router-dom'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 
@@ -24,7 +32,6 @@ export default function CloudInstanceItemPage() {
   const { state: instanceItem } = location
   const navigate = useNavigate()
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
-
   const [item, setItem] = useState(instanceItem)
 
   const { isResized, displayStatus, isSuspended } = getInstanceMainInfo(item)
@@ -33,7 +40,7 @@ export default function CloudInstanceItemPage() {
 
   const setItemData = ([item]) => {
     setItem(item)
-    navigate(`${route.CLOUD_VPS}/${params.id}`, { state: item })
+    navigate({ state: item })
   }
 
   const fetchItemById = () => {
@@ -91,36 +98,36 @@ export default function CloudInstanceItemPage() {
     return pathnames
   }
 
-  // const tavBarSections = [
-  //   {
-  //     route: `${route.CLOUD_VPS}/${params.id}`,
-  //     label: 'Info',
-  //     allowToRender: true,
-  //     replace: true,
-  //     end: true,
-  //   },
-  // {
-  //   route: `${route.CLOUD_VPS}/${params.id}/networking`,
-  //   label: 'Networking',
-  //   allowToRender: true,
-  //   replace: true,
-  //   end: true,
-  // },
-  // {
-  //   route: `${route.CLOUD_VPS}/${params.id}/system_log`,
-  //   label: 'System log',
-  //   allowToRender: true,
-  //   replace: true,
-  //   end: true,
-  // },
-  // {
-  //   route: `${route.CLOUD_VPS}/${params.id}/metrics`,
-  //   label: 'Metrics',
-  //   allowToRender: true,
-  //   replace: true,
-  //   end: true,
-  // },
-  // ]
+  const tavBarSections = [
+    {
+      route: `${route.CLOUD_VPS}/${params.id}`,
+      label: 'Info',
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+    // {
+    //   route: `${route.CLOUD_VPS}/${params.id}/networking`,
+    //   label: 'Networking',
+    //   allowToRender: true,
+    //   replace: true,
+    //   end: true,
+    // },
+    // {
+    //   route: `${route.CLOUD_VPS}/${params.id}/system_log`,
+    //   label: 'System log',
+    //   allowToRender: true,
+    //   replace: true,
+    //   end: true,
+    // },
+    {
+      route: `${route.CLOUD_VPS}/${params.id}/metrics`,
+      label: 'Metrics',
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+  ]
 
   const editInstanceHandler = ({ values, elid, closeModal, errorCallback }) => {
     dispatch(
@@ -149,7 +156,7 @@ export default function CloudInstanceItemPage() {
   const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
 
   return (
-    <>
+    <CloudInstanceItemProvider value={{ item }}>
       <div className={s.page}>
         <BreadCrumbs pathnames={parseLocations()} />
         <div className={s.head_coponent}>
@@ -206,9 +213,9 @@ export default function CloudInstanceItemPage() {
         </div>
 
         {/* Commented until only one tab exist: */}
-        {/* <PageTabBar sections={tavBarSections} /> */}
+        <PageTabBar sections={tavBarSections} />
 
-        <div className={s.content}>
+        <div className={s.page_content}>
           <Outlet />
         </div>
       </div>
@@ -222,6 +229,6 @@ export default function CloudInstanceItemPage() {
         redirectCallback={() => navigate(route.CLOUD_VPS)}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
-    </>
+    </CloudInstanceItemProvider>
   )
 }

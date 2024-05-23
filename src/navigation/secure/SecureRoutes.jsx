@@ -71,6 +71,7 @@ import {
   CreateInstancePageLazy,
   CloudInstanceItemPageLazy,
   InstanceDetailsOverviewLazy,
+  InstanceMetricsLazy,
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
@@ -256,6 +257,7 @@ const Component = ({ fromPromotionLink }) => {
 
           <Route path={`${route.CLOUD_VPS}/:id`} element={<CloudInstanceItemPageLazy />}>
             <Route index element={<InstanceDetailsOverviewLazy />} />
+            <Route path="metrics" element={<InstanceMetricsLazy />} />
           </Route>
 
           <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />

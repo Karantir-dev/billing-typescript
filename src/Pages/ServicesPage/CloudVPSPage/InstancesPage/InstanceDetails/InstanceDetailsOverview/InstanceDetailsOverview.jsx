@@ -1,20 +1,18 @@
-import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { CopyText, Loader } from '@components'
 import { getFlagFromCountryName, useCancelRequest, formatCountryName } from '@utils'
-
+import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import s from './InstanceDetailsOverview.module.scss'
 
 export default function InstanceDetailsOverview() {
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
-  const location = useLocation()
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
-  const { state: item } = location
+  const { item } = useCloudInstanceItemContext()
 
   const [instanceInfo, setInstanceInfo] = useState({})
 
