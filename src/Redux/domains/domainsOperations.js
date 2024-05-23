@@ -150,7 +150,9 @@ const getDomainsOrderName =
 
         let domainData
 
-        await handleLongRequest(data, errorHandler, () => (domainData = data?.doc))
+        const setDomainData = () => (domainData = data.doc)
+
+        await handleLongRequest(data, errorHandler, setDomainData)
 
         const domains = []
 
