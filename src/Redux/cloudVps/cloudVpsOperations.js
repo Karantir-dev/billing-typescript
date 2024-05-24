@@ -46,6 +46,12 @@ const getInstances =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         const elemsList = data.doc.elem || []
+        /** unifies the data structure */
+        elemsList.forEach(el => {
+          if (!el.createdate.$ && el.createdate?.[0]?.$) {
+            el.createdate.$ = el.createdate[0].$
+          }
+        })
 
         if (setLocalInstancesItems) {
           setLocalInstancesItems(elemsList)
