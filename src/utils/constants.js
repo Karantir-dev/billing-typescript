@@ -220,6 +220,8 @@ export const TARIFFS_PRICES = {
   'Cloud Platinum': { day: 0.6634, month: 19.9 },
   'Cloud Enterprise': { day: 1.283, month: 38.49 },
   'Cloud Ultimate': { day: 2.2164, month: 66.49 },
+  /** With cyrylic C (temporarily) */
+  'Сloud Ultimate': { day: 2.2164, month: 66.49 },
   'Cloud Supreme': { day: 2.9967, month: 89.9 },
 
   /* BASIC tariffs */
