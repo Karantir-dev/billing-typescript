@@ -1,7 +1,7 @@
 const lowerCasedAlphabets = [...'abcdefghijklmnopqrstuvwxyz'.split('')]
 const upperCasedAlphabets = lowerCasedAlphabets.map(alphabet => alphabet.toUpperCase())
 const numbers = [...'1234567890'.split('').map(num => +num)]
-const symbols = [...'!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'.split('')]
+const symbols = [...'!$+,-./:=[\\]^_`{}~'.split('')]
 
 const getRandomNumber = max => Math.floor(Math.random() * max)
 
