@@ -6,11 +6,14 @@ export default function rewriteCloudsPrices(payload) {
       const key = Object.keys(payload)[0]
 
       payload[key] = payload[key]?.map(el => {
-        const cutedName = el.title.main.$.split('|')[0].trim()
+        const name = el.title?.main?.$ || el.title?.$
+
+        const cutedName = name.split('|')[0].trim()
 
         const newDayPrice = TARIFFS_PRICES[cutedName]?.day
         const newMonthPrice = TARIFFS_PRICES[cutedName]?.month
-        el.title.main.$ = cutedName
+
+        el.title.$ = cutedName
         el.prices.price.cost.$ = String(newDayPrice)
         el.prices.price.cost.month = String(newMonthPrice)
 
