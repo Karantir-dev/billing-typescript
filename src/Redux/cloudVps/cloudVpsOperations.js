@@ -492,6 +492,71 @@ const getInstanceInfo =
       })
   }
 
+const getInstanceNetworkTrafficInfo =
+  (elid, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.fleio.trafficdata',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        console.log('NetworkTraffic info: ', data)
+
+        const renamedSlistData = renameAddonFields(data?.doc, { isEditFunc: true })
+
+        console.log('renamedSlistData: ', renamedSlistData)
+
+        const d = {
+          createdate: renamedSlistData?.createdate?.$,
+          fotbo_id: renamedSlistData?.fotbo_id.$,
+          ip: renamedSlistData?.ip?.$,
+          ip_v6: renamedSlistData?.ip_v6?.$,
+          rdns_record: renamedSlistData?.rdns_record?.$,
+        }
+
+        console.log('data: ', d)
+
+        const clearStr = /\s*\(.*?\)\s*\.?/g
+
+        renamedSlistData?.slist?.forEach(list => {
+          if (list?.$name === 'stored_method') {
+            d[`${list?.$name}_list`] = list?.val?.filter(
+              v => v?.$key && v?.$key?.length > 0,
+            )
+          } else {
+            d[`${list?.$name}`] =
+              list?.val?.length > 1
+                ? list?.val?.map(v => {
+                    const { $ } = v
+                    return $?.replace(clearStr, '')
+                  })
+                : list?.val?.[0]?.$.replace(clearStr, '')
+          }
+        })
+
+        setInstanceInfo(d)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+  }
+
 const getOsList =
   ({
     signal,
@@ -942,6 +1007,7 @@ export default {
   editSsh,
   deleteSsh,
   getInstanceInfo,
+  getInstanceNetworkTrafficInfo,
   openConsole,
   getAllTariffsInfo,
   getTariffParams,

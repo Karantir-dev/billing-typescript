@@ -110,6 +110,11 @@ const InstanceMetrics = lazy(() =>
     /* webpackChunkName: "InstanceMetrics" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceMetrics'
   ),
 )
+const InstanceNetworkTraffic = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceNetworkTraffic" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceNetworkTraffic/InstanceNetworkTraffic'
+  ),
+)
 
 const DedicOrderPage = lazy(() =>
   import(
@@ -542,6 +547,18 @@ export const InstanceMetricsLazy = () => {
   return (
     <ShellСomponent title={title}>
       <InstanceMetrics />
+    </ShellСomponent>
+  )
+}
+export const InstanceNetworkTrafficLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceNetworkTraffic />
     </ShellСomponent>
   )
 }
