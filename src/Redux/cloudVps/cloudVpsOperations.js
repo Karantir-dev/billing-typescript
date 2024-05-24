@@ -46,6 +46,12 @@ const getInstances =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         const elemsList = data.doc.elem || []
+        /** unifies the data structure */
+        elemsList.forEach(el => {
+          if (!el.createdate.$ && el.createdate?.[0]?.$) {
+            el.createdate.$ = el.createdate[0].$
+          }
+        })
 
         if (setLocalInstancesItems) {
           setLocalInstancesItems(elemsList)
@@ -862,6 +868,9 @@ const editSsh =
             }
             handleLoadersClosing('closeLoader', dispatch, setIsLoading)
             throw new Error(errorMessage)
+          } else if (typeof data === 'string' && !data.match(/long.+billmgr/)) {
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+            throw new Error(data)
           }
         }
 

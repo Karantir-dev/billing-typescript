@@ -5,7 +5,7 @@ import axios from 'axios'
 import { actions, domainsActions, cartActions } from '@redux'
 import { axiosInstance } from '@config/axiosInstance'
 import { toast } from 'react-toastify'
-import { checkIfTokenAlive, handleLoadersClosing, handleLongRequest } from '@utils'
+import { checkIfTokenAlive, handleLoadersClosing } from '@utils'
 import * as route from '@src/routes'
 
 const getDomains =
@@ -144,13 +144,40 @@ const getDomainsOrderName =
       .then(async ({ data }) => {
         function errorHandler(data) {
           if (data?.doc?.error) {
-            throw new Error(data.doc.error.msg.$)
+            throw new Error(data.doc.error?.msg?.$)
+          } else if (typeof data === 'string' && !data.match(/long.+billmgr/)) {
+            throw new Error(data)
           }
         }
 
         let domainData
 
-        await handleLongRequest(data, errorHandler, () => (domainData = data?.doc))
+        /**
+         * Long request handling if we got html markup as string
+         */
+        async function handleLongRequest(data) {
+          if (typeof data === 'string') {
+            const longUrl = data.match(/long.+billmgr/)?.[0]
+
+            try {
+              const response = await axiosInstance.get(longUrl)
+              const responseData = response.data
+
+              if (responseData) {
+                handleLongRequest(responseData)
+              } else {
+                errorHandler('No data received from the server')
+              }
+            } catch (error) {
+              errorHandler(error)
+            }
+          } else {
+            domainData = data?.doc
+          }
+        }
+
+        errorHandler(data)
+        await handleLongRequest(data)
 
         const domains = []
 
