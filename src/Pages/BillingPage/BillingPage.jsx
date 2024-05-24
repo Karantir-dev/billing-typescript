@@ -35,7 +35,7 @@ export default function BillingPage() {
     'payment.recurring.stored_methods',
   )
 
-  const tavBarSections = [
+  const tabBarSections = [
     {
       route: `${route.BILLING}/payments`,
       label: t('Payments'),
@@ -104,7 +104,7 @@ export default function BillingPage() {
     <>
       <div className={s.body}>
         <h1 className={s.pageTitle}>{t('Finance')}</h1>
-        <PageTabBar sections={tavBarSections} />
+        <PageTabBar sections={tabBarSections} />
         <div className={s.content}>{renderPage(params?.path)}</div>
         {/* {params?.result && (
           <Portal>

@@ -29,7 +29,7 @@ export default function UserSettingsPage() {
     button => button.$name === 'ok',
   )
 
-  const tavBarSections = [
+  const tabBarSections = [
     {
       route: `${route.USER_SETTINGS}/personal`,
       label: t('Personal settings'),
@@ -101,7 +101,7 @@ export default function UserSettingsPage() {
     <>
       <div className={s.body}>
         <h1 className={s.pageTitle}>{userInfo?.$email}</h1>
-        <PageTabBar sections={tavBarSections} />
+        <PageTabBar sections={tabBarSections} />
         <div className={cn(s.content, { [s.disabled]: isLoading })}>
           {renderPage(params?.path)}
           {isLoading && <Loader local shown={isLoading} halfScreen />}

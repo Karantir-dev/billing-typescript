@@ -18,7 +18,7 @@ export default function Component() {
   const isArchiveAllowedToRender = usePageRender('support', 'clientticket_archive')
   const isRequestsAllowedToRender = usePageRender('support', 'clientticket')
 
-  const tavBarSections = [
+  const tabBarSections = [
     {
       route: `${route.SUPPORT}/requests`,
       label: t('requests'),
@@ -59,7 +59,7 @@ export default function Component() {
     <>
       <div className={s.body}>
         <h1 className={s.pageTitle}>{t('support')}</h1>
-        <PageTabBar sections={tavBarSections} />
+        <PageTabBar sections={tabBarSections} />
         <div className={s.content_wrapper}>
           <div className={s.content}>{renderPage(params?.path)}</div>
         </div>

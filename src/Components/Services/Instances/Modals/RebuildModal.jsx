@@ -235,6 +235,11 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     <div className={s.rebuild__os_list}>
                       {renderSoftwareOSFields(select, values[select], depends)}
                     </div>
+
+                    {isWindowsOS && (
+                      <WarningMessage>{t('windows_os_notice')}</WarningMessage>
+                    )}
+
                     <ErrorMessage
                       className={s.error_message}
                       name={[select]}
