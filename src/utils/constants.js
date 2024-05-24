@@ -15,7 +15,7 @@ export const INDEX_REGEX = /^(?:[A-Za-z]{2,3}-?\d+|[a-zA-Z0-9]+)$/
 export const PASS_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/
 export const PASS_REGEX_ASCII = /^[\x20-\x7E]+$/
 export const DISALLOW_SPACE = /^\S*$/
-export const DISALLOW_PASS_SPECIFIC_CHARS = /^(?!.*["#%&'()*;<=>?@|]).+$/
+export const DISALLOW_PASS_SPECIFIC_CHARS = /^(?!.*["#%&'()*;<>?@|]).+$/
 
 export const URL_REGEX =
   /^(?:https?:\/\/)(?:www\.)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,}(?:\/[^\s]*)?$/
