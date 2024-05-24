@@ -145,6 +145,8 @@ const getDomainsOrderName =
         function errorHandler(data) {
           if (data?.doc?.error) {
             throw new Error(data.doc.error?.msg?.$)
+          } else if (typeof data === 'string' && !data.match(/long.+billmgr/)) {
+            throw new Error(data)
           }
         }
 
@@ -162,7 +164,7 @@ const getDomainsOrderName =
               const responseData = response.data
 
               if (responseData) {
-                await handleLongRequest(responseData)
+                handleLongRequest(responseData)
               } else {
                 errorHandler('No data received from the server')
               }
@@ -174,11 +176,8 @@ const getDomainsOrderName =
           }
         }
 
-        try {
-          await handleLongRequest(data)
-        } catch (error) {
-          errorHandler(error)
-        }
+        errorHandler(data)
+        await handleLongRequest(data)
 
         const domains = []
 
