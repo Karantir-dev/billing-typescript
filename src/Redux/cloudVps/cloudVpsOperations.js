@@ -797,6 +797,9 @@ const editSsh =
             }
             handleLoadersClosing('closeLoader', dispatch, setIsLoading)
             throw new Error(errorMessage)
+          } else if (typeof data === 'string' && !data.match(/long.+billmgr/)) {
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+            throw new Error(data)
           }
         }
 
