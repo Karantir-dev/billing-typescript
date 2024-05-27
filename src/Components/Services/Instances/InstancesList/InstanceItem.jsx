@@ -74,7 +74,7 @@ export default function InstanceItem({ item, editInstance }) {
       </td>
       <td className={s.td}>
         <div className={s.status_wrapper} ref={hintCell}>
-          {isHintStatus ? (
+          {isHintStatus && !isDeleting ? (
             <HintWrapper
               popupClassName={s.popup}
               wrapperClassName={s.popup__wrapper}
@@ -84,10 +84,8 @@ export default function InstanceItem({ item, editInstance }) {
                 className={cn(
                   s.status,
                   s[
-                    isDeleting
-                      ? 'deletion_in_progress'
-                      : item?.instance_status?.$.trim().toLowerCase() ||
-                        item?.item_status?.$.trim().toLowerCase()
+                    item?.instance_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
                   ],
                 )}
               >
@@ -100,8 +98,10 @@ export default function InstanceItem({ item, editInstance }) {
               className={cn(
                 s.status,
                 s[
-                  item?.instance_status?.$.trim().toLowerCase() ||
-                    item?.item_status?.$.trim().toLowerCase()
+                  isDeleting
+                    ? 'deletion_in_progress'
+                    : item?.instance_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
                 ],
               )}
             >
