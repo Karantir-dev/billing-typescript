@@ -74,8 +74,8 @@ export default function InstanceNetworkTraffic() {
   }, [])
 
   const formatTrafficData = data => ({
-    startDate: new Date(data.$start_dt).toLocaleDateString(),
-    endDate: new Date(data.$end_dt).toLocaleDateString(),
+    startDate: data.$start_dt ? new Date(data.$start_dt).toLocaleDateString() : '-',
+    endDate: data.$end_dt ? new Date(data.$end_dt).toLocaleDateString() : '-',
     incoming: formatBytes(Number(data.$in)),
     outgoing: formatBytes(Number(data.$out)),
     total: formatBytes(Number(data.$in) + Number(data.$out)),

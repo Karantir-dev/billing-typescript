@@ -163,7 +163,5 @@
   "incoming": "Incoming",
   "outgoing": "Outgoing",
   "total": "Total",
-  "network_traffic": "Network Traffic",
-  "metrics": "Metrics",
   "info": "Info"
 }

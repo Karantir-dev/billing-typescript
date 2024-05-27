@@ -226,6 +226,7 @@ const ShellСomponent = props => {
     'container',
     'vds',
     'crumbs',
+    'cloud_vps',
     'virtual_hosting',
     'domains',
     'dedicated_servers',
@@ -541,7 +542,7 @@ export const InstanceDetailsOverviewLazy = () => {
 export const InstanceMetricsLazy = () => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+    { value: 'metrics', ns: 'crumbs' },
   ]
 
   return (
@@ -553,7 +554,7 @@ export const InstanceMetricsLazy = () => {
 export const InstanceNetworkTrafficLazy = () => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+    { value: 'network_traffic', ns: 'crumbs' },
   ]
 
   return (
