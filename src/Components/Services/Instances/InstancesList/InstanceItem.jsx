@@ -43,14 +43,6 @@ export default function InstanceItem({ item, editInstance }) {
   const isHintStatus = isSuspended || isResized
   const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
 
-  console.log(
-    'isHintStatus: ',
-    isHintStatus,
-    'isSuspended: ',
-    isSuspended,
-    'isResized: ',
-    isResized,
-  )
   return (
     <tr
       className={cn(s.tr, { [s.disabled]: isNotActive })}
