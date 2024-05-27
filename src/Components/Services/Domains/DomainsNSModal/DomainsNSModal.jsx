@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { InputField, Button, Icon, Modal } from '@components'
+import { InputField, Button, Modal } from '@components'
 import { Formik, Form } from 'formik'
 import s from './DomainsNSModal.module.scss'
 
@@ -13,8 +13,6 @@ export default function Component(props) {
   const { names, closeModal, NSData, NSEditDomainHandler, isOpen } = props
 
   const [shownElem, setShownElem] = useState(1)
-
-  const dropdownDescription = useRef(null)
 
   const [more, setMore] = useState(false)
   const [namesToRender, setNamesToRender] = useState(
@@ -47,7 +45,7 @@ export default function Component(props) {
   return (
     <Modal isOpen={isOpen} closeModal={closeModal} className={s.modal}>
       <Modal.Header>
-        <span className={s.headerText}>{t('Name servers')}</span>
+        <span className={s.headerText}>{t('ns_settings')}</span>
       </Modal.Header>
       <Modal.Body>
         {NSData?.domain_id?.split(',')?.length > 1 && (
@@ -112,23 +110,14 @@ export default function Component(props) {
                         <InputField
                           inputWrapperClass={s.inputHeight}
                           name={el}
-                          label={`${t(el === 'ns_additional' ? 'Additional NS' : 'NS')}:`}
+                          label={`${t(el === 'ns_additional' ? 'Additional NS' : el)}:`}
                           placeholder={t('Enter text', { ns: 'other' })}
                           isShadow
                           className={s.input}
                           error={!!errors[el]}
                           touched={!!touched[el]}
+                          infoText={t('record_format')}
                         />
-                        <button
-                          type="button"
-                          className={s.infoBtn}
-                          style={{ zIndex: 2 * nslists?.length - index }}
-                        >
-                          <Icon name="Info" />
-                          <div ref={dropdownDescription} className={s.descriptionBlock}>
-                            {t('record_format')}
-                          </div>
-                        </button>
                       </div>
                     )
                   })}

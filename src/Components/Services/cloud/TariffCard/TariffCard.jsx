@@ -23,7 +23,7 @@ export default function TariffCard({ tariff, onClick, price, active, disabled })
   return (
     <li className={cn(s.tariff_item, { [s.active]: active, [s.disabled]: disabled })}>
       <button className={s.tariff_btn} type="button" onClick={() => onClick(tariff.id.$)}>
-        <p className={s.tariff_title}>{tariff.title.main.$}</p>
+        <p className={s.tariff_title}>{tariff.title.$}</p>
         <div className={s.tariff_parameters}>
           <div className={s.tariff_row}>
             <span className={s.parameter_label}>CPU</span>

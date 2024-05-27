@@ -1,11 +1,5 @@
 import qs from 'qs'
-import {
-  actions,
-  authSelectors,
-  cartActions,
-  cloudVpsActions,
-  cloudVpsSelectors,
-} from '@redux'
+import { actions, authSelectors, cartActions, cloudVpsActions } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import {
@@ -13,6 +7,8 @@ import {
   handleLoadersClosing,
   renameAddonFields,
   cookies,
+  sortCloudsByType,
+  handleLongRequest,
 } from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
@@ -50,6 +46,12 @@ const getInstances =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         const elemsList = data.doc.elem || []
+        /** unifies the data structure */
+        elemsList.forEach(el => {
+          if (!el.createdate.$ && el.createdate?.[0]?.$) {
+            el.createdate.$ = el.createdate[0].$
+          }
+        })
 
         if (setLocalInstancesItems) {
           setLocalInstancesItems(elemsList)
@@ -258,9 +260,11 @@ const changeInstanceState =
 const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
+
   serviceActionRequest({ elid, action: 'changepricelist', sessionId })
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
       const tariffs = data.doc.slist.find(item => item.$name === 'pricelist')?.val
       setTariffs(tariffs)
       dispatch(actions.hideLoader())
@@ -271,6 +275,7 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
       dispatch(actions.hideLoader())
     })
 }
+
 const changeTariff =
   ({ elid, pricelist, successCallback }) =>
   (dispatch, getState) => {
@@ -493,24 +498,18 @@ const getInstanceInfo =
       })
   }
 
-const writeTariffsWithDC = data => {
-  return {
-    [data.doc.datacenter.$]:
-      data.doc.list.find(el => el.$name === 'pricelist').elem || [],
-  }
-}
-
 const getOsList =
-  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
-  (dispatch, getState) => {
+  ({
+    signal,
+    setIsLoading,
+    lastTariffID,
+    closeLoader,
+    datacenter,
+    setSshList,
+    isBasic,
+  }) =>
+  dispatch => {
     setIsLoading && setIsLoading(true)
-
-    if (!lastTariffID) {
-      const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
-
-      const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
-      lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
-    }
 
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
@@ -532,7 +531,11 @@ const getOsList =
 
         const operationSystems = { [data.doc.datacenter.$]: osList }
 
-        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
+        if (isBasic) {
+          dispatch(cloudVpsActions.setBasicOperationSystems(operationSystems))
+        } else {
+          dispatch(cloudVpsActions.setPremiumOperationSystems(operationSystems))
+        }
         setSshList && setSshList(formatedSshList)
 
         closeLoader && closeLoader()
@@ -551,7 +554,7 @@ const getAllTariffsInfo =
     datacenter,
     setSshList,
     needDcList = true,
-    isPremium,
+    isBasic,
   }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
@@ -572,56 +575,42 @@ const getAllTariffsInfo =
       .then(async ({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        const datacenter = data.doc.datacenter.$
-        const allTariffs = {
-          ...writeTariffsWithDC(data),
-        }
+        const dcID = data.doc.datacenter.$
         const DClist = data.doc.slist.find(el => el.$name === 'datacenter').val
 
-        /**
-         * it is important to get ID of the last Tariff because it must have full list of OS,
-         * and the Tariff must be from selected DC,
-         * because OS IDs differs between DC
-         */
-        const tariffs = allTariffs[datacenter]
+        const cloudBasicTag = data?.doc?.flist?.val.find(el =>
+          el?.$.toLowerCase().includes('type:basic'),
+        )?.$key
         const windowsTag = data.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
 
-        const cloudPremiumTag = data?.doc?.flist?.val.find(el =>
-          el?.$.toLowerCase().includes('type:premium'),
-        ).$key
+        const { basicTariffs, premiumTariffs } = sortCloudsByType(data, cloudBasicTag)
 
-        /** This block will be refactored */
-        const checkIsItPremiumCloud = tags =>
-          tags?.some(tag => tag?.$.includes(cloudPremiumTag))
-
-        const premiumTariffs = []
-        const otherTariffs = []
-
-        tariffs?.forEach(tariff => {
-          const isItPremiumInstance = checkIsItPremiumCloud(tariff?.flabel?.tag)
-
-          isItPremiumInstance ? premiumTariffs.push(tariff) : otherTariffs.push(tariff)
-        })
-
-        let lastTariffID
-        if (isPremium) {
-          /** we pick last tariff in the list because first one doesn`t have Windows OS */
-          lastTariffID = premiumTariffs[premiumTariffs.length - 1].id.$
-        } else {
-          lastTariffID = otherTariffs[0].id.$
-        }
-        /** /This block will be refactored */
-
+        /**
+         * it is important to get ID of the last Tariff for Premium type
+         * because it must have full list of OS,
+         * and the Tariff must be from selected DC,
+         * because OS IDs differs between DC
+         */
         if (needOsList) {
-          await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
+          let lastTariffID
+
+          if (isBasic) {
+            lastTariffID = basicTariffs[dcID][0].id.$
+          } else {
+            /** we pick last tariff in the list because first one doesn`t have Windows OS */
+            lastTariffID = premiumTariffs[dcID][premiumTariffs[dcID].length - 1].id.$
+          }
+          await dispatch(
+            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList, isBasic }),
+          )
         }
 
-        dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
+        basicTariffs && dispatch(cloudVpsActions.setBasicTariffs(basicTariffs))
+        dispatch(cloudVpsActions.setPremiumTariffs(premiumTariffs))
         needDcList && dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
-        dispatch(cloudVpsActions.setCloudPremiumTag(cloudPremiumTag))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
@@ -793,34 +782,49 @@ const editSsh =
         }),
         { signal },
       )
-      .then(({ data }) => {
-        if (data.doc?.error) {
-          /* Get and parse errors */
-          const errorObject = JSON.parse(data.doc.error.msg.$)
-          /* Get the first key */
-          const firstKey = Object.keys(errorObject)[0]
-          if (firstKey) {
-            const errorMessage = errorObject[firstKey]
+      .then(async ({ data }) => {
+        function errorHandler(data) {
+          if (data.doc?.error) {
+            /* Get and parse errors */
+            let errorMessage = data.doc?.error?.msg?.$
+            const errorObject = JSON.parse(data.doc?.error?.$object)
+            /* Get the first key */
+            const errorKey = Object.keys(errorObject)?.[0]
+
+            if (errorKey) {
+              const specifiedErrorDescr = errorObject[errorKey]?.[0]
+              toast.error(t(specifiedErrorDescr, { ns: 'other' }))
+              errorMessage = `${errorMessage}: ${specifiedErrorDescr}`
+              console.error(errorMessage)
+            } else if (data.doc.error.$type) {
+              console.error(`${errorMessage}: ${data.doc.error?.$type}`)
+            } else {
+              console.error(errorMessage)
+            }
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
             throw new Error(errorMessage)
+          } else if (typeof data === 'string' && !data.match(/long.+billmgr/)) {
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+            throw new Error(data)
           }
-        } else if (typeof data === 'string') {
-          /* if long request - throw Error */
-          throw new Error('Request in process, please wait')
         }
 
-        dispatch(
-          getSshKeys({
-            p_col,
-            p_num,
-            p_cnt,
-            setTotalElems,
-            setAllSshItems,
-            signal,
-            setIsLoading,
-          }),
-        )
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('Changes saved successfully', { ns: 'other' }))
+        const successCallback = () => {
+          dispatch(
+            getSshKeys({
+              p_col,
+              p_num,
+              p_cnt,
+              setTotalElems,
+              setAllSshItems,
+              signal,
+              setIsLoading,
+            }),
+          )
+          toast.success(t('Changes saved successfully', { ns: 'other' }))
+        }
+
+        await handleLongRequest(data, errorHandler, successCallback)
       })
       .catch(error => {
         closeModal()

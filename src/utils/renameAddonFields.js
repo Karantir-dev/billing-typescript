@@ -48,9 +48,20 @@ export default function renameAddonFields(data, options = {}) {
     }
   }
 
+  /** New name for this param in updated billmgr version */
+  const pageSettingsParamName = 'page_settings'
+
+  /** Name for old billmgr version,
+   * it should be deleted after we migrate to the new version  */
+  const pageSettingsParamOldName = 'page_pricelist_settings'
+
   const ipSliderData = isNewFunc
     ? data.metadata?.form?.page
-        .find(item => item?.$name === 'page_pricelist_settings')
+        .find(
+          item =>
+            item?.$name === pageSettingsParamOldName ||
+            item?.$name === pageSettingsParamName,
+        )
         .field?.find(item => item?.$name === ipAddon)?.slider[0]
     : isEditFunc
     ? data.metadata?.form?.page

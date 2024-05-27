@@ -11,7 +11,9 @@ export const RdnsModal = args => {
   const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
-    rdns_record: Yup.string().matches(DOMAIN_REGEX, t('warning_domain', { ns: 'vds' })),
+    rdns_record: Yup.string()
+      .matches(DOMAIN_REGEX, t('warning_domain', { ns: 'vds' }))
+      .required(t('warnings.field_cannot_be_empty', { ns: 'auth' })),
   })
 
   return (
@@ -28,11 +30,9 @@ export const RdnsModal = args => {
           initialValues={{ rdns_record: item?.rdns_record || '' }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            if (
-              values.rdns_record === item?.rdns_record ||
-              (values.rdns_record === '' && !item.rdns_record)
-            )
+            if (values.rdns_record === item?.rdns_record) {
               return closeModal()
+            }
             onSubmit({ value: values.rdns_record, elid: item.id.$, closeModal })
           }}
         >
