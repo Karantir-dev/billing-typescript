@@ -107,12 +107,12 @@ const InstanceDetailsOverview = lazy(() =>
 )
 const InstanceMetrics = lazy(() =>
   import(
-    /* webpackChunkName: "InstanceMetrics" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceMetrics'
+    /* webpackChunkName: "InstanceMetrics" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceMetrics'
   ),
 )
 const InstanceNetworkTraffic = lazy(() =>
   import(
-    /* webpackChunkName: "InstanceNetworkTraffic" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceNetworkTraffic/InstanceNetworkTraffic'
+    /* webpackChunkName: "InstanceNetworkTraffic" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceNetworkTraffic/InstanceNetworkTraffic'
   ),
 )
 

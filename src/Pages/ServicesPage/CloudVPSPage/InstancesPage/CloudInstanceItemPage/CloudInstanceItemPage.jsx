@@ -101,7 +101,7 @@ export default function CloudInstanceItemPage() {
   const tabBarSections = [
     {
       route: `${route.CLOUD_VPS}/${params.id}`,
-      label: 'Info',
+      label: t('info'),
       allowToRender: true,
       replace: true,
       end: true,
@@ -122,14 +122,14 @@ export default function CloudInstanceItemPage() {
     // },
     {
       route: `${route.CLOUD_VPS}/${params.id}/metrics`,
-      label: 'Metrics',
+      label: t('metrics'),
       allowToRender: true,
       replace: true,
       end: true,
     },
     {
       route: `${route.CLOUD_VPS}/${params.id}/network_traffic`,
-      label: 'Network Traffic',
+      label: t('network_traffic'),
       allowToRender: true,
       replace: true,
       end: true,
