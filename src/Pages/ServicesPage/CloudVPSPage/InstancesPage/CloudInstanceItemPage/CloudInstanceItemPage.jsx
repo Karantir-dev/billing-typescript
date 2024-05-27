@@ -36,7 +36,7 @@ export default function CloudInstanceItemPage() {
 
   const { isResized, displayStatus, isSuspended } = getInstanceMainInfo(item)
 
-  const { t } = useTranslation(['cloud_vps'])
+  const { t } = useTranslation(['cloud_vps', 'crumbs'])
 
   const setItemData = ([item]) => {
     setItem(item)
@@ -101,7 +101,7 @@ export default function CloudInstanceItemPage() {
   const tabBarSections = [
     {
       route: `${route.CLOUD_VPS}/${params.id}`,
-      label: 'Info',
+      label: t('info'),
       allowToRender: true,
       replace: true,
       end: true,
@@ -122,7 +122,14 @@ export default function CloudInstanceItemPage() {
     // },
     {
       route: `${route.CLOUD_VPS}/${params.id}/metrics`,
-      label: 'Metrics',
+      label: t('metrics', { ns: 'crumbs' }),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+    {
+      route: `${route.CLOUD_VPS}/${params.id}/network_traffic`,
+      label: t('network_traffic', { ns: 'crumbs' }),
       allowToRender: true,
       replace: true,
       end: true,

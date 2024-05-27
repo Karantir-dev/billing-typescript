@@ -107,7 +107,12 @@ const InstanceDetailsOverview = lazy(() =>
 )
 const InstanceMetrics = lazy(() =>
   import(
-    /* webpackChunkName: "InstanceMetrics" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceMetrics'
+    /* webpackChunkName: "InstanceMetrics" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceMetrics'
+  ),
+)
+const InstanceNetworkTraffic = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceNetworkTraffic" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceNetworkTraffic/InstanceNetworkTraffic'
   ),
 )
 
@@ -221,6 +226,7 @@ const ShellСomponent = props => {
     'container',
     'vds',
     'crumbs',
+    'cloud_vps',
     'virtual_hosting',
     'domains',
     'dedicated_servers',
@@ -536,12 +542,24 @@ export const InstanceDetailsOverviewLazy = () => {
 export const InstanceMetricsLazy = () => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'burger_menu.services.services_list.instances', ns: 'container' },
+    { value: 'metrics', ns: 'crumbs' },
   ]
 
   return (
     <ShellСomponent title={title}>
       <InstanceMetrics />
+    </ShellСomponent>
+  )
+}
+export const InstanceNetworkTrafficLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'network_traffic', ns: 'crumbs' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceNetworkTraffic />
     </ShellСomponent>
   )
 }

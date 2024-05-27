@@ -498,6 +498,39 @@ const getInstanceInfo =
       })
   }
 
+const getInstanceNetworkTrafficInfo =
+  (elid, setNetworkTrafficInfo, signal, setIsLoading) => (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.fleio.trafficdata',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        const { cycle_traffic, month_traffic } = data.doc
+
+        setNetworkTrafficInfo({ cycle_traffic, month_traffic })
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+  }
+
 const getOsList =
   ({
     signal,
@@ -951,6 +984,7 @@ export default {
   editSsh,
   deleteSsh,
   getInstanceInfo,
+  getInstanceNetworkTrafficInfo,
   openConsole,
   getAllTariffsInfo,
   getTariffParams,

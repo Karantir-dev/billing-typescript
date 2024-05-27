@@ -30,5 +30,7 @@
   "ssh_keys": "SSH keys",
   "create_instance": "Create virtual server",
   "premium": "Premium VPS",
-  "basic": "Basic VPS"
+  "basic": "Basic VPS",
+  "network_traffic": "Network Traffic",
+  "metrics": "Metrics"
 }

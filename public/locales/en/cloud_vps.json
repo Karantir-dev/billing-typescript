@@ -155,5 +155,13 @@
   "choose_tariff": "Choose new tariff",
   "upgrade_cost": "Upgrade cost:",
   "resize_explanation": "The upgrade cost is the difference between the cost of the current and new tariff.",
-  "windows_os_notice": "Please note: Windows-based servers only include a trial license type. To obtain a license for Microsoft Windows products, please contact the vendors"
+  "windows_os_notice": "Please note: Windows-based servers only include a trial license type. To obtain a license for Microsoft Windows products, please contact the vendors",
+  "traffic_per_cycle": "Traffic per cycle",
+  "traffic_per_month": "Traffic per month",
+  "start_date": "Start date",
+  "end_date": "End Date",
+  "incoming": "Incoming",
+  "outgoing": "Outgoing",
+  "total": "Total",
+  "info": "Info"
 }
