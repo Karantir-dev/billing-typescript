@@ -155,5 +155,27 @@
   "choose_tariff": "Choose new tariff",
   "upgrade_cost": "Upgrade cost:",
   "resize_explanation": "The upgrade cost is the difference between the cost of the current and new tariff.",
-  "windows_os_notice": "Please note: Windows-based servers only include a trial license type. To obtain a license for Microsoft Windows products, please contact the vendors"
+  "windows_os_notice": "Please note: Windows-based servers only include a trial license type. To obtain a license for Microsoft Windows products, please contact the vendors",
+  "select_metrics": "Select metrics type",
+  "metrics": {
+    "interface_traffic": {
+      "$packets_in": "Packets in",
+      "$packets_out": "Packets out",
+      "$bytes_in": "Bytes in",
+      "$bytes_out": "Bytes out"
+    },
+    "cpu_util": {
+      "$value": "CPU"
+    },
+    "period": {
+      "1h": "Last hour",
+      "24h": "24 hours",
+      "168h": "7 days",
+      "720h": "30 days"
+    },
+    "type": {
+      "network_metrics": "Network metrics",
+      "cpu_metrics": "CPU metrics"
+    }
+  }
 }

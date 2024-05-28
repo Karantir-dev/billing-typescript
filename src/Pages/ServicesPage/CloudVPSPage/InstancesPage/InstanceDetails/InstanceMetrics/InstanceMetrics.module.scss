@@ -1,0 +1,31 @@
+.content {
+  padding-top: 16px;
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 768px) {
+    padding-top: 32px;
+  }
+}
+
+.metrics_selects {
+  display: grid;
+  gap: 10px;
+  @media (min-width: 576px) {
+    grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+  }
+}
+
+.metrics_charts {
+  display: grid;
+  gap: 20px;
+}
+
+.metrics_chart {
+  height: 320px;
+  width: 100%;
+
+  canvas {
+    width: 100% !important;
+  }
+}

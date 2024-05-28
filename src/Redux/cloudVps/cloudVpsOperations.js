@@ -906,7 +906,7 @@ const generateSsh =
   }
 
 const getMetrics =
-  ({ elid, setData, signal, setIsLoading }) =>
+  ({ elid, metric, hours, setData, signal, setIsLoading }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -920,8 +920,8 @@ const getMetrics =
           auth: sessionId,
           lang: 'en',
           elid,
-          hours: 24,
-          metric: 'interface_traffic',
+          hours,
+          metric,
         }),
         { signal },
       )
