@@ -18,7 +18,7 @@ import {
 import {
   CheckBox,
   CustomPhoneInput,
-  HintWrapper,
+  TooltipWrapper,
   Icon,
   InputField,
   Select,
@@ -528,16 +528,16 @@ export default function FourthStep({
                                     </span>
                                   </div>
                                   {paymethod?.$ === '71' && (
-                                    <HintWrapper
-                                      popupClassName={s.cardHintWrapper}
+                                    <TooltipWrapper
                                       label={t(method?.name.$, {
                                         ns: 'other',
                                       })}
                                       wrapperClassName={cn(s.infoBtnCard)}
-                                      bottom
+                                      place="bottom"
+                                      id={'cart_bank_cards'}
                                     >
-                                      <Icon name="Info" />
-                                    </HintWrapper>
+                                      <Icon name="Info" id={'cart_bank_cards'} />
+                                    </TooltipWrapper>
                                   )}
                                 </button>
                               )

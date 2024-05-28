@@ -8,11 +8,11 @@ import s from '../HintWrapper/HintWrapper.module.scss'
 
 export default function TooltipWrapper({
   id,
-  label, // old version of HintWrapper props
   content,
   hintDelay, // old version of HintWrapper props
   children,
   className,
+  wrapperClassName, // to support old components styles
   delayShow = 500,
   place = 'top',
   effect = 'solid',
@@ -34,12 +34,12 @@ export default function TooltipWrapper({
       {disabled ? (
         children
       ) : (
-        <div id={id}>
+        <div className={wrapperClassName} id={id}>
           {children}
           <Tooltip
             anchorSelect={`#${id}`}
             className={cn(s.hint, className)}
-            content={label || content}
+            content={content}
             place={place}
             effect={effect}
             variant={variant || themeVariant}
@@ -61,6 +61,7 @@ TooltipWrapper.propTypes = {
   children:
     PropTypes.node /* The tooltip children have lower priority compared to the content */,
   className: PropTypes.string,
+  wrapperClassName: PropTypes.string,
   delayShow: PropTypes.number /* The delay (in ms) before showing the tooltip */,
   hintDelay: PropTypes.number /* old version of HintWrapper for delayShow*/,
   place: PropTypes.oneOf([

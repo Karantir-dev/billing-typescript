@@ -12,7 +12,8 @@ import {
   Modal,
   Icon,
   CustomPhoneInput,
-  HintWrapper,
+  // HintWrapper,
+  TooltipWrapper,
   PayersList,
 } from '@components'
 import {
@@ -470,14 +471,15 @@ export default function ModalCreatePayment() {
                             </div>
 
                             {paymethod?.$ === '71' && (
-                              <HintWrapper
-                                popupClassName={s.cardHintWrapper}
-                                label={t(method?.name.$, { ns: 'other' })}
+                              <TooltipWrapper
+                                className={s.cardHintWrapper}
+                                content={t(method?.name.$, { ns: 'other' })}
                                 wrapperClassName={cn(s.infoBtnCard)}
-                                bottom
+                                place="bottom"
+                                id={'bank_cards'}
                               >
-                                <Icon name="Info" />
-                              </HintWrapper>
+                                <Icon name="Info" id={'bank_cards'} />
+                              </TooltipWrapper>
                             )}
                           </button>
                         )

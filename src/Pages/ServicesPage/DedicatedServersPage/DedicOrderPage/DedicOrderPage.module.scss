@@ -320,13 +320,9 @@
   font-weight: 300;
 }
 
-.activation_info_hint_wrapper {
-  vertical-align: middle;
-  margin-left: 5px;
-}
-
 .activation_info_hint {
-  width: 250px;
+  max-width: 250px;
+  width: 100%;
 }
 
 .price {

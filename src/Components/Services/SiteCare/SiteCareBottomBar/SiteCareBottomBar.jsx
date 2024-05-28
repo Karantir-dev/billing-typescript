@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { IconButton, HintWrapper } from '@components'
+import { IconButton, TooltipWrapper } from '@components'
 
 import s from './SiteCareBottomBar.module.scss'
 import { roundToDecimal } from '@src/utils'
@@ -36,7 +36,7 @@ export default function VDS(props) {
     <div className={cn(s.tools_footer, { [s.isopen]: selctedItem?.length !== 0 })}>
       {selctedItem?.length !== 0 && (
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('delete', { ns: 'other' })}>
+          <TooltipWrapper content={t('delete', { ns: 'other' })} id="siteCare_delete">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -49,10 +49,11 @@ export default function VDS(props) {
                 deleteSiteCare()
               }}
               icon="delete"
+              id="siteCare_delete"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('prolong', { ns: 'vds' })}>
+          <TooltipWrapper content={t('prolong', { ns: 'vds' })} id="siteCare_prolong">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -62,8 +63,9 @@ export default function VDS(props) {
               }
               onClick={() => renewDomainHandler()}
               icon="clock"
+              id="siteCare_prolong"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
       )}
       <p className={s.services_selected}>
