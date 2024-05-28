@@ -40,42 +40,40 @@ export default function InstanceMetrics() {
   }, [])
 
   return (
-    <>
-      <div className={s.content}>
-        <div className={s.metrics_selects}>
-          <Select
-            label={t('select_metrics')}
-            itemsList={METRICS_TYPE_OPTIONS.map(el => ({
-              ...el,
-              label: t(`metrics.type.${el.label}`),
-            }))}
-            value={chartType}
-            getElement={metric => {
-              setChartType(metric)
-              getMetrics({ metric })
-            }}
-            isShadow
-          />
-          <Select
-            label={t('period')}
-            itemsList={METRICS_PERIOD_OPTIONS.map(el => ({
-              ...el,
-              label: t(`metrics.period.${el.label}`),
-            }))}
-            value={chartPeriod}
-            getElement={period => {
-              setChartPeriod(period)
-              getMetrics({ period })
-            }}
-            isShadow
-          />
-        </div>
-        {isLoading ? (
-          <Loader local shown={isLoading} halfScreen />
-        ) : (
-          <Charts data={data} chartType={chartType} chartPeriod={chartPeriod} />
-        )}
+    <div className={s.content}>
+      <div className={s.metrics_selects}>
+        <Select
+          label={t('select_metrics')}
+          itemsList={METRICS_TYPE_OPTIONS.map(el => ({
+            ...el,
+            label: t(`metrics.type.${el.label}`),
+          }))}
+          value={chartType}
+          getElement={metric => {
+            setChartType(metric)
+            getMetrics({ metric })
+          }}
+          isShadow
+        />
+        <Select
+          label={t('period')}
+          itemsList={METRICS_PERIOD_OPTIONS.map(el => ({
+            ...el,
+            label: t(`metrics.period.${el.label}`),
+          }))}
+          value={chartPeriod}
+          getElement={period => {
+            setChartPeriod(period)
+            getMetrics({ period })
+          }}
+          isShadow
+        />
       </div>
-    </>
+      {isLoading ? (
+        <Loader local shown={isLoading} halfScreen />
+      ) : (
+        <Charts data={data} chartType={chartType} chartPeriod={chartPeriod} />
+      )}
+    </div>
   )
 }
