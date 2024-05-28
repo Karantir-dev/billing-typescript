@@ -15,7 +15,7 @@ export const INDEX_REGEX = /^(?:[A-Za-z]{2,3}-?\d+|[a-zA-Z0-9]+)$/
 export const PASS_REGEX = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/
 export const PASS_REGEX_ASCII = /^[\x20-\x7E]+$/
 export const DISALLOW_SPACE = /^\S*$/
-export const DISALLOW_HASH = /^(?!.*#).+$/
+export const DISALLOW_PASS_SPECIFIC_CHARS = /^(?!.*["#%&'()*;<>?@|]).+$/
 
 export const URL_REGEX =
   /^(?:https?:\/\/)(?:www\.)?[a-zA-Z0-9_-]+(?:\.[a-zA-Z0-9_-]+)*\.[a-zA-Z]{2,}(?:\/[^\s]*)?$/
@@ -219,6 +219,8 @@ export const TARIFFS_PRICES = {
   'Cloud Prime': { day: 0.4497, month: 13.49 },
   'Cloud Platinum': { day: 0.6634, month: 19.9 },
   'Cloud Enterprise': { day: 1.283, month: 38.49 },
+  'Cloud Ultimate': { day: 2.2164, month: 66.49 },
+  /** With cyrylic C (temporarily) */
   'Сloud Ultimate': { day: 2.2164, month: 66.49 },
   'Cloud Supreme': { day: 2.9967, month: 89.9 },
 

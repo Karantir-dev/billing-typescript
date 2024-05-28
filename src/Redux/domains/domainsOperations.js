@@ -142,8 +142,12 @@ const getDomainsOrderName =
         { signal },
       )
       .then(async ({ data }) => {
-        if (data?.doc?.error) {
-          throw new Error(data.doc.error.msg.$)
+        function errorHandler(data) {
+          if (data?.doc?.error) {
+            throw new Error(data.doc.error?.msg?.$)
+          } else if (typeof data === 'string' && !data.match(/long.+billmgr/)) {
+            throw new Error(data)
+          }
         }
 
         let domainData
@@ -155,13 +159,24 @@ const getDomainsOrderName =
           if (typeof data === 'string') {
             const longUrl = data.match(/long.+billmgr/)?.[0]
 
-            await axiosInstance.get(longUrl).then(({ data }) => {
-              handleLongRequest(data)
-            })
+            try {
+              const response = await axiosInstance.get(longUrl)
+              const responseData = response.data
+
+              if (responseData) {
+                handleLongRequest(responseData)
+              } else {
+                errorHandler('No data received from the server')
+              }
+            } catch (error) {
+              errorHandler(error)
+            }
           } else {
             domainData = data?.doc
           }
         }
+
+        errorHandler(data)
         await handleLongRequest(data)
 
         const domains = []

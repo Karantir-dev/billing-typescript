@@ -84,3 +84,7 @@ export const ORDER = '/order'
 
 export const CLOUD_VPS = '/services/cloud_vps'
 export const CLOUD_VPS_CREATE_INSTANCE = '/services/cloud_vps/create_instance'
+export const CLOUD_VPS_CREATE_PREMIUM_INSTANCE =
+  '/services/cloud_vps/create_instance?type=premium'
+export const CLOUD_VPS_CREATE_BASIC_INSTANCE =
+  '/services/cloud_vps/create_instance?type=basic'

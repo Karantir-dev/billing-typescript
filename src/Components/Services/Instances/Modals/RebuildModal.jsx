@@ -21,7 +21,7 @@ import {
   DISALLOW_SPACE,
   PASS_REGEX,
   PASS_REGEX_ASCII,
-  DISALLOW_HASH,
+  DISALLOW_PASS_SPECIFIC_CHARS,
 } from '@utils/constants'
 
 const RESCUE_TABS_ORDER = ['shr', 'pub']
@@ -154,7 +154,10 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
         .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
         .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .matches(DISALLOW_SPACE, t('warnings.disallow_space', { ns: 'auth' }))
-        .matches(DISALLOW_HASH, t('warnings.disallow_hash', { ns: 'auth' }))
+        .matches(
+          DISALLOW_PASS_SPECIFIC_CHARS,
+          t('warnings.disallow_hash', { ns: 'auth' }),
+        )
         .required(t('warnings.password_required', { ns: 'auth' })),
     password_type:
       isRebuild && Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -235,6 +238,11 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     <div className={s.rebuild__os_list}>
                       {renderSoftwareOSFields(select, values[select], depends)}
                     </div>
+
+                    {isWindowsOS && (
+                      <WarningMessage>{t('windows_os_notice')}</WarningMessage>
+                    )}
+
                     <ErrorMessage
                       className={s.error_message}
                       name={[select]}

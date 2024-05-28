@@ -47,7 +47,7 @@ import {
   DISALLOW_SPACE,
   BASIC_TYPE,
   PREMIUM_TYPE,
-  DISALLOW_HASH,
+  DISALLOW_PASS_SPECIFIC_CHARS,
 } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
@@ -252,7 +252,10 @@ export default function CreateInstancePage() {
         .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
         .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .matches(DISALLOW_SPACE, t('warnings.disallow_space', { ns: 'auth' }))
-        .matches(DISALLOW_HASH, t('warnings.disallow_hash', { ns: 'auth' }))
+        .matches(
+          DISALLOW_PASS_SPECIFIC_CHARS,
+          t('warnings.disallow_hash', { ns: 'auth' }),
+        )
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
     connectionType: Yup.string().required(t('Is a required field', { ns: 'other' })),
@@ -282,7 +285,7 @@ export default function CreateInstancePage() {
   }
 
   const tariffFromSite = tariffs?.[currentDC?.$key]?.find(el =>
-    el.title.main.$.toLowerCase().includes(dataFromSite?.name?.toLowerCase()),
+    el.title.$.toLowerCase().includes(dataFromSite?.name?.toLowerCase()),
   )
 
   const toggleCaptionHandler = value => {
@@ -536,6 +539,11 @@ export default function CreateInstancePage() {
                           onOSchange={onOSchange}
                         />
                       </div>
+                      {isItWindows && (
+                        <WarningMessage className={s.notice_wrapper}>
+                          {t('windows_os_notice')}
+                        </WarningMessage>
+                      )}
                     </section>
 
                     <section className={s.section}>

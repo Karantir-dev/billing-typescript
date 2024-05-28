@@ -8,7 +8,7 @@ import {
   DISALLOW_SPACE,
   PASS_REGEX,
   PASS_REGEX_ASCII,
-  DISALLOW_HASH,
+  DISALLOW_PASS_SPECIFIC_CHARS,
 } from '@utils/constants'
 
 export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
@@ -22,7 +22,7 @@ export const ChangePasswordModal = ({ item, closeModal, onSubmit }) => {
       .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
       .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
       .matches(DISALLOW_SPACE, t('warnings.disallow_space', { ns: 'auth' }))
-      .matches(DISALLOW_HASH, t('warnings.disallow_hash', { ns: 'auth' }))
+      .matches(DISALLOW_PASS_SPECIFIC_CHARS, t('warnings.disallow_hash', { ns: 'auth' }))
       .required(t('warnings.password_required', { ns: 'auth' })),
   })
 
