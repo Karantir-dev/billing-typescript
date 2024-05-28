@@ -51,7 +51,8 @@ export default function VDSOrder() {
 
   const navigate = useNavigate()
 
-  const navigateToCloud = type => navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}/${type}`)
+  const navigateToCloud = type =>
+    navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}?type=${type}`)
 
   // const [formInfo, setFormInfo] = useState(null)
   // const [period, setPeriod] = useState('1')
