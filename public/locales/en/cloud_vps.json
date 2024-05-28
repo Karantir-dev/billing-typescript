@@ -177,5 +177,13 @@
       "network_metrics": "Network metrics",
       "cpu_metrics": "CPU metrics"
     }
-  }
+  },
+  "traffic_per_cycle": "Traffic per cycle",
+  "traffic_per_month": "Traffic per month",
+  "start_date": "Start date",
+  "end_date": "End Date",
+  "incoming": "Incoming",
+  "outgoing": "Outgoing",
+  "total": "Total",
+  "info": "Info"
 }
