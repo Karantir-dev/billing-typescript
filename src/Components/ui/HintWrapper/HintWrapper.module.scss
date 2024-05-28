@@ -77,3 +77,9 @@
 .hint_fit {
   width: fit-content;
 }
+
+@media (max-width: 767px) {
+  .hint {
+    width: fit-content !important;
+  }
+}

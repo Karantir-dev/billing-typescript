@@ -27,11 +27,7 @@ export default function Component(props) {
 
       <div className={s.tableBlockSecond}>
         {mobile && <div className={s.item_title}>{t('Name', { ns: 'other' })}:</div>}
-        <TooltipWrapper
-          wrapperClassName={s.transferBtn}
-          label={expensesTranslateFn(name, t)}
-          id={`id${id}`}
-        >
+        <TooltipWrapper label={expensesTranslateFn(name, t)} id={`id${id}`}>
           <div className={cn(s.item_text, s.second_item)} id={`id${id}`}>
             {expensesTranslateFn(name, t)}
           </div>

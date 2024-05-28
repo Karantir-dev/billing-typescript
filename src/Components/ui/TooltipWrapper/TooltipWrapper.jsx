@@ -8,15 +8,17 @@ import s from '../HintWrapper/HintWrapper.module.scss'
 
 export default function TooltipWrapper({
   id,
-  label,
+  label, // old version of HintWrapper props
+  content,
+  hintDelay, // old version of HintWrapper props
   children,
-  // popupClassName,
-  wrapperClassName,
+  className,
   delayShow = 500,
   place = 'top',
   effect = 'solid',
-  disabled,
-  hintDelay = 500,
+  variant,
+  disabled, // old version of HintWrapper props
+  ...props
 }) {
   const currentTheme = useSelector(selectors.getTheme)
   const [theme, setTheme] = useState(currentTheme)
@@ -25,23 +27,25 @@ export default function TooltipWrapper({
     setTheme(currentTheme)
   }, [currentTheme])
 
-  const type = theme === 'dark' ? 'light' : 'dark'
+  const themeVariant = theme === 'dark' ? 'light' : 'dark'
 
   return (
     <>
       {disabled ? (
         children
       ) : (
-        <div className={cn(s.hint_wrapper, wrapperClassName)} id={id}>
+        <div id={id}>
           {children}
           <Tooltip
             anchorSelect={`#${id}`}
-            content={label}
+            className={cn(s.hint, className)}
+            content={label || content}
             place={place}
             effect={effect}
-            type={'light' || type}
+            variant={variant || themeVariant}
             positionStrategy="fixed"
             delayShow={hintDelay || delayShow}
+            {...props}
           />
         </div>
       )}
@@ -50,12 +54,35 @@ export default function TooltipWrapper({
 }
 
 TooltipWrapper.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
-  popupClassName: PropTypes.string,
-  wrapperClassName: PropTypes.string,
-  bottom: PropTypes.bool,
-  disabled: PropTypes.bool,
-  hintDelay: PropTypes.number,
+  id: PropTypes.string.isRequired /* The selector for the anchor elements. */,
+  label:
+    PropTypes.string /* label is not required if content is provided. It's the same */,
+  content: PropTypes.string /* Content to be displayed in tooltip */,
+  children:
+    PropTypes.node /* The tooltip children have lower priority compared to the content */,
+  className: PropTypes.string,
+  delayShow: PropTypes.number /* The delay (in ms) before showing the tooltip */,
+  hintDelay: PropTypes.number /* old version of HintWrapper for delayShow*/,
+  place: PropTypes.oneOf([
+    'top',
+    'top-start',
+    'top-end',
+    'right',
+    'right-start',
+    'right-end',
+    'bottom',
+    'bottom-start',
+    'bottom-end',
+    'left',
+    'left-start',
+    'left-end',
+  ]), // Position relative to the anchor element where the tooltip will be rendered (if possible)
+  effect: PropTypes.oneOf([
+    'solid',
+    'float',
+  ]) /* 'float' - Tooltip will follow the mouse position when it moves inside the anchor element */,
+  variant: PropTypes.oneOf(['dark', 'light', 'success', 'warning', 'error', 'info']),
+  disabled:
+    PropTypes.bool /* To support disabling a component from a HintWrapper component */,
+  ...Tooltip.propTypes /* include all prop types from Tooltip*/,
 }
