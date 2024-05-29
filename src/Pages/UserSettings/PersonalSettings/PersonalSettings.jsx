@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,7 +10,7 @@ import {
   Portal,
   ModalPickPhoto,
   ToggleBlock,
-  HintWrapper,
+  TooltipWrapper,
   ScrollToFieldError,
   Icon,
   CheckBox,
@@ -33,8 +33,6 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation(['user_settings', 'other'])
-
-  const dropdownDescription = useRef(null)
 
   const [avatarFile, setAvatarFile] = useState()
   const [countryCode, setCountryCode] = useState(null)
@@ -291,14 +289,19 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                       setFieldValue={setFieldValue}
                       name="verefied_phone"
                     />
-                    <button type="button" className={s.infoBtn}>
-                      <Icon name="Info" />
-                      <div ref={dropdownDescription} className={s.descriptionBlock}>
-                        {userInfo?.verefied_phone !== 'Verify'
+                    <TooltipWrapper
+                      id={'verefied_phone'}
+                      content={
+                        userInfo?.verefied_phone !== 'Verify'
                           ? t('after_verified_number')
-                          : t('before_verified_number', { btn: t('Verify number') })}
-                      </div>
-                    </button>
+                          : t('before_verified_number', { btn: t('Verify number') })
+                      }
+                      wrapperClassName={s.infoBtn}
+                      className={s.descriptionBlock}
+                      place="bottom"
+                    >
+                      <Icon name="Info" id="verefied_phone" />
+                    </TooltipWrapper>
                   </div>
                 </div>
 
@@ -364,10 +367,11 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                         {t('Send e-mail messages about authorization')}
                       </div>
 
-                      <HintWrapper
-                        popupClassName={s.hintWrapper}
-                        label={t('Confirm your email to activate the functionality')}
+                      <TooltipWrapper
+                        className={s.hintWrapper}
+                        content={t('Confirm your email to activate the functionality')}
                         disabled={!isConfirmEmailBtnRender}
+                        id={'sendemail'}
                       >
                         <CheckBox
                           value={values.sendemail}
@@ -376,28 +380,31 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                           }}
                           disabled={isConfirmEmailBtnRender}
                           type="switcher"
+                          id={'sendemail'}
                         />
-                      </HintWrapper>
+                      </TooltipWrapper>
                     </div>
                     <div className={s.securNotifnGeoBlock}>
                       <div className={s.geoIpBlock}>
                         <div className={s.securNotifText}>
                           {t('Use GeoIP (region tracking by IP)')}
                         </div>
-                        <HintWrapper
-                          bottom
+                        <TooltipWrapper
                           wrapperClassName={s.hintWrapperGeo}
-                          popupClassName={s.hintPopUpWrapperGeoIp}
-                          label={t('geo_ip_info')}
+                          className={s.hintPopUpWrapperGeoIp}
+                          place="bottom"
+                          content={t('geo_ip_info')}
+                          id={'geo_ip_info'}
                         >
-                          <Icon name="Info" />
-                        </HintWrapper>
+                          <Icon name="Info" id={'geo_ip_info'} />
+                        </TooltipWrapper>
                       </div>
 
-                      <HintWrapper
-                        popupClassName={s.hintWrapper}
-                        label={t('Confirm your email to activate the functionality')}
+                      <TooltipWrapper
+                        className={s.hintWrapper}
+                        content={t('Confirm your email to activate the functionality')}
                         disabled={!isConfirmEmailBtnRender}
+                        id={'setgeoip'}
                       >
                         <CheckBox
                           value={values.setgeoip}
@@ -406,8 +413,9 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                           }}
                           disabled={isConfirmEmailBtnRender}
                           type="switcher"
+                          id={'setgeoip'}
                         />
-                      </HintWrapper>
+                      </TooltipWrapper>
                     </div>
                   </div>
                 </div>

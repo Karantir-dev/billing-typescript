@@ -8,7 +8,7 @@ import { useMediaQuery } from 'react-responsive'
 import {
   Button,
   IconButton,
-  HintWrapper,
+  TooltipWrapper,
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
@@ -254,10 +254,10 @@ export default function DNS() {
         )}
 
         <div className={s.btns_wrapper}>
-          <HintWrapper
-            label={t('No tariff plans available for order', { ns: 'other' })}
-            popupClassName={s.order_btn__error}
+          <TooltipWrapper
+            content={t('No tariff plans available for order', { ns: 'other' })}
             disabled={!isNoAvailableTariff}
+            id="order_dns_btn"
           >
             <Button
               className={s.order_btn}
@@ -271,8 +271,9 @@ export default function DNS() {
                 })
               }}
               disabled={isNoAvailableTariff || !rights?.new}
+              id="order_dns_btn"
             />
-          </HintWrapper>
+          </TooltipWrapper>
           <div className={s.tools_container}>
             <div className={s.filterBtnBlock}>
               <IconButton
@@ -355,7 +356,7 @@ export default function DNS() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('prolong')}>
+          <TooltipWrapper content={t('prolong')} id="prolong_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -369,8 +370,9 @@ export default function DNS() {
                 setElidForProlongModal(activeServices?.map(item => item.id.$))
               }
               icon="clock"
+              id="prolong_btn"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>

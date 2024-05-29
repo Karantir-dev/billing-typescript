@@ -1,4 +1,4 @@
-import { BreadCrumbs, HintWrapper, Icon, Loader, InstancesOptions } from '@components'
+import { BreadCrumbs, TooltipWrapper, Icon, Loader, InstancesOptions } from '@components'
 import { useLocation, useParams, Outlet, useNavigate } from 'react-router-dom'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 
@@ -156,13 +156,16 @@ export default function CloudInstanceItemPage() {
           <div className={s.page_title_container}>
             <div className={s.page_title_wrapper}>
               <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
-              <HintWrapper
-                popupClassName={s.popup}
-                wrapperClassName={s.popup__wrapper}
-                label={item.instances_os.$}
+              <TooltipWrapper
+                className={s.popup}
+                content={item.instances_os.$}
+                id={`instance_os_${item?.id?.$}`}
               >
-                <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
-              </HintWrapper>
+                <Icon
+                  name={item.instances_os.$.split(/[\s-]+/)[0]}
+                  id={`instance_os_${item?.id?.$}`}
+                />
+              </TooltipWrapper>
             </div>
             <InstancesOptions
               item={item}
@@ -172,10 +175,10 @@ export default function CloudInstanceItemPage() {
           </div>
 
           {isHintStatus ? (
-            <HintWrapper
-              popupClassName={s.popup}
-              wrapperClassName={s.popup__wrapper}
+            <TooltipWrapper
+              className={s.popup}
               label={hintMessage}
+              id={`instance_status_${item?.id?.$}`}
             >
               <span
                 className={cn(
@@ -185,11 +188,12 @@ export default function CloudInstanceItemPage() {
                       item?.item_status?.$.trim().toLowerCase()
                   ],
                 )}
+                id={`instance_status_${item?.id?.$}`}
               >
                 {displayStatus}
                 <Icon name="Attention" />
               </span>
-            </HintWrapper>
+            </TooltipWrapper>
           ) : (
             <span
               className={cn(

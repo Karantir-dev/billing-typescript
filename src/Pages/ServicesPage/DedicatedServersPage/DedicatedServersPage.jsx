@@ -3,7 +3,7 @@ import cn from 'classnames'
 import {
   Button,
   IconButton,
-  HintWrapper,
+  TooltipWrapper,
   DedicFiltersModal,
   DedicList,
   EditServerModal,
@@ -358,7 +358,7 @@ export default function DedicatedServersPage() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('delete', { ns: 'other' })}>
+          <TooltipWrapper content={t('delete', { ns: 'other' })} id="delete_btn">
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -371,9 +371,10 @@ export default function DedicatedServersPage() {
                 ) || !rights?.delete
               }
               icon="delete"
+              id="delete_btn"
             />
-          </HintWrapper>
-          <HintWrapper label={t('reload')}>
+          </TooltipWrapper>
+          <TooltipWrapper content={t('reload')} id="reload_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -384,10 +385,11 @@ export default function DedicatedServersPage() {
                 setElidForRebootModal(activeServices?.map(item => item.id.$))
               }
               icon="reload"
+              id="reload_btn"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('prolong')}>
+          <TooltipWrapper content={t('prolong')} id="prolong_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -402,8 +404,9 @@ export default function DedicatedServersPage() {
                 setElidForProlongModal(activeServices?.map(item => item.id.$))
               }
               icon="clock"
+              id="prolong_btn"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>

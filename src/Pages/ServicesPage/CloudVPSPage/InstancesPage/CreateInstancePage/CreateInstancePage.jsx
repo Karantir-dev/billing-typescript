@@ -12,7 +12,7 @@ import {
   FixedFooter,
   ScrollToFieldError,
   WarningMessage,
-  HintWrapper,
+  TooltipWrapper,
   Icon,
   Error,
   OsList,
@@ -565,18 +565,20 @@ export default function CreateInstancePage() {
                               -1€/{t('short_month', { ns: 'other' })}
                             </span>
                           </label>
-                          <HintWrapper
-                            label={t('hint_description.ip')}
-                            popupClassName={s.hintPopup}
+                          <TooltipWrapper
+                            content={t('hint_description.ip')}
+                            className={s.hintPopup}
                             disabled={!widerThan1550}
+                            id="hint_ip_description"
                           >
                             <button
                               type="button"
                               onClick={() => toggleCaptionHandler('ip')}
+                              id="hint_ip_description"
                             >
                               <Icon name="Info" />
                             </button>
-                          </HintWrapper>
+                          </TooltipWrapper>
                         </div>
 
                         <RadioTypeButton
@@ -714,13 +716,14 @@ export default function CreateInstancePage() {
                           <div className={s.exlude_vat}>
                             <span className="asterisk">*</span>
                             {t('excluding_vat')}
-                            <HintWrapper
+                            <TooltipWrapper
                               wrapperClassName={s.exlude_vat_hint}
-                              popupClassName={s.exlude_vat_hint_popup}
-                              label={t('exlude_vat_hint')}
+                              className={s.exlude_vat_hint_popup}
+                              content={t('exlude_vat_hint')}
+                              id="exlude_vat_hint"
                             >
-                              <Icon name="Info" />
-                            </HintWrapper>
+                              <Icon name="Info" id="exlude_vat_hint" />
+                            </TooltipWrapper>
                           </div>
                         </div>
 

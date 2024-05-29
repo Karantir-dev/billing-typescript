@@ -472,7 +472,6 @@ export default function ModalCreatePayment() {
 
                             {paymethod?.$ === '71' && (
                               <TooltipWrapper
-                                className={s.cardHintWrapper}
                                 content={t(method?.name.$, { ns: 'other' })}
                                 wrapperClassName={cn(s.infoBtnCard)}
                                 place="bottom"

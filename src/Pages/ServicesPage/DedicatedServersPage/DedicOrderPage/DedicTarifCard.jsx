@@ -90,9 +90,9 @@ export default function DedicTarifCard({
                   <TooltipWrapper
                     className={s.activation_info_hint}
                     content={t('dedic_activation_info')}
-                    id={`tariff_${itemInfo.service_id}`}
+                    id={`tariff_${itemInfo?.service_id}`}
                   >
-                    <Icon name="Info" id={`tariff_${itemInfo.service_id}`} />
+                    <Icon name="Info" id={`tariff_${itemInfo?.service_id}`} />
                   </TooltipWrapper>
                 )}
               </span>

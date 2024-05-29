@@ -8,20 +8,33 @@ export default function ServerState({ className, server }) {
   const { t } = useTranslation('vds')
 
   const statusMapping = {
-    '5_open': { content: 'in_progress', icon: 'InProgress', className: '' },
-    '5_transfer': { content: 'in_progress_transfer', icon: 'InProgress', className: '' },
+    '5_open': { id: 'open_5', content: 'in_progress', icon: 'InProgress', className: '' },
+    '5_transfer': {
+      id: 'transfer_5',
+      content: 'in_progress_transfer',
+      icon: 'InProgress',
+      className: '',
+    },
     '5_close': {
+      id: 'close_5',
       content: 'deletion_in_progress',
       icon: 'InProgress',
       className: s.delProgress,
     },
     '3_employeesuspend': {
+      id: 'employeesuspend_3',
       content: 'stopped_by_admin',
       icon: 'Attention',
       className: '',
     },
-    '3_autosuspend': { content: 'stopped', icon: 'Attention', className: '' },
+    '3_autosuspend': {
+      id: 'autosuspend_3',
+      content: 'stopped',
+      icon: 'Attention',
+      className: '',
+    },
     '3_abusesuspend': {
+      id: 'abusesuspend_3',
       content: 'Suspended due to abuse',
       icon: 'Attention',
       className: '',
@@ -33,7 +46,7 @@ export default function ServerState({ className, server }) {
 
     return (
       status && (
-        <TooltipWrapper content={t(status?.content)} id={statusKey}>
+        <TooltipWrapper content={t(status?.content)} id={status?.id}>
           <Icon name={status?.icon} className={status?.className} id={statusKey} />
         </TooltipWrapper>
       )

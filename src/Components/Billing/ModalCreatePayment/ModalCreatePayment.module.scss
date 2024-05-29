@@ -37,10 +37,6 @@
 
   &.last {
     padding-bottom: 25px;
-
-    &.border {
-      // border-bottom: 1px solid #e1daea;
-    }
   }
 }
 
@@ -192,17 +188,6 @@
   }
 }
 
-.cardHintWrapper {
-  width: 200px;
-  left: -67px;
-  word-break: normal;
-  pointer-events: none !important;
-
-  div div {
-    left: 88%;
-  }
-}
-
 .infoBtnCard {
   &:hover {
     path {
@@ -288,15 +273,6 @@
       overflow: hidden;
       max-width: unset;
       flex-basis: unset;
-    }
-  }
-
-  .cardHintWrapper {
-    pointer-events: unset;
-    left: -50px;
-
-    div div {
-      left: 80%;
     }
   }
 

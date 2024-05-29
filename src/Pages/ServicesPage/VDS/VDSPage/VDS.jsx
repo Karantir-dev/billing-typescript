@@ -21,7 +21,7 @@ import {
   VPSCompareModal,
   Pagination,
   Portal,
-  HintWrapper,
+  TooltipWrapper,
   CheckBox,
   Loader,
 } from '@components'
@@ -363,7 +363,7 @@ export default function VDS({ isDedic }) {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('delete', { ns: 'other' })}>
+          <TooltipWrapper content={t('delete', { ns: 'other' })} id="delete-btn">
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -376,9 +376,10 @@ export default function VDS({ isDedic }) {
                 ) || !rights?.delete
               }
               icon="delete"
+              id="delete-btn"
             />
-          </HintWrapper>
-          <HintWrapper label={t('password_change')}>
+          </TooltipWrapper>
+          <TooltipWrapper content={t('password_change')} id="passChange_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -389,10 +390,11 @@ export default function VDS({ isDedic }) {
                 setIdForPassChange(activeServices.map(server => server.id.$))
               }
               icon="passChange"
+              id="passChange_btn"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('reload')}>
+          <TooltipWrapper content={t('reload')} id="reload_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -401,10 +403,11 @@ export default function VDS({ isDedic }) {
               }
               onClick={() => setIdForReboot(activeServices.map(server => server.id.$))}
               icon="reload"
+              id="reload_btn"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('prolong')}>
+          <TooltipWrapper content={t('prolong')} id="prolong_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -416,10 +419,10 @@ export default function VDS({ isDedic }) {
                 ) || !rights?.prolong
               }
               onClick={() => setIdForProlong(activeServices.map(server => server.id.$))}
-              // onClick={() => setIdForProlong(activeServices)}
               icon="clock"
+              id="prolong_btn"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>

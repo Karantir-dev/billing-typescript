@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import {
   IconButton,
-  HintWrapper,
+  TooltipWrapper,
   BreadCrumbs,
   FTPFiltersModal,
   FTPList,
@@ -346,7 +346,7 @@ export default function FTP() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('delete', { ns: 'other' })}>
+          <TooltipWrapper content={t('delete', { ns: 'other' })} id="delete_btn">
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -359,9 +359,10 @@ export default function FTP() {
                 ) || !rights?.delete
               }
               icon="delete"
+              id="delete_btn"
             />
-          </HintWrapper>
-          <HintWrapper label={t('prolong')}>
+          </TooltipWrapper>
+          <TooltipWrapper content={t('prolong')} id="prolong_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -375,8 +376,9 @@ export default function FTP() {
                 setElidForProlongModal(activeServices?.map(item => item.id.$))
               }
               icon="clock"
+              id="prolong_btn"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>
