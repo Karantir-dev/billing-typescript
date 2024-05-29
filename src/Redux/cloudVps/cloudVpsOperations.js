@@ -960,7 +960,7 @@ const getMetrics =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        setData(data.doc.measures)
+        setData(data.doc.measures || [])
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {

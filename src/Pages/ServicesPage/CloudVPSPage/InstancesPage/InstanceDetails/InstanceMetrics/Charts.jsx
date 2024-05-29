@@ -69,6 +69,10 @@ export const Charts = ({ data, chartType, chartPeriod }) => {
 
   const timeOptions = ['en-US', TIME_FORMAT[chartPeriod <= 24 ? 'hours' : 'days']]
 
+  if (!data.length) {
+    return <p className={s.metrics_chart_empty}>{t('metrics_chart_empty')}</p>
+  }
+
   return (
     <div className={s.metrics_charts}>
       {CHARTS[chartType].map((chart, i) => (

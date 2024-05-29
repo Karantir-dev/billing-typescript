@@ -185,5 +185,6 @@
       "network_metrics": "Сетевые метрики",
       "cpu_metrics": "CPU метрики"
     }
-  }
+  },
+  "metrics_chart_empty": "Нет данных для построения графика"
 }
