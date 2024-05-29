@@ -4,7 +4,7 @@ import { Tooltip } from 'react-tooltip'
 import { useSelector } from 'react-redux'
 import { selectors } from '@redux'
 import cn from 'classnames'
-import s from '../HintWrapper/HintWrapper.module.scss'
+import s from './TooltipWrapper.module.scss'
 
 export default function TooltipWrapper({
   id,
@@ -12,7 +12,7 @@ export default function TooltipWrapper({
   hintDelay, // old version of HintWrapper props
   children,
   className,
-  wrapperClassName, // to support old components styles
+  wrapperClassName, // className wrapper is used in rare cases
   delayShow = 500,
   place = 'top',
   effect = 'solid',
@@ -38,7 +38,13 @@ export default function TooltipWrapper({
           {children}
           <Tooltip
             anchorSelect={`#${id}`}
-            className={cn(s.hint, className)}
+            className={cn(
+              s.hint,
+              {
+                [s.default_theme]: !variant,
+              },
+              className,
+            )}
             content={content}
             place={place}
             effect={effect}
