@@ -1,0 +1,65 @@
+.rSelect {
+  position: relative;
+  z-index: 5;
+  .rSelect__control {
+    width: 100%;
+    position: relative;
+    height: 50px;
+    box-shadow: var(--forms2_shadow);
+    background-color: var(--forms_bgc_2);
+    border: none;
+  }
+
+  .rSelect__label {
+    display: block;
+    font-size: 14px;
+    line-height: 1.2;
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+
+  .rSelect__indicator {
+    color: var(--main-text);
+  }
+
+  .rSelect__indicator-separator {
+    display: none;
+  }
+
+  .rSelect__menu {
+    box-shadow: var(--burger-menu-elem-box-shadow);
+    background-color: var(--forms_bgc_2);
+    border-radius: 3px;
+  }
+  .rSelect__single-value,
+  .rSelect__input-container {
+    color: var(--main-text);
+  }
+
+  .rSelect__option,
+  .rSelect__single-value {
+    font-size: 18px;
+  }
+
+  .rSelect__option--is-focused {
+    &,
+    &:active {
+      background-color: var(--select_option_bgc);
+    }
+  }
+  .rSelect__option--is-selected {
+    &,
+    &:active {
+      background-color: var(--accent-color-light);
+    }
+  }
+
+  .rSelect__control--menu-is-open {
+    .rSelect__single-value {
+      display: none;
+    }
+    .rSelect__dropdown-indicator {
+      transform: rotate(180deg);
+    }
+  }
+}
