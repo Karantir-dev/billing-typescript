@@ -159,7 +159,7 @@ export default function CloudInstanceItemPage() {
               <TooltipWrapper
                 className={s.popup}
                 content={item.instances_os.$}
-                id={`instance_os_${item?.id?.$}`}
+                anchor={`instance_os_${item?.id?.$}`}
               >
                 <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
               </TooltipWrapper>
@@ -175,7 +175,7 @@ export default function CloudInstanceItemPage() {
             <TooltipWrapper
               className={s.popup}
               label={hintMessage}
-              id={`instance_status_${item?.id?.$}`}
+              anchor={`instance_status_${item?.id?.$}`}
             >
               <span
                 className={cn(

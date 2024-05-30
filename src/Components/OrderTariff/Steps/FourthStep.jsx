@@ -534,7 +534,7 @@ export default function FourthStep({
                                       })}
                                       wrapperClassName={cn(s.infoBtnCard)}
                                       place="bottom"
-                                      id={'cart_bank_cards'}
+                                      anchor={'cart_bank_cards'}
                                     >
                                       <Icon name="Info" />
                                     </TooltipWrapper>

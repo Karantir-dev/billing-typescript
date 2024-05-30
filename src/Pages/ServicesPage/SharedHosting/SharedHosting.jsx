@@ -441,7 +441,7 @@ export default function Component({ type }) {
           })}
         >
           <div className={s.buttons_wrapper}>
-            <TooltipWrapper content={t('delete', { ns: 'other' })} id="delete_btn">
+            <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="delete_btn">
               <IconButton
                 className={s.tools_icon}
                 onClick={() =>
@@ -456,7 +456,7 @@ export default function Component({ type }) {
                 icon="delete"
               />
             </TooltipWrapper>
-            <TooltipWrapper content={t('prolong', { ns: 'vds' })} id="prolong_btn">
+            <TooltipWrapper content={t('prolong', { ns: 'vds' })} anchor="prolong_btn">
               <IconButton
                 className={s.tools_icon}
                 disabled={

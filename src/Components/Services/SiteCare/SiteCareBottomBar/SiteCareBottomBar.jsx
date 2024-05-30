@@ -36,7 +36,7 @@ export default function VDS(props) {
     <div className={cn(s.tools_footer, { [s.isopen]: selctedItem?.length !== 0 })}>
       {selctedItem?.length !== 0 && (
         <div className={s.buttons_wrapper}>
-          <TooltipWrapper content={t('delete', { ns: 'other' })} id="siteCare_delete">
+          <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="siteCare_delete">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -52,7 +52,7 @@ export default function VDS(props) {
             />
           </TooltipWrapper>
 
-          <TooltipWrapper content={t('prolong', { ns: 'vds' })} id="siteCare_prolong">
+          <TooltipWrapper content={t('prolong', { ns: 'vds' })} anchor="siteCare_prolong">
             <IconButton
               className={s.tools_icon}
               disabled={

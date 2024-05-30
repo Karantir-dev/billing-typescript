@@ -160,7 +160,7 @@ export default function DedicMobileItem({
         disabled={server?.domain?.$.length < 15}
         content={server?.domain?.$}
         wrapperClassName={cn(s.hint)}
-        id="mob_server_name"
+        anchor="mob_server_name"
       >
         <span className={cn(s.value, s.hide_lont_text)}>{server?.domain?.$}</span>
       </TooltipWrapper>

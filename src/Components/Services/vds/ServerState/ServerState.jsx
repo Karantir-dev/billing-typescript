@@ -46,7 +46,7 @@ export default function ServerState({ className, server }) {
 
     return (
       status && (
-        <TooltipWrapper content={t(status?.content)} id={status?.id}>
+        <TooltipWrapper content={t(status?.content)} anchor={status?.id}>
           <Icon name={status?.icon} className={status?.className} />
         </TooltipWrapper>
       )
@@ -56,12 +56,12 @@ export default function ServerState({ className, server }) {
   return (
     <span className={cn(s.wrapper, className)}>
       {server?.item_status?.$orig === '1' && (
-        <TooltipWrapper content={t('ordered')} id="status_ordered">
+        <TooltipWrapper content={t('ordered')} anchor="status_ordered">
           <Icon name="CheckCircle" className={s.check_icon} />
         </TooltipWrapper>
       )}
       {server?.item_status?.$orig === '2' && (
-        <TooltipWrapper content={t('active')} id="status_active">
+        <TooltipWrapper content={t('active')} anchor="status_active">
           <Icon name="On_Off" className={s.green_icon} />
         </TooltipWrapper>
       )}
@@ -69,14 +69,14 @@ export default function ServerState({ className, server }) {
       {renderStatusIcon(server?.item_status?.$orig)}
 
       {server?.autoprolong?.$ && (
-        <TooltipWrapper content={t('auto_prolong')} id="autoprolong">
+        <TooltipWrapper content={t('auto_prolong')} anchor="autoprolong">
           <Icon name="Clock" className={s.green_icon} />
         </TooltipWrapper>
       )}
       {server?.scheduledclose?.$ === 'on' && (
         <TooltipWrapper
           content={`${t('scheduled_deletion')}${server?.scheduledclose_prop?.$}`}
-          id="scheduledclose"
+          anchor="scheduledclose"
         >
           <Icon name="InProgress" className={s.delProgress} />
         </TooltipWrapper>

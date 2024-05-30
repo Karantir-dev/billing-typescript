@@ -363,7 +363,7 @@ export default function VDS({ isDedic }) {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <TooltipWrapper content={t('delete', { ns: 'other' })} id="delete-btn">
+          <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="delete-btn">
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -378,7 +378,7 @@ export default function VDS({ isDedic }) {
               icon="delete"
             />
           </TooltipWrapper>
-          <TooltipWrapper content={t('password_change')} id="passChange_btn">
+          <TooltipWrapper content={t('password_change')} anchor="passChange_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -392,7 +392,7 @@ export default function VDS({ isDedic }) {
             />
           </TooltipWrapper>
 
-          <TooltipWrapper content={t('reload')} id="reload_btn">
+          <TooltipWrapper content={t('reload')} anchor="reload_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -404,7 +404,7 @@ export default function VDS({ isDedic }) {
             />
           </TooltipWrapper>
 
-          <TooltipWrapper content={t('prolong')} id="prolong_btn">
+          <TooltipWrapper content={t('prolong')} anchor="prolong_btn">
             <IconButton
               className={s.tools_icon}
               disabled={

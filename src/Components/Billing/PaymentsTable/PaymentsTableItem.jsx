@@ -207,7 +207,7 @@ export default function Component(props) {
         <TooltipWrapper
           disabled={t(paymethod).length < 10}
           content={t(paymethod)}
-          id={`payment${id}`}
+          anchor={`payment${id}`}
         >
           <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
         </TooltipWrapper>

@@ -474,7 +474,7 @@ export default function ModalCreatePayment() {
                                 content={t(method?.name.$, { ns: 'other' })}
                                 wrapperClassName={cn(s.infoBtnCard)}
                                 place="bottom"
-                                id={'bank_cards'}
+                                anchor={'bank_cards'}
                               >
                                 <Icon name="Info" />
                               </TooltipWrapper>

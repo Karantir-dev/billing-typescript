@@ -89,7 +89,7 @@ export default function DedicIPpage() {
                 wrapperClassName={s.hint_wrapper}
                 className={s.popup_text}
                 content={t('limit_ip', { ns: 'dedicated_servers' })}
-                id="limit_ip"
+                anchor="limit_ip"
               >
                 <Icon
                   name="Attention"
@@ -105,7 +105,7 @@ export default function DedicIPpage() {
           {widerThan1550 && (
             <div className={s.icons_wrapper}>
               <div className={s.icon_wrapper}>
-                <TooltipWrapper content={t('edit', { ns: 'other' })} id="edit_btn">
+                <TooltipWrapper content={t('edit', { ns: 'other' })} anchor="edit_btn">
                   <IconButton
                     className={s.tools_icon}
                     onClick={() => setElidForEditModal(activeIP?.id?.$)}
@@ -114,7 +114,7 @@ export default function DedicIPpage() {
                   />
                 </TooltipWrapper>
               </div>
-              <TooltipWrapper content={t('delete', { ns: 'other' })} id="delete_btn">
+              <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="delete_btn">
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForDeleteModal(activeIP?.id?.$)}

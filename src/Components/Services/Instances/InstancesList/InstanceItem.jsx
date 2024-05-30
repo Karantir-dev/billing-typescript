@@ -79,7 +79,7 @@ export default function InstanceItem({ item, editInstance }) {
               className={s.popup}
               wrapperClassName={s.popup__wrapper}
               content={hintMessage}
-              id={`status_${item?.id?.$}`}
+              anchor={`status_${item?.id?.$}`}
             >
               <span
                 className={cn(
@@ -119,7 +119,7 @@ export default function InstanceItem({ item, editInstance }) {
             className={s.popup}
             wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
             content={t(itemCountry, { ns: 'countries' })}
-            id={`country_flag_${item?.id?.$}`}
+            anchor={`country_flag_${item?.id?.$}`}
           >
             <img
               src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -138,11 +138,9 @@ export default function InstanceItem({ item, editInstance }) {
           className={s.popup}
           wrapperClassName={s.popup__wrapper}
           content={item.instances_os.$}
-          id={`instances_os_${item?.id?.$}`}
+          anchor={`instances_os_${item?.id?.$}`}
         >
-          <Icon
-            name={item.instances_os.$.split(/[\s-]+/)[0]}
-          />
+          <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
         </TooltipWrapper>
       </td>
       <td className={s.td}>

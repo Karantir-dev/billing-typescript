@@ -7,7 +7,7 @@ import cn from 'classnames'
 import s from './TooltipWrapper.module.scss'
 
 export default function TooltipWrapper({
-  id,
+  anchor,
   content,
   hintDelay, // old version of HintWrapper props
   children,
@@ -34,10 +34,10 @@ export default function TooltipWrapper({
       {disabled ? (
         children
       ) : (
-        <div className={wrapperClassName} id={id}>
+        <div className={wrapperClassName} id={anchor}>
           {children}
           <Tooltip
-            anchorSelect={`#${id}`}
+            anchorSelect={`#${anchor}`}
             className={cn(
               s.hint,
               {
@@ -60,7 +60,7 @@ export default function TooltipWrapper({
 }
 
 TooltipWrapper.propTypes = {
-  id: PropTypes.string.isRequired /* The selector for the anchor elements. */,
+  anchor: PropTypes.string.isRequired /* The selector for the anchor elements. */,
   label:
     PropTypes.string /* label is not required if content is provided. It's the same */,
   content: PropTypes.string /* Content to be displayed in tooltip */,

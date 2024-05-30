@@ -226,7 +226,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
               className={s.hint_wrapper}
               content={t('resize_explanation')}
               hintDelay={100}
-              id={'resize_explanation'}
+              anchor={'resize_explanation'}
             >
               <Icon name="Info" />
             </TooltipWrapper>

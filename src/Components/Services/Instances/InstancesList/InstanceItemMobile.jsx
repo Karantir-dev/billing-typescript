@@ -47,7 +47,7 @@ export default function InstanceItemMobile({ item }) {
                 popupClassName={s.popup}
                 wrapperClassName={s.popup__wrapper}
                 label={hintMessage}
-                id={`status_${item?.id?.$}`}
+                anchor={`status_${item?.id?.$}`}
               >
                 <p
                   className={cn(

@@ -103,7 +103,7 @@ export default function Component() {
                 disabled={realbalance < 1}
               />
             ) : (
-              <TooltipWrapper content={t('THANK YOU')} id="thank_you_btn">
+              <TooltipWrapper content={t('THANK YOU')} anchor="thank_you_btn">
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setTipsModa(true)}
@@ -113,7 +113,7 @@ export default function Component() {
               </TooltipWrapper>
             )}
 
-            <TooltipWrapper content={t('Refresh')} id="reload_btn">
+            <TooltipWrapper content={t('Refresh')} anchor="reload_btn">
               <IconButton
                 className={s.tools_icon}
                 onClick={getTicketHandler}
