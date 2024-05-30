@@ -252,3 +252,14 @@ Below ID and names of all services
 
 export const PREMIUM_TYPE = 'premium'
 export const BASIC_TYPE = 'basic'
+
+export const METRICS_TYPE_OPTIONS = [
+  { label: 'network_metrics', value: 'interface_traffic' },
+  { label: 'cpu_metrics', value: 'cpu_util' },
+]
+export const METRICS_PERIOD_OPTIONS = [
+  { label: '1h', value: '1' },
+  { label: '24h', value: '24' },
+  { label: '168h', value: '168' },
+  { label: '720h', value: '720' },
+]

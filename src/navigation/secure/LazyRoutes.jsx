@@ -107,7 +107,7 @@ const InstanceDetailsOverview = lazy(() =>
 )
 const InstanceMetrics = lazy(() =>
   import(
-    /* webpackChunkName: "InstanceMetrics" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceMetrics'
+    /* webpackChunkName: "InstanceMetrics" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceMetrics/InstanceMetrics'
   ),
 )
 const InstanceNetworkTraffic = lazy(() =>

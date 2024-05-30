@@ -163,5 +163,28 @@
   "incoming": "Входящий",
   "outgoing": "Исходящий",
   "total": "Общий",
-  "info": "Информация"
+  "info": "Информация",
+  "select_metrics": "Выберите тип метрик",
+  "metrics": {
+    "interface_traffic": {
+      "$packets_in": "Входящие пакеты",
+      "$packets_out": "Исходящие пакеты",
+      "$bytes_in": "Входящие байты",
+      "$bytes_out": "Исходящие байты"
+    },
+    "cpu_util": {
+      "$value": "CPU"
+    },
+    "period": {
+      "1h": "Последний час",
+      "24h": "24 часа",
+      "168h": "7 дней",
+      "720h": "30 дней"
+    },
+    "type": {
+      "network_metrics": "Сетевые метрики",
+      "cpu_metrics": "CPU метрики"
+    }
+  },
+  "metrics_chart_empty": "Нет данных для построения графика"
 }

@@ -163,5 +163,28 @@
   "incoming": "Вхідний",
   "outgoing": "Вихідний",
   "total": "Загальний",
-  "info": "Інформація"
+  "info": "Інформація",
+  "select_metrics": "Виберіть тип метрик",
+  "metrics": {
+    "interface_traffic": {
+      "$packets_in": "Вхідні пакети",
+      "$packets_out": "Вихідні пакети",
+      "$bytes_in": "Вхідні байти",
+      "$bytes_out": "Вихідні байти"
+    },
+    "cpu_util": {
+      "$value": "CPU"
+    },
+    "period": {
+      "1h": "Остання година",
+      "24h": "24 години",
+      "168h": "7 днів",
+      "720h": "30 днів"
+    },
+    "type": {
+      "network_metrics": "Мережеві метрики",
+      "cpu_metrics": "CPU метрики"
+    }
+  },
+  "metrics_chart_empty": "Відсутні данні для побудови графіку"
 }
