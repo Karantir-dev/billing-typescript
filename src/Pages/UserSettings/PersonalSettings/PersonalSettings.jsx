@@ -300,7 +300,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                       className={s.descriptionBlock}
                       place="bottom"
                     >
-                      <Icon name="Info" id="verefied_phone" />
+                      <Icon name="Info" />
                     </TooltipWrapper>
                   </div>
                 </div>
@@ -380,7 +380,6 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                           }}
                           disabled={isConfirmEmailBtnRender}
                           type="switcher"
-                          id={'sendemail'}
                         />
                       </TooltipWrapper>
                     </div>
@@ -396,7 +395,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                           content={t('geo_ip_info')}
                           id={'geo_ip_info'}
                         >
-                          <Icon name="Info" id={'geo_ip_info'} />
+                          <Icon name="Info" />
                         </TooltipWrapper>
                       </div>
 
@@ -413,7 +412,6 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                           }}
                           disabled={isConfirmEmailBtnRender}
                           type="switcher"
-                          id={'setgeoip'}
                         />
                       </TooltipWrapper>
                     </div>

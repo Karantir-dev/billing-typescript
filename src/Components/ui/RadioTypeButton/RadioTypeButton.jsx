@@ -29,7 +29,7 @@ export default function RadioTypeButton({
               id="price_info"
             >
               <button type="button" onClick={toggleCaption}>
-                <Icon name="Info" id="price_info" />
+                <Icon name="Info" />
               </button>
             </TooltipWrapper>
           )}

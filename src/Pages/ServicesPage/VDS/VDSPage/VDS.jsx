@@ -376,7 +376,6 @@ export default function VDS({ isDedic }) {
                 ) || !rights?.delete
               }
               icon="delete"
-              id="delete-btn"
             />
           </TooltipWrapper>
           <TooltipWrapper content={t('password_change')} id="passChange_btn">
@@ -390,7 +389,6 @@ export default function VDS({ isDedic }) {
                 setIdForPassChange(activeServices.map(server => server.id.$))
               }
               icon="passChange"
-              id="passChange_btn"
             />
           </TooltipWrapper>
 
@@ -403,7 +401,6 @@ export default function VDS({ isDedic }) {
               }
               onClick={() => setIdForReboot(activeServices.map(server => server.id.$))}
               icon="reload"
-              id="reload_btn"
             />
           </TooltipWrapper>
 
@@ -420,7 +417,6 @@ export default function VDS({ isDedic }) {
               }
               onClick={() => setIdForProlong(activeServices.map(server => server.id.$))}
               icon="clock"
-              id="prolong_btn"
             />
           </TooltipWrapper>
         </div>

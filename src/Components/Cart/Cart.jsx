@@ -1205,7 +1205,7 @@ export default function Component() {
                                         place="bottom"
                                         id={'cart_bank_cards'}
                                       >
-                                        <Icon name="Info" id={'cart_bank_cards'} />
+                                        <Icon name="Info" />
                                       </TooltipWrapper>
                                     )}
                                   </button>

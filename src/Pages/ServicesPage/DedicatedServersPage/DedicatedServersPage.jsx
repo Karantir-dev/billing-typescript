@@ -371,7 +371,6 @@ export default function DedicatedServersPage() {
                 ) || !rights?.delete
               }
               icon="delete"
-              id="delete_btn"
             />
           </TooltipWrapper>
           <TooltipWrapper content={t('reload')} id="reload_btn">
@@ -385,7 +384,6 @@ export default function DedicatedServersPage() {
                 setElidForRebootModal(activeServices?.map(item => item.id.$))
               }
               icon="reload"
-              id="reload_btn"
             />
           </TooltipWrapper>
 
@@ -404,7 +402,6 @@ export default function DedicatedServersPage() {
                 setElidForProlongModal(activeServices?.map(item => item.id.$))
               }
               icon="clock"
-              id="prolong_btn"
             />
           </TooltipWrapper>
         </div>

@@ -172,7 +172,7 @@ export default function VDSItem({
               wrapperClassName={cn(s.hint)}
               id="server_name"
             >
-              <span id="server_name">{server?.domain?.$}</span>
+              <span>{server?.domain?.$}</span>
             </TooltipWrapper>
           ) : null}
         </span>

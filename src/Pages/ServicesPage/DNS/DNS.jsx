@@ -271,7 +271,6 @@ export default function DNS() {
                 })
               }}
               disabled={isNoAvailableTariff || !rights?.new}
-              id="order_dns_btn"
             />
           </TooltipWrapper>
           <div className={s.tools_container}>
@@ -370,7 +369,6 @@ export default function DNS() {
                 setElidForProlongModal(activeServices?.map(item => item.id.$))
               }
               icon="clock"
-              id="prolong_btn"
             />
           </TooltipWrapper>
         </div>

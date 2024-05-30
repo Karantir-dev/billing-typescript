@@ -172,7 +172,6 @@ export default function Component(props) {
               })
             }
             icon="transfer"
-            id="transfet_btn"
           />
         </TooltipWrapper>
       </div>

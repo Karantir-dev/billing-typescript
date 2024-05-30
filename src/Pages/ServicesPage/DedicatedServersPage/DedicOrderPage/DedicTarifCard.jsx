@@ -92,7 +92,7 @@ export default function DedicTarifCard({
                     content={t('dedic_activation_info')}
                     id={`tariff_${itemInfo?.service_id}`}
                   >
-                    <Icon name="Info" id={`tariff_${itemInfo?.service_id}`} />
+                    <Icon name="Info" />
                   </TooltipWrapper>
                 )}
               </span>

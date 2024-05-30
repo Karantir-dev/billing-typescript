@@ -59,7 +59,6 @@ export default function InstanceItemMobile({ item }) {
                           item?.item_status?.$.trim().toLowerCase()
                     ],
                   )}
-                  id={`status_${item?.id?.$}`}
                 >
                   {displayStatus}
                   <Icon name="Attention" />

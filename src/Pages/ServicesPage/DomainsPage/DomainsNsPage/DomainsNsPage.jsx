@@ -170,7 +170,7 @@ export default function Component({ transfer = false }) {
             content={t('Instruction NS')}
             id="ns_instruction"
           >
-            <Icon name="HintHelp" id="ns_instruction" />
+            <Icon name="HintHelp" />
           </TooltipWrapper>
         </h1>
         {selectedDomain?.length > 1 && (

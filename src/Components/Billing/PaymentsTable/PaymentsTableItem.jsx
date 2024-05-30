@@ -209,9 +209,7 @@ export default function Component(props) {
           content={t(paymethod)}
           id={`payment${id}`}
         >
-          <div className={cn(s.item_text, s.sixth_item)} id={`payment${id}`}>
-            {t(paymethod)}
-          </div>
+          <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
         </TooltipWrapper>
       </div>
       <div className={s.tableBlockSeventh}>

@@ -536,7 +536,7 @@ export default function FourthStep({
                                       place="bottom"
                                       id={'cart_bank_cards'}
                                     >
-                                      <Icon name="Info" id={'cart_bank_cards'} />
+                                      <Icon name="Info" />
                                     </TooltipWrapper>
                                   )}
                                 </button>

@@ -162,9 +162,7 @@ export default function DedicMobileItem({
         wrapperClassName={cn(s.hint)}
         id="mob_server_name"
       >
-        <span className={cn(s.value, s.hide_lont_text)} id="mob_server_name">
-          {server?.domain?.$}
-        </span>
+        <span className={cn(s.value, s.hide_lont_text)}>{server?.domain?.$}</span>
       </TooltipWrapper>
       <span className={s.label}>{t('ip_address')}:</span>
       <span className={s.value}>{server?.ip?.$}</span>

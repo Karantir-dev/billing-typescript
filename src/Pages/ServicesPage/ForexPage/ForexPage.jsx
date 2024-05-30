@@ -372,7 +372,6 @@ export default function ForexPage() {
                 ) || !rights?.delete
               }
               icon="delete"
-              id="delete_btn"
             />
           </TooltipWrapper>
 
@@ -390,7 +389,6 @@ export default function ForexPage() {
                 setElidForProlongModal(activeServices?.map(item => item.id.$))
               }
               icon="clock"
-              id="prolong_btn"
             />
           </TooltipWrapper>
         </div>

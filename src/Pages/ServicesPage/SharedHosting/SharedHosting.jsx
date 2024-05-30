@@ -454,7 +454,6 @@ export default function Component({ type }) {
                   ) || !rights?.delete
                 }
                 icon="delete"
-                id="delete_btn"
               />
             </TooltipWrapper>
             <TooltipWrapper content={t('prolong', { ns: 'vds' })} id="prolong_btn">
@@ -472,7 +471,6 @@ export default function Component({ type }) {
                   prolongVhostHandler()
                 }}
                 icon="clock"
-                id="prolong_btn"
               />
             </TooltipWrapper>
           </div>

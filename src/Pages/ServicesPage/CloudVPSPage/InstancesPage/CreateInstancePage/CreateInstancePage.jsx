@@ -574,7 +574,6 @@ export default function CreateInstancePage() {
                             <button
                               type="button"
                               onClick={() => toggleCaptionHandler('ip')}
-                              id="hint_ip_description"
                             >
                               <Icon name="Info" />
                             </button>
@@ -722,7 +721,7 @@ export default function CreateInstancePage() {
                               content={t('exlude_vat_hint')}
                               id="exlude_vat_hint"
                             >
-                              <Icon name="Info" id="exlude_vat_hint" />
+                              <Icon name="Info" />
                             </TooltipWrapper>
                           </div>
                         </div>

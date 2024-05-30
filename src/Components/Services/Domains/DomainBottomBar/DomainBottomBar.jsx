@@ -48,7 +48,6 @@ export default function VDS(props) {
               disabled={selctedItem?.length === 0 || !rights?.edit}
               onClick={() => editDomainHandler()}
               icon="edit"
-              id="edit_btn"
             />
           </TooltipWrapper>
 
@@ -62,7 +61,6 @@ export default function VDS(props) {
               }
               onClick={() => renewDomainHandler()}
               icon="clock"
-              id="prolong_btn"
             />
           </TooltipWrapper>
 
@@ -74,7 +72,6 @@ export default function VDS(props) {
               }
               onClick={() => NSDomainHandler()}
               icon="server-cloud"
-              id="ns_settings"
             />
           </TooltipWrapper>
         </div>

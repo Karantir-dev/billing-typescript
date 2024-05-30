@@ -109,7 +109,6 @@ export default function Component() {
                   onClick={() => setTipsModa(true)}
                   icon="euro"
                   disabled={realbalance < 1}
-                  id="thank_you_btn"
                 />
               </TooltipWrapper>
             )}
@@ -119,7 +118,6 @@ export default function Component() {
                 className={s.tools_icon}
                 onClick={getTicketHandler}
                 icon="reload"
-                id="reload_btn"
               />
             </TooltipWrapper>
           </div>

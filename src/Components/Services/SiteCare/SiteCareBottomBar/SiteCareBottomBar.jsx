@@ -49,7 +49,6 @@ export default function VDS(props) {
                 deleteSiteCare()
               }}
               icon="delete"
-              id="siteCare_delete"
             />
           </TooltipWrapper>
 
@@ -63,7 +62,6 @@ export default function VDS(props) {
               }
               onClick={() => renewDomainHandler()}
               icon="clock"
-              id="siteCare_prolong"
             />
           </TooltipWrapper>
         </div>

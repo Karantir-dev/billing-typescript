@@ -228,7 +228,7 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
               hintDelay={100}
               id={'resize_explanation'}
             >
-              <Icon name="Info" id={'resize_explanation'} />
+              <Icon name="Info" />
             </TooltipWrapper>
           </div>
           <p className={s.price}>€{price}</p>

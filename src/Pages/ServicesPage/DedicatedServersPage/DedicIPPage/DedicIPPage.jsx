@@ -95,7 +95,6 @@ export default function DedicIPpage() {
                   name="Attention"
                   isHovered={hovered}
                   className={cn({ [s.attention_icon]: true, [s.hovered]: hovered })}
-                  id="limit_ip"
                 />
               </TooltipWrapper>
             </div>
@@ -112,7 +111,6 @@ export default function DedicIPpage() {
                     onClick={() => setElidForEditModal(activeIP?.id?.$)}
                     disabled={!activeIP || !rights?.edit}
                     icon="edit"
-                    id="edit_btn"
                   />
                 </TooltipWrapper>
               </div>
@@ -124,7 +122,6 @@ export default function DedicIPpage() {
                     activeIP?.no_delete?.$ === 'on' || !activeIP || !rights?.delete
                   }
                   icon="delete"
-                  id="delete_btn"
                 />
               </TooltipWrapper>
             </div>

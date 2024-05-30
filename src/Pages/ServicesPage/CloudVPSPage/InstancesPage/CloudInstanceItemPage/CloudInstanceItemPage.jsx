@@ -161,10 +161,7 @@ export default function CloudInstanceItemPage() {
                 content={item.instances_os.$}
                 id={`instance_os_${item?.id?.$}`}
               >
-                <Icon
-                  name={item.instances_os.$.split(/[\s-]+/)[0]}
-                  id={`instance_os_${item?.id?.$}`}
-                />
+                <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
               </TooltipWrapper>
             </div>
             <InstancesOptions
@@ -188,7 +185,6 @@ export default function CloudInstanceItemPage() {
                       item?.item_status?.$.trim().toLowerCase()
                   ],
                 )}
-                id={`instance_status_${item?.id?.$}`}
               >
                 {displayStatus}
                 <Icon name="Attention" />

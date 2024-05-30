@@ -89,7 +89,6 @@ export default function InstanceItem({ item, editInstance }) {
                       item?.item_status?.$.trim().toLowerCase()
                   ],
                 )}
-                id={`status_${item?.id?.$}`}
               >
                 {displayStatus}
                 <Icon name="Attention" />
@@ -129,7 +128,6 @@ export default function InstanceItem({ item, editInstance }) {
               width={20}
               height={14}
               alt={itemCountry}
-              id={`country_flag_${item?.id?.$}`}
             />
           </TooltipWrapper>
         )}
@@ -144,7 +142,6 @@ export default function InstanceItem({ item, editInstance }) {
         >
           <Icon
             name={item.instances_os.$.split(/[\s-]+/)[0]}
-            id={`instances_os_${item?.id?.$}`}
           />
         </TooltipWrapper>
       </td>

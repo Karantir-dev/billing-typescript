@@ -359,7 +359,6 @@ export default function FTP() {
                 ) || !rights?.delete
               }
               icon="delete"
-              id="delete_btn"
             />
           </TooltipWrapper>
           <TooltipWrapper content={t('prolong')} id="prolong_btn">
@@ -376,7 +375,6 @@ export default function FTP() {
                 setElidForProlongModal(activeServices?.map(item => item.id.$))
               }
               icon="clock"
-              id="prolong_btn"
             />
           </TooltipWrapper>
         </div>

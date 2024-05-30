@@ -12,7 +12,6 @@ import {
   Modal,
   Icon,
   CustomPhoneInput,
-  // HintWrapper,
   TooltipWrapper,
   PayersList,
 } from '@components'
@@ -477,7 +476,7 @@ export default function ModalCreatePayment() {
                                 place="bottom"
                                 id={'bank_cards'}
                               >
-                                <Icon name="Info" id={'bank_cards'} />
+                                <Icon name="Info" />
                               </TooltipWrapper>
                             )}
                           </button>
