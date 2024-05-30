@@ -30,6 +30,7 @@ export { default as CustomPhoneInput } from './ui/CustomPhoneInput/CustomPhoneIn
 export { default as LoginBtnBlock } from './ui/LoginBtnBlock/LoginBtnBlock'
 
 export { default as Select } from './ui/Select/Select'
+export { default as RSelect } from './ui/ReactSelect/ReactSelect'
 export { default as SelectMultiple } from './ui/SelectMultiple/SelectMultiple'
 export { default as SelectGeo } from './ui/SelectGeo/SelectGeo'
 
