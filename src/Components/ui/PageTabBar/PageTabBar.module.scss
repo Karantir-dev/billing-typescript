@@ -23,6 +23,7 @@
   overflow-y: hidden;
   padding-right: 30px;
   padding-left: 30px;
+  scrollbar-color: transparent transparent;
   &::-webkit-scrollbar {
     display: none;
   }
