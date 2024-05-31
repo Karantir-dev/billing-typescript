@@ -213,7 +213,6 @@ export { default as SiteCareItem } from './Cart/SiteCareItem/SiteCareItem'
 export { default as VpnItem } from './Cart/VpnItem/VpnItem'
 
 export { default as EmailTrigger } from './EmailTrigger/EmailTrigger'
-export { default as UpdateService } from './UpdateService/UpdateService'
 export { default as MainEmailConfirmation } from './MainEmailConfirmation/MainEmailConfirmation'
 export { default as InputWithAutocomplete } from './ui/InputWithAutocomplete/InputWithAutocomplete'
 export { default as ScrollToFieldError } from './ui/ScrollToFieldError'
