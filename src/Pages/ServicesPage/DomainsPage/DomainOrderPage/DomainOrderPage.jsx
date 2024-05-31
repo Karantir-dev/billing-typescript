@@ -190,6 +190,7 @@ export default function Component({ transfer = false }) {
       const newString = el?.replace('select_domain_', '')
 
       selected_domain?.push(newString)
+
       checkedDomain?.forEach(checked => {
         const check = checked.substring(0, checked.length - 1) + '1'
 
@@ -205,11 +206,17 @@ export default function Component({ transfer = false }) {
       return domainName
     })
 
+    // Function to check if a domain is in the list of selected domains
+    const isSelectedDomain = domain => {
+      const domainPattern = domain?.replace('____________', '.')?.split(':')?.[0]
+      return selected_domain_real_name.includes(domainPattern)
+    }
+
     const data = {
       domain_name: pickUpDomains?.domain_name,
       'zoom-domain_name': pickUpDomains?.domain_name,
-      checked_domain: newCheckedDomains?.join(', '),
-      selected_domain: selected_domain?.join(', '),
+      checked_domain: newCheckedDomains?.filter(isSelectedDomain)?.join(', '),
+      selected_domain: selected_domain?.filter(isSelectedDomain)?.join(', '),
       selected_domain_real_name: selected_domain_real_name?.join(', '),
     }
 
