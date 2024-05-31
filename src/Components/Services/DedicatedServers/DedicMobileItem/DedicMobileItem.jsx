@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 import s from './DedicMobileItem.module.scss'
-import { CheckBox, EditCell, ServerState, Options } from '@components'
+import { CheckBox, EditCell, ServerState, Options, TooltipWrapper } from '@components'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { dedicOperations } from '@redux'
@@ -156,7 +156,14 @@ export default function DedicMobileItem({
       <span className={s.label}>Id:</span>
       <span className={s.value}>{server?.id?.$}</span>
       <span className={s.label}>{t('domain_name')}:</span>
-      <span className={s.value}>{server?.domain?.$}</span>
+      <TooltipWrapper
+        disabled={server?.domain?.$.length < 15}
+        content={server?.domain?.$}
+        wrapperClassName={cn(s.hint)}
+        anchor="mob_server_name"
+      >
+        <span className={cn(s.value, s.hide_lont_text)}>{server?.domain?.$}</span>
+      </TooltipWrapper>
       <span className={s.label}>{t('ip_address')}:</span>
       <span className={s.value}>{server?.ip?.$}</span>
       <span className={s.label}>{t('ostempl')}:</span>

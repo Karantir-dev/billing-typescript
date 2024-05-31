@@ -12,7 +12,7 @@ import {
   FixedFooter,
   ScrollToFieldError,
   WarningMessage,
-  HintWrapper,
+  TooltipWrapper,
   Icon,
   Error,
   OsList,
@@ -565,10 +565,11 @@ export default function CreateInstancePage() {
                               -1€/{t('short_month', { ns: 'other' })}
                             </span>
                           </label>
-                          <HintWrapper
-                            label={t('hint_description.ip')}
-                            popupClassName={s.hintPopup}
+                          <TooltipWrapper
+                            content={t('hint_description.ip')}
+                            className={s.hintPopup}
                             disabled={!widerThan1550}
+                            anchor="hint_ip_description"
                           >
                             <button
                               type="button"
@@ -576,7 +577,7 @@ export default function CreateInstancePage() {
                             >
                               <Icon name="Info" />
                             </button>
-                          </HintWrapper>
+                          </TooltipWrapper>
                         </div>
 
                         <RadioTypeButton
@@ -714,13 +715,14 @@ export default function CreateInstancePage() {
                           <div className={s.exlude_vat}>
                             <span className="asterisk">*</span>
                             {t('excluding_vat')}
-                            <HintWrapper
+                            <TooltipWrapper
                               wrapperClassName={s.exlude_vat_hint}
-                              popupClassName={s.exlude_vat_hint_popup}
-                              label={t('exlude_vat_hint')}
+                              className={s.exlude_vat_hint_popup}
+                              content={t('exlude_vat_hint')}
+                              anchor="exlude_vat_hint"
                             >
                               <Icon name="Info" />
-                            </HintWrapper>
+                            </TooltipWrapper>
                           </div>
                         </div>
 

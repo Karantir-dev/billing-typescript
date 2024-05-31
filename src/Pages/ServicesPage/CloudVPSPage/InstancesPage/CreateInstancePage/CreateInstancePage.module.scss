@@ -314,7 +314,7 @@
 }
 
 .hintPopup {
-  width: 400px;
+  max-width: 400px;
 }
 
 .exlude_vat {
@@ -329,7 +329,7 @@
 }
 
 .exlude_vat_hint_popup {
-  width: 150px;
+  max-width: 150px;
   font-size: 14px;
 
   @media (max-width: 450px) {

@@ -7,7 +7,7 @@ import {
   SharedHostingHistoryModal,
   SharedHostingEditModal,
   SharedHostingChangeTariffModal,
-  HintWrapper,
+  TooltipWrapper,
   IconButton,
   ProlongModal,
   InstructionModal,
@@ -441,7 +441,7 @@ export default function Component({ type }) {
           })}
         >
           <div className={s.buttons_wrapper}>
-            <HintWrapper label={t('delete', { ns: 'other' })}>
+            <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="delete_btn">
               <IconButton
                 className={s.tools_icon}
                 onClick={() =>
@@ -455,8 +455,8 @@ export default function Component({ type }) {
                 }
                 icon="delete"
               />
-            </HintWrapper>
-            <HintWrapper label={t('prolong')}>
+            </TooltipWrapper>
+            <TooltipWrapper content={t('prolong', { ns: 'vds' })} anchor="prolong_btn">
               <IconButton
                 className={s.tools_icon}
                 disabled={
@@ -472,7 +472,7 @@ export default function Component({ type }) {
                 }}
                 icon="clock"
               />
-            </HintWrapper>
+            </TooltipWrapper>
           </div>
 
           <p className={s.services_selected}>
