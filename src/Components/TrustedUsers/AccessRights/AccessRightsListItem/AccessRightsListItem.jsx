@@ -227,8 +227,6 @@ export default function AccessRightsListItem({
 
   const nameWithoutDots = item?.name?.$?.replaceAll('.', '_')
 
-  console.log('nameWithoutDots: ', nameWithoutDots)
-
   const hasSubItems = item?.hassubitems?.$ === 'on'
 
   useEffect(() => {
