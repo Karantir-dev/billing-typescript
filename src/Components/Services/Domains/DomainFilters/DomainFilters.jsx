@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   Button,
   IconButton,
-  HintWrapper,
+  TooltipWrapper,
   Portal,
   CheckBox,
   DomainFiltertsModal,
@@ -33,7 +33,7 @@ export default function Component(props) {
     rights,
     p_cnt,
     signal,
-    setIsLoading
+    setIsLoading,
   } = props
 
   const filters = useSelector(domainsSelectors.getDomainsFilters)
@@ -84,7 +84,12 @@ export default function Component(props) {
     setSelctedItem([])
     setIsFiltered(false)
     dispatch(
-      domainsOperations.getDomainsFilters({ ...clearField, sok: 'ok', p_cnt }, true, signal, setIsLoading),
+      domainsOperations.getDomainsFilters(
+        { ...clearField, sok: 'ok', p_cnt },
+        true,
+        signal,
+        setIsLoading,
+      ),
     )
   }
 
@@ -93,7 +98,14 @@ export default function Component(props) {
     setIsFiltered(true)
     setSelctedItem([])
     setFilterModal(false)
-    dispatch(domainsOperations.getDomainsFilters({ ...values, sok: 'ok', p_cnt }, true, signal, setIsLoading))
+    dispatch(
+      domainsOperations.getDomainsFilters(
+        { ...values, sok: 'ok', p_cnt },
+        true,
+        signal,
+        setIsLoading,
+      ),
+    )
   }
 
   const isAllActive = list?.length === selctedItem?.length
@@ -146,7 +158,11 @@ export default function Component(props) {
             </div>
           )}
         </div>
-        <HintWrapper wrapperClassName={s.transferBtn} label={t('Transfer')}>
+        <TooltipWrapper
+          wrapperClassName={s.transferBtn}
+          content={t('Transfer')}
+          anchor="transfet_btn"
+        >
           <IconButton
             disabled={!rights?.transfer}
             onClick={() =>
@@ -157,7 +173,7 @@ export default function Component(props) {
             }
             icon="transfer"
           />
-        </HintWrapper>
+        </TooltipWrapper>
       </div>
       <Button
         disabled={!rights?.register}

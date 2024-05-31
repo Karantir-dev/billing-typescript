@@ -37,10 +37,6 @@
 
   &.last {
     padding-bottom: 25px;
-
-    &.border {
-      // border-bottom: 1px solid #e1daea;
-    }
   }
 }
 
@@ -136,7 +132,6 @@
   padding: 14px;
   box-shadow: var(--forms2_shadow);
   background-color: var(--forms_bgc_3);
-  position: relative;
   max-height: 50px;
   height: 50px;
 
@@ -190,17 +185,6 @@
     font-size: 15px;
     line-height: 100%;
     color: var(--transparent-color);
-  }
-}
-
-.cardHintWrapper {
-  width: 200px;
-  left: -67px;
-  word-break: normal;
-  pointer-events: none !important;
-
-  div div {
-    left: 88%;
   }
 }
 
@@ -289,15 +273,6 @@
       overflow: hidden;
       max-width: unset;
       flex-basis: unset;
-    }
-  }
-
-  .cardHintWrapper {
-    pointer-events: unset;
-    left: -50px;
-
-    div div {
-      left: 80%;
     }
   }
 

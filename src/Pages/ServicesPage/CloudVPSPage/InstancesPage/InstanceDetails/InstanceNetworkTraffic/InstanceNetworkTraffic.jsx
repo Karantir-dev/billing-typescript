@@ -3,20 +3,10 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations } from '@redux'
 import { Loader } from '@components'
-import { useCancelRequest } from '@utils'
+import { useCancelRequest, formatBytes } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 
 import s from './InstanceNetworkTraffic.module.scss'
-
-const formatBytes = bytes => {
-  if (bytes < 1024 * 1024) {
-    return `${(bytes / 1024).toFixed(2)} KB`
-  } else if (bytes < 1024 * 1024 * 1024) {
-    return `${(bytes / (1024 * 1024)).toFixed(2)} MB`
-  } else {
-    return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`
-  }
-}
 
 const TrafficCard = ({ title, startDate, endDate, incoming, outgoing, total }) => {
   const { t } = useTranslation(['cloud_vps'])

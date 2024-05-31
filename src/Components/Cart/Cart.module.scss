@@ -217,7 +217,6 @@
   padding: 14px;
   box-shadow: var(--forms_shadow_site);
   background-color: var(--forms_bgc_3);
-  position: relative;
   max-height: 50px;
   height: 50px;
   overflow: hidden;
@@ -554,16 +553,6 @@
   }
 }
 
-.cardHintWrapper {
-  width: 200px;
-  left: -67px;
-  word-break: normal;
-
-  div div {
-    left: 88%;
-  }
-}
-
 .infoBtnCard {
   &:hover {
     path {
@@ -675,14 +664,6 @@
       overflow: hidden;
       max-width: unset;
       flex-basis: unset;
-    }
-  }
-
-  .cardHintWrapper {
-    left: -50px;
-
-    div div {
-      left: 80%;
     }
   }
 

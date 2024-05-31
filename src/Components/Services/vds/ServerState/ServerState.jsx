@@ -1,65 +1,85 @@
 import cn from 'classnames'
-
 import { useTranslation } from 'react-i18next'
-import { HintWrapper, Icon } from '@components'
+import { TooltipWrapper, Icon } from '@components'
 import PropTypes from 'prop-types'
-
 import s from './ServerState.module.scss'
 
 export default function ServerState({ className, server }) {
   const { t } = useTranslation('vds')
 
+  const statusMapping = {
+    '5_open': { id: 'open_5', content: 'in_progress', icon: 'InProgress', className: '' },
+    '5_transfer': {
+      id: 'transfer_5',
+      content: 'in_progress_transfer',
+      icon: 'InProgress',
+      className: '',
+    },
+    '5_close': {
+      id: 'close_5',
+      content: 'deletion_in_progress',
+      icon: 'InProgress',
+      className: s.delProgress,
+    },
+    '3_employeesuspend': {
+      id: 'employeesuspend_3',
+      content: 'stopped_by_admin',
+      icon: 'Attention',
+      className: '',
+    },
+    '3_autosuspend': {
+      id: 'autosuspend_3',
+      content: 'stopped',
+      icon: 'Attention',
+      className: '',
+    },
+    '3_abusesuspend': {
+      id: 'abusesuspend_3',
+      content: 'Suspended due to abuse',
+      icon: 'Attention',
+      className: '',
+    },
+  }
+
+  const renderStatusIcon = statusKey => {
+    const status = statusMapping[statusKey]
+
+    return (
+      status && (
+        <TooltipWrapper content={t(status?.content)} anchor={status?.id}>
+          <Icon name={status?.icon} className={status?.className} />
+        </TooltipWrapper>
+      )
+    )
+  }
+
   return (
     <span className={cn(s.wrapper, className)}>
-      {server?.item_status?.$orig === '2' && (
-        <HintWrapper label={t('active')}>
-          <Icon name="On_Off" className={s.green_icon} />
-        </HintWrapper>
-      )}
       {server?.item_status?.$orig === '1' && (
-        <HintWrapper label={t('ordered')}>
+        <TooltipWrapper content={t('ordered')} anchor="status_ordered">
           <Icon name="CheckCircle" className={s.check_icon} />
-        </HintWrapper>
+        </TooltipWrapper>
       )}
-      {server?.item_status?.$orig === '5_open' && (
-        <HintWrapper label={t('in_progress')}>
-          <Icon name="InProgress" />
-        </HintWrapper>
+      {server?.item_status?.$orig === '2' && (
+        <TooltipWrapper content={t('active')} anchor="status_active">
+          <Icon name="On_Off" className={s.green_icon} />
+        </TooltipWrapper>
       )}
-      {server?.item_status?.$orig === '5_transfer' && (
-        <HintWrapper label={t('in_progress_transfer')}>
-          <Icon name="InProgress" />
-        </HintWrapper>
-      )}
-      {server?.item_status?.$orig === '5_close' && (
-        <HintWrapper label={t('deletion_in_progress')}>
-          <Icon name="InProgress" className={s.delProgress} />
-        </HintWrapper>
-      )}
-      {server?.item_status?.$orig === '3_employeesuspend' && (
-        <HintWrapper label={t('stopped_by_admin')}>
-          <Icon name="Attention" />
-        </HintWrapper>
-      )}
-      {server?.item_status?.$orig === '3_autosuspend' && (
-        <HintWrapper label={t('stopped')}>
-          <Icon name="Attention" />
-        </HintWrapper>
-      )}
-      {server?.item_status?.$orig === '3_abusesuspend' && (
-        <HintWrapper label={t('Suspended due to abuse')}>
-          <Icon name="Attention" />
-        </HintWrapper>
-      )}
+
+      {renderStatusIcon(server?.item_status?.$orig)}
+
       {server?.autoprolong?.$ && (
-        <HintWrapper label={t('auto_prolong')}>
+        <TooltipWrapper content={t('auto_prolong')} anchor="autoprolong">
           <Icon name="Clock" className={s.green_icon} />
-        </HintWrapper>
+        </TooltipWrapper>
       )}
       {server?.scheduledclose?.$ === 'on' && (
-        <HintWrapper label={t('scheduled_deletion') + server?.scheduledclose_prop?.$}>
+        <TooltipWrapper
+          content={`${t('scheduled_deletion')}${server?.scheduledclose_prop?.$}`}
+          anchor="scheduledclose"
+        >
           <Icon name="InProgress" className={s.delProgress} />
-        </HintWrapper>
+        </TooltipWrapper>
       )}
     </span>
   )

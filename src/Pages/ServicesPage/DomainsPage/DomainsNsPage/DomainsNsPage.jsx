@@ -6,7 +6,7 @@ import {
   Button,
   CheckBox,
   Select,
-  HintWrapper,
+  TooltipWrapper,
   NsItem,
   Icon,
   Loader,
@@ -164,13 +164,14 @@ export default function Component({ transfer = false }) {
         <BreadCrumbs pathnames={parseLocations()} />
         <h1 className={s.page_title}>
           {t('Name servers')}{' '}
-          <HintWrapper
-            bottom={true}
-            popupClassName={s.hintWrapper}
-            label={t('Instruction NS')}
+          <TooltipWrapper
+            className={s.hintWrapper}
+            place="bottom"
+            content={t('Instruction NS')}
+            anchor="ns_instruction"
           >
             <Icon name="HintHelp" />
-          </HintWrapper>
+          </TooltipWrapper>
         </h1>
         {selectedDomain?.length > 1 && (
           <div className={s.useFirstCheck}>

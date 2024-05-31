@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { CopyText, Icon, InstancesOptions, HintWrapper } from '@components'
+import { CopyText, Icon, InstancesOptions, TooltipWrapper } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
@@ -43,10 +43,11 @@ export default function InstanceItemMobile({ item }) {
           <p className={s.mobile_item__name}>{displayName}</p>
           <div className={s.status_wrapper}>
             {isHintStatus ? (
-              <HintWrapper
+              <TooltipWrapper
                 popupClassName={s.popup}
                 wrapperClassName={s.popup__wrapper}
                 label={hintMessage}
+                anchor={`status_${item?.id?.$}`}
               >
                 <p
                   className={cn(
@@ -62,7 +63,7 @@ export default function InstanceItemMobile({ item }) {
                   {displayStatus}
                   <Icon name="Attention" />
                 </p>
-              </HintWrapper>
+              </TooltipWrapper>
             ) : (
               <p
                 className={cn(

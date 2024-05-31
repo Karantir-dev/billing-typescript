@@ -4,7 +4,7 @@ import {
   WarningMessage,
   TariffCard,
   ScrollToFieldError,
-  HintWrapper,
+  TooltipWrapper,
   Icon,
 } from '@components'
 import { ErrorMessage, Form, Formik } from 'formik'
@@ -222,13 +222,14 @@ export const ResizeModal = ({ item, closeModal, onSubmit }) => {
         <div className={s.price_block}>
           <div className={s.label_wrapper}>
             <span className={s.amount_label}>{t('upgrade_cost')}</span>
-            <HintWrapper
-              popupClassName={s.hint_wrapper}
-              label={t('resize_explanation')}
+            <TooltipWrapper
+              className={s.hint_wrapper}
+              content={t('resize_explanation')}
               hintDelay={100}
+              anchor={'resize_explanation'}
             >
               <Icon name="Info" />
-            </HintWrapper>
+            </TooltipWrapper>
           </div>
           <p className={s.price}>€{price}</p>
         </div>

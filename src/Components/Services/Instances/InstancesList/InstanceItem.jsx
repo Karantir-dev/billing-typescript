@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { CopyText, EditCell, HintWrapper, Icon, InstancesOptions } from '@components'
+import { CopyText, EditCell, TooltipWrapper, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
@@ -74,34 +74,35 @@ export default function InstanceItem({ item, editInstance }) {
       </td>
       <td className={s.td}>
         <div className={s.status_wrapper} ref={hintCell}>
-          {isHintStatus ? (
-            <HintWrapper
-              popupClassName={s.popup}
+          {isHintStatus && !isDeleting ? (
+            <TooltipWrapper
+              className={s.popup}
               wrapperClassName={s.popup__wrapper}
-              label={hintMessage}
+              content={hintMessage}
+              anchor={`status_${item?.id?.$}`}
             >
               <span
                 className={cn(
                   s.status,
                   s[
-                    isDeleting
-                      ? 'deletion_in_progress'
-                      : item?.instance_status?.$.trim().toLowerCase() ||
-                        item?.item_status?.$.trim().toLowerCase()
+                    item?.instance_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
                   ],
                 )}
               >
                 {displayStatus}
                 <Icon name="Attention" />
               </span>
-            </HintWrapper>
+            </TooltipWrapper>
           ) : (
             <span
               className={cn(
                 s.status,
                 s[
-                  item?.instance_status?.$.trim().toLowerCase() ||
-                    item?.item_status?.$.trim().toLowerCase()
+                  isDeleting
+                    ? 'deletion_in_progress'
+                    : item?.instance_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
                 ],
               )}
             >
@@ -114,10 +115,11 @@ export default function InstanceItem({ item, editInstance }) {
       <td className={s.td}>{item.cost.$.replace('Day', t('day'))}</td>
       <td className={s.td}>
         {item?.datacentername && (
-          <HintWrapper
-            popupClassName={s.popup}
+          <TooltipWrapper
+            className={s.popup}
             wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
-            label={t(itemCountry, { ns: 'countries' })}
+            content={t(itemCountry, { ns: 'countries' })}
+            anchor={`country_flag_${item?.id?.$}`}
           >
             <img
               src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -127,18 +129,19 @@ export default function InstanceItem({ item, editInstance }) {
               height={14}
               alt={itemCountry}
             />
-          </HintWrapper>
+          </TooltipWrapper>
         )}
       </td>
       <td className={s.td}>{item.createdate.$}</td>
       <td className={s.td}>
-        <HintWrapper
-          popupClassName={s.popup}
+        <TooltipWrapper
+          className={s.popup}
           wrapperClassName={s.popup__wrapper}
-          label={item.instances_os.$}
+          content={item.instances_os.$}
+          anchor={`instances_os_${item?.id?.$}`}
         >
           <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
-        </HintWrapper>
+        </TooltipWrapper>
       </td>
       <td className={s.td}>
         <div className={s.ip_cell} ref={ipCell}>

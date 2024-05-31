@@ -1,6 +1,6 @@
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
-import { IconButton, HintWrapper } from '@components'
+import { IconButton, TooltipWrapper } from '@components'
 
 import s from './DomainBottomBar.module.scss'
 import { roundToDecimal } from '@utils'
@@ -42,16 +42,16 @@ export default function VDS(props) {
     <div className={cn(s.tools_footer, { [s.isopen]: selctedItem?.length !== 0 })}>
       {selctedItem?.length !== 0 && (
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('edit', { ns: 'other' })}>
+          <TooltipWrapper content={t('edit', { ns: 'other' })} anchor="edit_btn">
             <IconButton
               className={s.tools_icon}
               disabled={selctedItem?.length === 0 || !rights?.edit}
               onClick={() => editDomainHandler()}
               icon="edit"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('prolong', { ns: 'vds' })}>
+          <TooltipWrapper content={t('prolong', { ns: 'vds' })} anchor="prolong_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -62,9 +62,12 @@ export default function VDS(props) {
               onClick={() => renewDomainHandler()}
               icon="clock"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('ns_settings')}>
+          <TooltipWrapper
+            content={t('ns_settings', { ns: 'domains' })}
+            anchor="ns_settings"
+          >
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -73,7 +76,7 @@ export default function VDS(props) {
               onClick={() => NSDomainHandler()}
               icon="server-cloud"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
       )}
       <p className={s.services_selected}>

@@ -1,6 +1,6 @@
 import {
   BreadCrumbs,
-  HintWrapper,
+  TooltipWrapper,
   Icon,
   Loader,
   InstancesOptions,
@@ -170,13 +170,13 @@ export default function CloudInstanceItemPage() {
           <div className={s.page_title_container}>
             <div className={s.page_title_wrapper}>
               <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
-              <HintWrapper
-                popupClassName={s.popup}
-                wrapperClassName={s.popup__wrapper}
-                label={item.instances_os.$}
+              <TooltipWrapper
+                className={s.popup}
+                content={item.instances_os.$}
+                anchor={`instance_os_${item?.id?.$}`}
               >
                 <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
-              </HintWrapper>
+              </TooltipWrapper>
             </div>
             <InstancesOptions
               item={item}
@@ -186,10 +186,10 @@ export default function CloudInstanceItemPage() {
           </div>
 
           {isHintStatus ? (
-            <HintWrapper
-              popupClassName={s.popup}
-              wrapperClassName={s.popup__wrapper}
+            <TooltipWrapper
+              className={s.popup}
               label={hintMessage}
+              anchor={`instance_status_${item?.id?.$}`}
             >
               <span
                 className={cn(
@@ -203,7 +203,7 @@ export default function CloudInstanceItemPage() {
                 {displayStatus}
                 <Icon name="Attention" />
               </span>
-            </HintWrapper>
+            </TooltipWrapper>
           ) : (
             <span
               className={cn(

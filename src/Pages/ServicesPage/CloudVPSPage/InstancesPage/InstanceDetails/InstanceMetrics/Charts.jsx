@@ -14,6 +14,8 @@ import s from './InstanceMetrics.module.scss'
 import { useSelector } from 'react-redux'
 import { selectors } from '@redux'
 import { useTranslation } from 'react-i18next'
+import { formatBytes } from '@utils'
+import { useMediaQuery } from 'react-responsive'
 
 ChartJS.register(
   CategoryScale,
@@ -44,6 +46,7 @@ const TIME_FORMAT = {
   },
   days: {
     hour: '2-digit',
+    minute: '2-digit',
     day: '2-digit',
     month: '2-digit',
   },
@@ -51,6 +54,7 @@ const TIME_FORMAT = {
 
 export const Charts = ({ data, chartType, chartPeriod }) => {
   const { t } = useTranslation(['cloud_vps'])
+  const isMobile = useMediaQuery({ query: '(max-width: 767px)' })
 
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
@@ -63,11 +67,45 @@ export const Charts = ({ data, chartType, chartPeriod }) => {
         bodyColor: darkTheme ? '#fff' : '#392955',
         titleColor: darkTheme ? '#fff' : '#392955',
         backgroundColor: darkTheme ? '#3B3447' : '#E8E0F5',
+        callbacks: {
+          label: function (tooltipItem) {
+            let label = tooltipItem.dataset.label || ''
+            if (label) {
+              label += ': '
+            }
+            label += formatBytes(tooltipItem.raw)
+            return label
+          },
+        },
+      },
+      legend: {
+        align: isMobile ? 'start' : 'center',
+        labels: {
+          color: darkTheme ? '#fff' : '#392955',
+        },
+      },
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: darkTheme ? '#fff' : '#929293',
+        },
+        grid: {
+          color: darkTheme ? 'rgba(255,255,255, .25)' : '#eeedef',
+        },
+      },
+      y: {
+        ticks: {
+          color: darkTheme ? '#fff' : '#929293',
+        },
+        grid: {
+          color: darkTheme ? 'rgba(255,255,255, .25)' : '#eeedef',
+        },
       },
     },
   }
 
-  const timeOptions = ['en-US', TIME_FORMAT[chartPeriod <= 24 ? 'hours' : 'days']]
+  const timeOptions = ['uk-UA', TIME_FORMAT[chartPeriod <= 24 ? 'hours' : 'days']]
 
   if (!data.length) {
     return <p className={s.metrics_chart_empty}>{t('metrics_chart_empty')}</p>
