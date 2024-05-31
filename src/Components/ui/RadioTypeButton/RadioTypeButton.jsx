@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 import s from './RadioTypeButton.module.scss'
-import { HintWrapper, Icon } from '@components'
+import { TooltipWrapper, Icon } from '@components'
 import { useMediaQuery } from 'react-responsive'
 
 export default function RadioTypeButton({
@@ -22,15 +22,16 @@ export default function RadioTypeButton({
         <div className={s.label}>
           {label}:
           {withCaption && (
-            <HintWrapper
-              label={captionText}
-              popupClassName={popupClassName}
+            <TooltipWrapper
+              content={captionText}
+              className={popupClassName}
               disabled={!widerThan1550}
+              anchor="price_info"
             >
               <button type="button" onClick={toggleCaption}>
                 <Icon name="Info" />
               </button>
-            </HintWrapper>
+            </TooltipWrapper>
           )}
         </div>
       )}

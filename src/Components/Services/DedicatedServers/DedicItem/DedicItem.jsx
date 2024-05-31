@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 import s from './DedicItem.module.scss'
-import { CheckBox, EditCell, HintWrapper, ServerState, Options } from '@components'
+import { CheckBox, EditCell, TooltipWrapper, ServerState, Options } from '@components'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
@@ -154,13 +154,14 @@ export default function DedicItem({
         <span className={s.value}>{server?.id?.$}</span>
         <span className={s.value}>
           {server?.domain?.$ ? (
-            <HintWrapper
-              popupClassName={s.HintWrapper}
-              label={server?.domain?.$}
+            <TooltipWrapper
+              disabled={server?.domain?.$.length < 15}
+              content={server?.domain?.$}
               wrapperClassName={cn(s.hint)}
+              anchor="server_name"
             >
               <span>{server?.domain?.$}</span>
-            </HintWrapper>
+            </TooltipWrapper>
           ) : null}
         </span>
         <span className={s.value}>{server?.ip?.$}</span>

@@ -51,8 +51,6 @@ export default function VDSOrder() {
 
   const navigate = useNavigate()
 
-  const navigateToCloud = type => navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}/${type}`)
-
   // const [formInfo, setFormInfo] = useState(null)
   // const [period, setPeriod] = useState('1')
   // const [tariffsList, setTariffsList] = useState([])
@@ -889,7 +887,7 @@ export default function VDSOrder() {
             textClassName={s.buy_btn_text}
             label={t('to_order', { ns: 'other' }) + ' Premium Cloud VPS'}
             onClick={() => {
-              navigateToCloud('premium')
+              navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE)
             }}
           />
           <Button
@@ -899,7 +897,7 @@ export default function VDSOrder() {
             textClassName={s.buy_btn_text}
             label={t('to_order', { ns: 'other' }) + ' Basic Cloud VPS'}
             onClick={() => {
-              navigateToCloud('basic')
+              navigate(route.CLOUD_VPS_CREATE_BASIC_INSTANCE)
             }}
           />
         </div>
