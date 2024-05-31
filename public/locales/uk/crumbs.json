@@ -32,5 +32,6 @@
   "premium": "Premium VPS",
   "basic": "Basic VPS",
   "network_traffic": "Мережевий трафік",
-  "metrics": "Метрики"
+  "metrics": "Метрики",
+  "images": "Images"
 }

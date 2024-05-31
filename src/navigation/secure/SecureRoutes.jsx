@@ -68,6 +68,7 @@ import {
   CloudVPSPageLazy,
   CloudVPSInstancesPageLazy,
   CloudVPSSSHKeysPageLazy,
+  CloudVPSImagesPageLazy,
   CreateInstancePageLazy,
   CloudInstanceItemPageLazy,
   InstanceDetailsOverviewLazy,
@@ -249,6 +250,7 @@ const Component = ({ fromPromotionLink }) => {
           <Route path={route.CLOUD_VPS} element={<CloudVPSPageLazy />}>
             <Route index element={<CloudVPSInstancesPageLazy />} />
             <Route path="ssh_keys" element={<CloudVPSSSHKeysPageLazy />} />
+            <Route path="images" element={<CloudVPSImagesPageLazy />} />
           </Route>
 
           <Route
