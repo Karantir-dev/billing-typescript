@@ -21,7 +21,7 @@ import {
   VPSCompareModal,
   Pagination,
   Portal,
-  HintWrapper,
+  TooltipWrapper,
   CheckBox,
   Loader,
 } from '@components'
@@ -363,7 +363,7 @@ export default function VDS({ isDedic }) {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('delete', { ns: 'other' })}>
+          <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="delete-btn">
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -377,8 +377,8 @@ export default function VDS({ isDedic }) {
               }
               icon="delete"
             />
-          </HintWrapper>
-          <HintWrapper label={t('password_change')}>
+          </TooltipWrapper>
+          <TooltipWrapper content={t('password_change')} anchor="passChange_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -390,9 +390,9 @@ export default function VDS({ isDedic }) {
               }
               icon="passChange"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('reload')}>
+          <TooltipWrapper content={t('reload')} anchor="reload_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -402,9 +402,9 @@ export default function VDS({ isDedic }) {
               onClick={() => setIdForReboot(activeServices.map(server => server.id.$))}
               icon="reload"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('prolong')}>
+          <TooltipWrapper content={t('prolong')} anchor="prolong_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -416,10 +416,9 @@ export default function VDS({ isDedic }) {
                 ) || !rights?.prolong
               }
               onClick={() => setIdForProlong(activeServices.map(server => server.id.$))}
-              // onClick={() => setIdForProlong(activeServices)}
               icon="clock"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>

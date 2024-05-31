@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, HintWrapper, ServerState, EditCell, Options } from '@components'
+import { CheckBox, TooltipWrapper, ServerState, EditCell, Options } from '@components'
 import PropTypes from 'prop-types'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
@@ -166,13 +166,14 @@ export default function VDSItem({
         <span className={cn(s.value, { [s.dedic]: isDedic })}>{server?.id?.$}</span>
         <span className={cn(s.value, { [s.dedic]: isDedic })}>
           {server?.domain?.$ ? (
-            <HintWrapper
-              popupClassName={s.HintWrapper}
-              label={server?.domain?.$}
+            <TooltipWrapper
+              disabled={server?.domain?.$.length < 15}
+              content={server?.domain?.$}
               wrapperClassName={cn(s.hint)}
+              anchor="server_name"
             >
               <span>{server?.domain?.$}</span>
-            </HintWrapper>
+            </TooltipWrapper>
           ) : null}
         </span>
         <span className={cn(s.value, { [s.dedic]: isDedic })}>{server?.ip?.$}</span>

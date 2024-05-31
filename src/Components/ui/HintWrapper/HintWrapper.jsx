@@ -1,4 +1,4 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-unused-vars */
 import { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 
@@ -7,15 +7,16 @@ import cn from 'classnames'
 
 /**
  * @param hintDelay - delay in miliseconds
+ * @param place - top top-start top-end right right-start right-end bottom bottom-start bottom-end left left-start left-end
  */
 export default function HintWrapper({
   label,
-  children,
   popupClassName,
+  hintDelay,
+  children,
   wrapperClassName,
   bottom,
   disabled,
-  hintDelay = 500,
 }) {
   const ref = useRef(null)
   const [elemWidth, setElemWidth] = useState(0)
@@ -46,7 +47,7 @@ export default function HintWrapper({
       {disabled ? (
         children
       ) : (
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
         <div
           ref={ref}
           className={cn(s.hint_wrapper, wrapperClassName)}
@@ -76,7 +77,8 @@ export default function HintWrapper({
 
 HintWrapper.propTypes = {
   label: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired,
+  // content: PropTypes.string.isRequired,
+  // children: PropTypes.element.isRequired,
   popupClassName: PropTypes.string,
   wrapperClassName: PropTypes.string,
   bottom: PropTypes.bool,

@@ -1,14 +1,15 @@
 import DepartmentSelect from './DepartmentSelect/DepartmentSelect'
 import MessageInput from '../MessageInput/MessageInput'
-import { Button, Select, InputField, Modal } from '@components'
+import { Button, InputField, Modal, RSelect } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Formik, ErrorMessage } from 'formik'
 import { supportSelectors, supportOperations } from '@redux'
 import * as Yup from 'yup'
 import s from './CreateTicketModal.module.scss'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import debounce from 'debounce'
 
 export default function Component(props) {
   const { t } = useTranslation(['support', 'other'])
@@ -20,6 +21,10 @@ export default function Component(props) {
   const servicesList = useSelector(supportSelectors.getServices)
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false)
 
+  const [serviceInputValue, setServiceInputValue] = useState('')
+  const [serviceInputSave, setServiceInputSave] = useState('')
+  const [isServiceMenuOpened, setServiceIsMenuOpened] = useState(false)
+
   const validationSchema = Yup.object().shape({
     message: Yup.string().required(t('Is a required field')),
     subject: Yup.string().required(t('Is a required field')),
@@ -28,6 +33,33 @@ export default function Component(props) {
 
   const sendMessageHandle = (values, { resetForm }) => {
     dispatch(supportOperations.createTicket(values, setCreateTicketModal, resetForm))
+  }
+  const getServiceList = ticket_item =>
+    dispatch(supportOperations.getServiceList({ ticket_item }))
+
+  useEffect(() => {
+    getServiceList(location.state?.id)
+  }, [])
+
+  const translatedServicesList = servicesList.map(el => ({
+    ...el,
+    label: t(el.label),
+  }))
+
+  const onInputDebounce = debounce(getServiceList, 300)
+
+  const onChangeInputHandler = useCallback((value, { action }) => {
+    setServiceInputValue(value)
+    if (action === 'input-change') {
+      onInputDebounce(value)
+    }
+  }, [])
+
+  const filterOption = (option, inputValue) => {
+    if (option.value === 'null') {
+      return true
+    }
+    return option.label.toLowerCase().includes(inputValue.toLowerCase())
   }
 
   return (
@@ -78,18 +110,33 @@ export default function Component(props) {
                   name={'client_department'}
                   component="span"
                 />
-                <Select
-                  height={52}
-                  value={values.ticket_item}
-                  getElement={item => setFieldValue('ticket_item', item)}
-                  isShadow
+
+                <RSelect
                   label={`${t('Specify what the question is about')}:`}
-                  itemsList={servicesList.map(el => {
-                    return { label: t(el.label), value: el.value }
-                  })}
-                  className={s.select}
-                  disabled={servicesList.length <= 1}
+                  placeholder={t('choose_service')}
+                  options={translatedServicesList}
+                  maxMenuHeight={200}
+                  filterOption={filterOption}
+                  onChange={({ value }) => {
+                    setFieldValue('ticket_item', value)
+                  }}
+                  onInputChange={onChangeInputHandler}
+                  value={translatedServicesList.find(
+                    el => el.value === values.ticket_item,
+                  )}
+                  inputValue={serviceInputValue}
+                  onMenuClose={() => {
+                    if (isServiceMenuOpened) {
+                      setServiceIsMenuOpened(false)
+                      setServiceInputSave(serviceInputValue)
+                    }
+                  }}
+                  onMenuOpen={() => {
+                    setServiceIsMenuOpened(true)
+                    setServiceInputValue(serviceInputSave)
+                  }}
                 />
+
                 <InputField
                   label={t('Request subject:')}
                   placeholder={t('Enter the subject of your request')}

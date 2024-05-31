@@ -8,7 +8,7 @@ import { useMediaQuery } from 'react-responsive'
 import {
   Button,
   IconButton,
-  HintWrapper,
+  TooltipWrapper,
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
@@ -254,10 +254,10 @@ export default function DNS() {
         )}
 
         <div className={s.btns_wrapper}>
-          <HintWrapper
-            label={t('No tariff plans available for order', { ns: 'other' })}
-            popupClassName={s.order_btn__error}
+          <TooltipWrapper
+            content={t('No tariff plans available for order', { ns: 'other' })}
             disabled={!isNoAvailableTariff}
+            anchor="order_dns_btn"
           >
             <Button
               className={s.order_btn}
@@ -272,7 +272,7 @@ export default function DNS() {
               }}
               disabled={isNoAvailableTariff || !rights?.new}
             />
-          </HintWrapper>
+          </TooltipWrapper>
           <div className={s.tools_container}>
             <div className={s.filterBtnBlock}>
               <IconButton
@@ -355,7 +355,7 @@ export default function DNS() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('prolong')}>
+          <TooltipWrapper content={t('prolong')} anchor="prolong_btn">
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -370,7 +370,7 @@ export default function DNS() {
               }
               icon="clock"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>

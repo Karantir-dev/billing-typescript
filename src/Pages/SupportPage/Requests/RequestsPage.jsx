@@ -5,12 +5,10 @@ import { SupportFilter, SupportTable, Pagination, Loader, Button } from '@compon
 import { supportSelectors, supportOperations } from '@redux'
 import s from './RequestsPage.module.scss'
 import { useCancelRequest } from '@src/utils'
-import { useLocation } from 'react-router-dom'
 
 export default function Component() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['support', 'other'])
-  const location = useLocation()
 
   const tickerList = useSelector(supportSelectors.getTicketList)
   const tickerCount = useSelector(supportSelectors.getTicketCount)
@@ -24,9 +22,6 @@ export default function Component() {
 
   useEffect(() => {
     dispatch(supportOperations.getDepartmenList(signal))
-    dispatch(
-      supportOperations.getServiceList({ signal, ticket_item: location.state?.id }),
-    )
   }, [])
 
   useEffect(() => {

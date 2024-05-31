@@ -22,7 +22,7 @@ import {
   ScrollToFieldError,
   Icon,
   CustomPhoneInput,
-  HintWrapper,
+  TooltipWrapper,
   PayersList,
 } from '@components'
 import {
@@ -1197,16 +1197,16 @@ export default function Component() {
                                       </span>
                                     </div>
                                     {paymethod?.$ === '71' && (
-                                      <HintWrapper
-                                        popupClassName={s.cardHintWrapper}
-                                        label={t(method?.name.$, {
+                                      <TooltipWrapper
+                                        content={t(method?.name.$, {
                                           ns: 'other',
                                         })}
                                         wrapperClassName={cn(s.infoBtnCard)}
-                                        bottom
+                                        place="bottom"
+                                        anchor={'cart_bank_cards'}
                                       >
                                         <Icon name="Info" />
-                                      </HintWrapper>
+                                      </TooltipWrapper>
                                     )}
                                   </button>
                                 )

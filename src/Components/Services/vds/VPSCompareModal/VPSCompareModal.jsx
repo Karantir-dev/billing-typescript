@@ -11,7 +11,6 @@ export default function VPSCompareModal({ isOpen, closeModal }) {
 
   const navigate = useNavigate()
 
-  const navigateToCloud = type => navigate(`${route.CLOUD_VPS_CREATE_INSTANCE}/${type}`)
   return (
     <Modal isOpen={isOpen} closeModal={closeModal} isClickOutside>
       <Modal.Header>
@@ -28,7 +27,7 @@ export default function VPSCompareModal({ isOpen, closeModal }) {
           textClassName={s.buy_btn_text}
           label={t('to_order', { ns: 'other' }) + ' Premium Cloud VPS'}
           onClick={() => {
-            navigateToCloud('premium')
+            navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE)
           }}
         />
         <Button
@@ -38,7 +37,7 @@ export default function VPSCompareModal({ isOpen, closeModal }) {
           textClassName={s.buy_btn_text}
           label={t('to_order', { ns: 'other' }) + ' Basic Cloud VPS'}
           onClick={() => {
-            navigateToCloud('basic')
+            navigate(route.CLOUD_VPS_CREATE_BASIC_INSTANCE)
           }}
         />
       </Modal.Footer>
