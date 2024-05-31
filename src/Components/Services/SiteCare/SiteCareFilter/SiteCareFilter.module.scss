@@ -48,10 +48,6 @@
   align-items: center;
   padding-bottom: 10px;
   flex-wrap: wrap;
-
-  @media (min-width: 768px) {
-    justify-content: flex-end;
-  }
 }
 
 .archiveBtn {
