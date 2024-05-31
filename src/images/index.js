@@ -105,6 +105,7 @@ export { default as CheckEdit } from './svg/CheckEdit'
 export { default as SaleFiftyFive } from './svg/SaleFiftyFive'
 
 export { default as Client } from './svg/Client'
+export { default as Cloud } from './svg/Cloud'
 export { default as Services } from './svg/Services'
 export { default as Finance } from './svg/Finance'
 export { default as Help } from './svg/Help'

@@ -385,7 +385,14 @@
       "instances_fleio_rescue": "Rescue",
       "instances_fleio_rebuild": "Rebuild",
       "instances_fleio_changepassword": "Password change",
-      "instances_fleio_vnc": "Control console"
+      "instances_fleio_vnc": "Control console",
+      "cloud": "Cloud Services",
+      "sshkeys": "List of SSH keys",
+      "sshkeys_edit#create": "Add",
+      "sshkeys_edit": "Edit",
+      "sshkeys_edit#read": "View SSH Keys",
+      "sshkeys_edit#write": "Edit SSH keys",
+      "sshkeys_delete": "Delete"
     },
     "Allow_all": "Allow all",
     "Add": "Add",

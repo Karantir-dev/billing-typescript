@@ -227,6 +227,8 @@ export default function AccessRightsListItem({
 
   const nameWithoutDots = item?.name?.$?.replaceAll('.', '_')
 
+  console.log('nameWithoutDots: ', nameWithoutDots)
+
   const hasSubItems = item?.hassubitems?.$ === 'on'
 
   useEffect(() => {
@@ -240,6 +242,7 @@ export default function AccessRightsListItem({
     setIsAllTurnedOn(doesEveryTurnedOn)
   }, [selectedSub])
 
+  // icons
   const renderIcons = icon => {
     switch (icon) {
       case 'customer':
@@ -260,6 +263,8 @@ export default function AccessRightsListItem({
         return <Icon name="Home" />
       case 'reselling':
         return <Icon name="Money" />
+      case 'cloud':
+        return <Icon name="Cloud" />
       default:
         return null
     }
