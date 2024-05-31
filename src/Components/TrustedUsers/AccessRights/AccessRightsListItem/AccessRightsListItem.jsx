@@ -240,7 +240,6 @@ export default function AccessRightsListItem({
     setIsAllTurnedOn(doesEveryTurnedOn)
   }, [selectedSub])
 
-  // icons
   const renderIcons = icon => {
     switch (icon) {
       case 'customer':
