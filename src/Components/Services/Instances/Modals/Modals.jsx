@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   ChangePasswordModal,
   DeleteModal,
@@ -8,6 +9,7 @@ import {
   DeleteSshModal,
   SshKeyModal,
   RdnsModal,
+  CreateSnapshotModal,
 } from '.'
 
 import {
@@ -24,6 +26,7 @@ export const Modals = ({
   deleteSshSubmit,
   renameSshSubmit,
   addNewSshSubmit,
+  setSnapshot,
   loadingParams = {},
   pagination = {},
   setPagination = () => {},
@@ -140,6 +143,11 @@ export const Modals = ({
     )
   }
 
+  // Must be changed when endpoint will be created
+  const createSnapshotSubmit = ({ value, elid, errorCallback }) => {
+    dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false }))
+  }
+
   return (
     <>
       {!!itemForModals?.change_pass && (
@@ -242,6 +250,16 @@ export const Modals = ({
             dispatch(cloudVpsActions.setItemForModals({ rdns_edit: false }))
           }
           onSubmit={rdnsSubmit}
+        />
+      )}
+
+      {!!itemForModals?.snapshot_create && (
+        <CreateSnapshotModal
+          item={itemForModals?.snapshot_create}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false }))
+          }
+          onSubmit={setSnapshot}
         />
       )}
     </>

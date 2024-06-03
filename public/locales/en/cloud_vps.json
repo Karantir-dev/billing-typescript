@@ -186,5 +186,10 @@
       "cpu_metrics": "CPU metrics"
     }
   },
-  "metrics_chart_empty": "No data available to generate the chart"
+  "metrics_chart_empty": "No data available to generate the chart",
+  "create_snapshot": "Create Snapshot",
+  "snapshots": {
+    "create": "Create snapshot for instance",
+    "create_warning": "Instance will not be available while the snapshot is being processed."
+  }
 }
