@@ -26,7 +26,6 @@ export default function formatBytes(bytes, unit) {
         break
     }
 
-    // Округлення до більшого цілого
     convertedValue = Math.ceil(convertedValue)
 
     return `${convertedValue} ${unit}`
