@@ -110,7 +110,7 @@ export default function InstanceItem({ item, editInstance }) {
           )}
         </div>
       </td>
-      <td className={s.td}>{item.pricelist.$}</td>
+      <td className={s.td}>{item.pricelist.$.split('|')[0]}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('day'))}</td>
       <td className={s.td}>
         {item?.datacentername && (
