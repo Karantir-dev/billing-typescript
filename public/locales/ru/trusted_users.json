@@ -385,7 +385,14 @@
       "instances_fleio_rescue": "Восстановить",
       "instances_fleio_rebuild": "Сменить ОС",
       "instances_fleio_changepassword": "Сменить пароль",
-      "instances_fleio_vnc": "Консоль управления"
+      "instances_fleio_vnc": "Консоль управления",
+      "cloud": "Облачные сервисы",
+      "sshkeys": "Список SSH ключей",
+      "sshkeys_edit#create": "Добавить",
+      "sshkeys_edit": "Редактировать",
+      "sshkeys_edit#read": "Просмотр SSH ключей",
+      "sshkeys_edit#write": "Редактирование SSH ключей",
+      "sshkeys_delete": "Удалить"
     },
     "Allow_all": "Разрешить все",
     "Add": "Добавить",
