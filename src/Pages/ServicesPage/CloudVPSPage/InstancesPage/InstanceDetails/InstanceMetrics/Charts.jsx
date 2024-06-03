@@ -142,8 +142,7 @@ export const Charts = ({ data, chartType, chartPeriod }) => {
 
   useEffect(() => {
     const unit = formatBytes(Math.max(...data.map(el => el.$bytes_in)))
-      .replace(/\d/g, '')
-      .replace(/\./g, '')
+      .replace(/[\d.]+/g, '')
       .trim()
 
     setBytesUnit(unit)
