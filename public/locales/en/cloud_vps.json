@@ -184,8 +184,14 @@
     "type": {
       "network_metrics": "Network metrics",
       "cpu_metrics": "CPU metrics"
+    },
+    "scales": {
+      "packets": "Quantity",
+      "bytes": "Traffic",
+      "cpu": "AVG usage, %"
     }
   },
+  "pcs": "pcs.",
   "metrics_chart_empty": "No data available to generate the chart",
   "create_snapshot": "Create Snapshot",
   "snapshots": {

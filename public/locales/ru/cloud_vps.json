@@ -184,8 +184,14 @@
     "type": {
       "network_metrics": "Сетевые метрики",
       "cpu_metrics": "CPU метрики"
+    },
+    "scales": {
+      "packets": "Количество",
+      "bytes": "Трафик",
+      "cpu": "% использования"
     }
   },
+  "pcs": "шт.",
   "metrics_chart_empty": "Нет данных для построения графика",
   "create_snapshot": "Создать снимок",
   "snapshots": {
