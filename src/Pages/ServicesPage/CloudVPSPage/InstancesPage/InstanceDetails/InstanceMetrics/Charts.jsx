@@ -77,7 +77,6 @@ export const Charts = ({ data, chartType, chartPeriod }) => {
             label: function (tooltipItem) {
               if (tooltipItem.dataset.chartType === 'interface_traffic') {
                 if (tooltipItem.dataset.originLabel.includes('$packets')) {
-                  console.log(tooltipItem)
                   return `${tooltipItem.dataset.label}: ${roundToDecimal(
                     tooltipItem.raw,
                   )} ${t('pcs')}`
