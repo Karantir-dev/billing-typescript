@@ -184,7 +184,13 @@
     "type": {
       "network_metrics": "Мережеві метрики",
       "cpu_metrics": "CPU метрики"
+    },
+    "scales": {
+      "packets": "Кількість",
+      "bytes": "Трафік",
+      "cpu": "% використання"
     }
   },
-  "metrics_chart_empty": "Відсутні данні для побудови графіку"
+  "metrics_chart_empty": "Відсутні данні для побудови графіку",
+  "pcs": "шт."
 }
