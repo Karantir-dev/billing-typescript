@@ -10,7 +10,6 @@ import {
   Portal,
   CartFromSite,
   EmailTrigger,
-  UpdateService,
   MainEmailConfirmation,
   PromotionBanner,
   SuccessPayment,
@@ -186,7 +185,6 @@ const Component = ({ fromPromotionLink }) => {
       {isShowPromotion && promotionType && location.pathname === route.SHARED_HOSTING && (
         <PromotionBanner type={promotionType} closeBanner={closePromotionBanner} />
       )}
-      <UpdateService />
       <EmailTrigger />
       <div className={s.page}>
         <Routes>
