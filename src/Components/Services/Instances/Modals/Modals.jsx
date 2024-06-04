@@ -8,7 +8,6 @@ import {
   DeleteSshModal,
   SshKeyModal,
   RdnsModal,
-  CreateSnapshotOrBackupModal,
 } from '.'
 
 import {
@@ -25,8 +24,6 @@ export const Modals = ({
   deleteSshSubmit,
   renameSshSubmit,
   addNewSshSubmit,
-  setSnapshot,
-  setBackup,
   loadingParams = {},
   pagination = {},
   setPagination = () => {},
@@ -245,21 +242,6 @@ export const Modals = ({
             dispatch(cloudVpsActions.setItemForModals({ rdns_edit: false }))
           }
           onSubmit={rdnsSubmit}
-        />
-      )}
-
-      {['snapshot_create', 'backup_create'].some(key => !!itemForModals?.[key]) && (
-        <CreateSnapshotOrBackupModal
-          item={itemForModals?.snapshot_create || itemForModals?.backup_create}
-          closeModal={() =>
-            dispatch(
-              cloudVpsActions.setItemForModals({
-                snapshot_create: false,
-                backup_create: false,
-              }),
-            )
-          }
-          onSubmit={itemForModals?.snapshot_create ? setSnapshot : setBackup}
         />
       )}
     </>

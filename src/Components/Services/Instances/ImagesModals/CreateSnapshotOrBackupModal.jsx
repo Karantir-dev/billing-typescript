@@ -9,7 +9,7 @@ import {
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
-import s from './Modals.module.scss'
+import s from './ImagesModals.module.scss'
 import { getInstanceMainInfo } from '@utils'
 
 export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
@@ -21,8 +21,6 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
       .required(t('Is a required field', { ns: 'other' }))
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
   })
-
-  console.log('Item: ', item)
 
   return (
     <Modal isOpen={!!item} closeModal={closeModal}>

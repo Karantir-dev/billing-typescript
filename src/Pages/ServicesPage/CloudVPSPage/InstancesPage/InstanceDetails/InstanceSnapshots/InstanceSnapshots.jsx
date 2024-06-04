@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest, formatBytes } from '@utils'
 
-import { Modals } from '@components/Services/Instances/Modals/Modals'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 
 import {
@@ -118,18 +117,7 @@ export default function InstanceSnapshots() {
         />
       )}
 
-      {/* setSnapshot func should be replaced when endpoint will be finished */}
-      <Modals
-        setSnapshot={dispatch(
-          cloudVpsActions.setItemForModals({ snapshot_create: false }),
-        )}
-        // addNewSshSubmit={setNewSshKey}
-        // renameSshSubmit={editNameSubmit}
-      />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
-}
-{
-  /*  */
 }

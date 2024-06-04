@@ -22,7 +22,6 @@ export default function InstanceBackups() {
 
   const elid = item?.id?.$
 
-  const [isPaginationChanged, setIsPaginationChanged] = useState(false)
   const [isFirstRender, setIsFirstRender] = useState(true)
 
   const getRequiredParams = {
@@ -30,42 +29,10 @@ export default function InstanceBackups() {
     setIsLoading,
   }
 
-  // const getBackups = ({ p_col, p_num, p_cnt } = {}) => {
-  //   dispatch(
-  //     cloudVpsOperations.getBackups({
-  //       p_col,
-  //       p_cnt: p_cnt ?? pagination.p_cnt,
-  //       p_num: p_num ?? pagination.p_num,
-  //       ...getRequiredParams,
-  //     }),
-  //   )
-  // }
-
   useEffect(() => {
     // getBackups()
     setIsFirstRender(false)
   }, [])
-
-  useEffect(() => {
-    if (!isFirstRender) {
-      // getBackups()
-    }
-  }, [isPaginationChanged])
-
-  // const setBackup = (values, p_col, p_cnt) => {
-  //   setPagination({ p_num: 1 }),
-  //   dispatch(
-  //     cloudVpsOperations.editSsh({
-  //       ...values,
-  //       ...getRequiredParams,
-  //       closeModal: () =>
-  //         dispatch(cloudVpsActions.setItemForModals({ backup_create: false })),
-  //       p_col,
-  //       p_cnt: p_cnt ?? pagination.p_cnt,
-  //       p_num: 1,
-  //     }),
-  //   )
-  // }
 
   return (
     <>
@@ -86,14 +53,7 @@ export default function InstanceBackups() {
         />
       </div>
 
-      {/* setBackup func should be replaced when endpoint will be finished */}
-      <Modals
-        setBackup={dispatch(cloudVpsActions.setItemForModals({ backup_create: false }))}
-      />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
   )
-}
-{
-  /*  */
 }

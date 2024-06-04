@@ -13,6 +13,7 @@ import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import { getInstanceMainInfo, useCancelRequest } from '@src/utils'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
+import { ImagesModals } from '@components/Services/Instances/ImagesModals/ImagesModals'
 
 import s from './CloudInstanceItemPage.module.scss'
 import cn from 'classnames'
@@ -248,6 +249,14 @@ export default function CloudInstanceItemPage() {
         getInstances={fetchItemById}
         redirectCallback={() => navigate(route.CLOUD_VPS)}
       />
+
+      <ImagesModals
+        setBackup={dispatch(cloudVpsActions.setItemForModals({ backup_create: false }))}
+        setSnapshot={dispatch(
+          cloudVpsActions.setItemForModals({ snapshot_create: false }),
+        )}
+      />
+
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </CloudInstanceItemProvider>
   )
