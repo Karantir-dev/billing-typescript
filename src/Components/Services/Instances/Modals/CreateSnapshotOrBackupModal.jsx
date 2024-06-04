@@ -54,12 +54,12 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
                 <div>
                   <InputField
                     inputClassName={s.input}
-                    name="servername"
+                    name="display_name"
                     isShadow
                     label={`${t('name', { ns: 'vds' })}:`}
                     placeholder={t('server_placeholder', { ns: 'vds' })}
-                    error={!!errors.servername}
-                    touched={!!touched.servername}
+                    error={!!errors.display_name}
+                    touched={!!touched.display_name}
                     isRequired
                     autoComplete="off"
                   />
