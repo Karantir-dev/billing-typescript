@@ -11,15 +11,7 @@ import { useCancelRequest, formatBytes } from '@utils'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 
-import {
-  Button,
-  Icon,
-  IconButton,
-  InstancesList,
-  Loader,
-  Pagination,
-  Select,
-} from '@components'
+import { Button, Icon, IconButton, Loader, Select } from '@components'
 
 export default function InstanceBackups() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
@@ -33,22 +25,14 @@ export default function InstanceBackups() {
   const [isPaginationChanged, setIsPaginationChanged] = useState(false)
   const [isFirstRender, setIsFirstRender] = useState(true)
 
-  const [pagination, setPagination] = useReducer(
-    (state, action) => {
-      return { ...state, ...action }
-    },
-    { p_num: 1, p_cnt: '10', totalElems: 0 },
-  )
-
   const getRequiredParams = {
-    setTotalElems: value => setPagination({ totalElems: value }),
     signal,
     setIsLoading,
   }
 
-  // const getSnapshots = ({ p_col, p_num, p_cnt } = {}) => {
+  // const getBackups = ({ p_col, p_num, p_cnt } = {}) => {
   //   dispatch(
-  //     cloudVpsOperations.getSnapshots({
+  //     cloudVpsOperations.getBackups({
   //       p_col,
   //       p_cnt: p_cnt ?? pagination.p_cnt,
   //       p_num: p_num ?? pagination.p_num,
@@ -58,24 +42,24 @@ export default function InstanceBackups() {
   // }
 
   useEffect(() => {
-    // getSnapshots()
+    // getBackups()
     setIsFirstRender(false)
   }, [])
 
   useEffect(() => {
     if (!isFirstRender) {
-      // getSnapshots()
+      // getBackups()
     }
   }, [isPaginationChanged])
 
-  // const setSnapshot = (values, p_col, p_cnt) => {
+  // const setBackup = (values, p_col, p_cnt) => {
   //   setPagination({ p_num: 1 }),
   //   dispatch(
   //     cloudVpsOperations.editSsh({
   //       ...values,
   //       ...getRequiredParams,
   //       closeModal: () =>
-  //         dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false })),
+  //         dispatch(cloudVpsActions.setItemForModals({ backup_create: false })),
   //       p_col,
   //       p_cnt: p_cnt ?? pagination.p_cnt,
   //       p_num: 1,
@@ -102,23 +86,7 @@ export default function InstanceBackups() {
         />
       </div>
 
-      {pagination.totalElems > 5 && (
-        <Pagination
-          className={s.pagination}
-          currentPage={pagination.p_num}
-          totalCount={Number(pagination.totalElems)}
-          onPageChange={value => {
-            setPagination({ p_num: value })
-            setIsPaginationChanged(prev => !prev)
-          }}
-          pageSize={pagination.p_cnt}
-          onPageItemChange={value => {
-            setPagination({ p_cnt: value })
-          }}
-        />
-      )}
-
-      {/* setSnapshot func should be replaced when endpoint will be finished */}
+      {/* setBackup func should be replaced when endpoint will be finished */}
       <Modals
         setBackup={dispatch(cloudVpsActions.setItemForModals({ backup_create: false }))}
       />
