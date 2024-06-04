@@ -9,7 +9,7 @@ import {
   DeleteSshModal,
   SshKeyModal,
   RdnsModal,
-  CreateSnapshotModal,
+  CreateSnapshotOrBackupModal,
 } from '.'
 
 import {
@@ -27,6 +27,7 @@ export const Modals = ({
   renameSshSubmit,
   addNewSshSubmit,
   setSnapshot,
+  setBackup,
   loadingParams = {},
   pagination = {},
   setPagination = () => {},
@@ -143,11 +144,6 @@ export const Modals = ({
     )
   }
 
-  // Must be changed when endpoint will be created
-  const createSnapshotSubmit = ({ value, elid, errorCallback }) => {
-    dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false }))
-  }
-
   return (
     <>
       {!!itemForModals?.change_pass && (
@@ -253,8 +249,23 @@ export const Modals = ({
         />
       )}
 
-      {!!itemForModals?.snapshot_create && (
-        <CreateSnapshotModal
+      {['snapshot_create', 'backup_create'].some(key => !!itemForModals?.[key]) && (
+        <CreateSnapshotOrBackupModal
+          item={itemForModals?.snapshot_create || itemForModals?.backup_create}
+          closeModal={() =>
+            dispatch(
+              cloudVpsActions.setItemForModals({
+                snapshot_create: false,
+                backup_create: false,
+              }),
+            )
+          }
+          onSubmit={itemForModals?.snapshot_create ? setSnapshot : setBackup}
+        />
+      )}
+
+      {/* {!!itemForModals?.snapshot_create && (
+        <CreateSnapshotOrBackupModal
           item={itemForModals?.snapshot_create}
           closeModal={() =>
             dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false }))
@@ -262,6 +273,16 @@ export const Modals = ({
           onSubmit={setSnapshot}
         />
       )}
+
+      {!!itemForModals?.backup_create && (
+        <CreateSnapshotOrBackupModal
+          item={itemForModals?.backup_create}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ backup_create: false }))
+          }
+          onSubmit={setSnapshot}
+        />
+      )} */}
     </>
   )
 }

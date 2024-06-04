@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next'
 import s from './Modals.module.scss'
 import { getInstanceMainInfo } from '@utils'
 
-export const CreateSnapshotModal = ({ item, closeModal, onSubmit }) => {
+export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
   const { displayName } = getInstanceMainInfo(item)
 
@@ -21,6 +21,8 @@ export const CreateSnapshotModal = ({ item, closeModal, onSubmit }) => {
       .required(t('Is a required field', { ns: 'other' }))
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
   })
+
+  console.log('Item: ', item)
 
   return (
     <Modal isOpen={!!item} closeModal={closeModal}>

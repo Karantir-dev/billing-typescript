@@ -120,6 +120,11 @@ const InstanceSnapshots = lazy(() =>
     /* webpackChunkName: "InstanceSnapshots" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceSnapshots/InstanceSnapshots'
   ),
 )
+const InstanceBackups = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceSnapshots" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceBackups/InstanceBackups'
+  ),
+)
 
 const DedicOrderPage = lazy(() =>
   import(
@@ -577,6 +582,19 @@ export const InstanceSnapshotsLazy = () => {
   return (
     <ShellСomponent title={title}>
       <InstanceSnapshots />
+    </ShellСomponent>
+  )
+}
+
+export const InstanceBackupsLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'backups', ns: 'crumbs' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceBackups />
     </ShellСomponent>
   )
 }
