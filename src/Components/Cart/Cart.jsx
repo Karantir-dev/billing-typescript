@@ -1385,12 +1385,6 @@ export default function Component() {
                               >
                                 <Icon name="Info" />
                               </TooltipWrapper>
-                              {/* <button type="button" className={s.infoBtn}>
-                                <Icon name="Info" />
-                                <div ref={dropdownSale} className={s.descriptionBlock}>
-                                  {renderActiveDiscounts()}
-                                </div>
-                              </button> */}
                             </>
                           ) : null}
                         </span>
