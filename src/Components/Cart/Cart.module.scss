@@ -414,17 +414,6 @@
     flex-direction: row;
     align-items: center;
   }
-
-  .infoBtn {
-    position: relative;
-    margin-left: 7px;
-
-    .descriptionBlock {
-      top: auto;
-      bottom: 130%;
-      left: 0;
-    }
-  }
 }
 
 // don't forget to rename this block
@@ -519,41 +508,23 @@
   margin-top: 15px;
 }
 
-.infoBtn {
-  position: relative;
-  top: 2px;
-  margin-left: 7px;
-  z-index: 2;
-  cursor: pointer;
+.InfoBtn {
+  max-width: 250px;
+  width: 100%;
+}
 
-  &_address {
-    position: absolute;
-    top: 30px;
-    right: 0px;
-    z-index: 2;
-    padding: 12px 12px 12px 0px;
-    cursor: pointer;
+.wrapperInfoBtn {
+  width: fit-content;
+}
 
-    .descriptionBlock {
-      right: 0;
-    }
-  }
-
-  &:hover {
-    svg path {
-      fill: var(--accent-color-light);
-    }
-
-    .descriptionBlock {
-      opacity: 1;
-      height: auto;
-      overflow: auto;
-      padding: 15px;
-    }
-  }
+.price_row {
+  display: flex;
+  gap: 5px;
 }
 
 .infoBtnCard {
+  width: fit-content;
+
   &:hover {
     path {
       fill: var(--accent-color-light);
@@ -698,14 +669,6 @@
 @media screen and (min-width: 1550px) {
   .modalBlock {
     margin: 3% auto;
-  }
-}
-
-@media (max-width: 499px) {
-  .infoBtn .descriptionBlock {
-    top: auto;
-    bottom: 130%;
-    left: -1000%;
   }
 }
 

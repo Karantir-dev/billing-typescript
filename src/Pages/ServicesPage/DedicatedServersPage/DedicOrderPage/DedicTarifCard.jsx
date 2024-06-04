@@ -82,7 +82,7 @@ export default function DedicTarifCard({
                   count: itemInfo?.specs?.count_exists || 0,
                 })}
               </span>
-              <span>
+              <span className={s.card_title_description}>
                 {itemInfo?.specs?.count_exists
                   ? t('dedic_activation_time')
                   : t('dedic_ready_time')}
