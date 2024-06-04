@@ -50,8 +50,6 @@ export default function Component() {
     return { ...state, ...action }
   }, {})
 
-  // const dropdownSale = useRef(null)
-
   const { t } = useTranslation([
     'cart',
     'other',
