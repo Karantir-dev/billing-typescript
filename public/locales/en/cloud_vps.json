@@ -186,5 +186,16 @@
       "cpu_metrics": "CPU metrics"
     }
   },
-  "metrics_chart_empty": "No data available to generate the chart"
+  "metrics_chart_empty": "No data available to generate the chart",
+  "name": "Name",
+  "type": "Type",
+  "region": "Region",
+  "created_at": "Created at",
+  "size": "Size",
+  "os": "OS",
+  "price_per_day": "Price/day",
+  "edit": "Edit",
+  "launch": "Launch",
+  "copy": "Copy",
+  "delete": "Delete"
 }

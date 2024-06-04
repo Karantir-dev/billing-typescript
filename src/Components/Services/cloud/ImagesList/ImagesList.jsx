@@ -6,12 +6,12 @@ import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ImageItem from './ImageItem'
+import ImageMobileItem from './ImageMobileItem'
 export default function ImagesList({
   items,
   cells,
-  getItems = () => {
-    console.log('Get Items')
-  },
+  getItems = () => {},
+  itemOnClickHandler,
 }) {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
@@ -79,7 +79,7 @@ export default function ImagesList({
         const changeSortHandler = () => changeSort(cell.value)
 
         return (
-          <th key={cell.label} className={s.th}>
+          <th key={cell.label} className={s.th} data-th={cell.label}>
             {cell.isSort ? (
               <button
                 className={cn(s.sort, { [s.sort_active]: isActive })}
@@ -94,30 +94,8 @@ export default function ImagesList({
         )
       })
 
-  const cellsData = cells.map(cell => {
-    let renderData
-    switch (cell.label) {
-      case 'name':
-        renderData = function renderDataBane(value) {
-          return <p className={s.pp}>{value}</p>
-        }
-        break
-      case 'options':
-        renderData = function renderDataBane(value) {
-          return <Options options={[]} />
-        }
-        break
-      default:
-        renderData = function renderDataBane(value) {
-          return value
-        }
-    }
-
-    return { ...cell, renderData }
-  })
-
   return (
-    <>
+    <div className={s.wrapper}>
       {widerThan768 ? (
         <table className={s.table}>
           <thead className={s.thead}>
@@ -128,7 +106,12 @@ export default function ImagesList({
           </thead>
           <tbody className={s.tbody}>
             {items.map(item => (
-              <ImageItem key={item.id} item={item} cells={cellsData} />
+              <ImageItem
+                key={item.id}
+                item={item}
+                cells={cells}
+                itemOnClickHandler={itemOnClickHandler}
+              />
             ))}
           </tbody>
         </table>
@@ -155,6 +138,14 @@ export default function ImagesList({
             disableClickActive={false}
           />
           <div className={s.mobile__list}>
+            {items.map(item => (
+              <ImageMobileItem
+                key={item.id}
+                item={item}
+                cells={cells}
+                itemOnClickHandler={itemOnClickHandler}
+              />
+            ))}
             {/* {instances.map(item => (
               <InstanceItemMobile key={item.id.$} item={item} />
             ))} */}
@@ -177,6 +168,6 @@ export default function ImagesList({
           }}
         />
       )}
-    </>
+    </div>
   )
 }

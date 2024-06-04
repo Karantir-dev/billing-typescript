@@ -193,7 +193,8 @@ export const CLOUD_IMAGE_CELLS = [
   { label: 'type', isSort: true, value: 'instance_status', dataKey: 'type' },
   { label: 'region', isSort: true, value: 'pricelist', dataKey: 'region' },
   { label: 'created_at', isSort: true, value: 'createdate', dataKey: 'created_at' },
-  { label: 'min_disk', isSort: true, value: 'instances_os', dataKey: 'min_disc' },
+  { label: 'size', isSort: true, value: 'size', dataKey: 'size' },
+  { label: 'os', isSort: true, value: 'instances_os', dataKey: 'os' },
   { label: 'price_per_day', isSort: true, value: 'ip', dataKey: 'price_per_day' },
   {
     label: 'options',

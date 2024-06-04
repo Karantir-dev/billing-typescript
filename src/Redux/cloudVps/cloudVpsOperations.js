@@ -968,6 +968,34 @@ const getMetrics =
         handleLoadersClosing(error?.message, dispatch)
       })
   }
+const getImages =
+  ({ signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'image',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        console.log(data, ' data')
+        // setData(data.doc || [])
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
 
 export default {
   getInstances,
@@ -993,4 +1021,5 @@ export default {
   getTariffParamsRequest,
   generateSsh,
   getMetrics,
+  getImages,
 }
