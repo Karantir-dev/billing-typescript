@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import {
   ChangePasswordModal,
   DeleteModal,
@@ -263,26 +262,6 @@ export const Modals = ({
           onSubmit={itemForModals?.snapshot_create ? setSnapshot : setBackup}
         />
       )}
-
-      {/* {!!itemForModals?.snapshot_create && (
-        <CreateSnapshotOrBackupModal
-          item={itemForModals?.snapshot_create}
-          closeModal={() =>
-            dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false }))
-          }
-          onSubmit={setSnapshot}
-        />
-      )}
-
-      {!!itemForModals?.backup_create && (
-        <CreateSnapshotOrBackupModal
-          item={itemForModals?.backup_create}
-          closeModal={() =>
-            dispatch(cloudVpsActions.setItemForModals({ backup_create: false }))
-          }
-          onSubmit={setSnapshot}
-        />
-      )} */}
     </>
   )
 }
