@@ -565,3 +565,13 @@
     flex-direction: row;
   }
 }
+
+.infoBtnCard {
+  cursor: help;
+
+  &:hover {
+    path {
+      fill: var(--accent-color-light);
+    }
+  }
+}
