@@ -41,7 +41,7 @@ export default function ImagesList({
 
   const getItemsHandler = ({ p_col, p_num, p_cnt } = {}) => {
     getItems({
-      p_col: p_col ?? sortBy,
+      p_col,
       p_cnt: p_cnt ?? pagination.p_cnt,
       p_num: p_num ?? pagination.p_num,
     })
@@ -49,7 +49,7 @@ export default function ImagesList({
 
   useEffect(() => {
     // setFiltersHandler()
-    getItemsHandler()
+    getItemsHandler({ p_col: sortBy })
     setIsFirstRender(false)
 
     return () => {
@@ -200,79 +200,83 @@ export default function ImagesList({
   })
 
   return (
-    <div className={s.wrapper}>
-      {widerThan768 ? (
-        <table className={s.table}>
-          <thead className={s.thead}>
-            <tr className={s.tr}>
-              {renderHeadCells()}
-              <th className={s.th}></th>
-            </tr>
-          </thead>
-          <tbody className={s.tbody}>
-            {items.map(item => (
-              <ImageItem
-                key={item.id.$}
-                item={item}
-                cells={renderCells}
-                itemOnClickHandler={itemOnClickHandler}
+    <>
+      {items && (
+        <div className={s.wrapper}>
+          {widerThan768 ? (
+            <table className={s.table}>
+              <thead className={s.thead}>
+                <tr className={s.tr}>
+                  {renderHeadCells()}
+                  <th className={s.th}></th>
+                </tr>
+              </thead>
+              <tbody className={s.tbody}>
+                {items.map(item => (
+                  <ImageItem
+                    key={item.id.$}
+                    item={item}
+                    cells={renderCells}
+                    itemOnClickHandler={itemOnClickHandler}
+                  />
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <>
+              <Select
+                className={s.sort_select}
+                placeholder={t('sort')}
+                label={`${t('sort')}:`}
+                isShadow
+                itemsList={cells
+                  .filter(el => el.isSort)
+                  .map(el => {
+                    const { icon } = checkSortItem(el.value)
+                    return {
+                      ...el,
+                      label: t(el.label),
+                      icon,
+                    }
+                  })}
+                itemIcon
+                getElement={value => changeSort(value)}
+                value={sortBy?.replace(/[+-]/g, '')}
+                disableClickActive={false}
               />
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <>
-          <Select
-            className={s.sort_select}
-            placeholder={t('sort')}
-            label={`${t('sort')}:`}
-            isShadow
-            itemsList={cells
-              .filter(el => el.isSort)
-              .map(el => {
-                const { icon } = checkSortItem(el.value)
-                return {
-                  ...el,
-                  label: t(el.label),
-                  icon,
-                }
-              })}
-            itemIcon
-            getElement={value => changeSort(value)}
-            value={sortBy?.replace(/[+-]/g, '')}
-            disableClickActive={false}
-          />
-          <div className={s.mobile__list}>
-            {items.map(item => (
-              <ImageMobileItem
-                key={item.id.$}
-                item={item}
-                cells={renderCells}
-                itemOnClickHandler={itemOnClickHandler}
-              />
-            ))}
-            {/* {instances.map(item => (
+              <div className={s.mobile__list}>
+                {items.map(item => (
+                  <ImageMobileItem
+                    key={item.id.$}
+                    item={item}
+                    cells={renderCells}
+                    itemOnClickHandler={itemOnClickHandler}
+                  />
+                ))}
+                {/* {instances.map(item => (
               <InstanceItemMobile key={item.id.$} item={item} />
             ))} */}
-          </div>
-        </>
-      )}
+              </div>
+            </>
+          )}
 
-      {itemsCount > 5 && (
-        <Pagination
-          className={s.pagination}
-          currentPage={pagination.p_num}
-          totalCount={itemsCount}
-          onPageChange={value => {
-            setPagination({ p_num: value })
-            setIsPaginationChanged(prev => !prev)
-          }}
-          pageSize={pagination.p_cnt}
-          onPageItemChange={value => {
-            setPagination({ p_cnt: value })
-          }}
-        />
+          {itemsCount > 5 && (
+            <Pagination
+              className={s.pagination}
+              currentPage={pagination.p_num}
+              totalCount={itemsCount}
+              onPageChange={value => {
+                setPagination({ p_num: value })
+                setIsPaginationChanged(prev => !prev)
+              }}
+              pageSize={pagination.p_cnt}
+              onPageItemChange={value => {
+                setPagination({ p_cnt: value })
+              }}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </>
   )
 }

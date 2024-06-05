@@ -22,7 +22,7 @@ export default function ImagesPage() {
 
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState()
   const [imagesCount, setImagesCount] = useState(0)
 
   const getItems = params => {
@@ -36,10 +36,6 @@ export default function ImagesPage() {
       }),
     )
   }
-
-  // useEffect(() => {
-  //   dispatch(cloudVpsOperations.getImages({}))
-  // }, [])
 
   const itemOnClickHandler = (e, item) => {
     if (
