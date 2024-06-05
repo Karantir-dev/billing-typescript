@@ -93,6 +93,11 @@ export default function ImagesPage() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
 
+  const getItems = params => {
+    console.log(params, ' params')
+    dispatch(cloudVpsOperations.getImages({ ...params, signal, setIsLoading }))
+  }
+
   // useEffect(() => {
   //   dispatch(cloudVpsOperations.getImages({}))
   // }, [])
@@ -182,7 +187,12 @@ export default function ImagesPage() {
 
   return (
     <div className={s.images}>
-      <ImagesList cells={cells} items={items} itemOnClickHandler={itemOnClickHandler} />
+      <ImagesList
+        cells={cells}
+        items={items}
+        itemOnClickHandler={itemOnClickHandler}
+        getItems={getItems}
+      />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </div>
   )

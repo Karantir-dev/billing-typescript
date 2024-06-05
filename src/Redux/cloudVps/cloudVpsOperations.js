@@ -969,7 +969,7 @@ const getMetrics =
       })
   }
 const getImages =
-  ({ signal, setIsLoading }) =>
+  ({ p_cnt, p_num, p_col, signal, setIsLoading }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -982,12 +982,15 @@ const getImages =
           out: 'json',
           auth: sessionId,
           lang: 'en',
+          p_cnt,
+          p_num,
+          p_col,
         }),
         { signal },
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        console.log(data, ' data')
+        // console.log(data, ' data')
         // setData(data.doc || [])
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })

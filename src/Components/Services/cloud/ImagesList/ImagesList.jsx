@@ -27,10 +27,19 @@ export default function ImagesList({
   const [isPaginationChanged, setIsPaginationChanged] = useState(false)
   const [isFirstRender, setIsFirstRender] = useState(true)
 
-  const [sortBy, setSortBy] = useState('+servername')
+  const [sortBy, setSortBy] = useState('+id')
+
+  const getItemsHandler = ({ p_col, p_num, p_cnt, isLoader } = {}) => {
+    getItems({
+      p_col,
+      p_cnt: p_cnt ?? pagination.p_cnt,
+      p_num: p_num ?? pagination.p_num,
+    })
+  }
 
   useEffect(() => {
     // setFiltersHandler()
+    getItemsHandler()
     setIsFirstRender(false)
 
     return () => {
@@ -42,7 +51,7 @@ export default function ImagesList({
 
   useEffect(() => {
     if (!isFirstRender) {
-      getItems()
+      getItemsHandler()
     }
   }, [isPaginationChanged])
 
@@ -71,6 +80,7 @@ export default function ImagesList({
       setSortValue(`-${value}`)
     }
   }
+
   const renderHeadCells = () =>
     cells
       .filter(cell => !cell.isHidden)
