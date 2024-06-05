@@ -203,6 +203,7 @@ export default function InputWithAutocomplete({
               className={s.adressHint}
               content={infoText}
               anchor={`${fieldName}_info`}
+              place="top-end"
             >
               <Icon name="Info" />
             </TooltipWrapper>
