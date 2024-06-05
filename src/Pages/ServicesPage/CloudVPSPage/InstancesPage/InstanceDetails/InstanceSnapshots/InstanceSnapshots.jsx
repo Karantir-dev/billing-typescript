@@ -32,15 +32,7 @@ export default function InstanceSnapshots() {
   const [isPaginationChanged, setIsPaginationChanged] = useState(false)
   const [isFirstRender, setIsFirstRender] = useState(true)
 
-  const [pagination, setPagination] = useReducer(
-    (state, action) => {
-      return { ...state, ...action }
-    },
-    { p_num: 1, p_cnt: '10', totalElems: 0 },
-  )
-
   const getRequiredParams = {
-    setTotalElems: value => setPagination({ totalElems: value }),
     signal,
     setIsLoading,
   }
@@ -100,22 +92,6 @@ export default function InstanceSnapshots() {
           }}
         />
       </div>
-
-      {pagination.totalElems > 5 && (
-        <Pagination
-          className={s.pagination}
-          currentPage={pagination.p_num}
-          totalCount={Number(pagination.totalElems)}
-          onPageChange={value => {
-            setPagination({ p_num: value })
-            setIsPaginationChanged(prev => !prev)
-          }}
-          pageSize={pagination.p_cnt}
-          onPageItemChange={value => {
-            setPagination({ p_cnt: value })
-          }}
-        />
-      )}
 
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>

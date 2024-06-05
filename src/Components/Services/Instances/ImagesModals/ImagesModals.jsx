@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { CreateSnapshotOrBackupModal } from './CreateSnapshotOrBackupModal'
+import { CreateSnapshotOrBackupModal } from './'
 
 import {
   cloudVpsActions,
