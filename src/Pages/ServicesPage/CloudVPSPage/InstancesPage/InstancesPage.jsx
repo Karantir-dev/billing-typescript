@@ -303,10 +303,6 @@ export default function InstancesPage() {
         setPagination={setPagination}
         getInstances={getInstances}
         addNewSshSubmit={setNewSshKey}
-        setSnapshot={dispatch(
-          cloudVpsActions.setItemForModals({ snapshot_create: false }),
-        )}
-        setBackup={dispatch(cloudVpsActions.setItemForModals({ backup_create: false }))}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>
