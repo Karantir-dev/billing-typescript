@@ -184,6 +184,13 @@
   }
 }
 
+.adressHint {
+  @media screen and (max-width: 500px) {
+    max-width: 240px;
+    text-wrap: balance;
+  }
+}
+
 .infoText {
   position: absolute;
   opacity: 0;

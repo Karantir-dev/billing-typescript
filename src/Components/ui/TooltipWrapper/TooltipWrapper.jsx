@@ -63,7 +63,7 @@ TooltipWrapper.propTypes = {
   anchor: PropTypes.string.isRequired /* The selector for the anchor elements. */,
   content: PropTypes.oneOfType([
     PropTypes.string,
-    PropTypes.object,
+    PropTypes.node,
   ]) /* Content to be displayed in tooltip */,
   children:
     PropTypes.node /* The tooltip children have lower priority compared to the content */,
