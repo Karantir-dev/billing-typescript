@@ -10,9 +10,9 @@ export default function ImageItem({ item, cells, itemOnClickHandler }) {
           data-target={cell.label}
           className={cn(s.td, s[cell.label])}
         >
-          {cell.renderData?.(item[cell.dataKey]?.$ ?? item[cell.dataKey], item) ??
-            item[cell.dataKey]?.$ ??
-            item[cell.dataKey]}
+          {cell.renderData?.(item[cell.value]?.$ ?? item[cell.value], item) ??
+            item[cell.value]?.$ ??
+            item[cell.value]}
         </td>
       ))}
     </tr>

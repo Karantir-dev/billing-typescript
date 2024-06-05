@@ -1,19 +1,28 @@
 /* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './ImagesList.module.scss'
-import { Icon, Options, Pagination, Select } from '@components'
+import {
+  EditCell,
+  Icon,
+  ImagesOptions,
+  Options,
+  Pagination,
+  Select,
+  TooltipWrapper,
+} from '@components'
 import cn from 'classnames'
 import { useEffect, useReducer, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
+import { formatCountryName, getFlagFromCountryName } from '@src/utils'
 export default function ImagesList({
   items,
   cells,
   getItems = () => {},
   itemOnClickHandler,
 }) {
-  const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
+  const { t } = useTranslation(['cloud_vps'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [pagination, setPagination] = useReducer(
@@ -104,6 +113,91 @@ export default function ImagesList({
         )
       })
 
+  const renderCells = cells.map(cell => {
+    let renderData
+    switch (cell.label) {
+      case 'name':
+        if (!cell.renderData) {
+          renderData = function renderData(value, item) {
+            return (
+              <div className={s.name_wrapper}>
+                <div className={s.name_field_wrapper}>
+                  {item?.protected?.$orig === 'on' && <Icon name="Protected" />}
+                  <div className={s.name_field}>
+                    <EditCell
+                      originName={value}
+                      // onSubmit={editServerName}
+                      placeholder={value || t('server_placeholder', { ns: 'vds' })}
+                      isShadow={true}
+                    />
+                  </div>
+                </div>
+                <p
+                  className={cn(s.status, s[item?.fleio_status?.$?.trim().toLowerCase()])}
+                >
+                  {item?.fleio_status.$}
+                </p>
+              </div>
+            )
+          }
+          return { ...cell, renderData }
+        }
+        return cell
+      case 'options':
+        if (!cell.renderData) {
+          renderData = function renderData(_, item) {
+            return <ImagesOptions item={item} type="images" />
+          }
+          return { ...cell, renderData }
+        }
+        return cell
+      case 'os':
+        if (!cell.renderData) {
+          renderData = function renderData(value, item) {
+            return (
+              <TooltipWrapper
+                className={s.popup}
+                wrapperClassName={s.popup__wrapper}
+                content={item.os}
+                anchor={`os_${item?.id.$}`}
+              >
+                <Icon name={value} />
+              </TooltipWrapper>
+            )
+          }
+          return { ...cell, renderData }
+        }
+        return cell
+      case 'region':
+        if (!cell.renderData) {
+          renderData = function renderData(value, item) {
+            const itemCountry = formatCountryName(item, 'region')
+            return (
+              <TooltipWrapper
+                className={s.popup}
+                wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
+                content={t(itemCountry, { ns: 'countries' })}
+                anchor={`country_flag_${item?.id.$}`}
+              >
+                <img
+                  src={require(`@images/countryFlags/${getFlagFromCountryName(
+                    itemCountry,
+                  )}.png`)}
+                  width={20}
+                  height={14}
+                  alt={value}
+                />
+              </TooltipWrapper>
+            )
+          }
+          return { ...cell, renderData }
+        }
+        return cell
+      default:
+        return cell
+    }
+  })
+
   return (
     <div className={s.wrapper}>
       {widerThan768 ? (
@@ -117,9 +211,9 @@ export default function ImagesList({
           <tbody className={s.tbody}>
             {items.map(item => (
               <ImageItem
-                key={item.id}
+                key={item.id.$}
                 item={item}
-                cells={cells}
+                cells={renderCells}
                 itemOnClickHandler={itemOnClickHandler}
               />
             ))}
@@ -150,9 +244,9 @@ export default function ImagesList({
           <div className={s.mobile__list}>
             {items.map(item => (
               <ImageMobileItem
-                key={item.id}
+                key={item.id.$}
                 item={item}
-                cells={cells}
+                cells={renderCells}
                 itemOnClickHandler={itemOnClickHandler}
               />
             ))}

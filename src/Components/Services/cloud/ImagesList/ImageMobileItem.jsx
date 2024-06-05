@@ -15,11 +15,11 @@ export default function ImageMobileItem({ item, cells, itemOnClickHandler }) {
       <div className={s.mobile_item__header} data-target="options">
         <div className={s.mobile_item__header_name}>
           {nameField.renderData(
-            item[nameField.dataKey]?.$ ?? item[nameField.dataKey],
+            item[nameField.value]?.$ ?? item[nameField.value],
             item,
           ) ??
-            item[nameField.dataKey]?.$ ??
-            item[nameField.dataKey]}
+            item[nameField.value]?.$ ??
+            item[nameField.value]}
         </div>
         <div>{optionsField.renderData(undefined, item)}</div>
       </div>
@@ -32,9 +32,9 @@ export default function ImageMobileItem({ item, cells, itemOnClickHandler }) {
               key={`item_m_${item.id}${cell.label}`}
               data-target={cell.label}
             >
-              {cell.renderData?.(item[cell.dataKey]?.$ ?? item[cell.dataKey], item) ??
-                item[cell.dataKey]?.$ ??
-                item[cell.dataKey]}
+              {cell.renderData?.(item[cell.value]?.$ ?? item[cell.value], item) ??
+                item[cell.value]?.$ ??
+                item[cell.value]}
             </div>
           )
         })}

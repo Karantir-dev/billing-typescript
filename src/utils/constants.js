@@ -189,19 +189,18 @@ export const CLOUD_SORT_LIST = [
   { label: 'Access IP', isSort: true, value: 'ip' },
 ]
 export const CLOUD_IMAGE_CELLS = [
-  { label: 'name', isSort: true, value: 'servername', dataKey: 'name' },
-  { label: 'type', isSort: true, value: 'instance_status', dataKey: 'type' },
-  { label: 'region', isSort: true, value: 'pricelist', dataKey: 'region' },
-  { label: 'created_at', isSort: true, value: 'createdate', dataKey: 'created_at' },
-  { label: 'size', isSort: true, value: 'size', dataKey: 'size' },
-  { label: 'os', isSort: true, value: 'instances_os', dataKey: 'os' },
-  { label: 'price_per_day', isSort: true, value: 'ip', dataKey: 'price_per_day' },
+  { label: 'name', isSort: true, value: 'image_name' },
+  { label: 'type', isSort: true, value: 'image_type' },
+  { label: 'region', isSort: true, value: 'region' },
+  { label: 'created_at', isSort: true, value: 'createdate' },
+  { label: 'size', isSort: true, value: 'min_disk' },
+  { label: 'os', isSort: true, value: 'os_distro' },
+  { label: 'price_per_day', isSort: true, value: 'cost' },
   {
     label: 'options',
     isSort: false,
     isHidden: true,
     value: 'options',
-    dataKey: 'options',
   },
 ]
 

@@ -969,7 +969,7 @@ const getMetrics =
       })
   }
 const getImages =
-  ({ p_cnt, p_num, p_col, signal, setIsLoading }) =>
+  ({ p_cnt, p_num, p_col, setData, signal, setIsLoading }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -990,8 +990,15 @@ const getImages =
       )
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        // console.log(data, ' data')
-        // setData(data.doc || [])
+        const elemsList = data.doc.elem || []
+        /** unifies the data structure */
+        elemsList.forEach(el => {
+          if (!el.createdate.$ && el.createdate?.[0]?.$) {
+            el.createdate.$ = el.createdate[0].$
+          }
+        })
+
+        setData(elemsList)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {

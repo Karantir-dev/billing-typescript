@@ -75,7 +75,7 @@ export default function ImagesOptions({ item, type }) {
                 <TooltipWrapper
                   key={option.label}
                   content={option.label}
-                  anchor={`${option.icon}_${item.id}`}
+                  anchor={`${option.icon}_${item.id.$}`}
                 >
                   <button onClick={option.onClick}>
                     <Icon name={option.icon} />
