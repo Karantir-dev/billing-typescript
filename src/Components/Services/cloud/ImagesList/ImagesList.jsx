@@ -18,6 +18,7 @@ import ImageMobileItem from './ImageMobileItem'
 import { formatCountryName, getFlagFromCountryName } from '@src/utils'
 export default function ImagesList({
   items,
+  itemsCount,
   cells,
   getItems = () => {},
   itemOnClickHandler,
@@ -38,9 +39,9 @@ export default function ImagesList({
 
   const [sortBy, setSortBy] = useState('+id')
 
-  const getItemsHandler = ({ p_col, p_num, p_cnt, isLoader } = {}) => {
+  const getItemsHandler = ({ p_col, p_num, p_cnt } = {}) => {
     getItems({
-      p_col,
+      p_col: p_col ?? sortBy,
       p_cnt: p_cnt ?? pagination.p_cnt,
       p_num: p_num ?? pagination.p_num,
     })
@@ -77,7 +78,7 @@ export default function ImagesList({
 
   const setSortValue = p_col => {
     setSortBy(p_col)
-    getItems({ p_col })
+    getItemsHandler({ p_col })
   }
 
   const changeSort = value => {
@@ -257,11 +258,11 @@ export default function ImagesList({
         </>
       )}
 
-      {items?.length > 5 && (
+      {itemsCount > 5 && (
         <Pagination
           className={s.pagination}
           currentPage={pagination.p_num}
-          totalCount={items.length}
+          totalCount={itemsCount}
           onPageChange={value => {
             setPagination({ p_num: value })
             setIsPaginationChanged(prev => !prev)

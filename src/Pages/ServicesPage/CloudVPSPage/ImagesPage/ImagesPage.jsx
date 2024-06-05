@@ -23,12 +23,14 @@ export default function ImagesPage() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
   const [images, setImages] = useState([])
+  const [imagesCount, setImagesCount] = useState(0)
 
   const getItems = params => {
     dispatch(
       cloudVpsOperations.getImages({
         ...params,
         setData: setImages,
+        setCount: setImagesCount,
         signal,
         setIsLoading,
       }),
@@ -55,6 +57,7 @@ export default function ImagesPage() {
       <ImagesList
         cells={CLOUD_IMAGE_CELLS}
         items={images}
+        itemsCount={imagesCount}
         itemOnClickHandler={itemOnClickHandler}
         getItems={getItems}
       />

@@ -969,7 +969,7 @@ const getMetrics =
       })
   }
 const getImages =
-  ({ p_cnt, p_num, p_col, setData, signal, setIsLoading }) =>
+  ({ p_cnt, p_num, p_col, setData, setCount, signal, setIsLoading }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -998,6 +998,7 @@ const getImages =
           }
         })
 
+        setCount(+data.doc.p_elems.$)
         setData(elemsList)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
