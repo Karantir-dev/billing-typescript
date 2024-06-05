@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { CreateSnapshotOrBackupModal } from './'
+import { CreateSnapshotOrBackupModal, CopyModal } from './'
 
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -49,6 +49,16 @@ export const ImagesModals = ({
             )
           }
           onSubmit={itemForModals?.snapshot_create ? createSnapshot : setBackup}
+        />
+      )}
+
+      {!!itemForModals?.images_copy && (
+        <CopyModal
+          item={itemForModals?.images_copy}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ images_copy: false }))
+          }
+          onSubmit={() => {}}
         />
       )}
     </>

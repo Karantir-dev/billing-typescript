@@ -49,3 +49,36 @@
     flex-direction: row-reverse;
   }
 }
+
+.cancel_btn {
+  text-decoration: underline;
+}
+
+.copy_modal__wrapper {
+  display: grid;
+  gap: 16px;
+}
+
+.copy_modal__footer_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column-reverse;
+  gap: 16px;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.copy_modal__input_wrapper {
+  @media screen and (max-width: 767px) {
+    padding-bottom: unset;
+  }
+}
+
+.copy_modal__checkbox_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

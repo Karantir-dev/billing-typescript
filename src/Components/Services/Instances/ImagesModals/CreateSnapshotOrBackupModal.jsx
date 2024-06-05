@@ -66,25 +66,23 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
           }}
         </Formik>
       </Modal.Body>
-      <Modal.Footer>
-        <div className={s.snapshot_create__footer_wrapper}>
-          <div className={s.snapshot_create__footer_block}>
-            <p className={s.tariff__param_name}>{t('Price')}</p>
-            <p>0.00 / GB / day</p>
-          </div>
+      <Modal.Footer className={s.snapshot_create__footer_wrapper}>
+        <div className={s.snapshot_create__footer_block}>
+          <p className={s.tariff__param_name}>{t('Price')}</p>
+          <p>0.00 / GB / day</p>
+        </div>
 
-          <div className={s.snapshot_create__buttons_wrapper}>
-            <Button
-              label={t('create')}
-              size={'large'}
-              type="submit"
-              form={'create_image'}
-              isShadow
-            />
-            <button type="button" onClick={closeModal}>
-              {t('Cancel')}
-            </button>
-          </div>
+        <div className={s.snapshot_create__buttons_wrapper}>
+          <Button
+            label={t('create')}
+            size={'large'}
+            type="submit"
+            form={'create_image'}
+            isShadow
+          />
+          <button type="button" className={s.cancel_btn} onClick={closeModal}>
+            {t('Cancel')}
+          </button>
         </div>
       </Modal.Footer>
     </Modal>
