@@ -159,7 +159,7 @@ export default function ImagesList({
               <TooltipWrapper
                 className={s.popup}
                 wrapperClassName={s.popup__wrapper}
-                content={item.os}
+                content={value}
                 anchor={`os_${item?.id.$}`}
               >
                 <Icon name={value} />
