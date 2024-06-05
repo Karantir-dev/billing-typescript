@@ -3,8 +3,7 @@ import {
   InputField,
   Modal,
   WarningMessage,
-  Icon,
-  TooltipWrapper,
+  // Icon,
 } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -17,7 +16,7 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
   const { displayName } = getInstanceMainInfo(item)
 
   const validationSchema = Yup.object().shape({
-    display_name: Yup.string()
+    name: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
   })
@@ -36,15 +35,15 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
         <WarningMessage>{t('snapshots.create_warning')}</WarningMessage>
 
         <Formik
-          initialValues={{ display_name: '' }}
+          initialValues={{ name: '' }}
           validationSchema={validationSchema}
-          // uncomment and mb modify code below later
-
-          // onSubmit={values => {
-          //   if (values.display_name === '') return closeModal()
-          //   onSubmit({ value: values.display_name, elid: item.id.$, closeModal })
-          // }}
-          onSubmit={onSubmit}
+          onSubmit={values => {
+            if (values.name === '') return closeModal()
+            onSubmit({
+              values: { name: values.name.trim() },
+              closeModal,
+            })
+          }}
         >
           {({ errors, touched }) => {
             return (
@@ -52,12 +51,12 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
                 <div>
                   <InputField
                     inputClassName={s.input}
-                    name="display_name"
+                    name="name"
                     isShadow
                     label={`${t('name', { ns: 'vds' })}:`}
                     placeholder={t('server_placeholder', { ns: 'vds' })}
-                    error={!!errors.display_name}
-                    touched={!!touched.display_name}
+                    error={!!errors.name}
+                    touched={!!touched.name}
                     isRequired
                     autoComplete="off"
                   />
@@ -70,21 +69,7 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
       <Modal.Footer>
         <div className={s.snapshot_create__footer_wrapper}>
           <div className={s.snapshot_create__footer_block}>
-            <div className={s.snapshot_create__field_wrapper}>
-              <p className={s.tariff__param_name}>Setup price</p>
-              <TooltipWrapper
-                wrapperClassName={s.infoBtnCard}
-                anchor={'setup_price_hint'}
-                content={t('here will be some text')}
-              >
-                <Icon name="Info" />
-              </TooltipWrapper>
-            </div>
-            <p>0.00</p>
-
-            <div className={s.field_wrapper}>
-              <p className={s.tariff__param_name}>Price</p>
-            </div>
+            <p className={s.tariff__param_name}>{t('Price')}</p>
             <p>0.00 / GB / day</p>
           </div>
 

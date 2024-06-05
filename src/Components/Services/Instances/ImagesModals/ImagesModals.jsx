@@ -1,23 +1,39 @@
 /* eslint-disable no-unused-vars */
 import { CreateSnapshotOrBackupModal } from './'
 
-import {
-  cloudVpsActions,
-  // cloudVpsOperations,
-  cloudVpsSelectors,
-} from '@redux'
+import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const ImagesModals = ({
   loadingParams = {},
   pagination = {},
   setPagination = () => {},
-  setSnapshot,
   setBackup,
   redirectCallback,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
+
+  const editSnapshot = values => {
+    dispatch(cloudVpsActions.setItemForModals({ snapshot_edit: false }))
+
+    cloudVpsOperations.editSnapshot({
+      plid: itemForModals?.snapshot_edit.id.$,
+      // elid: itemForModals?.snapshot_edit. ????? here should be id of snapshot later to change it
+      ...values,
+    })
+  }
+
+  const createSnapshot = values => {
+    dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false }))
+
+    dispatch(
+      cloudVpsOperations.editSnapshot({
+        plid: itemForModals?.snapshot_create.id.$,
+        ...values,
+      }),
+    )
+  }
 
   return (
     <>
@@ -32,7 +48,7 @@ export const ImagesModals = ({
               }),
             )
           }
-          onSubmit={itemForModals?.snapshot_create ? setSnapshot : setBackup}
+          onSubmit={itemForModals?.snapshot_create ? createSnapshot : setBackup}
         />
       )}
     </>
