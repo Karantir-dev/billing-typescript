@@ -9,13 +9,28 @@ import {
   EditCell,
 } from '@components'
 import s from './ImagesPage.module.scss'
-import { CLOUD_IMAGE_CELLS } from '@utils/constants'
 import { useDispatch } from 'react-redux'
 import { useCancelRequest } from '@src/utils'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import { useEffect, useState } from 'react'
 import { cloudVpsOperations } from '@src/Redux'
+
+export const CLOUD_IMAGE_CELLS = [
+  { label: 'name', isSort: true, value: 'image_name' },
+  { label: 'type', isSort: true, value: 'image_type' },
+  { label: 'region', isSort: true, value: 'region' },
+  { label: 'created_at', isSort: true, value: 'createdate' },
+  { label: 'size', isSort: true, value: 'min_disk' },
+  { label: 'os', isSort: true, value: 'os_distro' },
+  { label: 'price_per_day', isSort: true, value: 'cost' },
+  {
+    label: 'options',
+    isSort: false,
+    isHidden: true,
+    value: 'options',
+  },
+]
 
 export default function ImagesPage() {
   const { t } = useTranslation(['cloud_vps', 'countries'])
