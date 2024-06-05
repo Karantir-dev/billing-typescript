@@ -32,7 +32,8 @@
         "cloud_vps": "Cloud VPS",
         "instances": "instances",
         "ssh_keys": "SSH ключі",
-        "create_cloud_vps": "Створити сервер VPS"
+        "create_cloud_vps": "Створити сервер VPS",
+        "images": "Images"
       }
     },
     "ref_program": {

@@ -1,0 +1,16 @@
+.images {
+  @media (min-width: 768px) {
+    @media (max-width: 1023px) {
+      [data-th='created_at'],
+      [data-target='created_at'] {
+        display: none;
+      }
+    }
+    @media (max-width: 1549px) {
+      [data-th='region'],
+      [data-target='region'] {
+        display: none;
+      }
+    }
+  }
+}

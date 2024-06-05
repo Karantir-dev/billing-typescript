@@ -94,6 +94,11 @@ const CloudVpsSSHKeysPage = lazy(() =>
     /* webpackChunkName: "CloudVpsSSHKeysPage" */ '@pages/ServicesPage/CloudVPSPage/SSHKeysPage/SSHKeysPage'
   ),
 )
+const CloudVpsImagesPage = lazy(() =>
+  import(
+    /* webpackChunkName: "CloudVpsImagesPage" */ '@pages/ServicesPage/CloudVPSPage/ImagesPage/ImagesPage'
+  ),
+)
 const CloudInstanceItemPage = lazy(() =>
   import(
     /* webpackChunkName: "CloudInstanceItemPage" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/CloudInstanceItemPage/CloudInstanceItemPage'
@@ -521,6 +526,18 @@ export const CloudVPSSSHKeysPageLazy = () => {
   return (
     <ShellСomponent title={title}>
       <CloudVpsSSHKeysPage />
+    </ShellСomponent>
+  )
+}
+export const CloudVPSImagesPageLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.images', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <CloudVpsImagesPage />
     </ShellСomponent>
   )
 }
