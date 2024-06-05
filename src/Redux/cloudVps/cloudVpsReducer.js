@@ -57,8 +57,6 @@ const windowsTag = createReducer(initialState.windowsTag, {
   [cloudVpsActions.setWindowsTag]: (_, { payload }) => payload,
 })
 
-
-
 const premiumOperationSystems = createReducer(initialState.premiumOperationSystems, {
   [cloudVpsActions.setPremiumOperationSystems]: (state, { payload }) => ({
     ...state,

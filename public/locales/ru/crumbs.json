@@ -32,5 +32,7 @@
   "premium": "Premium VPS",
   "basic": "Basic VPS",
   "network_traffic": "Сетевой трафик",
-  "metrics": "Метрики"
+  "metrics": "Метрики",
+  "snapshots": "Снимки",
+  "backups": "Резервные копии"
 }

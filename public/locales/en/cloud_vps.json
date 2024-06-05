@@ -191,6 +191,15 @@
       "cpu": "AVG usage, %"
     }
   },
+  "pcs": "pcs.",
   "metrics_chart_empty": "No data available to generate the chart",
-  "pcs": "pcs."
+  "create_snapshot": "Create Snapshot",
+  "create_backup": "Create New Backup",
+  "snapshots": {
+    "create": "Create snapshot for instance",
+    "create_warning": "Instance will not be available while the snapshot is being processed."
+  },
+  "backups": {
+    "create": "Create backup for instance"
+  }
 }
