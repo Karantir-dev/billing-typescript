@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './ImagesList.module.scss'
 import {
   EditCell,
   Icon,
   ImagesOptions,
-  Options,
   Pagination,
   Select,
   TooltipWrapper,
@@ -16,12 +14,16 @@ import { useMediaQuery } from 'react-responsive'
 import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
 import { formatCountryName, getFlagFromCountryName } from '@src/utils'
+
 export default function ImagesList({
   items,
   itemsCount,
   cells,
   getItems = () => {},
+  editName,
   itemOnClickHandler,
+  idKey = 'id',
+  type,
 }) {
   const { t } = useTranslation(['cloud_vps'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
@@ -48,15 +50,8 @@ export default function ImagesList({
   }
 
   useEffect(() => {
-    // setFiltersHandler()
     getItemsHandler({ p_col: sortBy })
     setIsFirstRender(false)
-
-    return () => {
-      //   dispatch(cloudVpsActions.setInstancesCount(0))
-      //   dispatch(cloudVpsActions.setInstancesList(null))
-      //   dispatch(cloudVpsActions.setInstancesFilters({}))
-    }
   }, [])
 
   useEffect(() => {
@@ -127,7 +122,12 @@ export default function ImagesList({
                   <div className={s.name_field}>
                     <EditCell
                       originName={value}
-                      // onSubmit={editServerName}
+                      onSubmit={val => {
+                        const value = val.trim()
+                        if (value) {
+                          editName({ elid: item.id.$, value })
+                        }
+                      }}
                       placeholder={value || t('server_placeholder', { ns: 'vds' })}
                       isShadow={true}
                     />
@@ -147,7 +147,7 @@ export default function ImagesList({
       case 'options':
         if (!cell.renderData) {
           renderData = function renderData(_, item) {
-            return <ImagesOptions item={item} type="images" />
+            return <ImagesOptions item={item} type={type} idKey={idKey} />
           }
           return { ...cell, renderData }
         }
@@ -160,7 +160,7 @@ export default function ImagesList({
                 className={s.popup}
                 wrapperClassName={s.popup__wrapper}
                 content={value}
-                anchor={`os_${item?.id.$}`}
+                anchor={`os_${item?.[idKey].$}`}
               >
                 <Icon name={value} />
               </TooltipWrapper>
@@ -178,7 +178,7 @@ export default function ImagesList({
                 className={s.popup}
                 wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
                 content={t(itemCountry, { ns: 'countries' })}
-                anchor={`country_flag_${item?.id.$}`}
+                anchor={`country_flag_${item?.[idKey].$}`}
               >
                 <img
                   src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -202,80 +202,89 @@ export default function ImagesList({
   return (
     <>
       {items && (
-        <div className={s.wrapper}>
-          {widerThan768 ? (
-            <table className={s.table}>
-              <thead className={s.thead}>
-                <tr className={s.tr}>
-                  {renderHeadCells()}
-                  <th className={s.th}></th>
-                </tr>
-              </thead>
-              <tbody className={s.tbody}>
-                {items.map(item => (
-                  <ImageItem
-                    key={item.id.$}
-                    item={item}
-                    cells={renderCells}
-                    itemOnClickHandler={itemOnClickHandler}
+        <>
+          {items.length ? (
+            <div className={s.wrapper}>
+              {widerThan768 ? (
+                <table className={s.table}>
+                  <thead className={s.thead}>
+                    <tr className={s.tr}>
+                      {renderHeadCells()}
+                      <th className={s.th}></th>
+                    </tr>
+                  </thead>
+                  <tbody className={s.tbody}>
+                    {items.map(item => (
+                      <ImageItem
+                        key={item?.[idKey].$}
+                        item={item}
+                        cells={renderCells}
+                        itemOnClickHandler={itemOnClickHandler}
+                        idKey={idKey}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <>
+                  <Select
+                    className={s.sort_select}
+                    placeholder={t('sort')}
+                    label={`${t('sort')}:`}
+                    isShadow
+                    itemsList={cells
+                      .filter(el => el.isSort)
+                      .map(el => {
+                        const { icon } = checkSortItem(el.value)
+                        return {
+                          ...el,
+                          label: t(el.label),
+                          icon,
+                        }
+                      })}
+                    itemIcon
+                    getElement={value => changeSort(value)}
+                    value={sortBy?.replace(/[+-]/g, '')}
+                    disableClickActive={false}
                   />
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <>
-              <Select
-                className={s.sort_select}
-                placeholder={t('sort')}
-                label={`${t('sort')}:`}
-                isShadow
-                itemsList={cells
-                  .filter(el => el.isSort)
-                  .map(el => {
-                    const { icon } = checkSortItem(el.value)
-                    return {
-                      ...el,
-                      label: t(el.label),
-                      icon,
-                    }
-                  })}
-                itemIcon
-                getElement={value => changeSort(value)}
-                value={sortBy?.replace(/[+-]/g, '')}
-                disableClickActive={false}
-              />
-              <div className={s.mobile__list}>
-                {items.map(item => (
-                  <ImageMobileItem
-                    key={item.id.$}
-                    item={item}
-                    cells={renderCells}
-                    itemOnClickHandler={itemOnClickHandler}
-                  />
-                ))}
-                {/* {instances.map(item => (
-              <InstanceItemMobile key={item.id.$} item={item} />
-            ))} */}
-              </div>
-            </>
-          )}
+                  <div className={s.mobile__list}>
+                    {items.map(item => {
+                      return (
+                        <ImageMobileItem
+                          key={item?.[idKey].$}
+                          item={item}
+                          cells={renderCells}
+                          itemOnClickHandler={itemOnClickHandler}
+                          idKey={idKey}
+                        />
+                      )
+                    })}
+                  </div>
+                </>
+              )}
 
-          {itemsCount > 5 && (
-            <Pagination
-              className={s.pagination}
-              currentPage={pagination.p_num}
-              totalCount={itemsCount}
-              onPageChange={value => {
-                setPagination({ p_num: value })
-                setIsPaginationChanged(prev => !prev)
-              }}
-              pageSize={pagination.p_cnt}
-              onPageItemChange={value => {
-                setPagination({ p_cnt: value })
-              }}
-            />
+              {itemsCount > 5 && (
+                <Pagination
+                  className={s.pagination}
+                  currentPage={pagination.p_num}
+                  totalCount={itemsCount}
+                  onPageChange={value => {
+                    setPagination({ p_num: value })
+                    setIsPaginationChanged(prev => !prev)
+                  }}
+                  pageSize={pagination.p_cnt}
+                  onPageItemChange={value => {
+                    setPagination({ p_cnt: value })
+                  }}
+                />
+              )}
+            </div>
+          ) : (
+            <div className={s.no_images_wrapper}>
+              <p className={s.no_images_title}>{t('empty_list')}</p>
+            </div>
           )}
-        </div>
+        </>
       )}
     </>
   )

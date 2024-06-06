@@ -1,6 +1,6 @@
 import s from './ImagesList.module.scss'
 
-export default function ImageMobileItem({ item, cells, itemOnClickHandler }) {
+export default function ImageMobileItem({ item, cells, itemOnClickHandler, idKey }) {
   const nameField = cells.find(cell => cell.label === 'name')
   const optionsField = cells.find(cell => cell.label === 'options')
 
@@ -21,7 +21,7 @@ export default function ImageMobileItem({ item, cells, itemOnClickHandler }) {
             item[nameField.value]?.$ ??
             item[nameField.value]}
         </div>
-        <div>{optionsField.renderData(undefined, item)}</div>
+        <div>{optionsField?.renderData(undefined, item)}</div>
       </div>
       <div className={s.mobile_item__body}>
         {cells.map(cell => {
@@ -29,12 +29,10 @@ export default function ImageMobileItem({ item, cells, itemOnClickHandler }) {
           return (
             <div
               className={s.mobile_item__value}
-              key={`item_m_${item.id}${cell.label}`}
+              key={`item_m_${item?.[idKey].$}${cell.label}`}
               data-target={cell.label}
             >
-              {cell.renderData?.(item[cell.value]?.$ ?? item[cell.value], item) ??
-                item[cell.value]?.$ ??
-                item[cell.value]}
+              {cell?.renderData?.(item[cell.value]?.$, item) ?? item[cell.value]?.$}
             </div>
           )
         })}

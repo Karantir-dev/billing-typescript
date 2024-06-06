@@ -191,7 +191,6 @@
       "cpu": "AVG usage, %"
     }
   },
-  "pcs": "pcs.",
   "metrics_chart_empty": "No data available to generate the chart",
   "name": "Name",
   "type": "Type",
@@ -204,6 +203,7 @@
   "launch": "Launch",
   "copy": "Copy",
   "delete": "Delete",
+  "disk_format": "Disk format",
   "pcs": "pcs.",
   "create_snapshot": "Create Snapshot",
   "create_backup": "Create New Backup",
@@ -213,5 +213,6 @@
   },
   "backups": {
     "create": "Create backup for instance"
-  }
+  },
+  "empty_list": "Empty list"
 }

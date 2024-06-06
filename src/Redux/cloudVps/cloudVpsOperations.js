@@ -969,7 +969,7 @@ const getMetrics =
       })
   }
 const getImages =
-  ({ p_cnt, p_num, p_col, setData, setCount, signal, setIsLoading }) =>
+  ({ func, elid, p_cnt, p_num, p_col, setData, setCount, signal, setIsLoading }) =>
   (dispatch, getState) => {
     setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -978,10 +978,11 @@ const getImages =
       .post(
         '/',
         qs.stringify({
-          func: 'image',
+          func,
           out: 'json',
           auth: sessionId,
           lang: 'en',
+          elid,
           p_cnt,
           p_num,
           p_col,
@@ -993,13 +994,46 @@ const getImages =
         const elemsList = data.doc.elem || []
         /** unifies the data structure */
         elemsList.forEach(el => {
-          if (!el.createdate.$ && el.createdate?.[0]?.$) {
-            el.createdate.$ = el.createdate[0].$
+          if (!el.createdate?.$ && el.createdate?.[0]?.$) {
+            el.createdate.$ = el.createdate?.[0]?.$
           }
         })
 
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+const editImage =
+  ({ func, values, successCallback, elid, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `${func}.edit`,
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          clicked_button: 'ok',
+          sok: 'ok',
+          elid,
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        successCallback()
+
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -1033,4 +1067,5 @@ export default {
   generateSsh,
   getMetrics,
   getImages,
+  editImage,
 }

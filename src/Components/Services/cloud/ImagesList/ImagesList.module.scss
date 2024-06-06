@@ -40,6 +40,9 @@
   .td {
     font-size: 16px;
     white-space: nowrap;
+    &[data-target='name'] {
+      width: 250px;
+    }
     &:nth-child(1) {
       padding-left: 15px;
     }
@@ -258,24 +261,18 @@
   width: max-content;
 }
 
-// .no_vds_wrapper {
-//   text-align: center;
-//   margin: 40px auto;
-//   max-width: 500px;
-// }
+.no_images_wrapper {
+  text-align: center;
+  margin: 40px auto;
+  max-width: 500px;
+}
 
-// .no_vds {
-//   display: block;
-//   margin: 0 auto 20px;
-//   filter: grayscale(1);
-// }
-
-// .no_vds_title {
-//   font-size: 20px;
-//   font-weight: 600;
-//   text-transform: uppercase;
-//   margin-bottom: 15px;
-// }
+.no_images_title {
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
 
 .sort_select {
   max-width: 240px;

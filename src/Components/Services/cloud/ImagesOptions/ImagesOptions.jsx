@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
 import { Icon, Options, TooltipWrapper } from '@components'
 import s from './ImagesOptions.module.scss'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 
-export default function ImagesOptions({ item, type }) {
+export default function ImagesOptions({ item, type, idKey }) {
   const isMobile = useMediaQuery({ query: '(max-width: 1549px)' })
   const { t } = useTranslation(['cloud_vps'])
 
@@ -13,7 +12,7 @@ export default function ImagesOptions({ item, type }) {
       label: t('edit'),
       icon: 'Rename',
       onClick: () => {
-        console.log(item?.id, 'Rename')
+        console.log('Rename')
       },
     },
     {
@@ -45,6 +44,7 @@ export default function ImagesOptions({ item, type }) {
       onClick: () => {
         console.log('Downnload')
       },
+      hidden: true,
     },
     {
       label: t('delete'),
@@ -75,7 +75,7 @@ export default function ImagesOptions({ item, type }) {
                 <TooltipWrapper
                   key={option.label}
                   content={option.label}
-                  anchor={`${option.icon}_${item.id.$}`}
+                  anchor={`${option.icon}_${item[idKey].$}`}
                 >
                   <button onClick={option.onClick}>
                     <Icon name={option.icon} />

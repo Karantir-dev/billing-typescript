@@ -1,24 +1,15 @@
-/* eslint-disable quotes */
 /* eslint-disable no-unused-vars */
-import {
-  Loader,
-  ImagesList,
-  ImagesOptions,
-  TooltipWrapper,
-  Icon,
-  EditCell,
-} from '@components'
+import { Loader, ImagesList } from '@components'
 import s from './ImagesPage.module.scss'
 import { useDispatch } from 'react-redux'
 import { useCancelRequest } from '@src/utils'
-import { useTranslation } from 'react-i18next'
-import cn from 'classnames'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { cloudVpsOperations } from '@src/Redux'
 
 export const CLOUD_IMAGE_CELLS = [
   { label: 'name', isSort: true, value: 'image_name' },
   { label: 'type', isSort: true, value: 'image_type' },
+  { label: 'disk_format', isSort: true, value: 'disk_format' },
   { label: 'region', isSort: true, value: 'region' },
   { label: 'created_at', isSort: true, value: 'createdate' },
   { label: 'size', isSort: true, value: 'min_disk' },
@@ -33,8 +24,6 @@ export const CLOUD_IMAGE_CELLS = [
 ]
 
 export default function ImagesPage() {
-  const { t } = useTranslation(['cloud_vps', 'countries'])
-
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
   const [images, setImages] = useState()
@@ -44,6 +33,7 @@ export default function ImagesPage() {
     dispatch(
       cloudVpsOperations.getImages({
         ...params,
+        func: 'image',
         setData: setImages,
         setCount: setImagesCount,
         signal,
@@ -52,15 +42,26 @@ export default function ImagesPage() {
     )
   }
 
+  const editName = ({ elid, value }) => {
+    dispatch(
+      cloudVpsOperations.editImage({
+        func: 'image',
+        successCallback: getItems,
+        elid,
+        signal,
+        setIsLoading,
+        values: { image_name: value },
+      }),
+    )
+  }
+
   const itemOnClickHandler = (e, item) => {
     if (
       e.target.closest('[data-target="options"]') ||
-      e.target.closest('[data-target="region"]') ||
-      e.target.closest('[data-target="name"]') ||
-      e.target.closest('[data-target="os"]')
+      e.target.closest('[data-target="name"]')
     )
       return
-    console.log(item, ' item')
+    console.log('open item page')
   }
 
   return (
@@ -71,6 +72,8 @@ export default function ImagesPage() {
         itemsCount={imagesCount}
         itemOnClickHandler={itemOnClickHandler}
         getItems={getItems}
+        editName={editName}
+        type="images"
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </div>

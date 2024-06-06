@@ -1,24 +1,27 @@
 /* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceSnapshots.module.scss'
-
-import { useEffect, useReducer, useState } from 'react'
-
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
-import { useCancelRequest, formatBytes } from '@utils'
-
+import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
+import { Button, EditCell, Icon, ImagesList, Loader } from '@components'
+import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
 
-import {
-  Button,
-  Icon,
-  IconButton,
-  InstancesList,
-  Loader,
-  Pagination,
-  Select,
-} from '@components'
+const INSTANCE_SNAPSHOTS_CELLS = [
+  { label: 'name', isSort: false, value: 'name' },
+  { label: 'size', isSort: false, value: 'min_size' },
+  // { label: 'created_at', isSort: false, value: 'createdate' },
+  // { label: 'price_per_day', isSort: false, value: 'cost' },
+  { label: 'os', isSort: false, value: 'os_distro' },
+  {
+    label: 'options',
+    isSort: false,
+    isHidden: true,
+    value: 'options',
+  },
+]
 
 export default function InstanceSnapshots() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
@@ -27,52 +30,84 @@ export default function InstanceSnapshots() {
 
   const { item } = useCloudInstanceItemContext()
 
+  const [data, setData] = useState()
+  const [count, setCount] = useState(0)
+
   const elid = item?.id?.$
 
-  const [isPaginationChanged, setIsPaginationChanged] = useState(false)
-  const [isFirstRender, setIsFirstRender] = useState(true)
-
-  const getRequiredParams = {
-    signal,
-    setIsLoading,
+  const getItems = params => {
+    dispatch(
+      cloudVpsOperations.getImages({
+        ...params,
+        func: 'instances.snapshots',
+        elid,
+        setData,
+        setCount,
+        signal,
+        setIsLoading,
+      }),
+    )
   }
 
-  // const getSnapshots = ({ p_col, p_num, p_cnt } = {}) => {
-  //   dispatch(
-  //     cloudVpsOperations.getSnapshots({
-  //       p_col,
-  //       p_cnt: p_cnt ?? pagination.p_cnt,
-  //       p_num: p_num ?? pagination.p_num,
-  //       ...getRequiredParams,
-  //     }),
-  //   )
-  // }
+  const editName = ({ elid, value }) => {
+    dispatch(
+      cloudVpsOperations.editImage({
+        func: 'instances.snapshots',
+        successCallback: getItems,
+        elid,
+        signal,
+        setIsLoading,
+        values: { name: value, plid: elid },
+      }),
+    )
+  }
 
-  useEffect(() => {
-    // getSnapshots()
-    setIsFirstRender(false)
-  }, [])
+  const cells = INSTANCE_SNAPSHOTS_CELLS.map(cell => {
+    let renderData
 
-  useEffect(() => {
-    if (!isFirstRender) {
-      // getSnapshots()
+    switch (cell.label) {
+      case 'name':
+        renderData = function renderData(value, item) {
+          return (
+            <div className={ss.name_wrapper}>
+              <div className={ss.name_field_wrapper}>
+                {item?.protected?.$ === 'on' && <Icon name="Protected" />}
+                <div className={ss.name_field}>
+                  <EditCell
+                    originName={value}
+                    onSubmit={val => {
+                      const value = val.trim()
+                      if (value) {
+                        editName({ elid: item.elid.$, value })
+                      }
+                    }}
+                    placeholder={value || t('server_placeholder', { ns: 'vds' })}
+                    isShadow={true}
+                  />
+                </div>
+              </div>
+              {/* <p
+                className={cn(s.status, s[item?.fleio_status?.$?.trim().toLowerCase()])}
+              >
+                {item?.fleio_status.$}
+              </p> */}
+            </div>
+          )
+        }
+        return { ...cell, renderData }
     }
-  }, [isPaginationChanged])
 
-  // const setSnapshot = (values, p_col, p_cnt) => {
-  //   setPagination({ p_num: 1 }),
-  //   dispatch(
-  //     cloudVpsOperations.editSsh({
-  //       ...values,
-  //       ...getRequiredParams,
-  //       closeModal: () =>
-  //         dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false })),
-  //       p_col,
-  //       p_cnt: p_cnt ?? pagination.p_cnt,
-  //       p_num: 1,
-  //     }),
-  //   )
-  // }
+    return cell
+  })
+
+  const itemOnClickHandler = (e, item) => {
+    if (
+      e.target.closest('[data-target="options"]') ||
+      e.target.closest('[data-target="name"]')
+    )
+      return
+    console.log('open item page')
+  }
 
   return (
     <>
@@ -90,6 +125,15 @@ export default function InstanceSnapshots() {
               }),
             )
           }}
+        />
+        <ImagesList
+          cells={cells}
+          items={data}
+          itemsCount={count}
+          itemOnClickHandler={itemOnClickHandler}
+          getItems={getItems}
+          idKey="elid"
+          type="snapshots"
         />
       </div>
 
