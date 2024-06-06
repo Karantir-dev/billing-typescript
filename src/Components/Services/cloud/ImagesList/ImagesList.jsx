@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './ImagesList.module.scss'
 import {
@@ -14,13 +15,14 @@ import { useMediaQuery } from 'react-responsive'
 import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
 import { formatCountryName, getFlagFromCountryName } from '@src/utils'
+import PropTypes from 'prop-types'
 
 export default function ImagesList({
   items,
   itemsCount,
   cells,
-  getItems = () => {},
-  editName,
+  getItems,
+  editImage,
   itemOnClickHandler,
   idKey = 'id',
   type,
@@ -122,10 +124,10 @@ export default function ImagesList({
                   <div className={s.name_field}>
                     <EditCell
                       originName={value}
-                      onSubmit={val => {
-                        const value = val.trim()
+                      onSubmit={value => {
+                        const name = value.trim()
                         if (value) {
-                          editName({ elid: item.id.$, value })
+                          editImage({ elid: item[idKey].$, name })
                         }
                       }}
                       placeholder={value || t('server_placeholder', { ns: 'vds' })}
@@ -133,11 +135,16 @@ export default function ImagesList({
                     />
                   </div>
                 </div>
-                <p
-                  className={cn(s.status, s[item?.fleio_status?.$?.trim().toLowerCase()])}
-                >
-                  {item?.fleio_status.$}
-                </p>
+                {item.fleio_status?.$ && (
+                  <p
+                    className={cn(
+                      s.status,
+                      s[item?.fleio_status?.$?.trim().toLowerCase()],
+                    )}
+                  >
+                    {item.fleio_status?.$}
+                  </p>
+                )}
               </div>
             )
           }
@@ -288,4 +295,15 @@ export default function ImagesList({
       )}
     </>
   )
+}
+
+ImagesList.propTypes = {
+  items: PropTypes.array,
+  itemsCount: PropTypes.number,
+  cells: PropTypes.array,
+  getItems: PropTypes.func,
+  editImage: PropTypes.func,
+  itemOnClickHandler: PropTypes.func,
+  idKey: PropTypes.string,
+  type: PropTypes.string,
 }

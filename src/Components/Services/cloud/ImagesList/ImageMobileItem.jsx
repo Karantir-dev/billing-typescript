@@ -1,4 +1,5 @@
 import s from './ImagesList.module.scss'
+import PropTypes from 'prop-types'
 
 export default function ImageMobileItem({ item, cells, itemOnClickHandler, idKey }) {
   const nameField = cells.find(cell => cell.label === 'name')
@@ -14,12 +15,8 @@ export default function ImageMobileItem({ item, cells, itemOnClickHandler, idKey
     >
       <div className={s.mobile_item__header} data-target="options">
         <div className={s.mobile_item__header_name}>
-          {nameField.renderData(
-            item[nameField.value]?.$ ?? item[nameField.value],
-            item,
-          ) ??
-            item[nameField.value]?.$ ??
-            item[nameField.value]}
+          {nameField.renderData?.(item[nameField.value]?.$, item) ??
+            item[nameField.value]?.$}
         </div>
         <div>{optionsField?.renderData(undefined, item)}</div>
       </div>
@@ -39,4 +36,11 @@ export default function ImageMobileItem({ item, cells, itemOnClickHandler, idKey
       </div>
     </div>
   )
+}
+
+ImageMobileItem.propTypes = {
+  item: PropTypes.object,
+  cells: PropTypes.array,
+  itemOnClickHandler: PropTypes.func,
+  idKey: PropTypes.string,
 }

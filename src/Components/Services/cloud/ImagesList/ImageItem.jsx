@@ -1,5 +1,6 @@
 import s from './ImagesList.module.scss'
 import cn from 'classnames'
+import PropTypes from 'prop-types'
 
 export default function ImageItem({ item, cells, itemOnClickHandler, idKey }) {
   return (
@@ -15,4 +16,11 @@ export default function ImageItem({ item, cells, itemOnClickHandler, idKey }) {
       ))}
     </tr>
   )
+}
+
+ImageItem.propTypes = {
+  item: PropTypes.object,
+  cells: PropTypes.array,
+  itemOnClickHandler: PropTypes.func,
+  idKey: PropTypes.string,
 }

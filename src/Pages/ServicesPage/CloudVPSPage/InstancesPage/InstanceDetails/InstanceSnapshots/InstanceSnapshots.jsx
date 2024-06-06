@@ -49,7 +49,7 @@ export default function InstanceSnapshots() {
     )
   }
 
-  const editName = ({ elid, value }) => {
+  const editImage = ({ elid, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
         func: 'instances.snapshots',
@@ -57,48 +57,10 @@ export default function InstanceSnapshots() {
         elid,
         signal,
         setIsLoading,
-        values: { name: value, plid: elid },
+        values: { name, plid: elid, ...values },
       }),
     )
   }
-
-  const cells = INSTANCE_SNAPSHOTS_CELLS.map(cell => {
-    let renderData
-
-    switch (cell.label) {
-      case 'name':
-        renderData = function renderData(value, item) {
-          return (
-            <div className={ss.name_wrapper}>
-              <div className={ss.name_field_wrapper}>
-                {item?.protected?.$ === 'on' && <Icon name="Protected" />}
-                <div className={ss.name_field}>
-                  <EditCell
-                    originName={value}
-                    onSubmit={val => {
-                      const value = val.trim()
-                      if (value) {
-                        editName({ elid: item.elid.$, value })
-                      }
-                    }}
-                    placeholder={value || t('server_placeholder', { ns: 'vds' })}
-                    isShadow={true}
-                  />
-                </div>
-              </div>
-              {/* <p
-                className={cn(s.status, s[item?.fleio_status?.$?.trim().toLowerCase()])}
-              >
-                {item?.fleio_status.$}
-              </p> */}
-            </div>
-          )
-        }
-        return { ...cell, renderData }
-    }
-
-    return cell
-  })
 
   const itemOnClickHandler = (e, item) => {
     if (
@@ -127,11 +89,12 @@ export default function InstanceSnapshots() {
           }}
         />
         <ImagesList
-          cells={cells}
+          cells={INSTANCE_SNAPSHOTS_CELLS}
           items={data}
           itemsCount={count}
           itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
+          editImage={editImage}
           idKey="elid"
           type="snapshots"
         />

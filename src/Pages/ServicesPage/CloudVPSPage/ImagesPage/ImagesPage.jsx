@@ -42,7 +42,7 @@ export default function ImagesPage() {
     )
   }
 
-  const editName = ({ elid, value }) => {
+  const editImage = ({ elid, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
         func: 'image',
@@ -50,7 +50,7 @@ export default function ImagesPage() {
         elid,
         signal,
         setIsLoading,
-        values: { image_name: value },
+        values: { image_name: name, ...values },
       }),
     )
   }
@@ -72,7 +72,7 @@ export default function ImagesPage() {
         itemsCount={imagesCount}
         itemOnClickHandler={itemOnClickHandler}
         getItems={getItems}
-        editName={editName}
+        editImage={editImage}
         type="images"
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
