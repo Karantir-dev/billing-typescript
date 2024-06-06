@@ -33,6 +33,7 @@
   "basic": "Basic VPS",
   "network_traffic": "Сетевой трафик",
   "metrics": "Метрики",
+  "images": "Images",
   "snapshots": "Снимки",
   "backups": "Резервные копии"
 }

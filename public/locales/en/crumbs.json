@@ -33,6 +33,7 @@
   "basic": "Basic VPS",
   "network_traffic": "Network Traffic",
   "metrics": "Metrics",
+  "images": "Images",
   "snapshots": "Snapshots",
   "backups": "Backups"
 }
