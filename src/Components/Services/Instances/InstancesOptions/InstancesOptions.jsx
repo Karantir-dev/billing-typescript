@@ -142,6 +142,12 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
+      label: t('Boot_from_ISO'),
+      icon: 'Iso',
+      disabled: isProcessing || isDeleting,
+      onClick: () => dispatch(cloudVpsActions.setItemForModals({ boot_from_iso: item })),
+    },
+    {
       label: t('Delete'),
       icon: 'Remove',
       disabled: isProcessing || isDeleting,
