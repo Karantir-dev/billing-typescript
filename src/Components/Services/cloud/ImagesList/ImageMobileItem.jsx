@@ -5,13 +5,19 @@ export default function ImageMobileItem({ item, cells, itemOnClickHandler, idKey
   const nameField = cells.find(cell => cell.label === 'name')
   const optionsField = cells.find(cell => cell.label === 'options')
 
+  const onKeyUpHandler = e => {
+    if (e.code === 'Enter') {
+      itemOnClickHandler(e, item)
+    }
+  }
+
   return (
     <div
       className={s.mobile_item}
       onClick={e => itemOnClickHandler(e, item)}
       tabIndex={0}
-      onKeyUp={() => {}}
-      role="button"
+      onKeyUp={onKeyUpHandler}
+      role="link"
     >
       <div className={s.mobile_item__header} data-target="options">
         <div className={s.mobile_item__header_name}>
