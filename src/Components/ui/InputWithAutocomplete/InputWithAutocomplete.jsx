@@ -200,7 +200,7 @@ export default function InputWithAutocomplete({
           {infoText && (
             <TooltipWrapper
               wrapperClassName={s.infoBtn}
-              className={s.adressHint}
+              className={ss.adressHint}
               content={infoText}
               anchor={`${fieldName}_info`}
               place="top-end"

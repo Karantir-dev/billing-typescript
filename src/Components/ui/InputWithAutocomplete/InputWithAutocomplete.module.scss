@@ -33,3 +33,10 @@
 .suggestion_main_text {
   font-weight: 500;
 }
+
+.adressHint {
+  @media screen and (max-width: 500px) {
+    max-width: 240px;
+    text-wrap: balance;
+  }
+}
