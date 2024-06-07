@@ -18,6 +18,7 @@ import {
   OsList,
   CountryButton,
   CloudTypeSection,
+  PageTabBar,
 } from '@components'
 import * as Yup from 'yup'
 import { useLocation, useSearchParams } from 'react-router-dom'
@@ -62,6 +63,23 @@ export default function CreateInstancePage() {
 
   const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
   const isBasic = cloudType === BASIC_TYPE
+
+  const [ownImages, _setOwnImages] = useState([])
+  const [imagesTab, setimagesTab] = useState('public')
+
+  const formatImagesData = list => {
+    return list.map(el => {
+      el.$ = el.os_distro.$
+      el.$key = el.id.$
+
+      return el
+    })
+  }
+
+  const setOwnImages = list => {
+    const formatedList = formatImagesData(list)
+    _setOwnImages(formatedList)
+  }
 
   const switchCloudType = type => {
     setSearchParams({ type })
@@ -183,6 +201,16 @@ export default function CreateInstancePage() {
       getOsListHandler(cloudType, true)
     }
 
+    dispatch(
+      cloudVpsOperations.getImages({
+        // ...params,
+        setData: setOwnImages,
+        // setCount: setImagesCount,
+        signal,
+        setIsLoading,
+      }),
+    )
+
     /** Cleans data from site when we leave the page */
     return () => {
       localStorage.removeItem('site_cart')
@@ -303,7 +331,8 @@ export default function CreateInstancePage() {
       >
         {tariffs?.[currentDC?.$key] &&
           operationSystems?.[currentDC.$key] &&
-          currentDC && (
+          currentDC &&
+          ownImages && (
             <Formik
               initialValues={{
                 instances_os: operationSystems?.[currentDC.$key]?.[0]?.$key,
@@ -487,6 +516,21 @@ export default function CreateInstancePage() {
                   values.notEnoughMoney && setFieldValue('notEnoughMoney', false)
                 }
 
+                const imagesTabs = [
+                  {
+                    localValue: 'public',
+                    onLocalClick: () => setimagesTab('public'),
+                    label: t('Public'),
+                    allowToRender: true,
+                  },
+                  {
+                    localValue: 'own',
+                    onLocalClick: () => setimagesTab('own'),
+                    label: t('Your images'),
+                    allowToRender: true,
+                  },
+                ]
+
                 return (
                   <Form>
                     <ScrollToFieldError />
@@ -532,13 +576,26 @@ export default function CreateInstancePage() {
                     <section className={s.section}>
                       <h3 className={s.section_title}>{t('server_image')}</h3>
 
-                      <div className={s.os_list}>
-                        <OsList
-                          list={operationSystems[currentDC.$key]}
-                          value={values.instances_os}
-                          onOSchange={onOSchange}
-                        />
-                      </div>
+                      <PageTabBar sections={imagesTabs} activeValue={imagesTab} />
+
+                      {imagesTab === 'public' ? (
+                        <div className={s.os_list}>
+                          <OsList
+                            list={operationSystems[currentDC.$key]}
+                            value={values.instances_os}
+                            onOSchange={onOSchange}
+                          />
+                        </div>
+                      ) : (
+                        <div className={s.os_list}>
+                          <OsList
+                            list={ownImages}
+                            value={values.instances_os}
+                            onOSchange={() => {}}
+                          />
+                        </div>
+                      )}
+
                       {isItWindows && (
                         <WarningMessage className={s.notice_wrapper}>
                           {t('windows_os_notice')}

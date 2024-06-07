@@ -998,7 +998,8 @@ const getImages =
           }
         })
 
-        setCount(+data.doc.p_elems.$)
+        console.log('elemsList', elemsList)
+        setCount?.(+data.doc.p_elems.$)
         setData(elemsList)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })

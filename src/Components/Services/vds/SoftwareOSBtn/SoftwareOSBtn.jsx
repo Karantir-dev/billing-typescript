@@ -10,6 +10,7 @@ import { Icon } from '@components'
 export default function SoftwareOSBtn({
   iconName,
   label,
+  imageData,
   value,
   state,
   onClick,
@@ -17,7 +18,7 @@ export default function SoftwareOSBtn({
   disabled,
 }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-
+  console.log(imageData)
   const icon =
     iconName === 'alma'
       ? 'almalinux'
@@ -49,8 +50,13 @@ export default function SoftwareOSBtn({
             alt="icon"
           />
         )}
-
-        {label}
+        <div>
+          {label} {imageData?.os_version?.$}
+          <span className={s.architecture}>{imageData?.architecture?.$}</span>
+          {imageData?.image_name?.$ && (
+            <p className={s.image_name}>{imageData?.image_name?.$}</p>
+          )}
+        </div>
       </button>
     </div>
   )

@@ -60,7 +60,15 @@ export default function SoftwareOSSelect({
           <img className={cn(s.img)} src={renderImg()} alt="icon" />
         )}
 
-        <p>{selectedItem?.label}</p>
+        <div>
+          {selectedItem?.label} {selectedItem?.os_version?.$}{' '}
+          {selectedItem?.architecture?.$ && (
+            <span className={s.architecture}>{selectedItem?.architecture?.$}</span>
+          )}
+          {selectedItem?.image_name?.$ && (
+            <p className={s.image_name}>{selectedItem?.image_name?.$}</p>
+          )}
+        </div>
 
         <Icon name="Shevron" className={cn(ss.right_icon, { [ss.opened]: isOpened })} />
       </button>
@@ -87,8 +95,13 @@ export default function SoftwareOSSelect({
                       alt="icon"
                     />
                   )}
-
-                  {el.label}
+                  <div>
+                    {el.label} {el?.os_version?.$}{' '}
+                    <span className={s.architecture}>{el?.architecture?.$}</span>
+                    {el?.image_name?.$ && (
+                      <p className={s.image_name}>{el?.image_name?.$}</p>
+                    )}
+                  </div>
                 </div>
               )
             })}
