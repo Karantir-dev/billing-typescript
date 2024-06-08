@@ -69,8 +69,32 @@
   display: grid;
   column-gap: 5px;
 }
+
+.tile_wrapper {
+  grid-template-columns: repeat(4, 1fr);
+  padding: unset;
+  gap: 10px 4px;
+
+  @media (min-width: 1550px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.tile_btn {
+  display: flex;
+  flex-direction: column;
+  white-space: unset;
+
+  @media (min-width: 1024px) {
+  }
+}
+
 .tool_item {
   white-space: nowrap;
+
+  &.tile_item {
+    box-shadow: var(--forms2_shadow);
+  }
 }
 .tool_item_delete {
   color: var(--red-text_2);
@@ -86,6 +110,18 @@
   font-size: 18px;
   font-weight: 300;
   text-align: left;
+
+  &.tile_btn {
+    font-size: 12px;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 8px;
+
+    @media (min-width: 1550px) {
+      font-size: 14px;
+    }
+  }
 
   &:hover {
     background-color: var(--btn-bgc);
@@ -112,5 +148,9 @@
   fill: var(--icon-color_2);
   &_delete {
     fill: var(--red-text_2);
+  }
+
+  &.tile_icon {
+    margin-right: unset;
   }
 }

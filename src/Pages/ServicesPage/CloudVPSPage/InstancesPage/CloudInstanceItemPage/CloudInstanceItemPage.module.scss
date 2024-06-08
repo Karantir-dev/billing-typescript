@@ -40,7 +40,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
   gap: 10px;
 }
 
@@ -53,6 +52,7 @@
 .page_title_wrapper {
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
 }
 
 .status {
@@ -130,6 +130,9 @@
   }
   .head_coponent {
     margin-bottom: 32px;
+  }
+  .page_title_container {
+    align-items: flex-start;
   }
 }
 
