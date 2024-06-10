@@ -31,6 +31,13 @@ export default function DedicPage() {
       replace: true,
       end: true,
     },
+    {
+      route: `${route.CLOUD_VPS}/images`,
+      label: 'Images',
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
   ]
 
   return (

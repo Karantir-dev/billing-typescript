@@ -1,0 +1,16 @@
+.dots {
+  transform: rotate(90deg);
+  line-height: 0;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  svg {
+    fill: var(--icon-color_2);
+    &:hover {
+      fill: url('#gradient');
+    }
+  }
+}

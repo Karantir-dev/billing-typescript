@@ -4,7 +4,7 @@ import s from './Options.module.scss'
 import cn from 'classnames'
 import { useOutsideAlerter } from '@utils'
 
-export default function Options({ options, columns = 1, buttonClassName }) {
+export default function Options({ options, columns = 1, buttonClassName, renderButton }) {
   const dropdownEl = useRef()
   const [isOptionsOpen, setIsOptionsOpen] = useState(false)
 
@@ -17,7 +17,7 @@ export default function Options({ options, columns = 1, buttonClassName }) {
         type="button"
         onClick={() => setIsOptionsOpen(true)}
       >
-        <Icon name="Settings" />
+        {renderButton?.() ?? <Icon name="Settings" />}
 
         {isOptionsOpen && (
           <div className={s.pointer_wrapper}>
