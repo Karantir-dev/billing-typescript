@@ -619,7 +619,7 @@ export default function CreateInstancePage() {
                       </ul>
                     </section>
 
-                    <section className={s.section}>
+                    <section className={cn(s.section, s.access_section)}>
                       <h3 className={s.section_title}>{t('authentication_method')}</h3>
 
                       <ConnectMethod
