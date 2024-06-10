@@ -95,7 +95,7 @@ export default function InstanceSnapshots() {
           itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
           editImage={editImage}
-          idKey="elid"
+          idKey="id"
           type="snapshots"
         />
       </div>
