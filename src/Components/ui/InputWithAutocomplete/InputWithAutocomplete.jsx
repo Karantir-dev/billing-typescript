@@ -9,7 +9,7 @@ import ss from './InputWithAutocomplete.module.scss'
 import { useSelector } from 'react-redux'
 import { authSelectors } from '@redux'
 import { ErrorMessage, Field } from 'formik'
-import { Icon } from '@components'
+import { Icon, TooltipWrapper } from '@components'
 
 let cachedVal = ''
 const acceptedKeys = ['ArrowUp', 'ArrowDown', 'Escape', 'Enter']
@@ -198,12 +198,15 @@ export default function InputWithAutocomplete({
             {...props}
           />
           {infoText && (
-            <>
-              <button type="button" className={s.infoBtn}>
-                <Icon name="Info" />
-              </button>
-              <div className={s.infoText}>{infoText}</div>
-            </>
+            <TooltipWrapper
+              wrapperClassName={s.infoBtn}
+              className={ss.adressHint}
+              content={infoText}
+              anchor={`${fieldName}_info`}
+              place="top-end"
+            >
+              <Icon name="Info" />
+            </TooltipWrapper>
           )}
         </div>
 

@@ -61,9 +61,10 @@ export default function TooltipWrapper({
 
 TooltipWrapper.propTypes = {
   anchor: PropTypes.string.isRequired /* The selector for the anchor elements. */,
-  label:
-    PropTypes.string /* label is not required if content is provided. It's the same */,
-  content: PropTypes.string /* Content to be displayed in tooltip */,
+  content: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.node,
+  ]) /* Content to be displayed in tooltip */,
   children:
     PropTypes.node /* The tooltip children have lower priority compared to the content */,
   className: PropTypes.string,

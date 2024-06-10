@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useReducer } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 import cn from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -49,8 +49,6 @@ export default function Component() {
   const [state, setState] = useReducer((state, action) => {
     return { ...state, ...action }
   }, {})
-
-  const dropdownSale = useRef(null)
 
   const { t } = useTranslation([
     'cart',
@@ -1371,18 +1369,20 @@ export default function Component() {
                     )}
                     <div className={s.padding}>
                       <div className={s.totalSum}>
-                        <span>
+                        <span className={s.price_row}>
                           {state.cartData?.full_discount &&
                           Number(state.cartData?.full_discount) !== 0 ? (
                             <>
                               {t('Saving')}:{' '}
                               <b>{roundToDecimal(state.cartData?.full_discount)} EUR</b>
-                              <button type="button" className={s.infoBtn}>
+                              <TooltipWrapper
+                                className={s.InfoBtn}
+                                wrapperClassName={s.infoBtnCard}
+                                content={renderActiveDiscounts()}
+                                anchor={'Saving'}
+                              >
                                 <Icon name="Info" />
-                                <div ref={dropdownSale} className={s.descriptionBlock}>
-                                  {renderActiveDiscounts()}
-                                </div>
-                              </button>
+                              </TooltipWrapper>
                             </>
                           ) : null}
                         </span>
