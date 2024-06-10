@@ -88,6 +88,22 @@ export default function InstanceSnapshots() {
             )
           }}
         />
+        {/* Later this Button should be inside the created Snapshot as icon (Backup, Image eather) */}
+        <Button
+          label={t('copy')}
+          size="large"
+          isShadow
+          onClick={() => {
+            dispatch(
+              cloudVpsActions.setItemForModals({
+                images_copy: {
+                  ...item,
+                },
+              }),
+            )
+          }}
+          type="snapshots"
+        />
         <ImagesList
           cells={INSTANCE_SNAPSHOTS_CELLS}
           items={data}

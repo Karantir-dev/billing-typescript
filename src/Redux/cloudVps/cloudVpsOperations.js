@@ -1011,6 +1011,52 @@ const getImages =
       })
   }
 
+const editSnapshot =
+  ({
+    values,
+    plid,
+    elid,
+    errorCallback = () => {},
+    closeModal = () => {},
+    successCallback = () => {},
+    setIsLoading,
+    signal,
+  }) =>
+  (dispatch, getState) => {
+    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.snapshots.edit',
+          out: 'json',
+          sok: 'ok',
+          auth: sessionId,
+          plid,
+          elid,
+          lang: 'en',
+          clicked_button: 'ok',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
+        closeModal()
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        toast.success(t('request_sent', { ns: 'cloud_vps' }))
+      })
+      .catch(error => {
+        errorCallback()
+        closeModal()
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
 const editImage =
   ({ func, values, successCallback, elid, signal, setIsLoading }) =>
   (dispatch, getState) => {
@@ -1069,6 +1115,7 @@ export default {
   getTariffParamsRequest,
   generateSsh,
   getMetrics,
+  editSnapshot,
   getImages,
   editImage,
 }

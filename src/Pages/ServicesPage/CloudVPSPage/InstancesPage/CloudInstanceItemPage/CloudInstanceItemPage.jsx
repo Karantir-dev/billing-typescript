@@ -251,10 +251,10 @@ export default function CloudInstanceItemPage() {
       />
 
       <ImagesModals
-        setBackup={dispatch(cloudVpsActions.setItemForModals({ backup_create: false }))}
-        setSnapshot={dispatch(
-          cloudVpsActions.setItemForModals({ snapshot_create: false }),
-        )}
+        loadingParams={{
+          signal,
+          setIsLoading,
+        }}
       />
 
       {isLoading && <Loader local shown={isLoading} halfScreen />}
