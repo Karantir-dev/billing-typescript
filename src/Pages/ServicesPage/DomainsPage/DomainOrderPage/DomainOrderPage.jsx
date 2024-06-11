@@ -36,6 +36,8 @@ export default function Component({ transfer = false }) {
   const [inputValue, setInputValue] = useState('')
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
 
+  const [selectedPricelist, setSelectedPricelist] = useState([])
+
   const setAutoProlong = () => (!autoprolongPrices.length ? setAutoprolongPrices : null)
 
   useEffect(() => {
@@ -163,6 +165,7 @@ export default function Component({ transfer = false }) {
     } else {
       values['domain_action'] = 'register'
     }
+    setSelectedPricelist(values['selected_pricelist'])
     dispatch(
       domainsOperations.getDomainsOrderName(
         setPickUpDomains,
@@ -190,16 +193,16 @@ export default function Component({ transfer = false }) {
     const newCheckedDomains = []
 
     const selected_domain = []
-    pickUpDomains?.selected?.forEach(el => {
-      const newString = el?.replace('select_domain_', '')
+
+    selected_domain_names?.forEach(el => {
+      const newString = el?.replace('.', '____________')
+      const elemParts = el?.split('.')
 
       selected_domain?.push(newString)
 
       checkedDomain?.forEach(checked => {
-        const check = checked.substring(0, checked.length - 1) + '1'
-
-        if (checked?.includes(newString)) {
-          newCheckedDomains.push(check)
+        if (checked.includes(elemParts?.[0] && elemParts?.[1])) {
+          newCheckedDomains.push(checked)
         }
       })
     })
@@ -210,23 +213,13 @@ export default function Component({ transfer = false }) {
       return domainName
     })
 
-    // Function to check if a domain is in the list of selected domains
-    const isSelectedDomain = domain => {
-      const domainPattern = domain?.replace('____________', '.')?.split(':')?.[0]
-      return selected_domain_real_name.includes(domainPattern)
-    }
-
     const data = {
       domain_name: pickUpDomains?.domain_name,
-      'zoom-domain_name': pickUpDomains?.domain_name,
-      checked_domain: newCheckedDomains?.filter(isSelectedDomain)?.join(', '),
-      selected_domain: selected_domain?.filter(isSelectedDomain)?.join(', '),
+      checked_domain: newCheckedDomains?.join(', '),
+      selected_domain: selected_domain?.join(', '),
       selected_domain_real_name: selected_domain_real_name?.join(', '),
+      selected_pricelist: selectedPricelist,
     }
-
-    selected_domain_names?.forEach(n => {
-      data[n] = 'on'
-    })
 
     if (transfer) {
       data['domain_action'] = 'transfer'
