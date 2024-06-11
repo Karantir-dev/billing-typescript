@@ -27,6 +27,7 @@ export default function Component({ transfer = false }) {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [domains, setDomains] = useState([])
+  const [billUnavailableDomains, setBillUnavailableDomains] = useState([])
   const [autoprolongPrices, setAutoprolongPrices] = useState([])
   const [pickUpDomains, setPickUpDomains] = useState([])
   const [selectedDomains, setSelectedDomains] = useState([])
@@ -74,6 +75,7 @@ export default function Component({ transfer = false }) {
             undefined,
             signal,
             setIsLoading,
+            setBillUnavailableDomains,
           ),
         )
       } else {
@@ -86,6 +88,7 @@ export default function Component({ transfer = false }) {
             undefined,
             signal,
             setIsLoading,
+            setBillUnavailableDomains,
           ),
         )
       }
@@ -169,6 +172,7 @@ export default function Component({ transfer = false }) {
         signal,
         setIsLoading,
         siteDomainCheckData,
+        setBillUnavailableDomains,
       ),
     )
 
@@ -314,6 +318,7 @@ export default function Component({ transfer = false }) {
                     registerDomainHandler={registerDomainHandler}
                     transfer={transfer}
                     siteDomainCheckData={siteDomainCheckData}
+                    billUnavailableDomains={billUnavailableDomains}
                   />
                 ) : (
                   <DomainsZone

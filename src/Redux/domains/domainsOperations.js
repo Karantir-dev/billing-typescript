@@ -121,6 +121,7 @@ const getDomainsOrderName =
     signal,
     setIsLoading,
     siteDomainCheckData,
+    setBillUnavailableDomains,
   ) =>
   (dispatch, getState) => {
     setIsLoading(true)
@@ -209,11 +210,16 @@ const getDomainsOrderName =
 
         domainData?.list?.forEach(l => {
           if (l?.$name === 'domain_list') {
+            const unavailableDomains = []
             l?.elem?.forEach(e => {
               if (e?.id) {
+                if (e?.desc.$.includes('Not available')) {
+                  unavailableDomains.push(e?.domain.$)
+                }
                 domains.push(e)
               }
             })
+            setBillUnavailableDomains(unavailableDomains)
           }
         })
 

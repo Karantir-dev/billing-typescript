@@ -18,6 +18,7 @@ export default function ServicesPage(props) {
     registerDomainHandler,
     transfer,
     siteDomainCheckData,
+    billUnavailableDomains,
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
@@ -88,7 +89,10 @@ export default function ServicesPage(props) {
 
     const salePercent = Math.floor(reg === 0 ? 0 : 100 - (100 * reg) / main_price_reg)
 
-    const notAvailable = is_available === false || tld === 'invalid'
+    const notAvailable =
+      is_available === false ||
+      tld === 'invalid' ||
+      billUnavailableDomains.includes(domainName)
 
     return (
       <div
