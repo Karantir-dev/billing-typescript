@@ -3,11 +3,20 @@ import { cloudVpsActions, cloudVpsOperations } from '@src/Redux'
 import { useCreateTicketOption, getInstanceMainInfo } from '@src/utils'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
+import { useMediaQuery } from 'react-responsive'
 import s from './InstancesOptions..module.scss'
 
-export default function InstancesOptions({ item, isMobile, buttonClassName }) {
+// eslint-disable-next-line no-unused-vars
+export default function InstancesOptions({
+  item,
+  isMobile,
+  buttonClassName,
+  isTileLayout,
+}) {
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
+
+  const widerThan1024 = useMediaQuery({ query: '(min-width: 1024px)' })
 
   const {
     isDisabled,
@@ -142,6 +151,18 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
+      label: t('boot_from_iso'),
+      icon: 'Iso',
+      disabled: isProcessing || isDeleting,
+      hidden: isHideMostItems,
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            rebuild: { ...item, rebuild_action: 'boot_from_iso' },
+          }),
+        ),
+    },
+    {
       label: t('Delete'),
       icon: 'Remove',
       disabled: isProcessing || isDeleting,
@@ -157,6 +178,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
       options={options}
       columns={optionsColumns}
       buttonClassName={[s.btn, buttonClassName]}
+      isTileLayout={isTileLayout && widerThan1024}
     />
   )
 }

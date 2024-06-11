@@ -105,11 +105,13 @@
     "title": {
       "bootimage": "Rescue",
       "rescue": "Rescue",
-      "rebuild": "Rebuild instance"
+      "rebuild": "Rebuild instance",
+      "boot_from_iso": "Boot from ISO"
     },
     "text": {
       "bootimage": "Select distribution",
       "rescue": "Select distribution",
+      "boot_from_iso": "Select distribution",
       "rebuild": "Select boot source"
     },
     "warning": {
@@ -118,7 +120,9 @@
     },
     "os_description": {
       "shr": "Here are images uploaded by technical support staff for you",
-      "pub": "Here are publicly available LiveCD images of various systems"
+      "pub": "Here are publicly available images of various systems",
+      "image": "Here are publicly available images of various systems",
+      "own": "Your uploaded images"
     }
   },
   "server_location": "Server location",
@@ -140,7 +144,9 @@
   "key_copied": "SSH key copied",
   "rescue_tab": {
     "shr": "Shared",
-    "pub": "Public"
+    "pub": "Public",
+    "image": "Public",
+    "own": "Your Images"
   },
   "create": "Create",
   "download": "Download",
@@ -191,7 +197,6 @@
       "cpu": "AVG usage, %"
     }
   },
-  "pcs": "pcs.",
   "metrics_chart_empty": "No data available to generate the chart",
   "name": "Name",
   "type": "Type",
@@ -204,14 +209,17 @@
   "launch": "Launch",
   "copy": "Copy",
   "delete": "Delete",
+  "disk_format": "Disk format",
   "pcs": "pcs.",
   "create_snapshot": "Create Snapshot",
   "create_backup": "Create New Backup",
+  "boot_from_iso": "Boot from ISO",
   "snapshots": {
     "create": "Create snapshot for instance",
     "create_warning": "Instance will not be available while the snapshot is being processed."
   },
   "backups": {
     "create": "Create backup for instance"
-  }
+  },
+  "empty_list": "Empty list"
 }

@@ -662,7 +662,6 @@ export default function FourthStep({
                           value={values.promocode}
                           onChange={e => setState({ promocode: e.target.value })}
                         />
-                        {console.log(state)}
                         <button
                           onClick={() => setPromocodeToCart(values?.promocode)}
                           disabled={Boolean(!values?.promocode?.length)}

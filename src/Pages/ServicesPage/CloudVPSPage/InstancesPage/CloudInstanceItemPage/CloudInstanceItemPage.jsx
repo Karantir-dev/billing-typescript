@@ -183,55 +183,58 @@ export default function CloudInstanceItemPage() {
         <BreadCrumbs pathnames={parseLocations()} />
         <div className={s.head_coponent}>
           <div className={s.page_title_container}>
-            <div className={s.page_title_wrapper}>
-              <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
-              <TooltipWrapper
-                className={s.popup}
-                content={item.instances_os.$}
-                anchor={`instance_os_${item?.id?.$}`}
-              >
-                <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
-              </TooltipWrapper>
+            <div>
+              <div className={s.page_title_wrapper}>
+                <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
+                <TooltipWrapper
+                  className={s.popup}
+                  content={item.instances_os.$}
+                  anchor={`instance_os_${item?.id?.$}`}
+                >
+                  <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
+                </TooltipWrapper>
+              </div>
+
+              {isHintStatus ? (
+                <TooltipWrapper
+                  className={s.popup}
+                  label={hintMessage}
+                  anchor={`instance_status_${item?.id?.$}`}
+                >
+                  <span
+                    className={cn(
+                      s.status,
+                      s[
+                        item?.instance_status?.$.trim().toLowerCase() ||
+                          item?.item_status?.$.trim().toLowerCase()
+                      ],
+                    )}
+                  >
+                    {displayStatus}
+                    <Icon name="Attention" />
+                  </span>
+                </TooltipWrapper>
+              ) : (
+                <span
+                  className={cn(
+                    s.status,
+                    s[
+                      item.instance_status?.$.trim().toLowerCase() ||
+                        item.item_status?.$.trim().toLowerCase()
+                    ],
+                  )}
+                >
+                  {displayStatus}
+                </span>
+              )}
             </div>
             <InstancesOptions
               item={item}
               buttonClassName={s.btn_wrapper}
               isMobile={!widerThan768}
+              isTileLayout
             />
           </div>
-
-          {isHintStatus ? (
-            <TooltipWrapper
-              className={s.popup}
-              label={hintMessage}
-              anchor={`instance_status_${item?.id?.$}`}
-            >
-              <span
-                className={cn(
-                  s.status,
-                  s[
-                    item?.instance_status?.$.trim().toLowerCase() ||
-                      item?.item_status?.$.trim().toLowerCase()
-                  ],
-                )}
-              >
-                {displayStatus}
-                <Icon name="Attention" />
-              </span>
-            </TooltipWrapper>
-          ) : (
-            <span
-              className={cn(
-                s.status,
-                s[
-                  item.instance_status?.$.trim().toLowerCase() ||
-                    item.item_status?.$.trim().toLowerCase()
-                ],
-              )}
-            >
-              {displayStatus}
-            </span>
-          )}
         </div>
 
         <PageTabBar sections={tabBarSections} />
@@ -251,10 +254,13 @@ export default function CloudInstanceItemPage() {
       />
 
       <ImagesModals
-        setBackup={dispatch(cloudVpsActions.setItemForModals({ backup_create: false }))}
         setSnapshot={dispatch(
           cloudVpsActions.setItemForModals({ snapshot_create: false }),
         )}
+        loadingParams={{
+          signal,
+          setIsLoading,
+        }}
       />
 
       {isLoading && <Loader local shown={isLoading} halfScreen />}

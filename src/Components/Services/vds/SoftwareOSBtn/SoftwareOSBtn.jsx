@@ -29,6 +29,7 @@ export default function SoftwareOSBtn({
       : iconName
 
   const inList = SOFTWARE_ICONS_LIST?.includes(icon)
+  const svgIconInList = SOFTWARE_ICONS_LIST?.includes(svgIcon) || svgIcon === 'Iso'
 
   const renderImg = () => {
     if (inList) {
@@ -42,7 +43,11 @@ export default function SoftwareOSBtn({
     <div className={cn(s.bg, { [s.selected]: value === state, [s.disabled]: disabled })}>
       <button className={s.btn} onClick={() => onClick(value)} type="button">
         {svgIcon ? (
-          <Icon name={svgIcon} />
+          svgIconInList ? (
+            <Icon name={svgIcon} />
+          ) : (
+            <Icon name="DefaultOs" />
+          )
         ) : (
           <img
             className={cn(s.img, { [s.without]: icon === 'null' })}

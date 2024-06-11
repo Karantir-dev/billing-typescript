@@ -1,12 +1,11 @@
 .container {
-  margin-top: 16px;
+  padding-top: 16px;
   display: grid;
-  justify-content: start;
   gap: 20px;
 }
 
 @media screen and (min-width: 768px) {
   .container {
-    margin-top: 32px;
+    padding-top: 32px;
   }
 }
