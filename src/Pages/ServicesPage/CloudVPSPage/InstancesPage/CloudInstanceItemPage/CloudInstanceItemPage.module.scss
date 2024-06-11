@@ -39,20 +39,20 @@
 .page_title_container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
   gap: 10px;
 }
 
 .page_title {
   font-size: 22px;
   line-height: 120%;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .page_title_wrapper {
   display: flex;
   align-items: center;
+  margin-bottom: 8px;
+  gap: 10px;
 }
 
 .status {
@@ -130,6 +130,9 @@
   }
   .head_coponent {
     margin-bottom: 32px;
+  }
+  .page_title_container {
+    align-items: flex-start;
   }
 }
 
