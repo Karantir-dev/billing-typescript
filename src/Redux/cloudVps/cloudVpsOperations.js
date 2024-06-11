@@ -9,6 +9,7 @@ import {
   cookies,
   sortCloudsByType,
   handleLongRequest,
+  handleLoadersOpen,
 } from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
@@ -25,7 +26,8 @@ const getInstances =
     setLocalInstancesItems,
   }) =>
   (dispatch, getState) => {
-    isLoader && (setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader()))
+    isLoader && handleLoadersOpen(setIsLoading, dispatch)
+
     const sessionId = authSelectors.getSessionId(getState())
 
     return axiosInstance
@@ -107,7 +109,7 @@ const getInstances =
 const setInstancesFilter =
   ({ values, signal, setIsLoading, successCallback }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -157,7 +159,7 @@ const editInstance =
     signal,
   }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -337,7 +339,7 @@ const changeTariffConfirm =
 const changeInstancePassword =
   ({ password, elid, closeModal, setIsLoading, signal }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -441,7 +443,7 @@ const openConsole =
 /* EDIT SERVERS OPERATION TO GET FULL DATA */
 const getInstanceInfo =
   (elid, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const {
       auth: { sessionId },
     } = getState()
@@ -500,7 +502,7 @@ const getInstanceInfo =
 
 const getInstanceNetworkTrafficInfo =
   (elid, setNetworkTrafficInfo, signal, setIsLoading) => (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const {
       auth: { sessionId },
     } = getState()
@@ -590,7 +592,7 @@ const getAllTariffsInfo =
     isBasic,
   }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     return axiosInstance
@@ -741,7 +743,7 @@ const setOrderData =
 const getSshKeys =
   ({ p_col, p_cnt, p_num, setAllSshItems, setTotalElems, signal, setIsLoading }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
 
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -795,7 +797,7 @@ const editSsh =
     p_cnt,
   }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     closeModal()
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -941,7 +943,7 @@ const generateSsh =
 const getMetrics =
   ({ elid, metric, hours, setData, signal, setIsLoading }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -969,19 +971,20 @@ const getMetrics =
       })
   }
 const getImages =
-  ({ p_cnt, p_num, p_col, setData, setCount, signal, setIsLoading }) =>
+  ({ func, elid, p_cnt, p_num, p_col, setData, setCount, signal, setIsLoading }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
       .post(
         '/',
         qs.stringify({
-          func: 'image',
+          func,
           out: 'json',
           auth: sessionId,
           lang: 'en',
+          elid,
           p_cnt,
           p_num,
           p_col,
@@ -993,8 +996,8 @@ const getImages =
         const elemsList = data.doc.elem || []
         /** unifies the data structure */
         elemsList.forEach(el => {
-          if (!el.createdate.$ && el.createdate?.[0]?.$) {
-            el.createdate.$ = el.createdate[0].$
+          if (!el.createdate?.$ && el.createdate?.[0]?.$) {
+            el.createdate.$ = el.createdate?.[0]?.$
           }
         })
 
@@ -1054,6 +1057,40 @@ const editSnapshot =
       })
   }
 
+const editImage =
+  ({ func, values, successCallback, elid, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `${func}.edit`,
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          clicked_button: 'ok',
+          sok: 'ok',
+          elid,
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        successCallback()
+
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -1080,4 +1117,5 @@ export default {
   getMetrics,
   editSnapshot,
   getImages,
+  editImage,
 }

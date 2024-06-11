@@ -1,24 +1,27 @@
 /* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceSnapshots.module.scss'
-
-import { useEffect, useReducer, useState } from 'react'
-
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
-import { useCancelRequest, formatBytes } from '@utils'
-
+import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
+import { Button, EditCell, Icon, ImagesList, Loader } from '@components'
+import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
 
-import {
-  Button,
-  Icon,
-  IconButton,
-  InstancesList,
-  Loader,
-  Pagination,
-  Select,
-} from '@components'
+const INSTANCE_SNAPSHOTS_CELLS = [
+  { label: 'name', isSort: false, value: 'name' },
+  { label: 'size', isSort: false, value: 'min_size' },
+  // { label: 'created_at', isSort: false, value: 'createdate' },
+  // { label: 'price_per_day', isSort: false, value: 'cost' },
+  { label: 'os', isSort: false, value: 'os_distro' },
+  {
+    label: 'options',
+    isSort: false,
+    isHidden: true,
+    value: 'options',
+  },
+]
 
 export default function InstanceSnapshots() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
@@ -27,52 +30,46 @@ export default function InstanceSnapshots() {
 
   const { item } = useCloudInstanceItemContext()
 
+  const [data, setData] = useState()
+  const [count, setCount] = useState(0)
+
   const elid = item?.id?.$
 
-  const [isPaginationChanged, setIsPaginationChanged] = useState(false)
-  const [isFirstRender, setIsFirstRender] = useState(true)
-
-  const getRequiredParams = {
-    signal,
-    setIsLoading,
+  const getItems = params => {
+    dispatch(
+      cloudVpsOperations.getImages({
+        ...params,
+        func: 'instances.snapshots',
+        elid,
+        setData,
+        setCount,
+        signal,
+        setIsLoading,
+      }),
+    )
   }
 
-  // const getSnapshots = ({ p_col, p_num, p_cnt } = {}) => {
-  //   dispatch(
-  //     cloudVpsOperations.getSnapshots({
-  //       p_col,
-  //       p_cnt: p_cnt ?? pagination.p_cnt,
-  //       p_num: p_num ?? pagination.p_num,
-  //       ...getRequiredParams,
-  //     }),
-  //   )
-  // }
+  const editImage = ({ elid, name, ...values }) => {
+    dispatch(
+      cloudVpsOperations.editImage({
+        func: 'instances.snapshots',
+        successCallback: getItems,
+        elid,
+        signal,
+        setIsLoading,
+        values: { name, plid: elid, ...values },
+      }),
+    )
+  }
 
-  useEffect(() => {
-    // getSnapshots()
-    setIsFirstRender(false)
-  }, [])
-
-  useEffect(() => {
-    if (!isFirstRender) {
-      // getSnapshots()
-    }
-  }, [isPaginationChanged])
-
-  // const setSnapshot = (values, p_col, p_cnt) => {
-  //   setPagination({ p_num: 1 }),
-  //   dispatch(
-  //     cloudVpsOperations.editSsh({
-  //       ...values,
-  //       ...getRequiredParams,
-  //       closeModal: () =>
-  //         dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false })),
-  //       p_col,
-  //       p_cnt: p_cnt ?? pagination.p_cnt,
-  //       p_num: 1,
-  //     }),
-  //   )
-  // }
+  const itemOnClickHandler = (e, item) => {
+    if (
+      e.target.closest('[data-target="options"]') ||
+      e.target.closest('[data-target="name"]')
+    )
+      return
+    console.log('open item page')
+  }
 
   return (
     <>
@@ -91,7 +88,6 @@ export default function InstanceSnapshots() {
             )
           }}
         />
-
         {/* Later this Button should be inside the created Snapshot as icon (Backup, Image eather) */}
         <Button
           label={t('copy')}
@@ -106,6 +102,17 @@ export default function InstanceSnapshots() {
               }),
             )
           }}
+          type="snapshots"
+        />
+        <ImagesList
+          cells={INSTANCE_SNAPSHOTS_CELLS}
+          items={data}
+          itemsCount={count}
+          itemOnClickHandler={itemOnClickHandler}
+          getItems={getItems}
+          editImage={editImage}
+          idKey="id"
+          type="snapshots"
         />
       </div>
 
