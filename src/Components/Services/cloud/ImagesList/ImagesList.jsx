@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './ImagesList.module.scss'
 import {
@@ -26,8 +25,9 @@ export default function ImagesList({
   itemOnClickHandler,
   idKey = 'id',
   type,
+  cost,
 }) {
-  const { t } = useTranslation(['cloud_vps'])
+  const { t } = useTranslation(['cloud_vps', 'countries'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
 
   const [pagination, setPagination] = useReducer(
@@ -127,7 +127,7 @@ export default function ImagesList({
                       onSubmit={value => {
                         const name = value.trim()
                         if (value) {
-                          editImage({ elid: item[idKey].$, name })
+                          editImage({ id: item[idKey].$, name })
                         }
                       }}
                       placeholder={value || t('server_placeholder', { ns: 'vds' })}
@@ -172,6 +172,26 @@ export default function ImagesList({
                 <Icon name={value} />
               </TooltipWrapper>
             )
+          }
+          return { ...cell, renderData }
+        }
+        return cell
+      case 'price_per_day':
+        if (!cell.renderData) {
+          renderData = function renderData(_, item) {
+            const sizeCell = cells.find(el => el.label === 'size')
+
+            return item[sizeCell?.value]?.$
+              ? `€${Math.ceil(item[sizeCell?.value]?.$) * cost}`
+              : ''
+          }
+          return { ...cell, renderData }
+        }
+        return cell
+      case 'size':
+        if (!cell.renderData) {
+          renderData = function renderData(value) {
+            return value ? `${value} GB` : ''
           }
           return { ...cell, renderData }
         }

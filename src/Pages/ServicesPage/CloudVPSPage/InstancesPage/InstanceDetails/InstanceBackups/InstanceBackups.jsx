@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceBackups.module.scss'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest } from '@utils'
@@ -11,9 +11,9 @@ import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
 
 const INSTANCE_BACKUPS_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
-  { label: 'size', isSort: false, value: 'min_size' },
-  // { label: 'created_at', isSort: false, value: 'createdate' },
-  // { label: 'price_per_day', isSort: false, value: 'cost' },
+  { label: 'size', isSort: false, value: 'image_size' },
+  { label: 'created_at', isSort: false, value: 'createdate' },
+  { label: 'price_per_day', isSort: false, value: 'cost' },
   { label: 'os', isSort: false, value: 'os_distro' },
   {
     label: 'options',
@@ -32,73 +32,54 @@ export default function InstanceBackups() {
 
   const [data, setData] = useState()
   const [count, setCount] = useState(0)
+  const [cost, setCost] = useState(0)
 
   const elid = item?.id?.$
 
-  const getItems = params => {
-    dispatch(
-      cloudVpsOperations.getImages({
-        ...params,
-        func: 'instances.snapshots',
-        elid,
-        setData,
-        setCount,
-        signal,
-        setIsLoading,
-      }),
-    )
-  }
+  const getItems = useCallback(
+    (() => {
+      let col, num, cnt
+      return ({ p_col, p_num, p_cnt } = {}) => {
+        col = p_col ?? col
+        num = p_num ?? num
+        cnt = p_cnt ?? cnt
+        dispatch(
+          cloudVpsOperations.getImages({
+            p_col: col,
+            p_num: num,
+            p_cnt: cnt,
+            func: 'instances.fleio_bckps',
+            elid,
+            setData,
+            setCount,
+            setCost,
+            signal,
+            setIsLoading,
+          }),
+        )
+      }
+    })(),
+    [],
+  )
 
-  const editName = ({ elid, value }) => {
+  const editImage = ({ id, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
-        func: 'instances.snapshots',
+        func: 'image',
         successCallback: getItems,
-        elid,
+        elid: id,
         signal,
         setIsLoading,
-        values: { name: value, plid: elid },
+        values: {
+          image_name: name,
+          plid: elid,
+          ...values,
+          clicked_button: 'ok',
+          sok: 'ok',
+        },
       }),
     )
   }
-
-  const cells = INSTANCE_BACKUPS_CELLS.map(cell => {
-    let renderData
-
-    switch (cell.label) {
-      case 'name':
-        renderData = function renderData(value, item) {
-          return (
-            <div className={ss.name_wrapper}>
-              <div className={ss.name_field_wrapper}>
-                {item?.protected?.$ === 'on' && <Icon name="Protected" />}
-                <div className={ss.name_field}>
-                  <EditCell
-                    originName={value}
-                    onSubmit={val => {
-                      const value = val.trim()
-                      if (value) {
-                        editName({ elid: item.elid.$, value })
-                      }
-                    }}
-                    placeholder={value || t('server_placeholder', { ns: 'vds' })}
-                    isShadow={true}
-                  />
-                </div>
-              </div>
-              {/* <p
-                className={cn(s.status, s[item?.fleio_status?.$?.trim().toLowerCase()])}
-              >
-                {item?.fleio_status.$}
-              </p> */}
-            </div>
-          )
-        }
-        return { ...cell, renderData }
-    }
-
-    return cell
-  })
 
   const itemOnClickHandler = (e, item) => {
     if (
@@ -126,14 +107,31 @@ export default function InstanceBackups() {
             )
           }}
         />
+        {/* Later this Button should be inside the created Snapshot as icon (Backup, Image eather) */}
+        <Button
+          label={t('copy')}
+          size="large"
+          isShadow
+          onClick={() => {
+            dispatch(
+              cloudVpsActions.setItemForModals({
+                images_copy: {
+                  ...item,
+                },
+              }),
+            )
+          }}
+        />
         <ImagesList
-          cells={cells}
+          cells={INSTANCE_BACKUPS_CELLS}
           items={data}
           itemsCount={count}
           itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
+          editImage={editImage}
+          cost={cost}
+          type="snapshot"
           idKey="elid"
-          type="snapshots"
         />
       </div>
 

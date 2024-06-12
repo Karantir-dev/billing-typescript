@@ -2,17 +2,24 @@ import { Icon, Options, TooltipWrapper } from '@components'
 import s from './ImagesOptions.module.scss'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
+import { cloudVpsActions } from '@src/Redux'
+import { useDispatch } from 'react-redux'
 
 export default function ImagesOptions({ item, type, idKey }) {
   const isMobile = useMediaQuery({ query: '(max-width: 1549px)' })
   const { t } = useTranslation(['cloud_vps'])
+  const dispatch = useDispatch()
 
   const options = [
     {
       label: t('edit'),
       icon: 'Rename',
       onClick: () => {
-        console.log('Rename')
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            [`${type}_edit`]: item,
+          }),
+        )
       },
     },
     {
@@ -28,7 +35,7 @@ export default function ImagesOptions({ item, type, idKey }) {
       onClick: () => {
         console.log('Copy')
       },
-      hidden: type !== 'images',
+      hidden: type !== 'image',
     },
     {
       label: t('restore'),
@@ -36,7 +43,7 @@ export default function ImagesOptions({ item, type, idKey }) {
       onClick: () => {
         console.log('Restore')
       },
-      hidden: type === 'images',
+      hidden: type === 'image',
     },
     {
       label: t('download'),

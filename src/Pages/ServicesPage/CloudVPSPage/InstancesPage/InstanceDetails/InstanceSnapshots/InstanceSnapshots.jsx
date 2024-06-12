@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceSnapshots.module.scss'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest } from '@utils'
@@ -11,9 +11,9 @@ import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
 
 const INSTANCE_SNAPSHOTS_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
-  { label: 'size', isSort: false, value: 'min_size' },
-  // { label: 'created_at', isSort: false, value: 'createdate' },
-  // { label: 'price_per_day', isSort: false, value: 'cost' },
+  { label: 'size', isSort: false, value: 'image_size' },
+  { label: 'created_at', isSort: false, value: 'createdate' },
+  { label: 'price_per_day', isSort: false, value: 'cost' },
   { label: 'os', isSort: false, value: 'os_distro' },
   {
     label: 'options',
@@ -32,32 +32,45 @@ export default function InstanceSnapshots() {
 
   const [data, setData] = useState()
   const [count, setCount] = useState(0)
+  const [cost, setCost] = useState(0)
 
   const elid = item?.id?.$
 
-  const getItems = params => {
-    dispatch(
-      cloudVpsOperations.getImages({
-        ...params,
-        func: 'instances.snapshots',
-        elid,
-        setData,
-        setCount,
-        signal,
-        setIsLoading,
-      }),
-    )
-  }
+  const getItems = useCallback(
+    (() => {
+      let col, num, cnt
+      return ({ p_col, p_num, p_cnt } = {}) => {
+        col = p_col ?? col
+        num = p_num ?? num
+        cnt = p_cnt ?? cnt
+        dispatch(
+          cloudVpsOperations.getImages({
+            p_col: col,
+            p_num: num,
+            p_cnt: cnt,
+            func: 'instances.snapshots',
+            elid,
+            setData,
+            setCount,
+            setCost,
+            signal,
+            setIsLoading,
+          }),
+        )
+      }
+    })(),
+    [],
+  )
 
-  const editImage = ({ elid, name, ...values }) => {
+  const editImage = ({ id, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
         func: 'instances.snapshots',
         successCallback: getItems,
-        elid,
+        elid: id,
         signal,
         setIsLoading,
-        values: { name, plid: elid, ...values },
+        values: { name, plid: elid, ...values, clicked_button: 'ok', sok: 'ok' },
       }),
     )
   }
@@ -102,7 +115,6 @@ export default function InstanceSnapshots() {
               }),
             )
           }}
-          type="snapshots"
         />
         <ImagesList
           cells={INSTANCE_SNAPSHOTS_CELLS}
@@ -111,8 +123,9 @@ export default function InstanceSnapshots() {
           itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
           editImage={editImage}
-          idKey="id"
-          type="snapshots"
+          cost={cost}
+          type="snapshot"
+          idKey="elid"
         />
       </div>
 

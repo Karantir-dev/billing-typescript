@@ -971,7 +971,18 @@ const getMetrics =
       })
   }
 const getImages =
-  ({ func, elid, p_cnt, p_num, p_col, setData, setCount, signal, setIsLoading }) =>
+  ({
+    func,
+    elid,
+    p_cnt,
+    p_num,
+    p_col,
+    setData,
+    setCount,
+    setCost,
+    signal,
+    setIsLoading,
+  }) =>
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
@@ -1001,8 +1012,10 @@ const getImages =
           }
         })
 
+        const cost = data.doc.cost?.stat_cost?.$
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
+        setCost(cost)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -1062,7 +1075,7 @@ const editImage =
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
-
+    console.log(values, ' values')
     axiosInstance
       .post(
         '/',
@@ -1071,8 +1084,6 @@ const editImage =
           out: 'json',
           auth: sessionId,
           lang: 'en',
-          clicked_button: 'ok',
-          sok: 'ok',
           elid,
           ...values,
         }),
@@ -1081,12 +1092,98 @@ const editImage =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        successCallback()
+        successCallback(data.doc)
 
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
+const getImageParams =
+  ({ setData, signal, setIsLoading } = {}) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'v2.image.order.pricelist',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          plid: '',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        const pricelistElem = data.doc.list.find(el => el.$name === 'pricelist')
+          ?.elem?.[0]
+
+        const pricelist = pricelistElem.id.$
+        const pricePeriod = pricelistElem.prices.price.period.$
+
+        return axiosInstance.post(
+          '/',
+          qs.stringify({
+            func: 'v2.image.order.param',
+            out: 'json',
+            auth: sessionId,
+            lang: 'en',
+            [`period_${pricelist}`]: pricePeriod,
+            pricelist,
+          }),
+          { signal },
+        )
+      })
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setData(data.doc)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
+const createImage =
+  ({ values, successCallback, closeModal, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'v2.image.order.param',
+          out: 'xjson',
+          auth: sessionId,
+          lang: 'en',
+          sok: 'ok',
+          image_type: 'image',
+          skipbasket: 'on',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
+        closeModal()
+
+        handleLoadersClosing('closeLoader', dispatch)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        closeModal()
         handleLoadersClosing(error?.message, dispatch)
       })
   }
@@ -1118,4 +1215,6 @@ export default {
   editSnapshot,
   getImages,
   editImage,
+  getImageParams,
+  createImage,
 }
