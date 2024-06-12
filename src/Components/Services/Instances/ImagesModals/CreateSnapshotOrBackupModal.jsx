@@ -22,9 +22,6 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
   })
 
-  console.log('show item: ', item)
-  console.log('Modal item: ', itemDetails)
-
   return (
     <Modal isOpen={!!itemDetails} closeModal={closeModal}>
       <Modal.Header>
@@ -76,7 +73,7 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
         <div className={s.snapshot_create__footer_block}>
           <p className={s.tariff__param_name}>{t('Price')}</p>
           <p>
-            {itemDetails?.stat_cost?.$} / GB / {t('day')}
+            {itemDetails?.stat_cost?.$} EUR / GB / {t('day')}
           </p>
         </div>
 
