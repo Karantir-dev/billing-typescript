@@ -1,4 +1,5 @@
 import { TARIFFS_PRICES } from '../constants'
+import cutDcSuffix from '../cutDcSuffix'
 
 export default function rewriteCloudsPrices(payload) {
   if (payload) {
@@ -8,7 +9,7 @@ export default function rewriteCloudsPrices(payload) {
       payload[key] = payload[key]?.map(el => {
         const name = el.title?.main?.$ || el.title?.$
 
-        const cutedName = name.split('|')[0].trim()
+        const cutedName = cutDcSuffix(name)
 
         const newDayPrice = TARIFFS_PRICES[cutedName]?.day
         const newMonthPrice = TARIFFS_PRICES[cutedName]?.month

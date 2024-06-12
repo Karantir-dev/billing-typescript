@@ -5,6 +5,7 @@ import s from './CountryButton.module.scss'
 
 export default function CountryButton({ currentItem, item, onChange }) {
   const { t } = useTranslation(['countries'])
+
   return (
     <li
       className={cn(s.category_item, {
@@ -15,14 +16,16 @@ export default function CountryButton({ currentItem, item, onChange }) {
       <button className={cn(s.category_btn)} type="button" onClick={() => onChange(item)}>
         <img
           className={s.flag}
-          src={require(`@images/countryFlags/${getFlagFromCountryName(
-            formatCountryName(item.$),
-          )}.png`)}
+          src={require(
+            `@images/countryFlags/${getFlagFromCountryName(
+              formatCountryName(item.$),
+            )}.png`,
+          )}
           width={20}
           height={14}
           alt={formatCountryName(item.$)}
         />
-        {t(formatCountryName(item.$), { ns: 'countries' })}
+        {t(item.$.split(' ')[0], { ns: 'countries' })}
       </button>
     </li>
   )

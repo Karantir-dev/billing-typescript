@@ -6,7 +6,7 @@ import { BASIC_TYPE, PREMIUM_TYPE } from '@src/utils/constants'
 
 import s from '../../../Pages/ServicesPage/CloudVPSPage/InstancesPage/CreateInstancePage/CreateInstancePage.module.scss'
 
-export default function CloudTypeSection({ getOsListHandler, value, switchCloudType }) {
+export default function CloudTypeSection({ value, switchCloudType }) {
   const CATEGORIES = useRef([
     { type: PREMIUM_TYPE, label: 'Premium VPS' },
     { type: BASIC_TYPE, label: 'Basic VPS' },
@@ -30,11 +30,7 @@ export default function CloudTypeSection({ getOsListHandler, value, switchCloudT
               <button
                 className={cn(s.category_btn, s.serverType_btn)}
                 type="button"
-                onClick={async () => {
-                  await getOsListHandler(type)
-
-                  switchCloudType(type)
-                }}
+                onClick={() => switchCloudType(type)}
               >
                 {type === PREMIUM_TYPE && (
                   <img

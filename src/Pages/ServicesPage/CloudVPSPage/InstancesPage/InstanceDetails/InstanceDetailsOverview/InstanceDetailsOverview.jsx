@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
 import { CopyText, Loader } from '@components'
-import { getFlagFromCountryName, useCancelRequest, formatCountryName } from '@utils'
+import {
+  getFlagFromCountryName,
+  useCancelRequest,
+  formatCountryName,
+  cutDcSuffix,
+} from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import s from './InstanceDetailsOverview.module.scss'
 
@@ -47,7 +52,7 @@ export default function InstanceDetailsOverview() {
 
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Flavor')}</p>
-                <p className={s.item_info}>{item?.name?.$}</p>
+                <p className={s.item_info}>{cutDcSuffix(item?.name?.$)}</p>
               </div>
 
               <div className={s.info_block_item}>
@@ -89,9 +94,9 @@ export default function InstanceDetailsOverview() {
                 <p className={s.item_name}>{t('Region')}</p>
                 <div className={s.item_info_block}>
                   <img
-                    src={require(`@images/countryFlags/${getFlagFromCountryName(
-                      itemCountry,
-                    )}.png`)}
+                    src={require(
+                      `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
+                    )}
                     width={20}
                     height={14}
                     alt={itemCountry}

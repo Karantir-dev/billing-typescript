@@ -49,6 +49,7 @@ import {
   BASIC_TYPE,
   PREMIUM_TYPE,
   DISALLOW_PASS_SPECIFIC_CHARS,
+  DC_WITH_BASICS,
 } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
@@ -58,28 +59,15 @@ import s from './CreateInstancePage.module.scss'
 const IPv4_DAILY_COST = 1 / 30
 const IPv4_MONTHLY_COST = 1
 
+const IMAGES_TYPES = { public: 'pub', own: 'own' }
+
 export default function CreateInstancePage() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
   const isBasic = cloudType === BASIC_TYPE
 
-  const [ownImages, _setOwnImages] = useState([])
-  const [imagesTab, setimagesTab] = useState('public')
-
-  const formatImagesData = list => {
-    return list.map(el => {
-      el.$ = el.os_distro.$
-      el.$key = el.id.$
-
-      return el
-    })
-  }
-
-  const setOwnImages = list => {
-    const formatedList = formatImagesData(list)
-    _setOwnImages(formatedList)
-  }
+  const [imagesTab, setimagesTab] = useState(IMAGES_TYPES.public)
 
   const switchCloudType = type => {
     setSearchParams({ type })
@@ -105,13 +93,12 @@ export default function CreateInstancePage() {
   const basicTariffs = useSelector(cloudVpsSelectors.getBasicTariffs)
   const tariffs = isBasic ? basicTariffs : premiumTariffs
 
-  const premiumOperationSystems = useSelector(
-    cloudVpsSelectors.getPremiumOperationSystems,
-  )
-  const basicOperationSystems = useSelector(cloudVpsSelectors.getBasicOperationSystems)
-  const operationSystems = isBasic ? basicOperationSystems : premiumOperationSystems
+  const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
 
   const dcList = useSelector(cloudVpsSelectors.getDClist)
+  const filteredDcList = isBasic
+    ? dcList?.filter(el => DC_WITH_BASICS.includes(el.$key))
+    : dcList
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
 
   const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
@@ -121,6 +108,9 @@ export default function CreateInstancePage() {
 
   const [currentDC, setCurrentDC] = useState()
   const [showCaption, setShowCaption] = useState(false)
+
+  const publicImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.public]
+  const ownImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.own]
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
@@ -146,12 +136,7 @@ export default function CreateInstancePage() {
   const getOsListHandler = (cloudType, needSshList = false) => {
     const isBasic = cloudType === BASIC_TYPE
 
-    let haveOS
-    if (isBasic) {
-      haveOS = basicOperationSystems?.[currentDC?.$key]
-    } else {
-      haveOS = premiumOperationSystems?.[currentDC?.$key]
-    }
+    const haveOS = operationSystems?.[currentDC?.$key]
 
     if (!haveOS) {
       const lastTariffID = getLastTariffID(isBasic)
@@ -163,7 +148,6 @@ export default function CreateInstancePage() {
           datacenter: currentDC?.$key,
           setSshList: needSshList ? getAllSSHList : null,
           lastTariffID,
-          isBasic,
         }),
       )
     }
@@ -200,16 +184,6 @@ export default function CreateInstancePage() {
     ) {
       getOsListHandler(cloudType, true)
     }
-
-    dispatch(
-      cloudVpsOperations.getImages({
-        // ...params,
-        setData: setOwnImages,
-        // setCount: setImagesCount,
-        signal,
-        setIsLoading,
-      }),
-    )
 
     /** Cleans data from site when we leave the page */
     return () => {
@@ -265,7 +239,7 @@ export default function CreateInstancePage() {
   }
 
   const checkIsItWindows = currentOS => {
-    return operationSystems?.[currentDC?.$key]
+    return operationSystems?.[currentDC?.$key][imagesTab]
       ?.find(el => el.$key === currentOS)
       ?.$.toLowerCase()
       .includes('windows')
@@ -518,14 +492,14 @@ export default function CreateInstancePage() {
 
                 const imagesTabs = [
                   {
-                    localValue: 'public',
-                    onLocalClick: () => setimagesTab('public'),
+                    localValue: IMAGES_TYPES.public,
+                    onLocalClick: () => setimagesTab(IMAGES_TYPES.public),
                     label: t('Public'),
                     allowToRender: true,
                   },
                   {
-                    localValue: 'own',
-                    onLocalClick: () => setimagesTab('own'),
+                    localValue: IMAGES_TYPES.own,
+                    onLocalClick: () => setimagesTab(IMAGES_TYPES.own),
                     label: t('Your images'),
                     allowToRender: true,
                   },
@@ -560,7 +534,7 @@ export default function CreateInstancePage() {
                       <h3 className={s.section_title}>{t('server_location')}</h3>
 
                       <ul className={s.grid}>
-                        {dcList?.map(dc => {
+                        {filteredDcList?.map(dc => {
                           return (
                             <CountryButton
                               key={dc.$key}
@@ -578,10 +552,10 @@ export default function CreateInstancePage() {
 
                       <PageTabBar sections={imagesTabs} activeValue={imagesTab} />
 
-                      {imagesTab === 'public' ? (
+                      {imagesTab === IMAGES_TYPES.public ? (
                         <div className={s.os_list}>
                           <OsList
-                            list={operationSystems[currentDC.$key]}
+                            list={publicImages}
                             value={values.instances_os}
                             onOSchange={onOSchange}
                           />
@@ -725,9 +699,11 @@ export default function CreateInstancePage() {
                             </span>
                             <img
                               className={s.flag}
-                              src={require(`@images/countryFlags/${getFlagFromCountryName(
-                                currentCountryName,
-                              )}.png`)}
+                              src={require(
+                                `@images/countryFlags/${getFlagFromCountryName(
+                                  currentCountryName,
+                                )}.png`,
+                              )}
                               width={20}
                               height={14}
                               alt={currentCountryName}

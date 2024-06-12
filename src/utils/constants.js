@@ -263,3 +263,6 @@ export const METRICS_PERIOD_OPTIONS = [
   { label: '168h', value: '168' },
   { label: '720h', value: '720' },
 ]
+/** IDs of DC that have Basic tariffs,
+ * to filter them without having to make an extra request */
+export const DC_WITH_BASICS = ['13']
