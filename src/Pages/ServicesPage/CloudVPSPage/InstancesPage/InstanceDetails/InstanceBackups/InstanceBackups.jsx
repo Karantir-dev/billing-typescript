@@ -31,6 +31,7 @@ export default function InstanceBackups() {
   const { item } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
+  const [cost, setCost] = useState({})
   const [count, setCount] = useState(0)
 
   const elid = item?.id?.$
@@ -39,9 +40,10 @@ export default function InstanceBackups() {
     dispatch(
       cloudVpsOperations.getImages({
         ...params,
-        func: 'instances.snapshots',
+        func: 'instances.fleio_bckps',
         elid,
         setData,
+        setCost,
         setCount,
         signal,
         setIsLoading,
@@ -119,8 +121,9 @@ export default function InstanceBackups() {
           onClick={() => {
             dispatch(
               cloudVpsActions.setItemForModals({
-                snapshot_create: {
+                backup_create: {
                   ...item,
+                  ...cost,
                 },
               }),
             )

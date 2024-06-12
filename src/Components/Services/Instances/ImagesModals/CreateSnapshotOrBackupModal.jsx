@@ -13,7 +13,8 @@ import { getInstanceMainInfo } from '@utils'
 
 export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
-  const { displayName } = getInstanceMainInfo(item)
+  const itemDetails = item?.snapshot_create || item?.backup_create
+  const { displayName } = getInstanceMainInfo(itemDetails)
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -21,10 +22,13 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
   })
 
+  console.log('show item: ', item)
+  console.log('Modal item: ', itemDetails)
+
   return (
-    <Modal isOpen={!!item} closeModal={closeModal}>
+    <Modal isOpen={!!itemDetails} closeModal={closeModal}>
       <Modal.Header>
-        <p>{t('snapshots.create')}</p>
+        <p>{t(`${item?.snapshot_create ? 'snapshots' : 'backups'}.create`)}</p>
       </Modal.Header>
       <Modal.Body>
         <p className={s.modal__subtitle}>
@@ -32,7 +36,9 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
           {displayName}
         </p>
 
-        <WarningMessage>{t('snapshots.create_warning')}</WarningMessage>
+        <WarningMessage>
+          {t(`${item?.snapshot_create ? 'snapshots' : 'backups'}.create_warning`)}
+        </WarningMessage>
 
         <Formik
           initialValues={{ name: '' }}
@@ -40,7 +46,7 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
           onSubmit={values => {
             if (values.name === '') return closeModal()
             onSubmit({
-              values: { name: values.name.trim() },
+              values: { name: values.name.trim(), plid: itemDetails.id.$ },
               closeModal,
             })
           }}
@@ -69,7 +75,9 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
       <Modal.Footer className={s.snapshot_create__footer_wrapper}>
         <div className={s.snapshot_create__footer_block}>
           <p className={s.tariff__param_name}>{t('Price')}</p>
-          <p>0.00 / GB / day</p>
+          <p>
+            {itemDetails?.stat_cost?.$} / GB / {t('day')}
+          </p>
         </div>
 
         <div className={s.snapshot_create__buttons_wrapper}>

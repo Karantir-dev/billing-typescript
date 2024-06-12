@@ -219,7 +219,8 @@
     "create_warning": "Instance will not be available while the snapshot is being processed."
   },
   "backups": {
-    "create": "Create backup for instance"
+    "create": "Create backup for instance",
+    "create_warning": "Instance will not be available while the backup is being processed."
   },
   "empty_list": "Empty list"
 }

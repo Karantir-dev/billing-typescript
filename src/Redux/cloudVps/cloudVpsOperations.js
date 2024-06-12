@@ -971,7 +971,18 @@ const getMetrics =
       })
   }
 const getImages =
-  ({ func, elid, p_cnt, p_num, p_col, setData, setCount, signal, setIsLoading }) =>
+  ({
+    func,
+    elid,
+    p_cnt,
+    p_num,
+    p_col,
+    setData,
+    setCost,
+    setCount,
+    signal,
+    setIsLoading,
+  }) =>
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
@@ -1001,6 +1012,13 @@ const getImages =
           }
         })
 
+        const { created_today: { $: created_today_value } = { $: 0 }, cost = {} } =
+          data?.doc || {}
+
+        const newCost = { ...cost, created_today: { $: Number(created_today_value) } }
+
+        setCost && setCost(newCost)
+
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
@@ -1008,52 +1026,6 @@ const getImages =
       .catch(error => {
         checkIfTokenAlive(error.message, dispatch)
         handleLoadersClosing(error?.message, dispatch)
-      })
-  }
-
-const editSnapshot =
-  ({
-    values,
-    plid,
-    elid,
-    errorCallback = () => {},
-    closeModal = () => {},
-    successCallback = () => {},
-    setIsLoading,
-    signal,
-  }) =>
-  (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
-    const sessionId = authSelectors.getSessionId(getState())
-
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'instances.snapshots.edit',
-          out: 'json',
-          sok: 'ok',
-          auth: sessionId,
-          plid,
-          elid,
-          lang: 'en',
-          clicked_button: 'ok',
-          ...values,
-        }),
-        { signal },
-      )
-      .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        successCallback()
-        closeModal()
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('request_sent', { ns: 'cloud_vps' }))
-      })
-      .catch(error => {
-        errorCallback()
-        closeModal()
-        checkIfTokenAlive(error.message, dispatch)
-        handleLoadersClosing(error?.message, dispatch, setIsLoading)
       })
   }
 
@@ -1115,7 +1087,6 @@ export default {
   getTariffParamsRequest,
   generateSsh,
   getMetrics,
-  editSnapshot,
   getImages,
   editImage,
 }

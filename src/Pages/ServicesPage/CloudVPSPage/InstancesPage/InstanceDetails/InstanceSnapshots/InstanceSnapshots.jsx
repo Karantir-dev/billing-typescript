@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceSnapshots.module.scss'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest } from '@utils'
@@ -31,6 +31,7 @@ export default function InstanceSnapshots() {
   const { item } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
+  const [cost, setCost] = useState({})
   const [count, setCount] = useState(0)
 
   const elid = item?.id?.$
@@ -42,6 +43,7 @@ export default function InstanceSnapshots() {
         func: 'instances.snapshots',
         elid,
         setData,
+        setCost,
         setCount,
         signal,
         setIsLoading,
@@ -83,12 +85,13 @@ export default function InstanceSnapshots() {
               cloudVpsActions.setItemForModals({
                 snapshot_create: {
                   ...item,
+                  ...cost,
                 },
               }),
             )
           }}
         />
-        {/* Later this Button should be inside the created Snapshot as icon (Backup, Image eather) */}
+        {/* Later, this button should appear inside the created snapshot as an icon (Backup, Image) */}
         <Button
           label={t('copy')}
           size="large"
@@ -102,7 +105,6 @@ export default function InstanceSnapshots() {
               }),
             )
           }}
-          type="snapshots"
         />
         <ImagesList
           cells={INSTANCE_SNAPSHOTS_CELLS}
@@ -111,7 +113,7 @@ export default function InstanceSnapshots() {
           itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
           editImage={editImage}
-          idKey="id"
+          idKey="elid"
           type="snapshots"
         />
       </div>
