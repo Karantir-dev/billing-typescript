@@ -67,7 +67,7 @@ export default function CreateInstancePage() {
   const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
   const isBasic = cloudType === BASIC_TYPE
 
-  const [imagesTab, setimagesTab] = useState(IMAGES_TYPES.public)
+  const [imagesTab, setImagesTab] = useState(IMAGES_TYPES.public)
 
   const switchCloudType = type => {
     setSearchParams({ type })
@@ -111,6 +111,10 @@ export default function CreateInstancePage() {
 
   const publicImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.public]
   const ownImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.own]
+
+  const [isConnectMethodOpened, setIsConnectMethodOpened] = useState(
+    imagesTab === IMAGES_TYPES.own ? false : true,
+  )
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
@@ -260,7 +264,9 @@ export default function CreateInstancePage() {
         )
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
-    connectionType: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    connectionType: IMAGES_TYPES.public
+      ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+      : null,
     ssh_keys: Yup.string().when('connectionType', {
       is: type => type === 'ssh',
       then: Yup.string()
@@ -493,13 +499,17 @@ export default function CreateInstancePage() {
                 const imagesTabs = [
                   {
                     localValue: IMAGES_TYPES.public,
-                    onLocalClick: () => setimagesTab(IMAGES_TYPES.public),
+                    onLocalClick: () => setImagesTab(IMAGES_TYPES.public),
                     label: t('Public'),
                     allowToRender: true,
                   },
                   {
                     localValue: IMAGES_TYPES.own,
-                    onLocalClick: () => setimagesTab(IMAGES_TYPES.own),
+                    onLocalClick: () => {
+                      setImagesTab(IMAGES_TYPES.own)
+                      setFieldValue('connectionType', '')
+                      setIsConnectMethodOpened(false)
+                    },
                     label: t('Your images'),
                     allowToRender: true,
                   },
@@ -667,6 +677,9 @@ export default function CreateInstancePage() {
                           value: el.elid.$,
                         }))}
                         isWindows={isItWindows}
+                        hiddenMode={imagesTab === IMAGES_TYPES.own}
+                        isOpened={isConnectMethodOpened}
+                        setIsOpened={setIsConnectMethodOpened}
                       />
                       <ErrorMessage
                         className={s.error_message}
