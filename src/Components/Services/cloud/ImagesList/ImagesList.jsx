@@ -207,14 +207,18 @@ export default function ImagesList({
                 content={t(itemCountry, { ns: 'countries' })}
                 anchor={`country_flag_${item?.[idKey].$}`}
               >
-                <img
-                  src={require(`@images/countryFlags/${getFlagFromCountryName(
-                    itemCountry,
-                  )}.png`)}
-                  width={20}
-                  height={14}
-                  alt={value}
-                />
+                {itemCountry ? (
+                  <img
+                    src={require(
+                      `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
+                    )}
+                    width={20}
+                    height={14}
+                    alt={value}
+                  />
+                ) : (
+                  'undefined'
+                )}
               </TooltipWrapper>
             )
           }
