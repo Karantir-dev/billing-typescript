@@ -3,9 +3,9 @@ import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { selectors } from '@redux'
 
-import s from './SoftwareOSBtn.module.scss'
 import { SOFTWARE_ICONS_LIST } from '@utils/constants'
 import { Icon } from '@components'
+import s from './SoftwareOSBtn.module.scss'
 
 export default function SoftwareOSBtn({
   iconName,
@@ -18,7 +18,7 @@ export default function SoftwareOSBtn({
   disabled,
 }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
-  console.log(imageData)
+
   const icon =
     iconName === 'alma'
       ? 'almalinux'

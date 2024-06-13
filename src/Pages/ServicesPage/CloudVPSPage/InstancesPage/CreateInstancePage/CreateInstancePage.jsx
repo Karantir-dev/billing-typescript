@@ -342,7 +342,6 @@ export default function CreateInstancePage() {
                     'instances_os',
                     operationSystems?.[currentDC.$key]?.[tab]?.[0]?.$key,
                   )
-                  console.log(operationSystems?.[currentDC.$key]?.[tab]?.[0]?.$key)
                 }
 
                 /** Sets operation system on first tab render */

@@ -10,6 +10,7 @@ export default function ImagesOptions({ item, type, idKey }) {
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
 
+  console.log(item)
   const options = [
     {
       label: t('edit'),

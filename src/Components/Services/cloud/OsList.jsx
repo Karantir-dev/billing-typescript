@@ -2,7 +2,7 @@ const { SoftwareOSBtn, SoftwareOSSelect } = require('@src/Components')
 
 export default function OsList({ value, list, onOSchange }) {
   const elemsData = {}
-  console.log('value', value)
+
   list?.forEach(element => {
     const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
 
@@ -12,7 +12,7 @@ export default function OsList({ value, list, onOSchange }) {
       elemsData[itemName].push({ ...element })
     }
   })
-  console.log('elemsData', elemsData)
+
   return Object.entries(elemsData).map(([name, el]) => {
     if (el.length > 1) {
       const optionsList = el.map(item => {

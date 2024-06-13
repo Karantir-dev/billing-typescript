@@ -1054,11 +1054,15 @@ const editSnapshot =
         { signal },
       )
       .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        successCallback()
-        closeModal()
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('request_sent', { ns: 'cloud_vps' }))
+        try {
+          if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+          successCallback()
+          closeModal()
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+          toast.success(t('request_sent', { ns: 'cloud_vps' }))
+        } catch (error) {
+          console.log(error)
+        }
       })
       .catch(error => {
         errorCallback()

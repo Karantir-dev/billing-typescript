@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import s from './ImagesList.module.scss'
 import {
   EditCell,
   Icon,
@@ -15,6 +14,7 @@ import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
 import { formatCountryName, getFlagFromCountryName } from '@src/utils'
 import PropTypes from 'prop-types'
+import s from './ImagesList.module.scss'
 
 export default function ImagesList({
   items,
@@ -200,6 +200,7 @@ export default function ImagesList({
         if (!cell.renderData) {
           renderData = function renderData(value, item) {
             const itemCountry = formatCountryName(item, 'region')
+
             return (
               <TooltipWrapper
                 className={s.popup}
@@ -207,14 +208,18 @@ export default function ImagesList({
                 content={t(itemCountry, { ns: 'countries' })}
                 anchor={`country_flag_${item?.[idKey].$}`}
               >
-                <img
-                  src={require(`@images/countryFlags/${getFlagFromCountryName(
-                    itemCountry,
-                  )}.png`)}
-                  width={20}
-                  height={14}
-                  alt={value}
-                />
+                {itemCountry ? (
+                  <img
+                    src={require(
+                      `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
+                    )}
+                    width={20}
+                    height={14}
+                    alt={value}
+                  />
+                ) : (
+                  'undefined'
+                )}
               </TooltipWrapper>
             )
           }
