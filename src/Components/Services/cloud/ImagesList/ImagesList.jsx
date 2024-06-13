@@ -41,7 +41,7 @@ export default function ImagesList({
   const [isPaginationChanged, setIsPaginationChanged] = useState(false)
   const [isFirstRender, setIsFirstRender] = useState(true)
 
-  const [sortBy, setSortBy] = useState('+id')
+  const [sortBy, setSortBy] = useState(`+${idKey}`)
 
   const getItemsHandler = ({ p_col, p_num, p_cnt } = {}) => {
     getItems({
