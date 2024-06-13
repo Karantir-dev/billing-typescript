@@ -1075,7 +1075,7 @@ const editImage =
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
-    console.log(values, ' values')
+
     axiosInstance
       .post(
         '/',
