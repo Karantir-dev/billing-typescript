@@ -48,17 +48,9 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     (state, action) => {
       return { ...state, ...action }
     },
-    /* SHOULD CHANGE THIS LOGIC! should be => 'own', 'shr', 'pub'
-     * so initial should be 'own'.
-     * Own doesn't exist with RESCUE at all, 'shr' doesn't exit in REBUILD - change logic for this code later.
-     * Should be logic at the BACKEND to display or hide zone if there are no components.
-     */
-
-    isBootFromIso ? { zone: 'own' } : isRebuild ? { zone: 'image' } : { zone: 'pub' },
-    // { zone: 'own' },
+    { zone: 'own' },
   )
 
-  /* Condition doesn't needs any more such as tabs going to be developed with all 3 modals. */
   const depends = state.zone
 
   const navSections = useMemo(() => {
@@ -68,6 +60,8 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     const filteredRescueTabsOrder = RESCUE_TABS_ORDER.filter(tab =>
       zoneList?.includes(tab),
     )
+
+    setState({ zone: filteredRescueTabsOrder?.[0] })
 
     /* Combine the filtered `RESCUE_TABS_ORDER` and all unique elements from `zoneList` */
     const renderTabs = new Set([...filteredRescueTabsOrder, ...(zoneList || [])])
@@ -170,11 +164,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
 
   const validationSchema = Yup.object().shape({
     password:
-      ((!isRebuild &&
-        !isWindowsOS &&
-        state.zone !== 'shr' &&
-        state.zone !== 'own' &&
-        !isBootFromIso) ||
+      ((!isRebuild && !isWindowsOS && state.zone !== 'shr' && !isBootFromIso) ||
         (isRebuild &&
           (state.passwordType === 'password' || isWindowsOS) &&
           state.zone === 'pub' &&
@@ -189,7 +179,11 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
           DISALLOW_PASS_SPECIFIC_CHARS,
           t('warnings.disallow_hash', { ns: 'auth' }),
         )
-        .required(t('warnings.password_required', { ns: 'auth' })),
+        .when('zone', {
+          is: 'pub',
+          then: schema =>
+            schema.required(t('warnings.password_required', { ns: 'auth' })),
+        }),
     password_type:
       isRebuild &&
       state.zone === 'pub' &&
@@ -231,10 +225,10 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
           validationSchema={validationSchema}
           onSubmit={values => {
             const submitData = values
-            if (isRebuild && depends === 'pub') {
+            if (isRebuild) {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
             }
-            if (!isRebuild && !depends === 'pub') {
+            if (!isRebuild) {
               submitData.zone = state.zone
             }
             if (isWindowsOS && !isRebuild) {
@@ -280,8 +274,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     />
                   </div>
 
-                  {/* should remove condition about image after renaming */}
-                  {isRebuild && (state.zone === 'image' || state.zone === 'pub') ? (
+                  {isRebuild ? (
                     <div>
                       <ConnectMethod
                         connectionType={state.passwordType}
@@ -305,7 +298,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     </div>
                   ) : isWindowsOS ? (
                     <WarningMessage>{t('windows_password_warning')}</WarningMessage>
-                  ) : state.zone !== 'shr' && state.zone !== 'own' && !isBootFromIso ? (
+                  ) : state.zone !== 'shr' && !isBootFromIso ? (
                     <InputField
                       inputClassName={s.input}
                       name="password"
@@ -315,7 +308,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                       placeholder={t('new_password_placeholder', { ns: 'vds' })}
                       error={!!errors.password}
                       touched={!!touched.password}
-                      isRequired
+                      isRequired={state.zone !== 'own' && state.zone !== 'shr'}
                       autoComplete="off"
                       onChange={e => setState({ password: e.target.value })}
                       generatePasswordValue={value => setState({ password: value })}
