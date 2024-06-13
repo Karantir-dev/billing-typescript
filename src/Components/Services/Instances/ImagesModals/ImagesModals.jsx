@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { CreateSnapshotOrBackupModal, CopyModal } from './'
+import { CreateSnapshotOrBackupModal, CopyModal, CreateEditImageModal } from './'
 
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,6 +9,9 @@ export const ImagesModals = ({
   pagination = {},
   setPagination = () => {},
   redirectCallback,
+  getItems,
+  editImage,
+  cost,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -27,6 +30,17 @@ export const ImagesModals = ({
       cloudVpsOperations.editImage({
         func: 'instances.fleio_bckps',
         ...values,
+      }),
+    )
+  }
+
+  const createImageSubmit = values => {
+    dispatch(
+      cloudVpsOperations.createImage({
+        values,
+        successCallback: () => getItems(),
+        closeModal: () =>
+          dispatch(cloudVpsActions.setItemForModals({ image_edit: false })),
       }),
     )
   }
@@ -55,6 +69,18 @@ export const ImagesModals = ({
             dispatch(cloudVpsActions.setItemForModals({ images_copy: false }))
           }
           onSubmit={() => {}}
+        />
+      )}
+      {!!itemForModals?.image_edit && (
+        <CreateEditImageModal
+          item={itemForModals?.image_edit}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ image_edit: false }))
+          }
+          onSubmit={
+            itemForModals?.image_edit === 'create' ? createImageSubmit : editImage
+          }
+          cost={cost}
         />
       )}
     </>
