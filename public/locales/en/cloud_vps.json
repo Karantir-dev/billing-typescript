@@ -221,5 +221,27 @@
   "backups": {
     "create": "Create backup for instance"
   },
-  "empty_list": "Empty list"
+  "empty_list": "Empty list",
+  "create_image": "Create image",
+  "edit_image": "Update image",
+  "image": {
+    "create": "Create new image",
+    "image_name": "Image name",
+    "min_disk": "Minimum disk size (GB)",
+    "min_ram": "Minimum required RAM (MB)",
+    "disk_format": "Disk format",
+    "os_distro": "OS distro",
+    "os_version": "OS version",
+    "architecture": "Architecture",
+    "url": "Source",
+    "url_placeholder": "Enter URL",
+    "protected": "Protected",
+    "description": {
+      "image_name": "Set an image display name that will reflect what the image contains, like its operating system or snapshot of an instance.",
+      "min_disk": "This property will tell OpenStack Compute what the minimum required disk size is for this image. This allows you to set a limit in order to avoid potential problems while creating an Instance with a lower disk size than the installed software on that image.",
+      "min_ram": "Minimum required RAM (MB)Like the minimum required disk size, this option allows you to set a limit for the minimum required RAM an instance created from this image will required in order to run properly.",
+      "os": "These special attributes allows Zomro to show the distro icon next to each instance created from this image and allows OpenStack to properly create an Instance especially for Windows or other non Linux distributions.",
+      "protected": "Set this option in order to protect the image from accidental deletion."
+    }
+  }
 }
