@@ -30,7 +30,7 @@ export default function ImagesPage() {
   const dispatch = useDispatch()
   const [images, setImages] = useState()
   const [imagesCount, setImagesCount] = useState(0)
-  const [cost, setCost] = useState(0)
+  const [dailyCosts, setDailyCosts] = useState(0)
   const { t } = useTranslation(['cloud_vps'])
 
   const getItems = useCallback(
@@ -48,7 +48,7 @@ export default function ImagesPage() {
             func: 'image',
             setData: setImages,
             setCount: setImagesCount,
-            setCost,
+            setDailyCosts,
             signal,
             setIsLoading,
           }),
@@ -104,7 +104,7 @@ export default function ImagesPage() {
         itemOnClickHandler={itemOnClickHandler}
         getItems={getItems}
         editImage={editImage}
-        cost={cost}
+        cost={dailyCosts}
         type="image"
       />
 
@@ -115,7 +115,7 @@ export default function ImagesPage() {
         }}
         getItems={getItems}
         editImage={editImage}
-        cost={cost}
+        cost={dailyCosts}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </div>

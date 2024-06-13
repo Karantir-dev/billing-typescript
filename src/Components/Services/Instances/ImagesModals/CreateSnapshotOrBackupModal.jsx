@@ -41,7 +41,6 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
           initialValues={{ name: '' }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            if (values.name === '') return closeModal()
             onSubmit({
               values: { name: values.name.trim(), plid: itemDetails.id.$ },
               closeModal,

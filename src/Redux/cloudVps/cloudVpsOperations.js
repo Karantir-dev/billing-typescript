@@ -979,7 +979,7 @@ const getImages =
     p_col,
     setData,
     setCount,
-    setCost,
+    dailyCosts,
     signal,
     setIsLoading,
   }) =>
@@ -1012,12 +1012,15 @@ const getImages =
           }
         })
 
-        const { created_today: { $: created_today_value } = { $: 0 }, cost = {} } =
-          data?.doc || {}
+        const created_today_value = data.doc?.created_today?.$ || 0
+        const priceObj = data.doc.cost || {}
 
-        const newCost = { ...cost, created_today: { $: Number(created_today_value) } }
+        const costSummaryObj = {
+          ...priceObj,
+          created_today: { $: Number(created_today_value) },
+        }
 
-        setCost && setCost(newCost)
+        dailyCosts && dailyCosts(costSummaryObj)
 
         setCount(+data.doc.p_elems.$)
         setData(elemsList)

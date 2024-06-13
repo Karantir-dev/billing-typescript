@@ -31,7 +31,7 @@ export default function InstanceBackups() {
   const { item } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
-  const [cost, setCost] = useState({})
+  const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
 
   const elid = item?.id?.$
@@ -52,7 +52,7 @@ export default function InstanceBackups() {
             elid,
             setData,
             setCount,
-            setCost,
+            setDailyCosts,
             signal,
             setIsLoading,
           }),
@@ -102,7 +102,7 @@ export default function InstanceBackups() {
               cloudVpsActions.setItemForModals({
                 backup_create: {
                   ...item,
-                  ...cost,
+                  ...dailyCosts,
                 },
               }),
             )
@@ -130,7 +130,7 @@ export default function InstanceBackups() {
           itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
           editImage={editImage}
-          cost={cost}
+          cost={dailyCosts}
           type="snapshot"
           idKey="elid"
         />
