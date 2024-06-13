@@ -23,10 +23,10 @@ export default function SoftwareOSBtn({
     iconName === 'alma'
       ? 'almalinux'
       : iconName === 'astra'
-      ? 'astralinux'
-      : iconName === 'noos'
-      ? 'null'
-      : iconName
+        ? 'astralinux'
+        : iconName === 'noos'
+          ? 'null'
+          : iconName
 
   const inList = SOFTWARE_ICONS_LIST?.includes(icon)
   const svgIconInList = SOFTWARE_ICONS_LIST?.includes(svgIcon) || svgIcon === 'Iso'
@@ -57,10 +57,7 @@ export default function SoftwareOSBtn({
         )}
         <div>
           {label} {imageData?.os_version?.$}
-          <span className={s.architecture}>{imageData?.architecture?.$}</span>
-          {imageData?.image_name?.$ && (
-            <p className={s.image_name}>{imageData?.image_name?.$}</p>
-          )}
+          {imageData?.$name && <p className={s.image_name}>{imageData?.$name}</p>}
         </div>
       </button>
     </div>

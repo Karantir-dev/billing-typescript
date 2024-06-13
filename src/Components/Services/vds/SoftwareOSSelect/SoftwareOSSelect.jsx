@@ -38,9 +38,9 @@ export default function SoftwareOSSelect({
 
   const renderImg = () => {
     if (inList) {
-      return require(`@images/soft_os_icons/${
-        darkTheme ? iconName + '_dt' : iconName
-      }.png`)
+      return require(
+        `@images/soft_os_icons/${darkTheme ? iconName + '_dt' : iconName}.png`,
+      )
     }
 
     return require(`@images/soft_os_icons/linux-logo${darkTheme ? '_dt' : ''}.png`)
@@ -65,9 +65,7 @@ export default function SoftwareOSSelect({
           {selectedItem?.architecture?.$ && (
             <span className={s.architecture}>{selectedItem?.architecture?.$}</span>
           )}
-          {selectedItem?.image_name?.$ && (
-            <p className={s.image_name}>{selectedItem?.image_name?.$}</p>
-          )}
+          {selectedItem?.$name && <p className={s.image_name}>{selectedItem?.$name}</p>}
         </div>
 
         <Icon name="Shevron" className={cn(ss.right_icon, { [ss.opened]: isOpened })} />
@@ -97,10 +95,7 @@ export default function SoftwareOSSelect({
                   )}
                   <div>
                     {el.label} {el?.os_version?.$}{' '}
-                    <span className={s.architecture}>{el?.architecture?.$}</span>
-                    {el?.image_name?.$ && (
-                      <p className={s.image_name}>{el?.image_name?.$}</p>
-                    )}
+                    {el?.$name && <p className={s.image_name}>{el?.$name}</p>}
                   </div>
                 </div>
               )

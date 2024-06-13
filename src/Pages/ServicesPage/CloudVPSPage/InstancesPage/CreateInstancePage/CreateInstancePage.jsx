@@ -67,7 +67,7 @@ export default function CreateInstancePage() {
   const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
   const isBasic = cloudType === BASIC_TYPE
 
-  const [imagesTab, setImagesTab] = useState(IMAGES_TYPES.public)
+  const [imagesCurrentTab, setImagesCurrentTab] = useState(IMAGES_TYPES.public)
 
   const switchCloudType = type => {
     setSearchParams({ type })
@@ -113,7 +113,7 @@ export default function CreateInstancePage() {
   const ownImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.own]
 
   const [isConnectMethodOpened, setIsConnectMethodOpened] = useState(
-    imagesTab === IMAGES_TYPES.own ? false : true,
+    imagesCurrentTab === IMAGES_TYPES.own ? false : true,
   )
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
@@ -243,7 +243,7 @@ export default function CreateInstancePage() {
   }
 
   const checkIsItWindows = currentOS => {
-    return operationSystems?.[currentDC?.$key][imagesTab]
+    return operationSystems?.[currentDC?.$key][imagesCurrentTab]
       ?.find(el => el.$key === currentOS)
       ?.$.toLowerCase()
       .includes('windows')
@@ -264,9 +264,10 @@ export default function CreateInstancePage() {
         )
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
-    connectionType: IMAGES_TYPES.public
-      ? Yup.string().required(t('Is a required field', { ns: 'other' }))
-      : null,
+    connectionType:
+      IMAGES_TYPES.public === imagesCurrentTab
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
     ssh_keys: Yup.string().when('connectionType', {
       is: type => type === 'ssh',
       then: Yup.string()
@@ -315,7 +316,8 @@ export default function CreateInstancePage() {
           ownImages && (
             <Formik
               initialValues={{
-                instances_os: operationSystems?.[currentDC.$key]?.[0]?.$key,
+                instances_os:
+                  operationSystems?.[currentDC.$key]?.[imagesCurrentTab]?.[0]?.$key,
                 tariff_id: tariffFromSite?.id.$ || tariffs?.[currentDC?.$key]?.[0]?.id.$,
                 tariffData: tariffFromSite || tariffs?.[currentDC?.$key]?.[0],
                 period: 30,
@@ -335,11 +337,17 @@ export default function CreateInstancePage() {
                   setFieldValue('ssh_keys', allSshList?.[0]?.elid.$)
                 }, [allSshList])
 
-                useEffect(() => {
+                const selectFirstImage = tab => {
                   setFieldValue(
                     'instances_os',
-                    operationSystems?.[currentDC.$key]?.[0]?.$key,
+                    operationSystems?.[currentDC.$key]?.[tab]?.[0]?.$key,
                   )
+                  console.log(operationSystems?.[currentDC.$key]?.[tab]?.[0]?.$key)
+                }
+
+                /** Sets operation system on first tab render */
+                useEffect(() => {
+                  selectFirstImage(imagesCurrentTab)
                 }, [operationSystems?.[currentDC.$key]])
 
                 const onTariffChange = tariff => {
@@ -499,16 +507,20 @@ export default function CreateInstancePage() {
                 const imagesTabs = [
                   {
                     localValue: IMAGES_TYPES.public,
-                    onLocalClick: () => setImagesTab(IMAGES_TYPES.public),
+                    onLocalClick: () => {
+                      setImagesCurrentTab(IMAGES_TYPES.public)
+                      selectFirstImage(IMAGES_TYPES.public)
+                    },
                     label: t('Public'),
                     allowToRender: true,
                   },
                   {
                     localValue: IMAGES_TYPES.own,
                     onLocalClick: () => {
-                      setImagesTab(IMAGES_TYPES.own)
+                      setImagesCurrentTab(IMAGES_TYPES.own)
                       setFieldValue('connectionType', '')
                       setIsConnectMethodOpened(false)
+                      selectFirstImage(IMAGES_TYPES.own)
                     },
                     label: t('Your images'),
                     allowToRender: true,
@@ -560,9 +572,9 @@ export default function CreateInstancePage() {
                     <section className={s.section}>
                       <h3 className={s.section_title}>{t('server_image')}</h3>
 
-                      <PageTabBar sections={imagesTabs} activeValue={imagesTab} />
+                      <PageTabBar sections={imagesTabs} activeValue={imagesCurrentTab} />
 
-                      {imagesTab === IMAGES_TYPES.public ? (
+                      {imagesCurrentTab === IMAGES_TYPES.public ? (
                         <div className={s.os_list}>
                           <OsList
                             list={publicImages}
@@ -575,7 +587,7 @@ export default function CreateInstancePage() {
                           <OsList
                             list={ownImages}
                             value={values.instances_os}
-                            onOSchange={() => {}}
+                            onOSchange={onOSchange}
                           />
                         </div>
                       )}
@@ -677,7 +689,7 @@ export default function CreateInstancePage() {
                           value: el.elid.$,
                         }))}
                         isWindows={isItWindows}
-                        hiddenMode={imagesTab === IMAGES_TYPES.own}
+                        hiddenMode={imagesCurrentTab === IMAGES_TYPES.own}
                         isOpened={isConnectMethodOpened}
                         setIsOpened={setIsConnectMethodOpened}
                       />

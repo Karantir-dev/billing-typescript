@@ -221,5 +221,7 @@
   "backups": {
     "create": "Create backup for instance"
   },
-  "empty_list": "Empty list"
+  "empty_list": "Empty list",
+  "change_access_method": "Change access method",
+  "new_access_method_warning": "Setting a new access method may not work for modified images."
 }
