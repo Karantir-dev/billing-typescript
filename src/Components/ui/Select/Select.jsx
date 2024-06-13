@@ -99,7 +99,7 @@ export default function Select(props) {
               content={labelTooltip}
               wrapperClassName={s.label__tooltip}
               className={s.hint}
-              place="bottom"
+              globalCloseEvents={{ scroll: true }}
             >
               <Icon name="Info" />
             </TooltipWrapper>

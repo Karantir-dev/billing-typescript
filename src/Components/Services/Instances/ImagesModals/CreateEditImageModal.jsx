@@ -245,7 +245,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                             content={t('image.description.protected')}
                             wrapperClassName={s.label__tooltip}
                             className={s.hint}
-                            place="bottom"
+                            globalCloseEvents={{ scroll: true }}
                           >
                             <Icon name="Info" />
                           </TooltipWrapper>
