@@ -31,7 +31,7 @@ export default function InstanceSnapshots() {
   const { item } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
-  const [cost, setCost] = useState({})
+  const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
 
   const elid = item?.id?.$
@@ -52,7 +52,7 @@ export default function InstanceSnapshots() {
             elid,
             setData,
             setCount,
-            setCost,
+            setDailyCosts,
             signal,
             setIsLoading,
           }),
@@ -96,7 +96,7 @@ export default function InstanceSnapshots() {
               cloudVpsActions.setItemForModals({
                 snapshot_create: {
                   ...item,
-                  ...cost,
+                  ...dailyCosts,
                 },
               }),
             )
@@ -124,7 +124,7 @@ export default function InstanceSnapshots() {
           itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
           editImage={editImage}
-          cost={cost}
+          cost={dailyCosts}
           type="snapshot"
           idKey="elid"
         />
