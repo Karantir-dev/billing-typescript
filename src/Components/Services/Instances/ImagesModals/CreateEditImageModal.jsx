@@ -146,6 +146,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                           labelTooltip={
                             isMobile ? t('image.description.min_disk') : false
                           }
+                          labelTooltipPlace="bottom"
                           label={`${t('image.min_disk')}:`}
                           placeholder={t('image.min_disk')}
                           error={!!errors.min_disk}
@@ -160,6 +161,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                           name="min_ram"
                           isShadow
                           labelTooltip={isMobile ? t('image.description.min_ram') : false}
+                          labelTooltipPlace="bottom"
                           label={`${t('image.min_ram')}:`}
                           placeholder={t('image.min_ram')}
                           error={!!errors.min_ram}
@@ -185,6 +187,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                         <Select
                           inputClassName={s.select_bgc}
                           labelTooltip={isMobile ? t('image.description.os') : false}
+                          labelTooltipPlace="bottom"
                           name="os_distro"
                           label={`${t('image.os_distro')}:`}
                           placeholder={t('image.os_distro')}
@@ -246,6 +249,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                             wrapperClassName={s.label__tooltip}
                             className={s.hint}
                             globalCloseEvents={{ scroll: true }}
+                            place="top"
                           >
                             <Icon name="Info" />
                           </TooltipWrapper>

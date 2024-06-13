@@ -10,6 +10,7 @@ export default function Select(props) {
   let {
     label,
     labelTooltip,
+    labelTooltipPlace,
     isShadow, // shadow or border
     className,
     inputClassName,
@@ -100,6 +101,7 @@ export default function Select(props) {
               wrapperClassName={s.label__tooltip}
               className={s.hint}
               globalCloseEvents={{ scroll: true }}
+              place={labelTooltipPlace}
             >
               <Icon name="Info" />
             </TooltipWrapper>

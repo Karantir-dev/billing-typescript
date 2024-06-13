@@ -11,6 +11,7 @@ const InputField = function InputField(props) {
   const {
     label,
     labelTooltip,
+    labelTooltipPlace,
     iconRight, // icon type
     iconLeft, // icon type
     error,
@@ -121,6 +122,7 @@ const InputField = function InputField(props) {
                 wrapperClassName={s.label__tooltip}
                 className={s.hint}
                 globalCloseEvents={{ scroll: true }}
+                place={labelTooltipPlace}
               >
                 <Icon name="Info" />
               </TooltipWrapper>
