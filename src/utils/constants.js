@@ -263,3 +263,5 @@ export const METRICS_PERIOD_OPTIONS = [
   { label: '168h', value: '168' },
   { label: '720h', value: '720' },
 ]
+
+export const IMAGES_TYPES = { public: 'pub', own: 'own', shared: 'shr' }
