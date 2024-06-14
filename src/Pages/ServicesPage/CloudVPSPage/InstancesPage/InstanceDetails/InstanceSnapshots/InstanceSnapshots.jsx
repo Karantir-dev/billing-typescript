@@ -6,8 +6,9 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, EditCell, Icon, ImagesList, Loader } from '@components'
+import { Button, EditCell, Icon, ImagesList, Loader, WarningMessage } from '@components'
 import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
+import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_SNAPSHOTS_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
@@ -83,39 +84,36 @@ export default function InstanceSnapshots() {
       return
   }
 
+  const createdToday = dailyCosts?.created_today?.$
+
   return (
     <>
       <div className={s.container}>
-        <Button
-          label={t('create_snapshot')}
-          size="large"
-          isShadow
-          onClick={() => {
-            dispatch(
-              cloudVpsActions.setItemForModals({
-                snapshot_create: {
-                  ...item,
-                  ...dailyCosts,
-                },
-              }),
-            )
-          }}
-        />
-        {/* Later, this button should appear inside the created snapshot as an icon (Backup, Image) */}
-        <Button
-          label={t('copy')}
-          size="large"
-          isShadow
-          onClick={() => {
-            dispatch(
-              cloudVpsActions.setItemForModals({
-                images_copy: {
-                  ...item,
-                },
-              }),
-            )
-          }}
-        />
+        <div className={s.create_wrapper}>
+          <p>{t('snapshots.limit_value')}</p>
+          <Button
+            label={t('create_snapshot')}
+            size="large"
+            isShadow
+            onClick={() => {
+              dispatch(
+                cloudVpsActions.setItemForModals({
+                  snapshot_create: {
+                    ...item,
+                    ...dailyCosts,
+                  },
+                }),
+              )
+            }}
+            disabled={createdToday >= 5}
+          />
+          {createdToday >= 5 && (
+            <WarningMessage className={s.snapshot_limit_message}>
+              {t('snapshots.limit_reached')}
+            </WarningMessage>
+          )}
+        </div>
+
         <ImagesList
           cells={INSTANCE_SNAPSHOTS_CELLS}
           items={data}

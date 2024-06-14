@@ -36,7 +36,7 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
           validationSchema={validationSchema}
           onSubmit={values => {
             onSubmit({
-              values: { name: values.name.trim(), plid: itemDetails.id.$ },
+              values: { name: values.name.trim(), plid: itemDetails.id.$, sok: 'ok' },
               closeModal,
             })
           }}

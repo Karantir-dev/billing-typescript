@@ -34,6 +34,13 @@ export default function ImagesOptions({ item, type, idKey }) {
       icon: 'Copy',
       onClick: () => {
         console.log('Copy')
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            images_copy: {
+              ...item,
+            },
+          }),
+        )
       },
       hidden: type !== 'image',
     },

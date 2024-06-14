@@ -94,7 +94,7 @@ export default function InstanceBackups() {
     <>
       <div className={s.container}>
         <Button
-          label={t('create_snapshot')}
+          label={t('create_backup')}
           size="large"
           isShadow
           onClick={() => {
@@ -108,21 +108,7 @@ export default function InstanceBackups() {
             )
           }}
         />
-        {/* Later this Button should be inside the created Snapshot as icon (Backup, Image eather) */}
-        <Button
-          label={t('copy')}
-          size="large"
-          isShadow
-          onClick={() => {
-            dispatch(
-              cloudVpsActions.setItemForModals({
-                images_copy: {
-                  ...item,
-                },
-              }),
-            )
-          }}
-        />
+
         <ImagesList
           cells={INSTANCE_BACKUPS_CELLS}
           items={data}
