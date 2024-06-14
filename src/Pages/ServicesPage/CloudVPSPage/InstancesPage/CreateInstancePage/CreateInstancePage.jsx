@@ -75,8 +75,8 @@ export default function CreateInstancePage() {
 
   const location = useLocation()
 
-  const dcLabelFromLaunch = location.state?.dcLabel
-  const imageIdFromLaunch = location.state?.imageId
+  // const dcLabelFromLaunch = location.state?.dcLabel
+  // const imageIdFromLaunch = location.state?.imageId
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
 
@@ -125,7 +125,7 @@ export default function CreateInstancePage() {
       const dcLocation = dataFromSite.location
 
       const dcFromSite = dcList.find(el => el.$key === dcLocation)
-      const dcFromLaunch = dcList.find(el => el.$key === dcKeyFromLaunch)
+      const dcFromLaunch = dcList.find(el => el.$key === '13')
 
       if (dcFromLaunch) {
         setCurrentDC(dcFromLaunch)
