@@ -22,9 +22,10 @@ import {
   PASS_REGEX,
   PASS_REGEX_ASCII,
   DISALLOW_PASS_SPECIFIC_CHARS,
+  IMAGES_TYPES,
 } from '@utils/constants'
 
-const RESCUE_TABS_ORDER = ['own', 'shr', 'pub']
+const RESCUE_TABS_ORDER = [IMAGES_TYPES.own, IMAGES_TYPES.shared, IMAGES_TYPES.public]
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
@@ -48,7 +49,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     (state, action) => {
       return { ...state, ...action }
     },
-    { zone: 'own' },
+    { zone: IMAGES_TYPES.own },
   )
 
   const depends = state.zone
@@ -164,10 +165,13 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
 
   const validationSchema = Yup.object().shape({
     password:
-      ((!isRebuild && !isWindowsOS && state.zone !== 'shr' && !isBootFromIso) ||
+      ((!isRebuild &&
+        !isWindowsOS &&
+        state.zone !== IMAGES_TYPES.shared &&
+        !isBootFromIso) ||
         (isRebuild &&
           (state.passwordType === 'password' || isWindowsOS) &&
-          state.zone === 'pub' &&
+          state.zone === IMAGES_TYPES.public &&
           !isBootFromIso)) &&
       Yup.string()
         .min(8, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
@@ -180,13 +184,13 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
           t('warnings.disallow_hash', { ns: 'auth' }),
         )
         .when('zone', {
-          is: 'pub',
+          is: IMAGES_TYPES.public,
           then: schema =>
             schema.required(t('warnings.password_required', { ns: 'auth' })),
         }),
     password_type:
       isRebuild &&
-      state.zone === 'pub' &&
+      state.zone === IMAGES_TYPES.public &&
       Yup.string().required(t('Is a required field', { ns: 'other' })),
     ssh_keys:
       state.passwordType === 'ssh' &&
@@ -298,7 +302,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     </div>
                   ) : isWindowsOS ? (
                     <WarningMessage>{t('windows_password_warning')}</WarningMessage>
-                  ) : state.zone !== 'shr' && !isBootFromIso ? (
+                  ) : state.zone !== IMAGES_TYPES.shared && !isBootFromIso ? (
                     <InputField
                       inputClassName={s.input}
                       name="password"
@@ -308,7 +312,10 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                       placeholder={t('new_password_placeholder', { ns: 'vds' })}
                       error={!!errors.password}
                       touched={!!touched.password}
-                      isRequired={state.zone !== 'own' && state.zone !== 'shr'}
+                      isRequired={
+                        state.zone !== IMAGES_TYPES.own &&
+                        state.zone !== IMAGES_TYPES.shared
+                      }
                       autoComplete="off"
                       onChange={e => setState({ password: e.target.value })}
                       generatePasswordValue={value => setState({ password: value })}
