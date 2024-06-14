@@ -467,7 +467,7 @@ const getInstanceInfo =
 
         const d = {
           createdate: renamedSlistData?.createdate?.$,
-          fotbo_id: renamedSlistData?.fotbo_id.$,
+          instances_uuid: renamedSlistData?.instances_uuid.$,
           ip: renamedSlistData?.ip?.$,
           ip_v6: renamedSlistData?.ip_v6?.$,
           rdns_record: renamedSlistData?.rdns_record?.$,

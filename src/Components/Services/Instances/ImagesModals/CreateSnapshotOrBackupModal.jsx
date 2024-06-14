@@ -37,7 +37,6 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
           onSubmit={values => {
             onSubmit({
               values: { name: values.name.trim(), plid: itemDetails.id.$, sok: 'ok' },
-              closeModal,
             })
           }}
         >

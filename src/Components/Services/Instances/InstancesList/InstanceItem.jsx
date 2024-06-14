@@ -32,7 +32,6 @@ export default function InstanceItem({ item, editInstance }) {
     setServerName(value)
   }
 
-  /* This feature can be removed later. After renaming in the os_distro backend */
   const capitalizeFirstLetter = str => {
     if (!str) return ''
     return str.charAt(0).toUpperCase() + str.slice(1)
