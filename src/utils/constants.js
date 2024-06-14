@@ -266,3 +266,5 @@ export const METRICS_PERIOD_OPTIONS = [
 /** IDs of DC that have Basic tariffs,
  * to filter them without having to make an extra request */
 export const DC_WITH_BASICS = ['13']
+
+export const IMAGES_TYPES = { public: 'pub', own: 'own' }

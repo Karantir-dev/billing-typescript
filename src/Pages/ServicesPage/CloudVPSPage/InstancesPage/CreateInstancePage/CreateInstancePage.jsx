@@ -50,6 +50,7 @@ import {
   PREMIUM_TYPE,
   DISALLOW_PASS_SPECIFIC_CHARS,
   DC_WITH_BASICS,
+  IMAGES_TYPES,
 } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
@@ -58,8 +59,6 @@ import s from './CreateInstancePage.module.scss'
 
 const IPv4_DAILY_COST = 1 / 30
 const IPv4_MONTHLY_COST = 1
-
-const IMAGES_TYPES = { public: 'pub', own: 'own' }
 
 export default function CreateInstancePage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -75,6 +74,8 @@ export default function CreateInstancePage() {
   }
 
   const location = useLocation()
+
+  const dcKeyFromLaunch = location.state?.dc
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
 
@@ -123,7 +124,15 @@ export default function CreateInstancePage() {
       const dcLocation = dataFromSite.location
 
       const dcFromSite = dcList.find(el => el.$key === dcLocation)
-      dcFromSite ? setCurrentDC(dcFromSite) : setCurrentDC(dcList?.[0])
+      const dcFromLaunch = dcList.find(el => el.$key === dcKeyFromLaunch)
+
+      if (dcFromLaunch) {
+        setCurrentDC(dcFromLaunch)
+      } else if (dcFromSite) {
+        setCurrentDC(dcFromSite)
+      } else {
+        setCurrentDC(dcList?.[0])
+      }
     }
   }, [dcList])
 
@@ -138,12 +147,14 @@ export default function CreateInstancePage() {
   }
 
   const getOsListHandler = (cloudType, needSshList = false) => {
+    // це скоріше всього можна буде прибрати
     const isBasic = cloudType === BASIC_TYPE
 
     const haveOS = operationSystems?.[currentDC?.$key]
 
     if (!haveOS) {
       const lastTariffID = getLastTariffID(isBasic)
+
       return dispatch(
         cloudVpsOperations.getOsList({
           signal,
@@ -176,7 +187,7 @@ export default function CreateInstancePage() {
           setIsLoading,
           needOsList: !operationSystems,
           setSshList: getAllSSHList,
-          datacenter: dataFromSite.location || '',
+          datacenter: dataFromSite.location || location.state?.dc || '',
           isBasic,
         }),
       )
