@@ -197,6 +197,7 @@ export const TARIFFS_PRICES = {
   'Cloud Supreme': { day: 2.9967, month: 89.9 },
 
   /* BASIC tariffs */
+  'Cloud Light': { day: 0.0966, month: 2.9 },
   'Cloud Optimal': { day: 0.183, month: 5.49 },
   'Cloud Nova': { day: 0.3164, month: 9.49 },
   'Cloud Pro': { day: 0.5497, month: 16.49 },

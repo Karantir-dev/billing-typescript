@@ -597,7 +597,8 @@ const getAllTariffsInfo =
           let lastTariffID
 
           if (isBasic) {
-            lastTariffID = basicTariffs[dcID][0].id.$
+            /** we pick last tariff in the list because first one doesn`t have Windows OS */
+            lastTariffID = basicTariffs[dcID][basicTariffs[dcID].length - 1].id.$
           } else {
             /** we pick last tariff in the list because first one doesn`t have Windows OS */
             lastTariffID = premiumTariffs[dcID][premiumTariffs[dcID].length - 1].id.$
