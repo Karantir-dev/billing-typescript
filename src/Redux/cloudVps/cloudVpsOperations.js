@@ -979,7 +979,7 @@ const getImages =
     p_col,
     setData,
     setCount,
-    dailyCosts,
+    setDailyCosts,
     signal,
     setIsLoading,
   }) =>
@@ -1020,7 +1020,7 @@ const getImages =
           created_today: { $: Number(created_today_value) },
         }
 
-        dailyCosts && dailyCosts(costSummaryObj)
+        setDailyCosts(costSummaryObj)
 
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
@@ -1033,7 +1033,7 @@ const getImages =
   }
 
 const editImage =
-  ({ func, values, successCallback, elid, signal, setIsLoading }) =>
+  ({ func, values, successCallback = () => {}, elid, signal, setIsLoading }) =>
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())

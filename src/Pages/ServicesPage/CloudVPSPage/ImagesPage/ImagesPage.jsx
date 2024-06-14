@@ -80,7 +80,6 @@ export default function ImagesPage() {
       e.target.closest('[data-target="name"]')
     )
       return
-    console.log('open item page')
   }
 
   return (
@@ -115,7 +114,7 @@ export default function ImagesPage() {
         }}
         getItems={getItems}
         editImage={editImage}
-        cost={dailyCosts}
+        dailyCosts
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </div>

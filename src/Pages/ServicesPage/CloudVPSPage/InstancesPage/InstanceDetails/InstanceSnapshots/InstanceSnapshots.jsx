@@ -81,7 +81,6 @@ export default function InstanceSnapshots() {
       e.target.closest('[data-target="name"]')
     )
       return
-    console.log('open item page')
   }
 
   return (

@@ -11,7 +11,7 @@ export const ImagesModals = ({
   redirectCallback,
   getItems,
   editImage,
-  cost,
+  dailyCosts,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -80,7 +80,7 @@ export const ImagesModals = ({
           onSubmit={
             itemForModals?.image_edit === 'create' ? createImageSubmit : editImage
           }
-          cost={cost}
+          cost={dailyCosts}
         />
       )}
     </>

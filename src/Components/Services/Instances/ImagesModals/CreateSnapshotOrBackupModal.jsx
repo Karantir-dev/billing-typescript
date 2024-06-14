@@ -1,10 +1,4 @@
-import {
-  Button,
-  InputField,
-  Modal,
-  WarningMessage,
-  // Icon,
-} from '@components'
+import { Button, InputField, Modal, WarningMessage } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
