@@ -312,10 +312,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                       placeholder={t('new_password_placeholder', { ns: 'vds' })}
                       error={!!errors.password}
                       touched={!!touched.password}
-                      isRequired={
-                        state.zone !== IMAGES_TYPES.own &&
-                        state.zone !== IMAGES_TYPES.shared
-                      }
+                      isRequired={state.zone === IMAGES_TYPES.public}
                       autoComplete="off"
                       onChange={e => setState({ password: e.target.value })}
                       generatePasswordValue={value => setState({ password: value })}
