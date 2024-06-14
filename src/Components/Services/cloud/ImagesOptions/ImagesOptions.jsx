@@ -12,7 +12,7 @@ export default function ImagesOptions({ item, type, idKey }) {
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  console.log(item.fleio_id.$)
+
   const options = [
     {
       label: t('edit'),
@@ -30,7 +30,7 @@ export default function ImagesOptions({ item, type, idKey }) {
       icon: 'Launch',
       onClick: () => {
         navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE, {
-          state: { id: item.fleio_id.$, dc: item.region.$ },
+          state: { imageId: item.fleio_id.$, dcLabel: item.region.$ },
         })
       },
     },

@@ -75,7 +75,8 @@ export default function CreateInstancePage() {
 
   const location = useLocation()
 
-  const dcKeyFromLaunch = location.state?.dc
+  const dcLabelFromLaunch = location.state?.dcLabel
+  const imageIdFromLaunch = location.state?.imageId
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
 
