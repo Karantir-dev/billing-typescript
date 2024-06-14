@@ -1,10 +1,12 @@
+import { getImageIconName } from '@src/utils'
+
 const { SoftwareOSBtn, SoftwareOSSelect } = require('@src/Components')
 
 export default function OsList({ value, list, onOSchange }) {
   const elemsData = {}
 
   list?.forEach(element => {
-    const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
+    const itemName = getImageIconName(element.$)
 
     if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
       elemsData[itemName] = [{ ...element }]

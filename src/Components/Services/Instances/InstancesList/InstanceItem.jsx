@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 import { useEffect, useRef, useState } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
@@ -9,6 +10,7 @@ import {
   getInstanceMainInfo,
   formatCountryName,
   cutDcSuffix,
+  getImageIconName,
 } from '@utils'
 import { useTranslation } from 'react-i18next'
 
@@ -145,7 +147,16 @@ export default function InstanceItem({ item, editInstance }) {
           content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
           anchor={`instances_os_${item?.id?.$}`}
         >
-          <Icon name={item?.os_distro?.$} />
+          {false ? (
+            <Icon name={getImageIconName(item?.os_distro?.$)} />
+          ) : (
+            <img
+              src={require(
+                `@images/soft_os_icons/${getImageIconName(item?.os_distro?.$)}.png`,
+              )}
+              alt=""
+            />
+          )}
         </TooltipWrapper>
       </td>
       <td className={s.td}>
