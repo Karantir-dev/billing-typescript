@@ -205,7 +205,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   })
 
   useEffect(() => {
-    setState({ ssh_keys: allSshList?.[0]?.fotbokeyid.$ })
+    setState({ ssh_keys: allSshList?.[0]?.fleio_key_uuid.$ })
   }, [allSshList])
 
   return (
@@ -224,7 +224,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
             [select]: state?.[select],
             password: state.password || '',
             password_type: state.passwordType,
-            ssh_keys: state.ssh_keys || allSshList?.[0]?.fotbokeyid.$,
+            ssh_keys: state.ssh_keys || allSshList?.[0]?.fleio_key_uuid.$,
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
@@ -289,7 +289,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                         touched={touched}
                         sshList={allSshList.map(el => ({
                           label: el.comment.$,
-                          value: el.fotbokeyid.$,
+                          value: el.fleio_key_uuid.$,
                         }))}
                         sshKey={values.ssh_keys}
                         isWindows={isWindowsOS}

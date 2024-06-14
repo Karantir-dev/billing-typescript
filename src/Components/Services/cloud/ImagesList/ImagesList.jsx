@@ -182,7 +182,7 @@ export default function ImagesList({
             const sizeCell = cells.find(el => el.label === 'size')
 
             return item[sizeCell?.value]?.$
-              ? `€${Math.ceil(item[sizeCell?.value]?.$) * cost}`
+              ? `€${Math.ceil(item[sizeCell?.value]?.$) * Number(cost.stat_cost.$)}`
               : ''
           }
           return { ...cell, renderData }

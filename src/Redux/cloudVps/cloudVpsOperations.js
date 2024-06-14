@@ -467,7 +467,7 @@ const getInstanceInfo =
 
         const d = {
           createdate: renamedSlistData?.createdate?.$,
-          fotbo_id: renamedSlistData?.fotbo_id.$,
+          instances_uuid: renamedSlistData?.instances_uuid.$,
           ip: renamedSlistData?.ip?.$,
           ip_v6: renamedSlistData?.ip_v6?.$,
           rdns_record: renamedSlistData?.rdns_record?.$,
@@ -979,7 +979,7 @@ const getImages =
     p_col,
     setData,
     setCount,
-    setCost,
+    setDailyCosts,
     signal,
     setIsLoading,
   }) =>
@@ -1012,10 +1012,18 @@ const getImages =
           }
         })
 
-        const cost = data.doc.cost?.stat_cost?.$
+        const created_today_value = data.doc?.created_today?.$ || 0
+        const priceObj = data.doc.cost || {}
+
+        const costSummaryObj = {
+          ...priceObj,
+          created_today: { $: Number(created_today_value) },
+        }
+
+        setDailyCosts(costSummaryObj)
+
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
-        setCost(cost)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -1024,54 +1032,8 @@ const getImages =
       })
   }
 
-const editSnapshot =
-  ({
-    values,
-    plid,
-    elid,
-    errorCallback = () => {},
-    closeModal = () => {},
-    successCallback = () => {},
-    setIsLoading,
-    signal,
-  }) =>
-  (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
-    const sessionId = authSelectors.getSessionId(getState())
-
-    axiosInstance
-      .post(
-        '/',
-        qs.stringify({
-          func: 'instances.snapshots.edit',
-          out: 'json',
-          sok: 'ok',
-          auth: sessionId,
-          plid,
-          elid,
-          lang: 'en',
-          clicked_button: 'ok',
-          ...values,
-        }),
-        { signal },
-      )
-      .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
-        successCallback()
-        closeModal()
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('request_sent', { ns: 'cloud_vps' }))
-      })
-      .catch(error => {
-        errorCallback()
-        closeModal()
-        checkIfTokenAlive(error.message, dispatch)
-        handleLoadersClosing(error?.message, dispatch, setIsLoading)
-      })
-  }
-
 const editImage =
-  ({ func, values, successCallback, elid, signal, setIsLoading }) =>
+  ({ func, values, successCallback = () => {}, elid, signal, setIsLoading }) =>
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
@@ -1212,7 +1174,6 @@ export default {
   getTariffParamsRequest,
   generateSsh,
   getMetrics,
-  editSnapshot,
   getImages,
   editImage,
   getImageParams,
