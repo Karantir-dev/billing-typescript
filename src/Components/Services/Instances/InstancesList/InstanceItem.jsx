@@ -142,10 +142,10 @@ export default function InstanceItem({ item, editInstance }) {
         <TooltipWrapper
           className={s.popup}
           wrapperClassName={s.popup__wrapper}
-          content={item.instances_os.$}
+          content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
           anchor={`instances_os_${item?.id?.$}`}
         >
-          <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
+          <Icon name={item?.os_distro?.$} />
         </TooltipWrapper>
       </td>
       <td className={s.td}>

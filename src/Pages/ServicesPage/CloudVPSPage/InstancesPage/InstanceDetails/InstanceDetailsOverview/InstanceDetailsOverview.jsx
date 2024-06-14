@@ -81,7 +81,7 @@ export default function InstanceDetailsOverview() {
             <div className={s.info_block_wrapper}>
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('UUID')}</p>
-                <p className={s.item_info}>{instanceInfo?.fotbo_id}</p>
+                <p className={s.item_info}>{instanceInfo?.instances_uuid}</p>
               </div>
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Created at')}</p>

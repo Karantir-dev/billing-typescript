@@ -254,9 +254,6 @@ export default function CloudInstanceItemPage() {
       />
 
       <ImagesModals
-        setSnapshot={dispatch(
-          cloudVpsActions.setItemForModals({ snapshot_create: false }),
-        )}
         loadingParams={{
           signal,
           setIsLoading,

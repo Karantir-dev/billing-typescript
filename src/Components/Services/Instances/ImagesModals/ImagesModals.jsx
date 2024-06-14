@@ -8,31 +8,37 @@ export const ImagesModals = ({
   loadingParams = {},
   pagination = {},
   setPagination = () => {},
-  setBackup,
   redirectCallback,
   getItems,
   editImage,
-  cost,
+  dailyCosts,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
 
-  const editSnapshot = values => {
-    dispatch(cloudVpsActions.setItemForModals({ snapshot_edit: false }))
-
-    cloudVpsOperations.editSnapshot({
-      plid: itemForModals?.snapshot_edit.id.$,
-      // elid: itemForModals?.snapshot_edit. ????? here should be id of snapshot later to change it
-      ...values,
-    })
+  const createSnapshot = values => {
+    dispatch(
+      cloudVpsActions.setItemForModals({
+        snapshot_create: false,
+      }),
+    )
+    dispatch(
+      cloudVpsOperations.editImage({
+        func: 'instances.snapshots',
+        ...values,
+      }),
+    )
   }
 
-  const createSnapshot = values => {
-    dispatch(cloudVpsActions.setItemForModals({ snapshot_create: false }))
-
+  const createBackup = values => {
     dispatch(
-      cloudVpsOperations.editSnapshot({
-        plid: itemForModals?.snapshot_create.id.$,
+      cloudVpsActions.setItemForModals({
+        backup_create: false,
+      }),
+    )
+    dispatch(
+      cloudVpsOperations.editImage({
+        func: 'instances.fleio_bckps',
         ...values,
       }),
     )
@@ -53,7 +59,7 @@ export const ImagesModals = ({
     <>
       {['snapshot_create', 'backup_create'].some(key => !!itemForModals?.[key]) && (
         <CreateSnapshotOrBackupModal
-          item={itemForModals?.snapshot_create || itemForModals?.backup_create}
+          item={itemForModals}
           closeModal={() =>
             dispatch(
               cloudVpsActions.setItemForModals({
@@ -62,7 +68,7 @@ export const ImagesModals = ({
               }),
             )
           }
-          onSubmit={itemForModals?.snapshot_create ? createSnapshot : setBackup}
+          onSubmit={itemForModals?.snapshot_create ? createSnapshot : createBackup}
         />
       )}
 
@@ -84,7 +90,7 @@ export const ImagesModals = ({
           onSubmit={
             itemForModals?.image_edit === 'create' ? createImageSubmit : editImage
           }
-          cost={cost}
+          cost={dailyCosts}
         />
       )}
     </>

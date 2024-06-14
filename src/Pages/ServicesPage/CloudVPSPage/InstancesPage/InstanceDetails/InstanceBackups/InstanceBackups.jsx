@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import s from './InstanceBackups.module.scss'
 import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { cloudVpsOperations, cloudVpsActions } from '@redux'
+import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import { Button, EditCell, Icon, ImagesList, Loader } from '@components'
@@ -31,8 +31,8 @@ export default function InstanceBackups() {
   const { item } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
+  const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
-  const [cost, setCost] = useState(0)
 
   const elid = item?.id?.$
 
@@ -52,7 +52,7 @@ export default function InstanceBackups() {
             elid,
             setData,
             setCount,
-            setCost,
+            setDailyCosts,
             signal,
             setIsLoading,
           }),
@@ -94,34 +94,21 @@ export default function InstanceBackups() {
     <>
       <div className={s.container}>
         <Button
-          label={t('create_snapshot')}
+          label={t('create_backup')}
           size="large"
           isShadow
           onClick={() => {
             dispatch(
               cloudVpsActions.setItemForModals({
-                snapshot_create: {
+                backup_create: {
                   ...item,
+                  ...dailyCosts,
                 },
               }),
             )
           }}
         />
-        {/* Later this Button should be inside the created Snapshot as icon (Backup, Image eather) */}
-        <Button
-          label={t('copy')}
-          size="large"
-          isShadow
-          onClick={() => {
-            dispatch(
-              cloudVpsActions.setItemForModals({
-                images_copy: {
-                  ...item,
-                },
-              }),
-            )
-          }}
-        />
+
         <ImagesList
           cells={INSTANCE_BACKUPS_CELLS}
           items={data}
@@ -129,7 +116,7 @@ export default function InstanceBackups() {
           itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
           editImage={editImage}
-          cost={cost}
+          cost={dailyCosts}
           type="snapshot"
           idKey="elid"
         />

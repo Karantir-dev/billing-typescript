@@ -22,9 +22,10 @@ import {
   PASS_REGEX,
   PASS_REGEX_ASCII,
   DISALLOW_PASS_SPECIFIC_CHARS,
+  IMAGES_TYPES,
 } from '@utils/constants'
 
-const RESCUE_TABS_ORDER = ['own', 'shr', 'pub']
+const RESCUE_TABS_ORDER = [IMAGES_TYPES.own, IMAGES_TYPES.shared, IMAGES_TYPES.public]
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
@@ -48,17 +49,9 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     (state, action) => {
       return { ...state, ...action }
     },
-    /* SHOULD CHANGE THIS LOGIC! should be => 'own', 'shr', 'pub'
-     * so initial should be 'own'.
-     * Own doesn't exist with RESCUE at all, 'shr' doesn't exit in REBUILD - change logic for this code later.
-     * Should be logic at the BACKEND to display or hide zone if there are no components.
-     */
-
-    isBootFromIso ? { zone: 'own' } : isRebuild ? { zone: 'image' } : { zone: 'pub' },
-    // { zone: 'own' },
+    { zone: IMAGES_TYPES.own },
   )
 
-  /* Condition doesn't needs any more such as tabs going to be developed with all 3 modals. */
   const depends = state.zone
 
   const navSections = useMemo(() => {
@@ -68,6 +61,8 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     const filteredRescueTabsOrder = RESCUE_TABS_ORDER.filter(tab =>
       zoneList?.includes(tab),
     )
+
+    setState({ zone: filteredRescueTabsOrder?.[0] })
 
     /* Combine the filtered `RESCUE_TABS_ORDER` and all unique elements from `zoneList` */
     const renderTabs = new Set([...filteredRescueTabsOrder, ...(zoneList || [])])
@@ -172,12 +167,11 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     password:
       ((!isRebuild &&
         !isWindowsOS &&
-        state.zone !== 'shr' &&
-        state.zone !== 'own' &&
+        state.zone !== IMAGES_TYPES.shared &&
         !isBootFromIso) ||
         (isRebuild &&
           (state.passwordType === 'password' || isWindowsOS) &&
-          state.zone === 'pub' &&
+          state.zone === IMAGES_TYPES.public &&
           !isBootFromIso)) &&
       Yup.string()
         .min(8, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
@@ -189,10 +183,14 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
           DISALLOW_PASS_SPECIFIC_CHARS,
           t('warnings.disallow_hash', { ns: 'auth' }),
         )
-        .required(t('warnings.password_required', { ns: 'auth' })),
+        .when('zone', {
+          is: IMAGES_TYPES.public,
+          then: schema =>
+            schema.required(t('warnings.password_required', { ns: 'auth' })),
+        }),
     password_type:
       isRebuild &&
-      state.zone === 'pub' &&
+      state.zone === IMAGES_TYPES.public &&
       Yup.string().required(t('Is a required field', { ns: 'other' })),
     ssh_keys:
       state.passwordType === 'ssh' &&
@@ -207,7 +205,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   })
 
   useEffect(() => {
-    setState({ ssh_keys: allSshList?.[0]?.fotbokeyid.$ })
+    setState({ ssh_keys: allSshList?.[0]?.fleio_key_uuid.$ })
   }, [allSshList])
 
   return (
@@ -226,15 +224,15 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
             [select]: state?.[select],
             password: state.password || '',
             password_type: state.passwordType,
-            ssh_keys: state.ssh_keys || allSshList?.[0]?.fotbokeyid.$,
+            ssh_keys: state.ssh_keys || allSshList?.[0]?.fleio_key_uuid.$,
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
             const submitData = values
-            if (isRebuild && depends === 'pub') {
+            if (isRebuild) {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
             }
-            if (!isRebuild && !depends === 'pub') {
+            if (!isRebuild) {
               submitData.zone = state.zone
             }
             if (isWindowsOS && !isRebuild) {
@@ -280,8 +278,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     />
                   </div>
 
-                  {/* should remove condition about image after renaming */}
-                  {isRebuild && (state.zone === 'image' || state.zone === 'pub') ? (
+                  {isRebuild ? (
                     <div>
                       <ConnectMethod
                         connectionType={state.passwordType}
@@ -292,7 +289,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                         touched={touched}
                         sshList={allSshList.map(el => ({
                           label: el.comment.$,
-                          value: el.fotbokeyid.$,
+                          value: el.fleio_key_uuid.$,
                         }))}
                         sshKey={values.ssh_keys}
                         isWindows={isWindowsOS}
@@ -305,7 +302,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     </div>
                   ) : isWindowsOS ? (
                     <WarningMessage>{t('windows_password_warning')}</WarningMessage>
-                  ) : state.zone !== 'shr' && state.zone !== 'own' && !isBootFromIso ? (
+                  ) : state.zone !== IMAGES_TYPES.shared && !isBootFromIso ? (
                     <InputField
                       inputClassName={s.input}
                       name="password"
@@ -315,7 +312,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                       placeholder={t('new_password_placeholder', { ns: 'vds' })}
                       error={!!errors.password}
                       touched={!!touched.password}
-                      isRequired
+                      isRequired={state.zone === IMAGES_TYPES.public}
                       autoComplete="off"
                       onChange={e => setState({ password: e.target.value })}
                       generatePasswordValue={value => setState({ password: value })}
