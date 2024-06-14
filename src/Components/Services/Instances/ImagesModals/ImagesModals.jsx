@@ -18,30 +18,29 @@ export const ImagesModals = ({
 
   const createSnapshot = values => {
     dispatch(
+      cloudVpsActions.setItemForModals({
+        snapshot_create: false,
+      }),
+    )
+    dispatch(
       cloudVpsOperations.editImage({
         func: 'instances.snapshots',
         ...values,
-        successCallback: () => getItems(),
       }),
-      dispatch(
-        cloudVpsActions.setItemForModals({
-          snapshot_create: false,
-        }),
-      ),
     )
   }
 
   const createBackup = values => {
     dispatch(
+      cloudVpsActions.setItemForModals({
+        backup_create: false,
+      }),
+    )
+    dispatch(
       cloudVpsOperations.editImage({
         func: 'instances.fleio_bckps',
         ...values,
       }),
-      dispatch(
-        cloudVpsActions.setItemForModals({
-          backup_create: false,
-        }),
-      ),
     )
   }
 
