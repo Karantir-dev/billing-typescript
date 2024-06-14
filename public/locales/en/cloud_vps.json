@@ -219,10 +219,13 @@
   "boot_from_iso": "Boot from ISO",
   "snapshots": {
     "create": "Create snapshot for instance",
-    "create_warning": "Instance will not be available while the snapshot is being processed."
+    "create_warning": "Instance will not be available while the snapshot is being processed.",
+    "limit_value": "You can create 5 snapshots per day.",
+    "limit_reached": "You have reached the creation limit for today."
   },
   "backups": {
-    "create": "Create backup for instance"
+    "create": "Create backup for instance",
+    "create_warning": "Instance will not be available while the backup is being processed."
   },
   "empty_list": "Empty list",
   "create_image": "Create image",

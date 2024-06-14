@@ -282,7 +282,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
         {isCreate && (
           <div className={s.snapshot_create__footer_block}>
             <p className={s.tariff__param_name}>{t('Price')}</p>
-            <p>€{cost} / GB / day</p>
+            <p>€{cost?.stat_cost?.$} / GB / day</p>
           </div>
         )}
 

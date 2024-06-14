@@ -6,8 +6,9 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, EditCell, Icon, ImagesList, Loader } from '@components'
+import { Button, EditCell, Icon, ImagesList, Loader, WarningMessage } from '@components'
 import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
+import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_SNAPSHOTS_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
@@ -31,8 +32,8 @@ export default function InstanceSnapshots() {
   const { item } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
+  const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
-  const [cost, setCost] = useState(0)
 
   const elid = item?.id?.$
 
@@ -52,7 +53,7 @@ export default function InstanceSnapshots() {
             elid,
             setData,
             setCount,
-            setCost,
+            setDailyCosts,
             signal,
             setIsLoading,
           }),
@@ -78,42 +79,38 @@ export default function InstanceSnapshots() {
   return (
     <>
       <div className={s.container}>
-        <Button
-          label={t('create_snapshot')}
-          size="large"
-          isShadow
-          onClick={() => {
-            dispatch(
-              cloudVpsActions.setItemForModals({
-                snapshot_create: {
-                  ...item,
-                },
-              }),
-            )
-          }}
-        />
-        {/* Later this Button should be inside the created Snapshot as icon (Backup, Image eather) */}
-        <Button
-          label={t('copy')}
-          size="large"
-          isShadow
-          onClick={() => {
-            dispatch(
-              cloudVpsActions.setItemForModals({
-                images_copy: {
-                  ...item,
-                },
-              }),
-            )
-          }}
-        />
+        <div className={s.create_wrapper}>
+          <p>{t('snapshots.limit_value')}</p>
+          <Button
+            label={t('create_snapshot')}
+            size="large"
+            isShadow
+            onClick={() => {
+              dispatch(
+                cloudVpsActions.setItemForModals({
+                  snapshot_create: {
+                    ...item,
+                    ...dailyCosts,
+                  },
+                }),
+              )
+            }}
+            disabled={createdToday >= 5}
+          />
+          {createdToday >= 5 && (
+            <WarningMessage className={s.snapshot_limit_message}>
+              {t('snapshots.limit_reached')}
+            </WarningMessage>
+          )}
+        </div>
+
         <ImagesList
           cells={INSTANCE_SNAPSHOTS_CELLS}
           items={data}
           itemsCount={count}
           getItems={getItems}
           editImage={editImage}
-          cost={cost}
+          cost={dailyCosts}
           type="snapshot"
           idKey="elid"
         />
