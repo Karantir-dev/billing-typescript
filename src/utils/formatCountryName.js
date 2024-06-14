@@ -19,7 +19,7 @@ export default function formatCountryName(data, key = 'datacentername') {
 
   if (!countryName) {
     console.error('country name parse failed')
-    return 'country_undefined'
+    return undefined
   }
 
   return countryName
