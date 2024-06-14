@@ -32,11 +32,6 @@ export default function InstanceItem({ item, editInstance }) {
     setServerName(value)
   }
 
-  const capitalizeFirstLetter = str => {
-    if (!str) return ''
-    return str.charAt(0).toUpperCase() + str.slice(1)
-  }
-
   useEffect(() => {
     setServerName(item.servername?.$ || '')
   }, [item.servername?.$])
@@ -142,10 +137,10 @@ export default function InstanceItem({ item, editInstance }) {
         <TooltipWrapper
           className={s.popup}
           wrapperClassName={s.popup__wrapper}
-          content={`${capitalizeFirstLetter(item?.os_distro?.$)} ${item?.os_version?.$}`}
+          content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
           anchor={`instances_os_${item?.id?.$}`}
         >
-          <Icon name={capitalizeFirstLetter(item?.os_distro?.$)} />
+          <Icon name={item?.os_distro?.$} />
         </TooltipWrapper>
       </td>
       <td className={s.td}>
