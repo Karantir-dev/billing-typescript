@@ -268,4 +268,12 @@ export const METRICS_PERIOD_OPTIONS = [
  * to filter them without having to make an extra request */
 export const DC_WITH_BASICS = ['13']
 
+export const CLOUD_DC_NAMESPACE = {
+  'Netherlands-1': 14,
+  'Netherlands-2': 13,
+  Poland: 12,
+  /** Temporary DC */
+  Staging: 'Staging',
+}
+
 export const IMAGES_TYPES = { public: 'pub', own: 'own', shared: 'shr' }

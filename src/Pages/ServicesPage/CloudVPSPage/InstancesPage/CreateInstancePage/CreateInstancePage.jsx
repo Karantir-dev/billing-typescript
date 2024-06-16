@@ -21,7 +21,7 @@ import {
   PageTabBar,
 } from '@components'
 import * as Yup from 'yup'
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -51,9 +51,11 @@ import {
   DISALLOW_PASS_SPECIFIC_CHARS,
   DC_WITH_BASICS,
   IMAGES_TYPES,
+  CLOUD_DC_NAMESPACE,
 } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
+import * as route from '@src/routes'
 
 import s from './CreateInstancePage.module.scss'
 
@@ -66,8 +68,6 @@ export default function CreateInstancePage() {
   const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
   const isBasic = cloudType === BASIC_TYPE
 
-  const [imagesCurrentTab, setImagesCurrentTab] = useState(IMAGES_TYPES.public)
-
   const switchCloudType = type => {
     setSearchParams({ type })
     setCloudType(type)
@@ -75,8 +75,18 @@ export default function CreateInstancePage() {
 
   const location = useLocation()
 
-  // const dcLabelFromLaunch = location.state?.dcLabel
-  // const imageIdFromLaunch = location.state?.imageId
+  const dcLabelFromLaunch = location.state?.dcLabel
+  console.log(dcLabelFromLaunch)
+  const dcIdFromLaunch = CLOUD_DC_NAMESPACE[dcLabelFromLaunch]
+  console.log(dcIdFromLaunch)
+  const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
+
+  const imageIdFromLaunch = location.state?.imageId
+  const isLaunchMode = imageIdFromLaunch && dcLabelFromLaunch
+  const [imagesCurrentTab, setImagesCurrentTab] = useState(
+    imageIdFromLaunch ? IMAGES_TYPES.own : IMAGES_TYPES.public,
+  )
+
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
 
@@ -118,14 +128,12 @@ export default function CreateInstancePage() {
     imagesCurrentTab === IMAGES_TYPES.own ? false : true,
   )
 
-  const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
-
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
       const dcLocation = dataFromSite.location
 
       const dcFromSite = dcList.find(el => el.$key === dcLocation)
-      const dcFromLaunch = dcList.find(el => el.$key === '13')
+      const dcFromLaunch = dcList.find(el => el.$key === dcIdFromLaunch)
 
       if (dcFromLaunch) {
         setCurrentDC(dcFromLaunch)
@@ -178,26 +186,24 @@ export default function CreateInstancePage() {
 
   /** First render useEffect */
   useEffect(() => {
+    const dcId = dataFromSite.location || dcIdFromLaunch || undefined
     if (
       /** if we don`t have tariffs list for current DC */
-      !tariffs?.[currentDC?.$key]?.length
+      !tariffs?.[dcId]?.length
     ) {
       dispatch(
         cloudVpsOperations.getAllTariffsInfo({
           signal,
           setIsLoading,
-          needOsList: !operationSystems,
+          needOsList: !operationSystems?.[dcId],
           setSshList: getAllSSHList,
-          datacenter: dataFromSite.location || location.state?.dc || '',
+          datacenter: dcId,
           isBasic,
         }),
       )
 
       /** if we have tariffs but don`t have OSs for them or ssh keys */
-    } else if (
-      tariffs?.[currentDC?.$key] &&
-      (!operationSystems?.[currentDC?.$key] || !allSshList.length)
-    ) {
+    } else if (tariffs?.[dcId] && (!operationSystems?.[dcId] || !allSshList.length)) {
       getOsListHandler(cloudType, true)
     }
 
@@ -277,7 +283,7 @@ export default function CreateInstancePage() {
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
     connectionType:
-      IMAGES_TYPES.public === imagesCurrentTab
+      imagesCurrentTab === IMAGES_TYPES.public
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
     ssh_keys: Yup.string().when('connectionType', {
@@ -329,6 +335,7 @@ export default function CreateInstancePage() {
             <Formik
               initialValues={{
                 instances_os:
+                  imageIdFromLaunch ||
                   operationSystems?.[currentDC.$key]?.[imagesCurrentTab]?.[0]?.$key,
                 tariff_id: tariffFromSite?.id.$ || tariffs?.[currentDC?.$key]?.[0]?.id.$,
                 tariffData: tariffFromSite || tariffs?.[currentDC?.$key]?.[0],
@@ -357,9 +364,9 @@ export default function CreateInstancePage() {
                 }
 
                 /** Sets operation system on first tab render */
-                useEffect(() => {
-                  selectFirstImage(imagesCurrentTab)
-                }, [operationSystems?.[currentDC.$key]])
+                // useEffect(() => {
+                //   selectFirstImage(imagesCurrentTab)
+                // }, [operationSystems?.[currentDC.$key]])
 
                 const onTariffChange = tariff => {
                   setFieldValue('tariff_id', tariff.id.$)
@@ -567,23 +574,47 @@ export default function CreateInstancePage() {
                       <h3 className={s.section_title}>{t('server_location')}</h3>
 
                       <ul className={s.grid}>
-                        {filteredDcList?.map(dc => {
-                          return (
-                            <CountryButton
-                              key={dc.$key}
-                              currentItem={currentDC}
-                              item={dc}
-                              onChange={onDCchange}
-                            />
-                          )
-                        })}
+                        {isLaunchMode ? (
+                          <CountryButton
+                            currentItem={currentDC}
+                            item={currentDC}
+                            onChange={onDCchange}
+                            disabled
+                          />
+                        ) : (
+                          filteredDcList?.map(dc => {
+                            return (
+                              <CountryButton
+                                key={dc.$key}
+                                currentItem={currentDC}
+                                item={dc}
+                                onChange={onDCchange}
+                              />
+                            )
+                          })
+                        )}
                       </ul>
+                      {isLaunchMode && (
+                        <div>
+                          <Link className={s.link} to={route.CLOUD_VPS + '/images'}>
+                            {t('Move the image to another data center')}
+                          </Link>
+                          <Icon name="Info" />
+                        </div>
+                      )}
                     </section>
 
                     <section className={s.section}>
                       <h3 className={s.section_title}>{t('server_image')}</h3>
 
-                      <PageTabBar sections={imagesTabs} activeValue={imagesCurrentTab} />
+                      {isLaunchMode ? (
+                        ''
+                      ) : (
+                        <PageTabBar
+                          sections={imagesTabs}
+                          activeValue={imagesCurrentTab}
+                        />
+                      )}
 
                       {imagesCurrentTab === IMAGES_TYPES.public ? (
                         <div className={s.os_list}>
@@ -735,11 +766,9 @@ export default function CreateInstancePage() {
                             </span>
                             <img
                               className={s.flag}
-                              src={require(
-                                `@images/countryFlags/${getFlagFromCountryName(
-                                  currentCountryName,
-                                )}.png`,
-                              )}
+                              src={require(`@images/countryFlags/${getFlagFromCountryName(
+                                currentCountryName,
+                              )}.png`)}
                               width={20}
                               height={14}
                               alt={currentCountryName}

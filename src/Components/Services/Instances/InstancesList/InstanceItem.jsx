@@ -10,7 +10,6 @@ import {
   getInstanceMainInfo,
   formatCountryName,
   cutDcSuffix,
-  getImageIconName,
 } from '@utils'
 import { useTranslation } from 'react-i18next'
 
@@ -129,9 +128,9 @@ export default function InstanceItem({ item, editInstance }) {
             anchor={`country_flag_${item?.id?.$}`}
           >
             <img
-              src={require(
-                `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
-              )}
+              src={require(`@images/countryFlags/${getFlagFromCountryName(
+                itemCountry,
+              )}.png`)}
               width={20}
               height={14}
               alt={itemCountry}
@@ -147,16 +146,9 @@ export default function InstanceItem({ item, editInstance }) {
           content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
           anchor={`instances_os_${item?.id?.$}`}
         >
-          {false ? (
-            <Icon name={getImageIconName(item?.os_distro?.$)} />
-          ) : (
-            <img
-              src={require(
-                `@images/soft_os_icons/${getImageIconName(item?.os_distro?.$)}.png`,
-              )}
-              alt=""
-            />
-          )}
+          {/* I suggest to replace black OS icons with colored .png images
+          to standardise thier look and naming */}
+          <Icon name={item?.os_distro?.$} />
         </TooltipWrapper>
       </td>
       <td className={s.td}>

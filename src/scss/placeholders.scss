@@ -161,3 +161,12 @@
     height: 4px;
   }
 }
+
+%link {
+  color: var(--link-text);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 17px;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}

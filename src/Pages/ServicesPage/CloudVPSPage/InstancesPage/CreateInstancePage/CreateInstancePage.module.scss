@@ -206,8 +206,7 @@
 }
 
 .link {
-  text-decoration: underline;
-  color: var(--link-color);
+  @extend %link;
 }
 
 @media screen and (min-width: 768px) {
