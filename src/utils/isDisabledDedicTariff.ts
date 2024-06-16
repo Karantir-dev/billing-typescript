@@ -1,4 +1,4 @@
-export default function isDisabledDedicTariff(name) {
+export default function isDisabledDedicTariff(name: string) {
   return (
     name?.includes('Config 47') ||
     name?.includes('Config 48') ||

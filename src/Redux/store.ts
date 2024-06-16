@@ -100,3 +100,5 @@ const persistor = persistStore(store)
 
 const entireStore = { store, persistor }
 export default entireStore
+
+export type AppDispatch = typeof store.dispatch

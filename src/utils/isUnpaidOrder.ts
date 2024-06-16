@@ -1,12 +1,12 @@
 import { billingOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
-export default function isUnpaidOrder(item, list) {
+export default function isUnpaidOrder(item: { id: { $: any }; item_status: { $orig: string } }, list: any[]) {
   const { t } = useTranslation(['billing'])
   const dispatch = useDispatch()
 
   const regex = /#pfx\/(\d+)/
-  const isUnpaid = list?.find(el => el.item_id.$ === item?.id.$)
+  const isUnpaid = list?.find((el: { item_id: { $: any } }) => el.item_id.$ === item?.id.$)
 
   if (!isUnpaid || item?.item_status?.$orig !== '1') return { hidden: true }
 
