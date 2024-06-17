@@ -1,71 +1,109 @@
-import {
-  Button,
-  InputField,
-  Modal,
-  Select,
-  CheckBox,
-  // Icon,
-} from '@components'
+import { Button, InputField, Modal, Select } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './ImagesModals.module.scss'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { cloudVpsOperations } from '@redux'
+import { useDispatch } from 'react-redux'
+import { useCancelRequest, formatCountryName, getFlagFromCountryName } from '@src/utils'
 
 export const CopyModal = ({ item, closeModal, onSubmit }) => {
+  const dispatch = useDispatch()
+  const { signal, setIsLoading } = useCancelRequest()
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string()
+    image_name: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
+    region: Yup.string().required(t('Is a required field', { ns: 'other' })),
   })
 
-  const [isShouldDelete, setIsShouldDelete] = useState(false)
+  // const [isShouldDelete, setIsShouldDelete] = useState(false)
+  const [itemData, setItemData] = useState()
+  const [dataCenterList, setDataCenterList] = useState([])
+
+  useEffect(() => {
+    dispatch(
+      cloudVpsOperations.copyModal({
+        elid: item?.id?.$,
+        setItemData,
+        signal,
+        setIsLoading,
+      }),
+    )
+  }, [])
+
+  useEffect(() => {
+    setDataCenterList(
+      itemData?.slist
+        ?.find(el => el?.$name === 'region')
+        ?.val.map(el => ({ label: el.$, value: el.$key })),
+    )
+  }, [itemData])
 
   return (
-    <Modal isOpen={!!item} closeModal={closeModal}>
+    <Modal isOpen={!!item && !!itemData} closeModal={closeModal}>
       <Modal.Header>
-        <p>{t('copy modal title')}</p>
+        <p>{t('image.copy_title')}</p>
       </Modal.Header>
       <Modal.Body>
         <Formik
-          initialValues={{ name: '', shouldDeleteSource: false /*,dataCenter*/ }}
+          initialValues={{
+            image_name: '',
+            region: itemData?.region?.$,
+          }}
           validationSchema={validationSchema}
           onSubmit={values => {
-            if (values.name === '') return closeModal()
             onSubmit({
-              values: { name: values.name.trim() /*dataCenter, shouldDeleteSource*/ },
+              values: {
+                image_name: values.image_name.trim(),
+                region: values.region,
+                sok: 'ok',
+              },
               closeModal,
             })
           }}
         >
-          {({ errors, touched }) => {
+          {({ values, setFieldValue, errors, touched }) => {
             return (
               <Form id={'create_image_copy'}>
                 <div className={s.copy_modal__wrapper}>
-                  {/* Doesn't work at all, not yet */}
                   <Select
-                    className={s.sort_select}
-                    placeholder={t('select dc')}
-                    label={`${t('select dc')}:`}
-                    name={'dataCenter'}
-                    isShadow
-                    itemsList={['1', '2', '3'].map(el => {
+                    className={s.backup_rotation_select}
+                    label={`${t('region')}:`}
+                    name={'region'}
+                    itemsList={dataCenterList?.map(el => {
+                      const country = formatCountryName(el?.label)
+
                       return {
-                        el,
+                        ...el,
+                        label: (
+                          <span className={s.row}>
+                            <img
+                              src={require(`@images/countryFlags/${getFlagFromCountryName(
+                                country,
+                              )}.png`)}
+                              width={20}
+                              height={14}
+                              alt={country}
+                            />
+                            {el.label}
+                          </span>
+                        ),
                       }
                     })}
-                    itemIcon
-                    getElement={'smth'}
-                    // value={'1'}
-                    disableClickActive={false}
+                    value={values.region}
+                    getElement={value => setFieldValue('region', value)}
+                    isRequired
+                    isShadow
                   />
 
                   <InputField
                     className={s.copy_modal__input_wrapper}
-                    name="name"
+                    name="image_name"
                     isShadow
                     label={`${t('name', { ns: 'vds' })}:`}
                     placeholder={t('server_placeholder', { ns: 'vds' })}
@@ -75,18 +113,20 @@ export const CopyModal = ({ item, closeModal, onSubmit }) => {
                     autoComplete="off"
                   />
 
-                  <div className={s.copy_modal__checkbox_wrapper}>
-                    <CheckBox
-                      value={isShouldDelete}
-                      id={'shouldDeleteSource'}
-                      name={'shouldDeleteSource'}
-                      onClick={() => setIsShouldDelete(!isShouldDelete)}
-                      className={s.checkbox}
-                    />
-                    <label htmlFor="shouldDeleteSource">
-                      Delete source image (move image)
-                    </label>
-                  </div>
+                  {/* The component is not used. Probably, in the future, logic for it will be created on the back end */}
+
+                  {/* <div className={s.copy_modal__checkbox_wrapper}>
+                  <CheckBox
+                    value={isShouldDelete}
+                    id={'shouldDeleteSource'}
+                    name={'shouldDeleteSource'}
+                    onClick={() => setIsShouldDelete(!isShouldDelete)}
+                    className={s.checkbox}
+                  />
+                  <label htmlFor="shouldDeleteSource">
+                    Delete source image (move image)
+                  </label>
+                </div> */}
                 </div>
               </Form>
             )
