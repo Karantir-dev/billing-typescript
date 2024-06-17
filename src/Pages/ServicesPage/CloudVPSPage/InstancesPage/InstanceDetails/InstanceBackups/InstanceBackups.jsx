@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceBackups.module.scss'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, EditCell, Icon, ImagesList, Loader } from '@components'
+import { Button, EditCell, Icon, ImagesList, Loader, Select } from '@components'
 import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
 
 const INSTANCE_BACKUPS_CELLS = [
@@ -33,6 +33,7 @@ export default function InstanceBackups() {
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
+  const [backupRotation, setBackupRotation] = useState('5')
 
   const elid = item?.id?.$
 
@@ -52,6 +53,7 @@ export default function InstanceBackups() {
             elid,
             setData,
             setCount,
+            setBackupRotation,
             setDailyCosts,
             signal,
             setIsLoading,
@@ -81,6 +83,20 @@ export default function InstanceBackups() {
     )
   }
 
+  // const editBackupName = value => {
+  //   const slicedValue = value.slice(0, 100)
+  //   editImage({
+  //     name: slicedValue,
+  //     id: elid,
+  //     errorCallback: () => setBackupName(backupName),
+  //   })
+  //   setBackupName(value)
+  // }
+
+  // useEffect(() => {
+  //   setBackupName(item.backupName?.$ || '')
+  // }, [item.backupName?.$])
+
   const itemOnClickHandler = (e, item) => {
     if (
       e.target.closest('[data-target="options"]') ||
@@ -88,6 +104,18 @@ export default function InstanceBackups() {
     )
       return
     console.log('open item page')
+  }
+
+  const editInstanceHandler = values => {
+    dispatch(
+      cloudVpsOperations.editInstance({
+        values,
+        elid,
+        successCallback: () => {},
+        signal,
+        setIsLoading,
+      }),
+    )
   }
 
   return (
@@ -109,6 +137,27 @@ export default function InstanceBackups() {
           }}
         />
 
+        <div className={s.backup_rotation_wrapper}>
+          <Select
+            className={s.backup_rotation_select}
+            label={`${t('backups.backup_rotation')}:`}
+            itemsList={['1', '2', '3', '4', '5'].map(el => ({
+              label: el,
+              value: el,
+            }))}
+            value={backupRotation}
+            getElement={value => {
+              if (value === backupRotation) {
+                return
+              }
+              setBackupRotation(value)
+              editInstanceHandler({ backup_rotation: value })
+            }}
+            isShadow
+          />
+          <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
+        </div>
+
         <ImagesList
           cells={INSTANCE_BACKUPS_CELLS}
           items={data}
@@ -117,7 +166,7 @@ export default function InstanceBackups() {
           getItems={getItems}
           editImage={editImage}
           cost={dailyCosts}
-          type="snapshot"
+          type="backups"
           idKey="elid"
         />
       </div>

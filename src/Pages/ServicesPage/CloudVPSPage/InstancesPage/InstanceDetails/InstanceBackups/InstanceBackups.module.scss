@@ -9,3 +9,21 @@
     padding-top: 32px;
   }
 }
+
+.backup_rotation_select {
+  max-width: 260px;
+}
+
+.backup_rotation_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rotation_info {
+  max-width: 300px;
+
+  @media (min-width: 1024px) {
+    max-width: unset;
+  }
+}

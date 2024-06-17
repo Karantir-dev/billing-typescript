@@ -471,6 +471,7 @@ const getInstanceInfo =
           ip: renamedSlistData?.ip?.$,
           ip_v6: renamedSlistData?.ip_v6?.$,
           rdns_record: renamedSlistData?.rdns_record?.$,
+          backup_rotation: renamedSlistData?.backup_rotation?.$,
         }
 
         const clearStr = /\s*\(.*?\)\s*\.?/g
@@ -982,6 +983,7 @@ const getImages =
     setDailyCosts,
     signal,
     setIsLoading,
+    setBackupRotation,
   }) =>
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
@@ -1021,7 +1023,7 @@ const getImages =
         }
 
         setDailyCosts(costSummaryObj)
-
+        setBackupRotation && setBackupRotation(data.doc?.backup_rotation?.$)
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)

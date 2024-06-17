@@ -222,7 +222,9 @@
   },
   "backups": {
     "create": "Create backup for instance",
-    "create_warning": "Instance will not be available while the backup is being processed."
+    "create_warning": "Instance will not be available while the backup is being processed.",
+    "backup_rotation": "Backup rotation",
+    "rotation_info": "Number of backups to keep (the rest backups of type manual will be deleted)"
   },
   "empty_list": "Empty list",
   "create_image": "Create image",
