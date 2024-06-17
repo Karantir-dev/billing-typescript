@@ -4,7 +4,12 @@ import cn from 'classnames'
 import { CopyText, Icon, InstancesOptions, TooltipWrapper } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
+import {
+  getFlagFromCountryName,
+  getInstanceMainInfo,
+  formatCountryName,
+  cutDcSuffix,
+} from '@utils'
 import { useTranslation } from 'react-i18next'
 
 export default function InstanceItemMobile({ item }) {
@@ -85,7 +90,7 @@ export default function InstanceItemMobile({ item }) {
       </div>
       <div className={s.mobile_item__body}>
         <p className={s.mobile_item__param}>{t('Flavor')}</p>
-        <p className={s.mobile_item__value}>{item.pricelist.$}</p>
+        <p className={s.mobile_item__value}>{cutDcSuffix(item.pricelist.$)}</p>
 
         <p className={s.mobile_item__param}>{t('Price')}</p>
         <p className={s.mobile_item__value}>{item.cost.$}</p>
@@ -94,9 +99,9 @@ export default function InstanceItemMobile({ item }) {
         <p className={s.mobile_item__value}>
           {item?.datacentername && (
             <img
-              src={require(`@images/countryFlags/${getFlagFromCountryName(
-                itemCountry,
-              )}.png`)}
+              src={require(
+                `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
+              )}
               width={20}
               height={14}
               alt={itemCountry}

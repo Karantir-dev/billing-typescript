@@ -2,7 +2,6 @@ import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
 import { useSelector } from 'react-redux'
-import { nanoid } from 'nanoid'
 
 import { selectors } from '@redux'
 
@@ -59,10 +58,10 @@ export default function BurgerListItem({
               [s.closed]: isListOpened,
             })}
           >
-            {subList.map(item => {
+            {subList.map((item, index) => {
               if (item.allowedToRender) {
                 return (
-                  <li key={nanoid()} className={s.list_item}>
+                  <li key={index} className={s.list_item}>
                     {item.routeName ? (
                       <div
                         role="button"

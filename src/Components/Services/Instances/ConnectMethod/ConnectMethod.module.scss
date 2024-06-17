@@ -68,3 +68,26 @@
   flex-direction: column;
   gap: 16px;
 }
+
+.dropdown_btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 24px;
+  text-decoration: underline;
+}
+
+.shevron {
+  transform: rotateZ(180deg);
+  transition: transform 150ms;
+
+  &.active {
+    transform: rotateZ(0deg);
+  }
+}
+
+.warning {
+  margin-bottom: 0;
+}

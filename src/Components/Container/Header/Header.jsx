@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import cn from 'classnames'
 import BurgerMenu from './BurgerMenu/BurgerMenu'
@@ -260,9 +259,9 @@ export default function Header() {
                         </div>
                       </li>
 
-                      {profileMenuListToRender.map(item => {
+                      {profileMenuListToRender.map((item, index) => {
                         return (
-                          <li key={nanoid()} className={s.profile_list_item}>
+                          <li key={index} className={s.profile_list_item}>
                             {item.routeName ? (
                               <div
                                 role="button"

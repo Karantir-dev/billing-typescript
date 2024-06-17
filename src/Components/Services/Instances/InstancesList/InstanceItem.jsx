@@ -4,7 +4,12 @@ import cn from 'classnames'
 import { CopyText, EditCell, TooltipWrapper, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
+import {
+  getFlagFromCountryName,
+  getInstanceMainInfo,
+  formatCountryName,
+  cutDcSuffix,
+} from '@utils'
 import { useTranslation } from 'react-i18next'
 
 export default function InstanceItem({ item, editInstance }) {
@@ -111,7 +116,7 @@ export default function InstanceItem({ item, editInstance }) {
           )}
         </div>
       </td>
-      <td className={s.td}>{item.pricelist.$}</td>
+      <td className={s.td}>{cutDcSuffix(item.pricelist.$)}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('day'))}</td>
       <td className={s.td}>
         {item?.datacentername && (
@@ -122,9 +127,9 @@ export default function InstanceItem({ item, editInstance }) {
             anchor={`country_flag_${item?.id?.$}`}
           >
             <img
-              src={require(`@images/countryFlags/${getFlagFromCountryName(
-                itemCountry,
-              )}.png`)}
+              src={require(
+                `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
+              )}
               width={20}
               height={14}
               alt={itemCountry}
@@ -140,6 +145,8 @@ export default function InstanceItem({ item, editInstance }) {
           content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
           anchor={`instances_os_${item?.id?.$}`}
         >
+          {/* I suggest to replace black OS icons with colored .png images
+          to standardise thier look and naming */}
           <Icon name={item?.os_distro?.$} />
         </TooltipWrapper>
       </td>

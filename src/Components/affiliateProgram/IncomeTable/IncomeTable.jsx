@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 
@@ -28,10 +27,10 @@ export default function IncomeTable({ list }) {
         <span className={s.table_head}>{t('income_section.income_amount')}:</span>
       </div>
       <ul>
-        {sortedList.map(({ amount, date }) => {
+        {sortedList.map(({ amount, date }, index) => {
           incomeSum += Number(amount.replace(' EUR', ''))
           return (
-            <li className={s.table_row} key={nanoid()}>
+            <li className={s.table_row} key={index}>
               <button
                 className={s.table_btn}
                 type="button"

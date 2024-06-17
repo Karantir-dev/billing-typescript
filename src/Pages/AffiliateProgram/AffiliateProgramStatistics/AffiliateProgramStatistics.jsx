@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
-import { nanoid } from 'nanoid'
 import dayjs from 'dayjs'
 import cn from 'classnames'
 import { IconButton, StatisticsFilterModal, Pagination, Icon, Loader } from '@components'
@@ -184,7 +183,7 @@ export default function AffiliateProgramStatistics() {
                 </span>
               </li>
             ) : (
-              <li className={s.list_item} key={nanoid()}>
+              <li className={s.list_item} key={index}>
                 <span className={s.label}>{t('date', { ns: 'other' })}:</span>
                 <span>
                   {dayjs(cdate.$).format('DD MMM YYYY')}{' '}
