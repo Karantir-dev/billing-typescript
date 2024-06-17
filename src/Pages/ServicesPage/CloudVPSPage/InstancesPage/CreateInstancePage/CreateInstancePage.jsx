@@ -19,6 +19,7 @@ import {
   CountryButton,
   CloudTypeSection,
   PageTabBar,
+  SoftwareOSBtn,
 } from '@components'
 import * as Yup from 'yup'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
@@ -37,6 +38,7 @@ import {
   checkIfHasWindows,
   formatCountryName,
   getFlagFromCountryName,
+  getImageIconName,
   roundToDecimal,
   useCancelRequest,
 } from '@utils'
@@ -546,6 +548,10 @@ export default function CreateInstancePage() {
                   },
                 ]
 
+                const launchImage = isLaunchMode
+                  ? ownImages.find(el => el.$key === imageIdFromLaunch)
+                  : null
+
                 return (
                   <Form>
                     <ScrollToFieldError />
@@ -623,23 +629,30 @@ export default function CreateInstancePage() {
                         />
                       )}
 
-                      {imagesCurrentTab === IMAGES_TYPES.public ? (
-                        <div className={s.os_list}>
+                      <div className={s.os_list}>
+                        {isLaunchMode ? (
+                          <SoftwareOSBtn
+                            value={imageIdFromLaunch}
+                            state={imageIdFromLaunch}
+                            iconName={getImageIconName(launchImage?.$)}
+                            label={launchImage?.$}
+                            imageData={launchImage}
+                            disabled
+                          />
+                        ) : imagesCurrentTab === IMAGES_TYPES.public ? (
                           <OsList
                             list={publicImages}
                             value={values.instances_os}
                             onOSchange={onOSchange}
                           />
-                        </div>
-                      ) : (
-                        <div className={s.os_list}>
+                        ) : (
                           <OsList
                             list={ownImages}
                             value={values.instances_os}
                             onOSchange={onOSchange}
                           />
-                        </div>
-                      )}
+                        )}
+                      </div>
 
                       {isItWindows && (
                         <WarningMessage className={s.notice_wrapper}>

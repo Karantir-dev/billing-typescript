@@ -40,7 +40,12 @@ export default function SoftwareOSBtn({
   }
 
   return (
-    <div className={cn(s.bg, { [s.selected]: value === state, [s.disabled]: disabled })}>
+    <div
+      className={cn(s.bg, {
+        [s.selected]: value === state && !disabled,
+        [s.disabled]: disabled,
+      })}
+    >
       <button className={s.btn} onClick={() => onClick(value)} type="button">
         {svgIcon ? (
           svgIconInList ? (
