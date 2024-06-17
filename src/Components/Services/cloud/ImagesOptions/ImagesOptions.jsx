@@ -10,6 +10,8 @@ export default function ImagesOptions({ item, type, idKey }) {
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
 
+  const isImagesPage = type === 'image'
+
   const options = [
     {
       label: t('edit'),
@@ -28,6 +30,7 @@ export default function ImagesOptions({ item, type, idKey }) {
       onClick: () => {
         console.log('Launch')
       },
+      hidden: isImagesPage && item.disk_format.$ === 'iso',
     },
     {
       label: t('copy'),
@@ -42,7 +45,7 @@ export default function ImagesOptions({ item, type, idKey }) {
           }),
         )
       },
-      hidden: type !== 'image',
+      hidden: !isImagesPage,
     },
     {
       label: t('restore'),
@@ -50,7 +53,7 @@ export default function ImagesOptions({ item, type, idKey }) {
       onClick: () => {
         console.log('Restore')
       },
-      hidden: type === 'image',
+      hidden: isImagesPage,
     },
     {
       label: t('download'),
@@ -64,7 +67,11 @@ export default function ImagesOptions({ item, type, idKey }) {
       label: t('delete'),
       icon: 'Remove',
       onClick: () => {
-        console.log('Delete')
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            image_delete: { ...item, idKey },
+          }),
+        )
       },
     },
   ]
@@ -91,7 +98,7 @@ export default function ImagesOptions({ item, type, idKey }) {
                   content={option.label}
                   anchor={`${option.icon}_${item[idKey].$}`}
                 >
-                  <button onClick={option.onClick}>
+                  <button onClick={option.onClick} disabled={option.disabled}>
                     <Icon name={option.icon} />
                   </button>
                 </TooltipWrapper>

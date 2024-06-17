@@ -1150,6 +1150,35 @@ const createImage =
       })
   }
 
+const deleteImage =
+  ({ elid, successCallback, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'image.delete',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -1178,4 +1207,5 @@ export default {
   editImage,
   getImageParams,
   createImage,
+  deleteImage,
 }

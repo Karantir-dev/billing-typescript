@@ -76,16 +76,6 @@ export default function InstanceSnapshots() {
     )
   }
 
-  const itemOnClickHandler = (e, item) => {
-    if (
-      e.target.closest('[data-target="options"]') ||
-      e.target.closest('[data-target="name"]')
-    )
-      return
-  }
-
-  const createdToday = dailyCosts?.created_today?.$
-
   return (
     <>
       <div className={s.container}>
@@ -118,7 +108,6 @@ export default function InstanceSnapshots() {
           cells={INSTANCE_SNAPSHOTS_CELLS}
           items={data}
           itemsCount={count}
-          itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
           editImage={editImage}
           cost={dailyCosts}

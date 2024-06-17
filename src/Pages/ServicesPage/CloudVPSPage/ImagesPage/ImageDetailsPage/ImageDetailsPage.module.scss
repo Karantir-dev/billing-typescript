@@ -1,0 +1,130 @@
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.title_block {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 8px;
+
+  h1 {
+    font-size: 22px;
+  }
+}
+
+.status {
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #ccc;
+  line-height: 1;
+  position: relative;
+  background-color: #f79649;
+  &.resized,
+  &.suspended {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 22px 5px 10px;
+
+    svg {
+      position: absolute;
+      right: 5px;
+      width: 14px;
+      height: 14px;
+      circle {
+        fill: #fff;
+      }
+      path {
+        fill: #f79649;
+      }
+    }
+  }
+  &.suspended {
+    svg {
+      path {
+        fill: #fa6848;
+      }
+    }
+  }
+  &.runing,
+  &.active {
+    background-color: #45a884;
+  }
+  &.stopped,
+  &.deletion_in_progress,
+  &.suspended {
+    background-color: #fa6848;
+  }
+}
+
+.block_title {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: -2%;
+}
+
+.block_wrapper {
+  display: grid;
+  gap: 20px;
+  padding: 24px 16px;
+  background: var(--forms_bgc_1);
+  box-shadow: var(--forms_shadow);
+}
+
+.info_block_wrapper {
+  display: grid;
+  gap: 14px;
+
+  .info_block_item:not(:last-child) {
+    border-bottom: 1px solid var(--item_bottom_splitter);
+  }
+}
+
+.info_block_item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-bottom: 14px;
+}
+
+.item_name {
+  font-size: 14px;
+  line-height: 120%;
+  color: var(--transparent-color);
+}
+
+.item_info {
+  font-size: 16px;
+  line-height: 120%;
+}
+
+@media screen and (min-width: 768px) {
+  .block_title {
+    font-size: 25px;
+    font-weight: 400;
+  }
+
+  .info_block_item {
+    flex-direction: row;
+    gap: 14px;
+  }
+
+  .item_name {
+    width: 33%;
+    margin-bottom: unset;
+  }
+
+  .block_wrapper {
+    gap: 40px;
+  }
+}
