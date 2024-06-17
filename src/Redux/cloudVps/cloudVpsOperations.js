@@ -155,6 +155,7 @@ const editInstance =
     errorCallback = () => {},
     closeModal = () => {},
     successCallback,
+    successToast,
     setIsLoading,
     signal,
   }) =>
@@ -182,7 +183,9 @@ const editInstance =
         successCallback()
         closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('request_sent', { ns: 'cloud_vps' }))
+        successToast
+          ? toast.success(successToast)
+          : toast.success(t('request_sent', { ns: 'cloud_vps' }))
       })
       .catch(error => {
         errorCallback()

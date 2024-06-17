@@ -1,13 +1,12 @@
-/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceBackups.module.scss'
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, EditCell, Icon, ImagesList, Loader, Select } from '@components'
-import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
+import { Button, ImagesList, Loader, Select } from '@components'
+// import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
 
 const INSTANCE_BACKUPS_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
@@ -23,6 +22,11 @@ const INSTANCE_BACKUPS_CELLS = [
   },
 ]
 
+const backupRotationItemsList = ['1', '2', '3', '4', '5'].map(el => ({
+  label: el,
+  value: el,
+}))
+
 export default function InstanceBackups() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
@@ -33,7 +37,7 @@ export default function InstanceBackups() {
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
-  const [backupRotation, setBackupRotation] = useState('5')
+  const [backupRotation, setBackupRotation] = useState()
 
   const elid = item?.id?.$
 
@@ -83,31 +87,13 @@ export default function InstanceBackups() {
     )
   }
 
-  // const editBackupName = value => {
-  //   const slicedValue = value.slice(0, 100)
-  //   editImage({
-  //     name: slicedValue,
-  //     id: elid,
-  //     errorCallback: () => setBackupName(backupName),
-  //   })
-  //   setBackupName(value)
-  // }
-
-  const itemOnClickHandler = (e, item) => {
-    if (
-      e.target.closest('[data-target="options"]') ||
-      e.target.closest('[data-target="name"]')
-    )
-      return
-    console.log('open item page')
-  }
-
   const editInstanceHandler = values => {
     dispatch(
       cloudVpsOperations.editInstance({
         values,
         elid,
-        successCallback: () => {},
+        successCallback: () => setBackupRotation(values.backup_rotation),
+        successToast: t('backups.backup_rotation_changed'),
         signal,
         setIsLoading,
       }),
@@ -137,18 +123,9 @@ export default function InstanceBackups() {
           <Select
             className={s.backup_rotation_select}
             label={`${t('backups.backup_rotation')}:`}
-            itemsList={['1', '2', '3', '4', '5'].map(el => ({
-              label: el,
-              value: el,
-            }))}
+            itemsList={backupRotationItemsList}
             value={backupRotation}
-            getElement={value => {
-              if (value === backupRotation) {
-                return
-              }
-              setBackupRotation(value)
-              editInstanceHandler({ backup_rotation: value })
-            }}
+            getElement={value => editInstanceHandler({ backup_rotation: value })}
             isShadow
           />
           <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
