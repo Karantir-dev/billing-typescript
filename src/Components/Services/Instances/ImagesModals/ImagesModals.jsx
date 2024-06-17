@@ -116,7 +116,6 @@ export const ImagesModals = ({
             dispatch(cloudVpsActions.setItemForModals({ image_delete: false }))
           }
           onSubmit={deleteImage}
-          cost={cost}
         />
       )}
     </>
