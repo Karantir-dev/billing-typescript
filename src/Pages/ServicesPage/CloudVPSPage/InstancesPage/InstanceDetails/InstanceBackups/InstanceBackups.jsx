@@ -162,7 +162,6 @@ export default function InstanceBackups() {
           cells={INSTANCE_BACKUPS_CELLS}
           items={data}
           itemsCount={count}
-          itemOnClickHandler={itemOnClickHandler}
           getItems={getItems}
           editImage={editImage}
           cost={dailyCosts}

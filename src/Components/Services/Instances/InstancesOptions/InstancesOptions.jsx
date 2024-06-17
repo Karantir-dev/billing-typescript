@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Options } from '@components'
 import { cloudVpsActions, cloudVpsOperations } from '@src/Redux'
 import { useCreateTicketOption, getInstanceMainInfo } from '@src/utils'
@@ -26,9 +27,10 @@ export default function InstancesOptions({
     isRescued,
     isWindows,
     isDeleting,
+    isBootedFromISO,
   } = getInstanceMainInfo(item)
 
-  const isHideMostItems = isResized || isRescued
+  const isHideMostItems = isResized || isRescued || isBootedFromISO
   const createTicketOption = useCreateTicketOption(item.id.$)
 
   const options = [
@@ -41,6 +43,18 @@ export default function InstancesOptions({
         dispatch(
           cloudVpsActions.setItemForModals({
             confirm: { ...item, confirm_action: 'unrescue' },
+          }),
+        ),
+    },
+    {
+      label: t('unmount_iso'),
+      icon: 'Wrench',
+      hidden: !isBootedFromISO,
+      disabled: isDisabled,
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: 'unmount' },
           }),
         ),
     },

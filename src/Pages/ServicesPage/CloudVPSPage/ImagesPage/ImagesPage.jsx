@@ -74,14 +74,6 @@ export default function ImagesPage() {
     )
   }
 
-  const itemOnClickHandler = (e, item) => {
-    if (
-      e.target.closest('[data-target="options"]') ||
-      e.target.closest('[data-target="name"]')
-    )
-      return
-  }
-
   return (
     <div className={s.images}>
       <Button
@@ -100,7 +92,6 @@ export default function ImagesPage() {
         cells={CLOUD_IMAGE_CELLS}
         items={images}
         itemsCount={imagesCount}
-        itemOnClickHandler={itemOnClickHandler}
         getItems={getItems}
         editImage={editImage}
         cost={dailyCosts}
