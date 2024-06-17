@@ -76,6 +76,8 @@ export default function InstanceSnapshots() {
     )
   }
 
+  const createdToday = dailyCosts?.created_today?.$
+
   return (
     <>
       <div className={s.container}>
