@@ -569,7 +569,6 @@ export default function CreateInstancePage() {
                             content={t('hint_description.ip')}
                             className={s.hintPopup}
                             disabled={!widerThan1550}
-                            anchor="hint_ip_description"
                           >
                             <button
                               type="button"
@@ -719,7 +718,6 @@ export default function CreateInstancePage() {
                               wrapperClassName={s.exlude_vat_hint}
                               className={s.exlude_vat_hint_popup}
                               content={t('exlude_vat_hint')}
-                              anchor="exlude_vat_hint"
                             >
                               <Icon name="Info" />
                             </TooltipWrapper>

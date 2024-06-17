@@ -204,11 +204,7 @@ export default function Component(props) {
         {mobile && (
           <div className={s.item_title}>{t('Payment method', { ns: 'other' })}:</div>
         )}
-        <TooltipWrapper
-          disabled={t(paymethod).length < 10}
-          content={t(paymethod)}
-          anchor={`payment${id}`}
-        >
+        <TooltipWrapper disabled={t(paymethod).length < 10} content={t(paymethod)}>
           <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
         </TooltipWrapper>
       </div>

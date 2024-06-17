@@ -359,7 +359,7 @@ export default function ForexPage() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="delete_btn">
+          <TooltipWrapper content={t('delete', { ns: 'other' })}>
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -375,7 +375,7 @@ export default function ForexPage() {
             />
           </TooltipWrapper>
 
-          <TooltipWrapper content={t('prolong', { ns: 'vds' })} anchor="prolong_btn">
+          <TooltipWrapper content={t('prolong', { ns: 'vds' })}>
             <IconButton
               className={s.tools_icon}
               disabled={

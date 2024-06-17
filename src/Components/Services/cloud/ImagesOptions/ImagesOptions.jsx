@@ -12,10 +12,14 @@ export default function ImagesOptions({ item, type, idKey }) {
 
   const isImagesPage = type === 'image'
 
+  const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
+  const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active'
+
   const options = [
     {
       label: t('edit'),
       icon: 'Rename',
+      disabled: !isActive,
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
@@ -27,6 +31,7 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('launch'),
       icon: 'Launch',
+      disabled: !isActive,
       onClick: () => {
         console.log('Launch')
       },
@@ -35,6 +40,7 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('copy'),
       icon: 'Copy',
+      disabled: !isActive,
       onClick: () => {
         console.log('Copy')
         dispatch(
@@ -50,6 +56,7 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('restore'),
       icon: 'Restore',
+      disabled: !isActive,
       onClick: () => {
         console.log('Restore')
       },
@@ -58,6 +65,7 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('download'),
       icon: 'DownloadImage',
+      disabled: !isActive,
       onClick: () => {
         console.log('Downnload')
       },
@@ -66,6 +74,7 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('delete'),
       icon: 'Remove',
+      disabled: isProtected || !isActive,
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
@@ -93,11 +102,7 @@ export default function ImagesOptions({ item, type, idKey }) {
             .filter(option => !option.hidden)
             .map(option => {
               return (
-                <TooltipWrapper
-                  key={option.label}
-                  content={option.label}
-                  anchor={`${option.icon}_${item[idKey].$}`}
-                >
+                <TooltipWrapper key={option.label} content={option.label}>
                   <button onClick={option.onClick} disabled={option.disabled}>
                     <Icon name={option.icon} />
                   </button>

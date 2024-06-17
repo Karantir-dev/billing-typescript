@@ -26,7 +26,7 @@ export default function Component(props) {
 
       <div className={s.tableBlockSecond}>
         {mobile && <div className={s.item_title}>{t('Name', { ns: 'other' })}:</div>}
-        <TooltipWrapper content={expensesTranslateFn(name, t)} anchor={`expense_${id}`}>
+        <TooltipWrapper content={expensesTranslateFn(name, t)}>
           <div className={cn(s.item_text, s.second_item)}>
             {expensesTranslateFn(name, t)}
           </div>

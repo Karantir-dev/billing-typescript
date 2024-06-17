@@ -186,21 +186,13 @@ export default function CloudInstanceItemPage() {
             <div>
               <div className={s.page_title_wrapper}>
                 <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
-                <TooltipWrapper
-                  className={s.popup}
-                  content={item.instances_os.$}
-                  anchor={`instance_os_${item?.id?.$}`}
-                >
+                <TooltipWrapper className={s.popup} content={item.instances_os.$}>
                   <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
                 </TooltipWrapper>
               </div>
 
               {isHintStatus ? (
-                <TooltipWrapper
-                  className={s.popup}
-                  label={hintMessage}
-                  anchor={`instance_status_${item?.id?.$}`}
-                >
+                <TooltipWrapper className={s.popup} label={hintMessage}>
                   <span
                     className={cn(
                       s.status,

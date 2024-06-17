@@ -28,6 +28,7 @@ export default function InstancesOptions({
     isWindows,
     isDeleting,
     isBootedFromISO,
+    isImageUploading,
   } = getInstanceMainInfo(item)
 
   const isHideMostItems = isResized || isRescued || isBootedFromISO
@@ -142,7 +143,7 @@ export default function InstancesOptions({
     {
       label: t('Instructions'),
       icon: 'Instruction',
-      disabled: isDeleting,
+      disabled: isDeleting || isImageUploading,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
     {
@@ -161,13 +162,13 @@ export default function InstancesOptions({
     {
       label: t('Rename'),
       icon: 'Rename',
-      disabled: isDeleting,
+      disabled: isDeleting || isImageUploading,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
       label: t('boot_from_iso'),
       icon: 'Iso',
-      disabled: isProcessing || isDeleting,
+      disabled: isProcessing || isDeleting || isImageUploading,
       hidden: isHideMostItems,
       onClick: () =>
         dispatch(

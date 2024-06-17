@@ -117,11 +117,9 @@ const InputField = function InputField(props) {
             {isRequired ? requiredLabel(label) : label}
             {labelTooltip && (
               <TooltipWrapper
-                anchor={name}
                 content={labelTooltip}
                 wrapperClassName={s.label__tooltip}
                 className={s.hint}
-                globalCloseEvents={{ scroll: true }}
                 place={labelTooltipPlace}
               >
                 <Icon name="Info" />
