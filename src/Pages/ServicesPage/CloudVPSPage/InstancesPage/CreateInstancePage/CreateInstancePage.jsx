@@ -58,7 +58,6 @@ import {
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 import * as route from '@src/routes'
-import { nanoid } from 'nanoid'
 
 import s from './CreateInstancePage.module.scss'
 
@@ -71,12 +70,22 @@ export default function CreateInstancePage() {
   const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
   const isBasic = cloudType === BASIC_TYPE
 
-  const switchCloudType = type => {
-    setSearchParams({ type })
-    setCloudType(type)
-  }
+  useEffect(() => {
+    setCloudType(prev => {
+      if (searchParams.get('type') !== prev) {
+        return searchParams.get('type')
+      } else {
+        return prev
+      }
+    })
+  }, [searchParams])
 
   const location = useLocation()
+
+  const switchCloudType = type => {
+    setSearchParams({ type }, { state: location.state })
+    setCloudType(type)
+  }
 
   const dcLabelFromLaunch = location.state?.dcLabel
   const dcIdFromLaunch = CLOUD_DC_NAMESPACE[dcLabelFromLaunch]
@@ -135,7 +144,7 @@ export default function CreateInstancePage() {
       const dcLocation = dataFromSite.location
 
       const dcFromSite = dcList.find(el => el.$key === dcLocation)
-      const dcFromLaunch = dcList.find(el => el.$key === dcIdFromLaunch)
+      const dcFromLaunch = dcList.find(el => +el.$key === +dcIdFromLaunch)
 
       if (dcFromLaunch) {
         setCurrentDC(dcFromLaunch)
@@ -331,7 +340,7 @@ export default function CreateInstancePage() {
         onError={err => console.log('ErrorBoundary', err)}
       >
         {tariffs?.[currentDC?.$key] &&
-          operationSystems?.[currentDC.$key] &&
+          operationSystems?.[currentDC?.$key] &&
           currentDC &&
           ownImages && (
             <Formik
@@ -365,39 +374,12 @@ export default function CreateInstancePage() {
                   )
                 }
 
-                /** Sets operation system on first tab render */
-                // useEffect(() => {
-                //   selectFirstImage(imagesCurrentTab)
-                // }, [operationSystems?.[currentDC.$key]])
-
                 const onTariffChange = tariff => {
                   setFieldValue('tariff_id', tariff.id.$)
                   setFieldValue('tariffData', tariff)
                 }
 
                 const isItWindows = checkIsItWindows(values.instances_os)
-
-                // const filterOSlist = () => {
-                //   let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
-
-                //   if (tariffHasWindows) {
-                //     return operationSystems[currentDC.$key]
-                //   } else {
-                //     const osList = operationSystems[currentDC.$key]?.map(el => {
-                //       let newEl = { ...el }
-                //       if (el.$.toLowerCase().includes('windows')) {
-                //         newEl.disabled = true
-                //       }
-
-                //       return newEl
-                //     })
-
-                //     return osList
-                //   }
-                // }
-
-                /** if we have selected tariff without Windows - we disable this OS */
-                // const filteredOSlist = filterOSlist()
 
                 /** if we have selected OS Windows - we disable tariffs that don`t support this OS */
                 const filterTariffsList = isItWindows => {
@@ -571,9 +553,11 @@ export default function CreateInstancePage() {
                     )}
 
                     <CloudTypeSection
+                      isLaunchMode={isLaunchMode}
+                      premiumTariffs={premiumTariffs?.[currentDC.$key]}
+                      basicTariffs={basicTariffs?.[currentDC.$key]}
                       value={cloudType}
                       switchCloudType={switchCloudType}
-                      getOsListHandler={getOsListHandler}
                     />
 
                     <section className={s.section}>
@@ -608,7 +592,7 @@ export default function CreateInstancePage() {
                           <TooltipWrapper
                             content={t('ashdlajhd', { ns: 'other' })}
                             wrapperClassName={cn(s.tooltip)}
-                            anchor={nanoid()}
+                            anchor={'move_the_image'}
                           >
                             <Icon name="Info" />
                           </TooltipWrapper>

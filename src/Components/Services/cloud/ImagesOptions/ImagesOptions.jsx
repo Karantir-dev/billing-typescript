@@ -31,7 +31,6 @@ export default function ImagesOptions({ item, type, idKey }) {
       label: t('launch'),
       icon: 'Launch',
       onClick: () => {
-        console.log('item.region.$', item.region.$)
         navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE, {
           state: { imageId: item.fleio_id.$, dcLabel: item.region.$ },
         })

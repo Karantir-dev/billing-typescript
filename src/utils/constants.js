@@ -272,8 +272,6 @@ export const CLOUD_DC_NAMESPACE = {
   'Netherlands-1': 14,
   'Netherlands-2': 13,
   Poland: 12,
-  /** Temporary DC */
-  Staging: 'Staging',
 }
 
 export const IMAGES_TYPES = { public: 'pub', own: 'own', shared: 'shr' }
