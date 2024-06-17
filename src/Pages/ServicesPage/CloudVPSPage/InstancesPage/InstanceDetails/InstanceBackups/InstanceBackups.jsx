@@ -93,10 +93,6 @@ export default function InstanceBackups() {
   //   setBackupName(value)
   // }
 
-  // useEffect(() => {
-  //   setBackupName(item.backupName?.$ || '')
-  // }, [item.backupName?.$])
-
   const itemOnClickHandler = (e, item) => {
     if (
       e.target.closest('[data-target="options"]') ||
