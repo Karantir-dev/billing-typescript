@@ -79,9 +79,8 @@ export default function CreateInstancePage() {
   const location = useLocation()
 
   const dcLabelFromLaunch = location.state?.dcLabel
-  console.log(dcLabelFromLaunch)
   const dcIdFromLaunch = CLOUD_DC_NAMESPACE[dcLabelFromLaunch]
-  console.log(dcIdFromLaunch)
+
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
   const imageIdFromLaunch = location.state?.imageId

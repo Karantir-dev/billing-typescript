@@ -7,10 +7,17 @@
   display: flex;
   align-items: center;
   gap: 25px;
+  justify-content: flex-end;
   svg {
     fill: var(--icon-color_2);
     &:hover {
       fill: url('#gradient');
+    }
+  }
+
+  :disabled {
+    svg {
+      fill: var(--disabled_icon_color);
     }
   }
 }

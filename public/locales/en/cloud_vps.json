@@ -83,6 +83,7 @@
   "Unrescue": "Unrescue",
   "Confirm Resize": "Confirm Resize",
   "Revert Resize": "Revert Resize",
+  "unmount_iso": "Unmount ISO",
   "confirm": {
     "title": {
       "stop": "Stop instance",
@@ -90,7 +91,8 @@
       "reboot": "Reboot instance",
       "resize_confirm": "Confirm instance resize",
       "resize_rollback": "Revert instance resize",
-      "unrescue": "Unrescue instance"
+      "unrescue": "Unrescue instance",
+      "unmount": "Unmount instance"
     },
     "text": {
       "stop": "Are you sure you want to stop instance {{name}}?",
@@ -98,7 +100,8 @@
       "reboot": "Are you sure you want to reboot instance {{name}}?",
       "resize_confirm": "Are you sure you want to resize instance {{name}}?",
       "resize_rollback": "Are you sure you want to revert instance {{name}}?",
-      "unrescue": "Are you sure you want to unrescue instance {{name}}?"
+      "unrescue": "Are you sure you want to unrescue instance {{name}}?",
+      "unmount": "Are you sure you want to unmount instance {{name}}?"
     }
   },
   "rebuild_modal": {
@@ -248,5 +251,24 @@
     }
   },
   "change_access_method": "Change access method",
-  "new_access_method_warning": "Setting a new access method may not work for modified images."
+  "new_access_method_warning": "Setting a new access method may not work for modified images.",
+  "delete_image": "Delete image",
+  "delete_image_text": "Are you sure you want to delete image \"{{name}}\"?",
+  "details": {
+    "title": "Details",
+    "fleio_id": "ID",
+    "region": "Region",
+    "image_size": "Size",
+    "min_ram": "Minimum memory",
+    "min_disk": "Minimum disk size",
+    "created": "Created at",
+    "updated": "Updated at",
+    "architecture": "Architecture",
+    "disk_format": "Disk format",
+    "os_distro": "OS distro",
+    "hypervisor_type": "Hypervisor type",
+    "os_version": "OS version",
+    "fleio_status": "Status",
+    "visibility": "Visibility"
+  }
 }

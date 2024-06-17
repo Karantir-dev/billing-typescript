@@ -10,6 +10,6 @@
       "extensionName": ".min.css",
       "savePath": "/static/site/css"
     }
-  ],
-  "files.autoSave": "onFocusChange"
+  ]
+  // "files.autoSave": "onFocusChange"
 }

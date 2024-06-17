@@ -62,10 +62,10 @@ export const Modals = ({
           successCallback: () => getInstances({ ...loadingParams, ...pagination }),
         }),
       )
-    } else if (action === 'unrescue') {
+    } else if (action === 'unrescue' || action === 'unmount') {
       return dispatch(
         cloudVpsOperations.rebuildInstance({
-          action: itemForModals.confirm.confirm_action,
+          action: 'unrescue',
           elid: itemForModals.confirm.id.$,
           successCallback: () => {
             dispatch(cloudVpsActions.setItemForModals({ confirm: false }))

@@ -14,6 +14,8 @@ import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
 import { formatCountryName, getFlagFromCountryName } from '@src/utils'
 import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
+import * as route from '@src/routes'
 import s from './ImagesList.module.scss'
 
 export default function ImagesList({
@@ -22,13 +24,13 @@ export default function ImagesList({
   cells,
   getItems,
   editImage,
-  itemOnClickHandler,
   idKey = 'id',
   type,
   cost,
 }) {
   const { t } = useTranslation(['cloud_vps', 'countries'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
+  const navigate = useNavigate()
 
   const [pagination, setPagination] = useReducer(
     (state, action) => {
@@ -120,7 +122,16 @@ export default function ImagesList({
             return (
               <div className={s.name_wrapper}>
                 <div className={s.name_field_wrapper}>
-                  {item?.protected?.$orig === 'on' && <Icon name="Protected" />}
+                  {(item?.protected?.$orig === 'on' || item?.protected?.$ === 'on') && (
+                    <TooltipWrapper
+                      className={s.popup}
+                      wrapperClassName={s.popup__wrapper}
+                      content={t('image.protected')}
+                      anchor={`protected_${item?.[idKey].$}`}
+                    >
+                      <Icon name="Protected" />
+                    </TooltipWrapper>
+                  )}
                   <div className={s.name_field}>
                     <EditCell
                       originName={value}
@@ -231,6 +242,15 @@ export default function ImagesList({
     }
   })
 
+  const itemOnClickHandler = (e, item) => {
+    if (
+      e.target.closest('[data-target="options"]') ||
+      e.target.closest('[data-target="name"]')
+    )
+      return
+    navigate(`${route.CLOUD_VPS}/images/${item[idKey].$}`)
+  }
+
   return (
     <>
       {items && (
@@ -328,7 +348,6 @@ ImagesList.propTypes = {
   cells: PropTypes.array,
   getItems: PropTypes.func,
   editImage: PropTypes.func,
-  itemOnClickHandler: PropTypes.func,
   idKey: PropTypes.string,
   type: PropTypes.string,
 }
