@@ -533,6 +533,9 @@ export default function CreateInstancePage() {
                   ? ownImages.find(el => el.$key === imageIdFromLaunch)
                   : null
 
+                const imagesToRender =
+                  imagesCurrentTab === IMAGES_TYPES.public ? publicImages : ownImages
+
                 return (
                   <Form>
                     <ScrollToFieldError />
@@ -622,15 +625,9 @@ export default function CreateInstancePage() {
                             imageData={launchImage}
                             disabled
                           />
-                        ) : imagesCurrentTab === IMAGES_TYPES.public ? (
-                          <OsList
-                            list={publicImages}
-                            value={values.instances_os}
-                            onOSchange={onOSchange}
-                          />
                         ) : (
                           <OsList
-                            list={ownImages}
+                            list={imagesToRender}
                             value={values.instances_os}
                             onOSchange={onOSchange}
                           />

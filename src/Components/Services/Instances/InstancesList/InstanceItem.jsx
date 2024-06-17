@@ -1,4 +1,3 @@
-/* eslint-disable no-constant-condition */
 import { useEffect, useRef, useState } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
@@ -128,9 +127,9 @@ export default function InstanceItem({ item, editInstance }) {
             anchor={`country_flag_${item?.id?.$}`}
           >
             <img
-              src={require(`@images/countryFlags/${getFlagFromCountryName(
-                itemCountry,
-              )}.png`)}
+              src={require(
+                `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
+              )}
               width={20}
               height={14}
               alt={itemCountry}
