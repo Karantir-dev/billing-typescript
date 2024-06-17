@@ -56,6 +56,7 @@ import {
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 import * as route from '@src/routes'
+import { nanoid } from 'nanoid'
 
 import s from './CreateInstancePage.module.scss'
 
@@ -595,11 +596,17 @@ export default function CreateInstancePage() {
                         )}
                       </ul>
                       {isLaunchMode && (
-                        <div>
+                        <div className={s.dc_link}>
                           <Link className={s.link} to={route.CLOUD_VPS + '/images'}>
                             {t('Move the image to another data center')}
                           </Link>
-                          <Icon name="Info" />
+                          <TooltipWrapper
+                            content={t('ashdlajhd', { ns: 'other' })}
+                            wrapperClassName={cn(s.tooltip)}
+                            anchor={nanoid()}
+                          >
+                            <Icon name="Info" />
+                          </TooltipWrapper>
                         </div>
                       )}
                     </section>
@@ -766,9 +773,11 @@ export default function CreateInstancePage() {
                             </span>
                             <img
                               className={s.flag}
-                              src={require(`@images/countryFlags/${getFlagFromCountryName(
-                                currentCountryName,
-                              )}.png`)}
+                              src={require(
+                                `@images/countryFlags/${getFlagFromCountryName(
+                                  currentCountryName,
+                                )}.png`,
+                              )}
                               width={20}
                               height={14}
                               alt={currentCountryName}
