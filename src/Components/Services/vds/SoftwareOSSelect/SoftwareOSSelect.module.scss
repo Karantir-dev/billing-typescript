@@ -30,6 +30,7 @@
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
   cursor: pointer;
+  text-align: start;
 
   .img {
     flex: none;
@@ -102,4 +103,14 @@
     min-height: 35px;
     background-color: #e72690;
   }
+}
+
+.image_name {
+  max-width: 180px;
+  text-align: start;
+  font-size: 14px;
+  color: var(--transparent-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

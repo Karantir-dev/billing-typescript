@@ -1,24 +1,27 @@
+import { getImageIconName } from '@src/utils'
+
 const { SoftwareOSBtn, SoftwareOSSelect } = require('@src/Components')
 
 export default function OsList({ value, list, onOSchange }) {
   const elemsData = {}
 
   list?.forEach(element => {
-    const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
+    const itemName = getImageIconName(element.$)
 
     if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
-      elemsData[itemName] = [element]
+      elemsData[itemName] = [{ ...element }]
     } else {
-      elemsData[itemName].push(element)
+      elemsData[itemName].push({ ...element })
     }
   })
 
   return Object.entries(elemsData).map(([name, el]) => {
     if (el.length > 1) {
-      const optionsList = el.map(({ $key, $ }) => ({
-        value: $key,
-        label: $,
-      }))
+      const optionsList = el.map(item => {
+        item.value = item.$key
+        item.label = item.$
+        return item
+      })
 
       return (
         <SoftwareOSSelect
@@ -37,6 +40,7 @@ export default function OsList({ value, list, onOSchange }) {
           state={value}
           iconName={name.toLowerCase()}
           label={el[0].$}
+          imageData={el[0]}
           onClick={onOSchange}
         />
       )

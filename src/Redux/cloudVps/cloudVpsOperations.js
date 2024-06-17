@@ -534,15 +534,7 @@ const getInstanceNetworkTrafficInfo =
   }
 
 const getOsList =
-  ({
-    signal,
-    setIsLoading,
-    lastTariffID,
-    closeLoader,
-    datacenter,
-    setSshList,
-    isBasic,
-  }) =>
+  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
   dispatch => {
     setIsLoading && setIsLoading(true)
 
@@ -551,6 +543,15 @@ const getOsList =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+
+        const OsByZones = {}
+        osList.forEach(el => {
+          if (!OsByZones[el.$depend]) {
+            OsByZones[el.$depend] = [el]
+          } else {
+            OsByZones[el.$depend].push(el)
+          }
+        })
 
         const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
 
@@ -564,13 +565,10 @@ const getOsList =
           }))
         }
 
-        const operationSystems = { [data.doc.datacenter.$]: osList }
+        const operationSystems = { [data.doc.datacenter.$]: OsByZones }
 
-        if (isBasic) {
-          dispatch(cloudVpsActions.setBasicOperationSystems(operationSystems))
-        } else {
-          dispatch(cloudVpsActions.setPremiumOperationSystems(operationSystems))
-        }
+        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
+
         setSshList && setSshList(formatedSshList)
 
         closeLoader && closeLoader()
@@ -638,7 +636,7 @@ const getAllTariffsInfo =
             lastTariffID = premiumTariffs[dcID][premiumTariffs[dcID].length - 1].id.$
           }
           await dispatch(
-            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList, isBasic }),
+            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList }),
           )
         }
 

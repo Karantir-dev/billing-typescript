@@ -6,6 +6,7 @@ export default function SvgComponent(props) {
       height={7}
       strokeWidth={2}
       fill="none"
+      stroke="#392955"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

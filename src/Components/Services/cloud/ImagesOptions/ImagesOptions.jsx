@@ -4,11 +4,14 @@ import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { cloudVpsActions } from '@src/Redux'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import * as route from '@src/routes'
 
 export default function ImagesOptions({ item, type, idKey }) {
   const isMobile = useMediaQuery({ query: '(max-width: 1549px)' })
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const isImagesPage = type === 'image'
 
@@ -28,7 +31,9 @@ export default function ImagesOptions({ item, type, idKey }) {
       label: t('launch'),
       icon: 'Launch',
       onClick: () => {
-        console.log('Launch')
+        navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE, {
+          state: { imageId: item.fleio_id.$, dcLabel: item.region.$ },
+        })
       },
       hidden: isImagesPage && item.disk_format.$ === 'iso',
     },

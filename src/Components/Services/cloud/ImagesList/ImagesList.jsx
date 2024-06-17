@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import s from './ImagesList.module.scss'
 import {
   EditCell,
   Icon,
@@ -17,6 +16,7 @@ import { formatCountryName, getFlagFromCountryName } from '@src/utils'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
+import s from './ImagesList.module.scss'
 
 export default function ImagesList({
   items,
@@ -211,6 +211,7 @@ export default function ImagesList({
         if (!cell.renderData) {
           renderData = function renderData(value, item) {
             const itemCountry = formatCountryName(item, 'region')
+
             return (
               <TooltipWrapper
                 className={s.popup}

@@ -33,6 +33,11 @@
   transition: transform 80ms;
   cursor: pointer;
 
+  &[disabled] {
+    pointer-events: none;
+    color: var(--transparent-color);
+  }
+
   &:active {
     transform: scale(0.97);
   }
