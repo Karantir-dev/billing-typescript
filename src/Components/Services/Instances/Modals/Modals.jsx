@@ -1,4 +1,3 @@
-/* eslint-disable no-unreachable */
 import {
   ChangePasswordModal,
   DeleteModal,
