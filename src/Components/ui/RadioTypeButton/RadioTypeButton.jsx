@@ -26,7 +26,6 @@ export default function RadioTypeButton({
               content={captionText}
               className={popupClassName}
               disabled={!widerThan1550}
-              anchor="price_info"
             >
               <button type="button" onClick={toggleCaption}>
                 <Icon name="Info" />

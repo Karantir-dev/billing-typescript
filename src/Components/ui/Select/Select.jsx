@@ -96,11 +96,9 @@ export default function Select(props) {
           {isRequired ? requiredLabel(label) : label} {saleIcon}
           {labelTooltip && (
             <TooltipWrapper
-              anchor={name}
               content={labelTooltip}
               wrapperClassName={s.label__tooltip}
               className={s.hint}
-              globalCloseEvents={{ scroll: true }}
               place={labelTooltipPlace}
             >
               <Icon name="Info" />

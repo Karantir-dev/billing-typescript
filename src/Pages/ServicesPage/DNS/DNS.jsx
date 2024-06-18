@@ -257,7 +257,6 @@ export default function DNS() {
           <TooltipWrapper
             content={t('No tariff plans available for order', { ns: 'other' })}
             disabled={!isNoAvailableTariff}
-            anchor="order_dns_btn"
           >
             <Button
               className={s.order_btn}
@@ -355,7 +354,7 @@ export default function DNS() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <TooltipWrapper content={t('prolong')} anchor="prolong_btn">
+          <TooltipWrapper content={t('prolong')}>
             <IconButton
               className={s.tools_icon}
               disabled={

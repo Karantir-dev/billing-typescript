@@ -346,7 +346,7 @@ export default function FTP() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="delete_btn">
+          <TooltipWrapper content={t('delete', { ns: 'other' })}>
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -361,7 +361,7 @@ export default function FTP() {
               icon="delete"
             />
           </TooltipWrapper>
-          <TooltipWrapper content={t('prolong')} anchor="prolong_btn">
+          <TooltipWrapper content={t('prolong')}>
             <IconButton
               className={s.tools_icon}
               disabled={
