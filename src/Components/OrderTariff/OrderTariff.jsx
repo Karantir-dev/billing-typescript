@@ -1,7 +1,7 @@
 import { Link, useLocation, useSearchParams, useNavigate } from 'react-router-dom'
 import s from './OrderTariff.module.scss'
 import { useEffect, useReducer, useState } from 'react'
-import { ErrorPayment, Icon, Steps } from '@components'
+import { ErrorPayment, Icon, Steps, VPSCompareModal } from '@components'
 import { useTranslation } from 'react-i18next'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelectors, cartOperations, payersSelectors } from '@redux'
@@ -28,6 +28,8 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
   const [toLogin, setToLogin] = useState(false)
   const [isFree, setIsFree] = useState(false)
 
+  const [isCompareModalOpened, setIsCompareModalOpened] = useState(false)
+
   const [payMethodState, setPayMethodState] = useReducer((state, action) => {
     return { ...state, ...action }
   }, {})
@@ -37,6 +39,13 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
   const referrer = searchParams.get('referrer')
 
   useEffect(() => {
+    const isVds = service === 'vds'
+
+    if (isVds) {
+      setIsCompareModalOpened(true)
+      return
+    }
+
     const params = {}
 
     for (const key of searchParams.keys()) {
@@ -185,6 +194,10 @@ export default function OrderTariff({ isConfigToggle, isShowTariffInfo, isCloneP
   }
 
   const backLink = state?.backLink ? `/services/${state?.backLink}` : route.SERVICES
+
+  if (isCompareModalOpened) {
+    return <VPSCompareModal isOpen closeClassName={s.close_compare} />
+  }
 
   return (
     <div>
