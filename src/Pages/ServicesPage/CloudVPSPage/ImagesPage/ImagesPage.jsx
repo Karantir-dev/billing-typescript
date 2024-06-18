@@ -105,7 +105,7 @@ export default function ImagesPage() {
         }}
         getItems={getItems}
         editImage={editImage}
-        dailyCosts
+        dailyCosts={dailyCosts}
       />
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </div>

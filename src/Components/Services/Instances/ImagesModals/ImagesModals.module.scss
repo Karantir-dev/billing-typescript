@@ -85,7 +85,7 @@
 }
 
 .image_modal {
-  max-width: 900px;
+  max-width: 950px;
 }
 
 .image_modal_wrapper {
@@ -99,7 +99,7 @@
   gap: 15px;
   width: 100%;
   @media (min-width: 1024px) {
-    width: 480px;
+    width: 530px;
     flex-shrink: 0;
   }
 }
