@@ -17,6 +17,7 @@ const initialState = {
   sshList: null,
   sshCount: 0,
   allSshList: [],
+  soldOutTag: '',
 }
 
 const itemForModalsReducer = createReducer(initialState.itemForModalsReducer, {
@@ -55,6 +56,9 @@ const instancesDcList = createReducer(initialState.instancesDcList, {
 const windowsTag = createReducer(initialState.windowsTag, {
   [cloudVpsActions.setWindowsTag]: (_, { payload }) => payload,
 })
+const soldOutTag = createReducer(initialState.soldOutTag, {
+  [cloudVpsActions.setSoldOutTag]: (_, { payload }) => payload,
+})
 
 const operationSystems = createReducer(initialState.operationSystems, {
   [cloudVpsActions.setOperationSystems]: (state, { payload }) => ({
@@ -88,6 +92,7 @@ const cloudVpsReducer = combineReducers({
   sshList,
   sshCount,
   allSshList,
+  soldOutTag,
 })
 
 export default cloudVpsReducer

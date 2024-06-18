@@ -7,6 +7,7 @@
 
   &.active {
     outline: 1px solid var(--accent-color-light);
+    pointer-events: none;
   }
 
   &.disabled {
@@ -25,6 +26,8 @@
 }
 
 .tariff_title {
+  display: flex;
+  gap: 5px;
   text-align: start;
   font-weight: 700;
   font-size: 16px;
@@ -71,13 +74,23 @@
   text-align: left;
 }
 
+.warn_icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tooltip_bg {
+  background-color: #fff !important;
+  box-shadow: var(--forms2_shadow);
+}
+
 @media screen and (min-width: 768px) {
   .tariff_btn {
     gap: 16px;
   }
 
   .tariff_title {
-    font-size: 25px;
+    font-size: 22px;
     line-height: 1.28;
   }
 

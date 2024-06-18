@@ -4,10 +4,23 @@ import cn from 'classnames'
 import { useSelector } from 'react-redux'
 import { cloudVpsSelectors } from '@src/Redux'
 import { checkIfHasWindows } from '@src/utils'
+import { Icon, TooltipWrapper } from '@src/Components'
+import { useMediaQuery } from 'react-responsive'
+import { useTranslation } from 'react-i18next'
 
-export default function TariffCard({ tariff, onClick, price, active, disabled }) {
+export default function TariffCard({
+  tariff,
+  onClick,
+  price,
+  active,
+  disabled,
+  isSoldOut,
+}) {
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
   const hasWindows = checkIfHasWindows(tariff, windowsTag)
+
+  const { t } = useTranslation(['cloud_vps'])
+  const lessThan1024 = useMediaQuery({ query: '(max-width: 1024px)' })
 
   const cpu = tariff.detail.find(el => el.name.$.toLowerCase().includes('cpu'))?.value.$
   const memory = tariff.detail
@@ -19,11 +32,31 @@ export default function TariffCard({ tariff, onClick, price, active, disabled })
 
   const portSpeed = tariff.detail.find(el => el.name.$.toLowerCase() === 'port speed')
     ?.value.$
-
+  console.log(tariff)
   return (
     <li className={cn(s.tariff_item, { [s.active]: active, [s.disabled]: disabled })}>
       <button className={s.tariff_btn} type="button" onClick={() => onClick(tariff.id.$)}>
-        <p className={s.tariff_title}>{tariff.title.$}</p>
+        <p className={s.tariff_title}>
+          {isSoldOut && (
+            <TooltipWrapper
+              backgroundClassName={s.tooltip_bg}
+              html={
+                <div>
+                  <Icon name="Warning_triangle" />
+                  <div>
+                    <p>{t('sold_out_messsage')}</p>
+                    <p>{t('sold_out_description')}</p>
+                  </div>
+                </div>
+              }
+              anchor={`sold_out_${tariff.id.$}`}
+              disabled={lessThan1024}
+            >
+              <Icon className={s.warn_icon} name="Warning_triangle" />
+            </TooltipWrapper>
+          )}
+          {tariff.title.$}
+        </p>
         <div className={s.tariff_parameters}>
           <div className={s.tariff_row}>
             <span className={s.parameter_label}>CPU</span>

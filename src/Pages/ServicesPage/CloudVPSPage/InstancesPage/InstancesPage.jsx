@@ -23,7 +23,7 @@ import { CLOUD_SORT_LIST } from '@utils/constants'
 
 export default function InstancesPage() {
   const navigate = useNavigate()
-  const { t } = useTranslation(['cloud_vps'])
+  const { t } = useTranslation(['cloud_vps', 'other'])
   const lessThan1550 = useMediaQuery({ query: '(max-width: 1549px)' })
 
   const interval = useRef()
@@ -186,7 +186,7 @@ export default function InstancesPage() {
         <>
           <div className={s.options}>
             <Button
-              label={t('create_instance_btn')}
+              label={t('to_order', { ns: 'other' })}
               size="large"
               isShadow
               onClick={() => navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE)}

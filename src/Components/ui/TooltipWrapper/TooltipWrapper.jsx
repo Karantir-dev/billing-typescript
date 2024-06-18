@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
@@ -16,19 +17,11 @@ export default function TooltipWrapper({
   delayShow = 500,
   place = 'top',
   effect = 'solid',
-  variant,
+  backgroundClassName,
   disabled, // old version of HintWrapper props
+  html,
   ...props
 }) {
-  const currentTheme = useSelector(selectors.getTheme)
-  const [theme, setTheme] = useState(currentTheme)
-
-  useEffect(() => {
-    setTheme(currentTheme)
-  }, [currentTheme])
-
-  const themeVariant = theme === 'dark' ? 'light' : 'dark'
-
   return (
     <>
       {disabled ? (
@@ -40,17 +33,18 @@ export default function TooltipWrapper({
             anchorSelect={`#${anchor}`}
             className={cn(
               s.hint,
-              {
-                [s.default_theme]: !variant,
-              },
+              s.default_theme,
+
+              backgroundClassName,
               className,
             )}
             content={content}
+            children={html}
             place={place}
             effect={effect}
-            variant={variant || themeVariant}
             positionStrategy="fixed"
             delayShow={hintDelay || delayShow}
+            delayHide={1000000}
             {...props}
           />
         </div>

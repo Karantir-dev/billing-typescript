@@ -1,8 +1,8 @@
-.default_theme {
-  background: var(--hint-background) !important;
-  color: var(--main-text) !important;
+.hint.default_theme {
+  background: var(--hint-background);
+  color: var(--main-text);
   z-index: 10;
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 @media (max-width: 767px) {
