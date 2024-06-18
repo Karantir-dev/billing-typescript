@@ -65,11 +65,15 @@ export default function ModalAddPayer(props) {
       payersSelectedFields?.profiletype === '3'
         ? Yup.string().required(t('Is a required field', { ns: 'other' }))
         : null,
-    eu_vat: payersSelectedFields?.eu_vat_field
-      ? Yup.string().required(t('Is a required field', { ns: 'other' }))
-      : null,
+    eu_vat:
+      payersSelectedFields?.eu_vat_field || !payersSelectedFields?.eu_vat_field
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
     cnp:
-      payersSelectedFields?.profiletype === '1' && payersSelectedFields?.country === '181'
+      payersSelectedFields?.profiletype === '1' &&
+      (payersSelectedFields?.country === '181' ||
+        payersSelectedFields?.country_physical === '181') &&
+      !payersSelectedFields?.cnp
         ? Yup.string()
             .required(t('Is a required field', { ns: 'other' }))
             .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
@@ -199,7 +203,9 @@ export default function ModalAddPayer(props) {
                     />
 
                     {payersSelectedFields?.profiletype === '1' &&
-                    payersSelectedFields?.country === '181' ? (
+                    (payersSelectedFields?.country === '181' ||
+                      payersSelectedFields?.country_physical === '181') &&
+                    !payersSelectedFields?.cnp ? (
                       <InputField
                         inputWrapperClass={s.inputHeight}
                         name="cnp"
