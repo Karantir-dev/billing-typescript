@@ -90,7 +90,6 @@ export default function InstanceItem({ item, editInstance }) {
               className={s.popup}
               wrapperClassName={s.popup__wrapper}
               content={hintMessage}
-              anchor={`status_${item?.id?.$}`}
             >
               <span
                 className={cn(
@@ -130,7 +129,6 @@ export default function InstanceItem({ item, editInstance }) {
             className={s.popup}
             wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
             content={t(itemCountry, { ns: 'countries' })}
-            anchor={`country_flag_${item?.id?.$}`}
           >
             <img
               src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -150,7 +148,6 @@ export default function InstanceItem({ item, editInstance }) {
             className={s.popup}
             wrapperClassName={s.popup__wrapper}
             content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
-            anchor={`instances_os_${item?.id?.$}`}
           >
             <img
               src={require(`@images/soft_os_icons/${osIcon}.png`)}

@@ -190,11 +190,7 @@ export default function CloudInstanceItemPage() {
               <div className={s.page_title_wrapper}>
                 <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
                 {osIcon && (
-                  <TooltipWrapper
-                    className={s.popup}
-                    content={item.instances_os.$}
-                    anchor={`instance_os_${item?.id?.$}`}
-                  >
+                  <TooltipWrapper className={s.popup} content={item.instances_os.$}>
                     <img
                       src={require(`@images/soft_os_icons/${osIcon}.png`)}
                       alt={item?.os_distro?.$}
@@ -204,11 +200,7 @@ export default function CloudInstanceItemPage() {
               </div>
 
               {isHintStatus ? (
-                <TooltipWrapper
-                  className={s.popup}
-                  label={hintMessage}
-                  anchor={`instance_status_${item?.id?.$}`}
-                >
+                <TooltipWrapper className={s.popup} label={hintMessage}>
                   <span
                     className={cn(
                       s.status,

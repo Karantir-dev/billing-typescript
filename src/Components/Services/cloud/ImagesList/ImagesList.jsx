@@ -130,7 +130,6 @@ export default function ImagesList({
                       className={s.popup}
                       wrapperClassName={s.popup__wrapper}
                       content={t('image.protected')}
-                      anchor={`protected_${item?.[idKey].$}`}
                     >
                       <Icon name="Protected" />
                     </TooltipWrapper>
@@ -185,7 +184,6 @@ export default function ImagesList({
                     className={s.popup}
                     wrapperClassName={s.popup__wrapper}
                     content={value}
-                    anchor={`os_${item?.[idKey].$}`}
                   >
                     <img
                       src={require(`@images/soft_os_icons/${osIcon}.png`)}
@@ -229,7 +227,6 @@ export default function ImagesList({
                 className={s.popup}
                 wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
                 content={t(itemCountry, { ns: 'countries' })}
-                anchor={`country_flag_${item?.[idKey].$}`}
               >
                 {itemCountry ? (
                   <img
