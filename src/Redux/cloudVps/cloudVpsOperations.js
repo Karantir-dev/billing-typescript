@@ -972,6 +972,7 @@ const getMetrics =
         handleLoadersClosing(error?.message, dispatch)
       })
   }
+
 const getImages =
   ({
     func,
@@ -1181,6 +1182,38 @@ const deleteImage =
       })
   }
 
+const copyModal =
+  ({ elid, values, successCallback = () => {}, setItemData, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'image.copy',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setItemData && setItemData(data.doc)
+        successCallback()
+        values?.sok === 'ok' && toast.success(t('request_sent', { ns: 'cloud_vps' }))
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -1210,4 +1243,5 @@ export default {
   getImageParams,
   createImage,
   deleteImage,
+  copyModal,
 }

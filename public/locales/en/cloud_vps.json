@@ -247,7 +247,8 @@
       "min_ram": "Minimum required RAM (MB)Like the minimum required disk size, this option allows you to set a limit for the minimum required RAM an instance created from this image will required in order to run properly.",
       "os": "These special attributes allows Zomro to show the distro icon next to each instance created from this image and allows OpenStack to properly create an Instance especially for Windows or other non Linux distributions.",
       "protected": "Set this option in order to protect the image from accidental deletion."
-    }
+    },
+    "copy_title": "Create Copy"
   },
   "change_access_method": "Change access method",
   "new_access_method_warning": "Setting a new access method may not work for modified images.",

@@ -71,6 +71,18 @@ export const ImagesModals = ({
     )
   }
 
+  const createImageCopy = values => {
+    dispatch(cloudVpsActions.setItemForModals({ images_copy: false }))
+    dispatch(
+      cloudVpsOperations.copyModal({
+        elid: itemForModals?.images_copy?.id?.$,
+        ...values,
+        successCallback: redirectCallback ?? getItems,
+        ...loadingParams,
+      }),
+    )
+  }
+
   return (
     <>
       {['snapshot_create', 'backup_create'].some(key => !!itemForModals?.[key]) && (
@@ -94,7 +106,7 @@ export const ImagesModals = ({
           closeModal={() =>
             dispatch(cloudVpsActions.setItemForModals({ images_copy: false }))
           }
-          onSubmit={() => {}}
+          onSubmit={createImageCopy}
         />
       )}
       {!!itemForModals?.image_edit && (
