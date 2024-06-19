@@ -24,17 +24,10 @@ export default function InstanceDetailsOverview() {
   const elid = item?.id?.$
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
 
-  useEffect(() => {
-    elid &&
-      dispatch(
-        cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading),
-      )
-  }, [])
-
   const itemCountry = formatCountryName(item)
 
   useEffect(() => {
-    dispatch(cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo))
+    dispatch(cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading))
   }, [itemForModals.rdns_edit])
 
   return (
