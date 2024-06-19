@@ -1,14 +1,10 @@
-/* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
-import { useSelector } from 'react-redux'
-import { selectors } from '@redux'
+import { nanoid } from 'nanoid'
 import cn from 'classnames'
 import s from './TooltipWrapper.module.scss'
 
 export default function TooltipWrapper({
-  anchor,
   content,
   hintDelay, // old version of HintWrapper props
   children,
@@ -22,15 +18,17 @@ export default function TooltipWrapper({
   html,
   ...props
 }) {
+  const id = nanoid()
+
   return (
     <>
       {disabled ? (
         children
       ) : (
-        <div className={wrapperClassName} id={anchor}>
+        <div className={wrapperClassName} id={id}>
           {children}
           <Tooltip
-            anchorSelect={`#${anchor}`}
+            anchorSelect={`#${id}`}
             className={cn(
               s.hint,
               s.default_theme,
@@ -44,6 +42,7 @@ export default function TooltipWrapper({
             effect={effect}
             positionStrategy="fixed"
             delayShow={hintDelay || delayShow}
+            globalCloseEvents={{ scroll: true }}
             {...props}
           />
         </div>
@@ -53,7 +52,6 @@ export default function TooltipWrapper({
 }
 
 TooltipWrapper.propTypes = {
-  anchor: PropTypes.string.isRequired /* The selector for the anchor elements. */,
   label:
     PropTypes.string /* label is not required if content is provided. It's the same */,
   content: PropTypes.string /* Content to be displayed in tooltip */,

@@ -116,7 +116,6 @@ export default function ImageDetailsPage() {
                   className={s.popup}
                   wrapperClassName={s.popup__wrapper}
                   content={data.os_distro.$}
-                  anchor={`os_${data?.id.$}`}
                 >
                   <Icon name={data.os_distro?.$} />
                 </TooltipWrapper>

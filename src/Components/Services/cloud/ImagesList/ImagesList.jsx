@@ -127,7 +127,6 @@ export default function ImagesList({
                       className={s.popup}
                       wrapperClassName={s.popup__wrapper}
                       content={t('image.protected')}
-                      anchor={`protected_${item?.[idKey].$}`}
                     >
                       <Icon name="Protected" />
                     </TooltipWrapper>
@@ -172,13 +171,12 @@ export default function ImagesList({
         return cell
       case 'os':
         if (!cell.renderData) {
-          renderData = function renderData(value, item) {
+          renderData = function renderData(value) {
             return (
               <TooltipWrapper
                 className={s.popup}
                 wrapperClassName={s.popup__wrapper}
                 content={value}
-                anchor={`os_${item?.[idKey].$}`}
               >
                 <Icon name={value} />
               </TooltipWrapper>
@@ -217,13 +215,12 @@ export default function ImagesList({
                 className={s.popup}
                 wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
                 content={t(itemCountry, { ns: 'countries' })}
-                anchor={`country_flag_${item?.[idKey].$}`}
               >
                 {itemCountry ? (
                   <img
-                    src={require(
-                      `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
-                    )}
+                    src={require(`@images/countryFlags/${getFlagFromCountryName(
+                      itemCountry,
+                    )}.png`)}
                     width={20}
                     height={14}
                     alt={value}

@@ -84,7 +84,6 @@ export default function InstanceItem({ item, editInstance }) {
               className={s.popup}
               wrapperClassName={s.popup__wrapper}
               content={hintMessage}
-              anchor={`status_${item?.id?.$}`}
             >
               <span
                 className={cn(
@@ -124,7 +123,6 @@ export default function InstanceItem({ item, editInstance }) {
             className={s.popup}
             wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
             content={t(itemCountry, { ns: 'countries' })}
-            anchor={`country_flag_${item?.id?.$}`}
           >
             <img
               src={require(
@@ -143,7 +141,6 @@ export default function InstanceItem({ item, editInstance }) {
           className={s.popup}
           wrapperClassName={s.popup__wrapper}
           content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
-          anchor={`instances_os_${item?.id?.$}`}
         >
           {/* I suggest to replace black OS icons with colored .png images
           to standardise thier look and naming */}

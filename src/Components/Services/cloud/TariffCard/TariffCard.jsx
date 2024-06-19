@@ -79,7 +79,6 @@ export default function TariffCard({
                 </div>
               }
               clickable
-              anchor={`sold_out_${tariff.id.$}`}
               disabled={lessThan1024}
             >
               <Icon className={s.warn_icon} name="Warning_triangle" />

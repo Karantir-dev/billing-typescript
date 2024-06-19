@@ -168,7 +168,6 @@ export default function Component({ transfer = false }) {
             className={s.hintWrapper}
             place="bottom"
             content={t('Instruction NS')}
-            anchor="ns_instruction"
           >
             <Icon name="HintHelp" />
           </TooltipWrapper>
