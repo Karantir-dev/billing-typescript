@@ -31,7 +31,7 @@ export default function UserSettingsPage() {
 
   const tabBarSections = [
     {
-      route: `${route.USER_SETTINGS}/personal`,
+      route: route.USER_SETTINGS_PERSONAL,
       label: t('Personal settings'),
       allowToRender: isComponentAllowedToRender,
     },
@@ -74,7 +74,7 @@ export default function UserSettingsPage() {
   // }, [isComponentAllowedToRender])
 
   if (location.pathname === route.USER_SETTINGS) {
-    return <Navigate to={`${route.USER_SETTINGS}/personal`} replace />
+    return <Navigate to={route.USER_SETTINGS_PERSONAL} replace />
   }
 
   const renderPage = path => {

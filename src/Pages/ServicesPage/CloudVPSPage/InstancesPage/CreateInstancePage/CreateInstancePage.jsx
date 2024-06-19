@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
@@ -20,6 +21,7 @@ import {
   CloudTypeSection,
   PageTabBar,
   SoftwareOSBtn,
+  SoldOutModal,
 } from '@components'
 import * as Yup from 'yup'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
@@ -65,6 +67,8 @@ const IPv4_DAILY_COST = 1 / 30
 const IPv4_MONTHLY_COST = 1
 
 export default function CreateInstancePage() {
+  const dispatch = useDispatch()
+  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
@@ -98,9 +102,6 @@ export default function CreateInstancePage() {
     imageIdFromLaunch ? IMAGES_TYPES.own : IMAGES_TYPES.public,
   )
 
-  const dispatch = useDispatch()
-  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
-
   const PERIODS_LIST = [
     { id: 'month', value: 30, label: t('month', { ns: 'other' }) },
     { id: 'day', value: 1, label: t('day', { ns: 'cloud_vps' }) },
@@ -123,6 +124,7 @@ export default function CreateInstancePage() {
     ? dcList?.filter(el => DC_WITH_BASICS.includes(el.$key))
     : dcList
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
+  const soldOutTag = useSelector(cloudVpsSelectors.getSoldOutTag)
 
   const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
@@ -131,6 +133,8 @@ export default function CreateInstancePage() {
 
   const [currentDC, setCurrentDC] = useState()
   const [showCaption, setShowCaption] = useState(false)
+
+  const [isSoldOutModalOpened, setSoldOutModalOpened] = useState(false)
 
   const publicImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.public]
   const ownImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.own]
@@ -334,6 +338,12 @@ export default function CreateInstancePage() {
     <div className={s.page_padding}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
+      <SoldOutModal
+        className={s.sold_out_modal}
+        isOpened={isSoldOutModalOpened}
+        closeFn={() => setSoldOutModalOpened(false)}
+      />
+
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
       <ErrorBoundary
         FallbackComponent={Error}
@@ -511,6 +521,7 @@ export default function CreateInstancePage() {
                     localValue: IMAGES_TYPES.public,
                     onLocalClick: () => {
                       setImagesCurrentTab(IMAGES_TYPES.public)
+                      setIsConnectMethodOpened(true)
                       selectFirstImage(IMAGES_TYPES.public)
                     },
                     label: t('Public'),
@@ -535,6 +546,10 @@ export default function CreateInstancePage() {
 
                 const imagesToRender =
                   imagesCurrentTab === IMAGES_TYPES.public ? publicImages : ownImages
+
+                const isSoldOut = values.tariffData.flabel.tag.some(
+                  el => el.$ === soldOutTag,
+                )
 
                 return (
                   <Form>
@@ -590,12 +605,11 @@ export default function CreateInstancePage() {
                       {isLaunchMode && (
                         <div className={s.dc_link}>
                           <Link className={s.link} to={route.CLOUD_VPS + '/images'}>
-                            {t('Move the image to another data center')}
+                            {t('move_the_image', { ns: 'cloud_vps' })}
                           </Link>
                           <TooltipWrapper
-                            content={t('ashdlajhd', { ns: 'other' })}
+                            content={t('Hint', { ns: 'other' })}
                             wrapperClassName={cn(s.tooltip)}
-                            anchor={'move_the_image'}
                           >
                             <Icon name="Info" />
                           </TooltipWrapper>
@@ -698,15 +712,21 @@ export default function CreateInstancePage() {
                       <ul className={s.grid}>
                         {filteredTariffsList?.map(tariff => {
                           const price = calculatePrice(tariff, values)
-
+                          const isSoldOut = tariff.flabel.tag.some(
+                            el => el.$ === soldOutTag,
+                          )
                           return (
                             <TariffCard
                               key={tariff.id.$}
                               tariff={tariff}
-                              onClick={() => onTariffChange(tariff)}
+                              onClick={() => {
+                                isSoldOut && setSoldOutModalOpened(true)
+                                onTariffChange(tariff)
+                              }}
                               price={price}
                               active={values.tariff_id === tariff.id.$}
                               disabled={tariff.disabled}
+                              isSoldOut={isSoldOut}
                             />
                           )
                         })}
@@ -826,7 +846,11 @@ export default function CreateInstancePage() {
 
                         <Button
                           className={cn(s.btn_buy, s.footer_item)}
-                          label={t('create_instance', { ns: 'cloud_vps' })}
+                          label={
+                            isSoldOut
+                              ? t('to_order', { ns: 'other' })
+                              : t('create_instance', { ns: 'cloud_vps' })
+                          }
                           type="submit"
                           isShadow
                           onClick={e => {

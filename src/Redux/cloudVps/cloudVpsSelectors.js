@@ -11,6 +11,7 @@ const getWindowsTag = state => state.cloudVps.windowsTag
 const getSshList = state => state.cloudVps.sshList
 const getSshCount = state => state.cloudVps.sshCount
 const getAllSshList = state => state.cloudVps.allSshList
+const getSoldOutTag = state => state.cloudVps.soldOutTag
 
 export default {
   getPremiumTariffs,
@@ -25,4 +26,5 @@ export default {
   getSshList,
   getSshCount,
   getAllSshList,
+  getSoldOutTag,
 }

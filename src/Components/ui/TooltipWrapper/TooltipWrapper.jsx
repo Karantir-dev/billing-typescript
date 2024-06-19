@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
-import { useSelector } from 'react-redux'
-import { selectors } from '@redux'
 import { nanoid } from 'nanoid'
 import cn from 'classnames'
 import s from './TooltipWrapper.module.scss'
@@ -16,19 +13,12 @@ export default function TooltipWrapper({
   delayShow = 500,
   place = 'top',
   effect = 'solid',
-  variant,
   disabled, // old version of HintWrapper props
+  html,
   ...props
 }) {
-  const currentTheme = useSelector(selectors.getTheme)
-  const [theme, setTheme] = useState(currentTheme)
-
-  useEffect(() => {
-    setTheme(currentTheme)
-  }, [currentTheme])
-
-  const themeVariant = theme === 'dark' ? 'light' : 'dark'
   const id = nanoid()
+
   return (
     <>
       {disabled ? (
@@ -38,17 +28,11 @@ export default function TooltipWrapper({
           {children}
           <Tooltip
             anchorSelect={`#${id}`}
-            className={cn(
-              s.hint,
-              {
-                [s.default_theme]: !variant,
-              },
-              className,
-            )}
+            className={cn(s.hint, s.default_theme, className)}
             content={content}
+            children={html}
             place={place}
             effect={effect}
-            variant={variant || themeVariant}
             positionStrategy="fixed"
             delayShow={hintDelay || delayShow}
             globalCloseEvents={{ scroll: true }}

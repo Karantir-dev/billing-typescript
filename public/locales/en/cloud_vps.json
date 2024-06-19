@@ -28,7 +28,6 @@
   "Price": "Price",
   "Access IP": "Access IP",
   "OS": "OS",
-  "create_instance_btn": "Order",
   "day": "Day",
   "hour": "Hour",
   "Yes": "Yes",
@@ -270,5 +269,8 @@
     "os_version": "OS version",
     "fleio_status": "Status",
     "visibility": "Visibility"
-  }
+  },
+  "sold_out_messsage": "Unfortunately, this plan is currently sold out!",
+  "sold_out_description": "You can buy it now and your server will be activated as soon as we have resources. Usually it takes no more than 3 days. You will receive a notification about the activation of the service using the method selected in <a>profile settings</a>. Tariffing for the service will begin from the moment the server is activated, and the funds written off for the purchase will be counted towards payment for the first day of use.",
+  "move_the_image": "Move the image to another data center"
 }

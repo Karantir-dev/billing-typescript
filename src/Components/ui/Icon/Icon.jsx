@@ -134,7 +134,8 @@ import PropTypes from 'prop-types'
  * |'WalletBalance'
  * |'Whois'
  * |'Windows'
- * |'Wrench'} name
+ * |'Wrench'
+ * |'Warning_triangle'} name
  * @param {IconParams}
  */
 export default function Icon({ name, ...props }) {

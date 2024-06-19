@@ -13,6 +13,7 @@ export const TRUSTED_USERS = '/trusted_users'
 export const SUPPORT = '/support'
 
 export const USER_SETTINGS = '/usrparam'
+export const USER_SETTINGS_PERSONAL = '/usrparam/personal'
 export const PHONE_VERIFICATION = '/phone_verification'
 
 export const AFFILIATE_PROGRAM = '/affiliate'
