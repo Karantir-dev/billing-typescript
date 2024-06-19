@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
-import { nanoid } from 'nanoid'
+import { customAlphabet } from 'nanoid'
 import cn from 'classnames'
 import s from './TooltipWrapper.module.scss'
+
+const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
 export default function TooltipWrapper({
   content,

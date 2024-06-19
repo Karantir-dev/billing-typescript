@@ -17,12 +17,14 @@ export default function ImagesOptions({ item, type, idKey }) {
 
   const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
   const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active'
+  const isImageType = item.image_type?.$.toLowerCase() === 'image'
 
   const options = [
     {
       label: t('edit'),
       icon: 'Rename',
       disabled: !isActive,
+      hidden: !isImageType,
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
