@@ -251,13 +251,6 @@ export default function CloudInstanceItemPage() {
         getInstances={fetchItemById}
         redirectCallback={() => navigate(route.CLOUD_VPS)}
       />
-{/* 
-      <ImagesModals
-        loadingParams={{
-          signal,
-          setIsLoading,
-        }}
-      /> */}
 
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </CloudInstanceItemProvider>
