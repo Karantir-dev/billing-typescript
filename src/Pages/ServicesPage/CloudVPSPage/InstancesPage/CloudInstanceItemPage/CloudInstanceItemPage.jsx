@@ -190,7 +190,7 @@ export default function CloudInstanceItemPage() {
               <div className={s.page_title_wrapper}>
                 <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
                 {osIcon && (
-                  <TooltipWrapper className={s.popup} content={item.instances_os.$}>
+                  <TooltipWrapper className={s.popup} content={item.os_distro.$}>
                     <img
                       src={require(`@images/soft_os_icons/${osIcon}.png`)}
                       alt={item?.os_distro?.$}

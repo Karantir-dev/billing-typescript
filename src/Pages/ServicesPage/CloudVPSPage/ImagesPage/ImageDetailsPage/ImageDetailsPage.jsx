@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { BreadCrumbs, Icon, ImagesOptions, Loader, TooltipWrapper } from '@components'
-import { cloudVpsOperations } from '@src/Redux'
-import { useCancelRequest } from '@src/utils'
+import { cloudVpsOperations, selectors } from '@redux'
+import { useCancelRequest, getImageIconName } from '@utils'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import s from './ImageDetailsPage.module.scss'
 import cn from 'classnames'
@@ -32,6 +32,7 @@ export default function ImageDetailsPage() {
   const { elid } = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const { t } = useTranslation(['cloud_vps'])
 
@@ -103,6 +104,8 @@ export default function ImageDetailsPage() {
     }
   })
 
+  const osIcon = getImageIconName(data?.os_distro?.$, darkTheme)
+
   return (
     <div>
       <BreadCrumbs pathnames={parseLocations()} />
@@ -112,13 +115,18 @@ export default function ImageDetailsPage() {
             <div>
               <div className={s.title_block}>
                 <h1>{data.image_name?.$}</h1>
-                <TooltipWrapper
-                  className={s.popup}
-                  wrapperClassName={s.popup__wrapper}
-                  content={data.os_distro.$}
-                >
-                  <Icon name={data.os_distro?.$} />
-                </TooltipWrapper>
+                {osIcon && (
+                  <TooltipWrapper
+                    className={s.popup}
+                    wrapperClassName={s.popup__wrapper}
+                    content={data.os_distro.$}
+                  >
+                    <img
+                      src={require(`@images/soft_os_icons/${osIcon}.png`)}
+                      alt={data?.os_distro?.$}
+                    />
+                  </TooltipWrapper>
+                )}
               </div>
               <p className={cn(s.status, s[data?.fleio_status?.$?.trim().toLowerCase()])}>
                 {data.fleio_status?.$}
