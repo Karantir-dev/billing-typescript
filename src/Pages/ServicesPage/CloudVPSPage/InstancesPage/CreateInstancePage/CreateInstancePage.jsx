@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
