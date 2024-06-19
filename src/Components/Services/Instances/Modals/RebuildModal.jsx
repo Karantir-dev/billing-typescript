@@ -299,9 +299,9 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     </div>
                   ) : isWindowsOS ? (
                     <WarningMessage>{t('windows_password_warning')}</WarningMessage>
-                  ) : state.zone !== IMAGES_TYPES.shared && !isBootFromIso ? (
+                  ) : state.zone === IMAGES_TYPES.public && !isBootFromIso ? (
                     <InputField
-                      inputClassName={s.input}
+                      className={s.rescue_pass_input}
                       name="password"
                       isShadow
                       type="password"

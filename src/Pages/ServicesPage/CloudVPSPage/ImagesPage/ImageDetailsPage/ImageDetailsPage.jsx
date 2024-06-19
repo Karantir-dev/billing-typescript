@@ -86,12 +86,12 @@ export default function ImageDetailsPage() {
       case 'image_size':
       case 'min_disk':
         renderData = function renderData(value) {
-          return <>{value} GB</>
+          return <>{value ? `${value} GB` : '-'}</>
         }
         return { ...field, renderData }
       case 'min_ram':
         renderData = function renderData(value) {
-          return <>{value} MB</>
+          return <>{value ? `${value} MB` : '-'}</>
         }
         return { ...field, renderData }
       case 'hypervisor_type':
