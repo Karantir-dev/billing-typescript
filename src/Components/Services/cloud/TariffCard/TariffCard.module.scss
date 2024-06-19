@@ -84,6 +84,39 @@
   box-shadow: var(--forms2_shadow);
 }
 
+.tooltip_html {
+  display: flex;
+  gap: 8px;
+  max-width: 400px;
+}
+
+.icon_triangle {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.tooltip_message {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: initial;
+  color: var(--red-text_2);
+}
+
+.tooltip_description {
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: initial;
+}
+
+.link {
+  @extend %link;
+  font-size: inherit;
+}
+
 @media screen and (min-width: 768px) {
   .tariff_btn {
     gap: 16px;

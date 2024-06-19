@@ -44,7 +44,6 @@ export default function TooltipWrapper({
             effect={effect}
             positionStrategy="fixed"
             delayShow={hintDelay || delayShow}
-            delayHide={1000000}
             {...props}
           />
         </div>

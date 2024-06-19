@@ -338,6 +338,7 @@ export default function CreateInstancePage() {
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
       <SoldOutModal
+        className={s.sold_out_modal}
         isOpened={isSoldOutModalOpened}
         closeFn={() => setSoldOutModalOpened(false)}
       />
