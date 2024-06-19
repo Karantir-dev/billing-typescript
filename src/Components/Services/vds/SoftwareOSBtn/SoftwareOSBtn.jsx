@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux'
 import { selectors } from '@redux'
 
 import { SOFTWARE_ICONS_LIST } from '@utils/constants'
-import { Icon } from '@components'
 import s from './SoftwareOSBtn.module.scss'
+import { getImageIconName } from '@utils'
+import { Icon } from '@components'
 
 export default function SoftwareOSBtn({
   iconName,
@@ -14,7 +15,6 @@ export default function SoftwareOSBtn({
   value,
   state,
   onClick,
-  svgIcon,
   disabled,
 }) {
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
@@ -23,17 +23,18 @@ export default function SoftwareOSBtn({
     iconName === 'alma'
       ? 'almalinux'
       : iconName === 'astra'
-        ? 'astralinux'
-        : iconName === 'noos'
-          ? 'null'
-          : iconName
+      ? 'astralinux'
+      : iconName === 'noos'
+      ? 'null'
+      : iconName
 
   const inList = SOFTWARE_ICONS_LIST?.includes(icon)
-  const svgIconInList = SOFTWARE_ICONS_LIST?.includes(svgIcon) || svgIcon === 'Iso'
+
+  const osIcon = getImageIconName(icon, darkTheme)
 
   const renderImg = () => {
     if (inList) {
-      return require(`@images/soft_os_icons/${darkTheme ? icon + '_dt' : icon}.png`)
+      return require(`@images/soft_os_icons/${osIcon}.png`)
     }
 
     return require(`@images/soft_os_icons/linux-logo${darkTheme ? '_dt' : ''}.png`)
@@ -47,12 +48,8 @@ export default function SoftwareOSBtn({
       })}
     >
       <button className={s.btn} onClick={() => onClick(value)} type="button">
-        {svgIcon ? (
-          svgIconInList ? (
-            <Icon name={svgIcon} />
-          ) : (
-            <Icon name="DefaultOs" />
-          )
+        {iconName === 'iso' ? (
+          <Icon name={'Iso'} />
         ) : (
           <img
             className={cn(s.img, { [s.without]: icon === 'null' })}
@@ -60,6 +57,7 @@ export default function SoftwareOSBtn({
             alt="icon"
           />
         )}
+
         <div>
           {label} {imageData?.os_version?.$}
           {imageData?.$name && <p className={s.image_name}>{imageData?.$name}</p>}

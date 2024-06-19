@@ -9,8 +9,11 @@ import {
   getInstanceMainInfo,
   formatCountryName,
   cutDcSuffix,
+  getImageIconName,
 } from '@utils'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { selectors } from '@redux'
 
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['cloud_vps', 'vds', 'countries'])
@@ -21,6 +24,7 @@ export default function InstanceItem({ item, editInstance }) {
   const ipCell = useRef()
   const hintCell = useRef()
   const navigate = useNavigate()
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
@@ -47,6 +51,8 @@ export default function InstanceItem({ item, editInstance }) {
 
   const isHintStatus = isSuspended || isResized
   const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
+
+  const osIcon = getImageIconName(item?.os_distro?.$, darkTheme)
 
   return (
     <tr
@@ -125,9 +131,9 @@ export default function InstanceItem({ item, editInstance }) {
             content={t(itemCountry, { ns: 'countries' })}
           >
             <img
-              src={require(
-                `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
-              )}
+              src={require(`@images/countryFlags/${getFlagFromCountryName(
+                itemCountry,
+              )}.png`)}
               width={20}
               height={14}
               alt={itemCountry}
@@ -137,15 +143,18 @@ export default function InstanceItem({ item, editInstance }) {
       </td>
       <td className={s.td}>{item.createdate.$}</td>
       <td className={s.td}>
-        <TooltipWrapper
-          className={s.popup}
-          wrapperClassName={s.popup__wrapper}
-          content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
-        >
-          {/* I suggest to replace black OS icons with colored .png images
-          to standardise thier look and naming */}
-          <Icon name={item?.os_distro?.$} />
-        </TooltipWrapper>
+        {osIcon && (
+          <TooltipWrapper
+            className={s.popup}
+            wrapperClassName={s.popup__wrapper}
+            content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
+          >
+            <img
+              src={require(`@images/soft_os_icons/${osIcon}.png`)}
+              alt={item?.os_distro?.$}
+            />
+          </TooltipWrapper>
+        )}
       </td>
       <td className={s.td}>
         <div className={s.ip_cell} ref={ipCell}>

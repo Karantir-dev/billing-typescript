@@ -8,10 +8,10 @@ import {
 } from '@components'
 import { CloudInstanceItemProvider } from './CloudInstanceItemContext'
 import { useLocation, useParams, Outlet, useNavigate } from 'react-router-dom'
-import { cloudVpsActions, cloudVpsOperations } from '@redux'
+import { cloudVpsActions, cloudVpsOperations, selectors } from '@redux'
 
-import { useDispatch } from 'react-redux'
-import { getInstanceMainInfo, useCancelRequest } from '@src/utils'
+import { useDispatch, useSelector } from 'react-redux'
+import { getInstanceMainInfo, useCancelRequest, getImageIconName } from '@src/utils'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 import { ImagesModals } from '@components/Services/Instances/ImagesModals/ImagesModals'
 
@@ -29,6 +29,7 @@ export default function CloudInstanceItemPage() {
   const params = useParams()
   const dispatch = useDispatch()
   const interval = useRef()
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const { state: instanceItem } = location
   const navigate = useNavigate()
@@ -177,6 +178,8 @@ export default function CloudInstanceItemPage() {
   const isHintStatus = isSuspended || isResized
   const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
 
+  const osIcon = getImageIconName(item?.os_distro?.$, darkTheme)
+
   return (
     <CloudInstanceItemProvider value={{ item }}>
       <div className={s.page}>
@@ -186,9 +189,14 @@ export default function CloudInstanceItemPage() {
             <div>
               <div className={s.page_title_wrapper}>
                 <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
-                <TooltipWrapper className={s.popup} content={item.instances_os.$}>
-                  <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
-                </TooltipWrapper>
+                {osIcon && (
+                  <TooltipWrapper className={s.popup} content={item.os_distro.$}>
+                    <img
+                      src={require(`@images/soft_os_icons/${osIcon}.png`)}
+                      alt={item?.os_distro?.$}
+                    />
+                  </TooltipWrapper>
+                )}
               </div>
 
               {isHintStatus ? (

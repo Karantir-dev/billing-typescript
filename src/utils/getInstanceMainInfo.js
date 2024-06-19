@@ -1,6 +1,6 @@
 export default function getInstanceMainInfo(item) {
   if (!item) return {}
-  const fotboStatus = item.instance_status?.$.trim()
+  const fotboStatus = item.instance_status?.$.trim().toLowerCase()
   const billingStatus = item.item_status?.$.trim()
 
   const isStopped = fotboStatus === 'stopped'
@@ -9,6 +9,7 @@ export default function getInstanceMainInfo(item) {
   const isSuspended = fotboStatus === 'suspended'
   const isBootedFromISO = fotboStatus === 'booted_from_iso'
   const isImageUploading = fotboStatus === 'running_image_uploading'
+  const isErrorStatus = fotboStatus === 'error'
   const isWindows = item.instances_os?.$.includes('Windows')
 
   const isNotActive =
@@ -32,7 +33,12 @@ export default function getInstanceMainInfo(item) {
     isDeleting
 
   const isDisabled =
-    isProcessing || isNotActive || isSuspended || isDeleting || isImageUploading
+    isProcessing ||
+    isNotActive ||
+    isSuspended ||
+    isDeleting ||
+    isImageUploading ||
+    isErrorStatus
 
   const displayName = item.servername?.$ || item.name.$
   const displayStatus = isDeleting
@@ -53,5 +59,6 @@ export default function getInstanceMainInfo(item) {
     isDeleting,
     isBootedFromISO,
     isImageUploading,
+    isErrorStatus,
   }
 }
