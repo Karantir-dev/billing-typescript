@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
@@ -520,6 +521,7 @@ export default function CreateInstancePage() {
                     localValue: IMAGES_TYPES.public,
                     onLocalClick: () => {
                       setImagesCurrentTab(IMAGES_TYPES.public)
+                      setIsConnectMethodOpened(true)
                       selectFirstImage(IMAGES_TYPES.public)
                     },
                     label: t('Public'),
