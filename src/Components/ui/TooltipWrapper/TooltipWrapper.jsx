@@ -13,7 +13,6 @@ export default function TooltipWrapper({
   delayShow = 500,
   place = 'top',
   effect = 'solid',
-  backgroundClassName,
   disabled, // old version of HintWrapper props
   html,
   ...props
@@ -29,13 +28,7 @@ export default function TooltipWrapper({
           {children}
           <Tooltip
             anchorSelect={`#${id}`}
-            className={cn(
-              s.hint,
-              s.default_theme,
-
-              backgroundClassName,
-              className,
-            )}
+            className={cn(s.hint, s.default_theme, className)}
             content={content}
             children={html}
             place={place}

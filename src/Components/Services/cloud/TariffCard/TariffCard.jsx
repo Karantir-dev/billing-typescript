@@ -53,7 +53,7 @@ export default function TariffCard({
         <p className={s.tariff_title}>
           {/* {isSoldOut && (
             <TooltipWrapper
-              backgroundClassName={s.tooltip_bg}
+              className={s.tooltip_bg}
               isOpen={active ? tooltipIsOpen : false}
               html={
                 <div className={s.tooltip_html}>
