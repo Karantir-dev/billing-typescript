@@ -18,7 +18,7 @@ export default function ImagesOptions({ item, type, idKey }) {
   const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
   const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active'
   const isImageType = item.image_type?.$.toLowerCase() === 'image'
-
+  console.log('ImagesOptions item', item)
   const options = [
     {
       label: t('edit'),
@@ -39,7 +39,12 @@ export default function ImagesOptions({ item, type, idKey }) {
       disabled: !isActive,
       onClick: () => {
         navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE, {
-          state: { imageId: item.fleio_id.$, dcLabel: item.region.$ },
+          state: {
+            imageId: item.fleio_id.$,
+            dcLabel: item.region.$,
+            min_disk: item.min_disk?.$,
+            min_ram: item.min_ram?.$,
+          },
         })
       },
       hidden: isImagesPage && item.disk_format.$ === 'iso',

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
@@ -25,7 +26,7 @@ import {
 import * as Yup from 'yup'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   cloudVpsActions,
@@ -90,6 +91,13 @@ export default function CreateInstancePage() {
     setCloudType(type)
   }
 
+  const launchData = {
+    dcLabel: location.state?.dcLabel,
+    imageId: location.state?.imageId,
+    min_ram: location.state?.min_ram,
+    min_disk: location.state?.min_disk,
+  }
+
   const dcLabelFromLaunch = location.state?.dcLabel
   const dcIdFromLaunch = CLOUD_DC_NAMESPACE[dcLabelFromLaunch]
 
@@ -112,9 +120,39 @@ export default function CreateInstancePage() {
 
   const warningEl = useRef()
 
+  const [currentDC, setCurrentDC] = useState()
+
   const premiumTariffs = useSelector(cloudVpsSelectors.getPremiumTariffs)
   const basicTariffs = useSelector(cloudVpsSelectors.getBasicTariffs)
   const tariffs = isBasic ? basicTariffs : premiumTariffs
+
+  const filterSuitableTariffsForLaunch = list => {
+    const filteredList = list?.filter(el => {
+      const ram = parseInt(
+        el.detail.find(param => param.name.$.toLowerCase().includes('memory'))?.value?.$,
+      )
+
+      const disk = parseInt(
+        el.detail.find(param => param.name.$.toLowerCase().includes('disk space'))?.value
+          ?.$,
+      )
+      console.log(+launchData.min_ram < ram && +launchData.min_disk < disk)
+      return +launchData.min_ram < ram && +launchData.min_disk < disk
+    })
+    return filteredList
+  }
+
+  let tariffsToRender = isLaunchMode
+    ? filterSuitableTariffsForLaunch(tariffs?.[currentDC?.$key])
+    : tariffs
+  // if (isLaunchMode) {
+  //   tariffsToRender = useMemo(
+  //     filterSuitableTariffsForLaunch(tariffs?.[currentDC?.$key]),
+  //     [tariffs?.[currentDC?.$key]],
+  //   )
+  // } else {
+  //   tariffs
+  // }
 
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
 
@@ -130,7 +168,6 @@ export default function CreateInstancePage() {
 
   const { credit, realbalance } = useSelector(userSelectors.getUserInfo)
 
-  const [currentDC, setCurrentDC] = useState()
   const [showCaption, setShowCaption] = useState(false)
 
   const [isSoldOutModalOpened, setSoldOutModalOpened] = useState(false)
