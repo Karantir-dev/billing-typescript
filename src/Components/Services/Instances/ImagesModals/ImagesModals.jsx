@@ -1,18 +1,17 @@
-/* eslint-disable no-unused-vars */
 import {
   CreateSnapshotOrBackupModal,
   CopyModal,
   CreateEditImageModal,
   DeleteModal,
+  RestoreModal,
 } from './'
 
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 export const ImagesModals = ({
   loadingParams = {},
-  pagination = {},
-  setPagination = () => {},
   redirectCallback,
   getItems,
   editImage,
@@ -20,6 +19,7 @@ export const ImagesModals = ({
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
+  const { id: instanceId } = useParams()
 
   const createSnapshot = values => {
     dispatch(
@@ -57,7 +57,7 @@ export const ImagesModals = ({
         values,
         successCallback: () => getItems(),
         closeModal: () =>
-          dispatch(cloudVpsActions.setItemForModals({ image_edit: false })),
+          dispatch(cloudVpsActions.setItemForModals({ images_edit: false })),
       }),
     )
   }
@@ -81,6 +81,20 @@ export const ImagesModals = ({
         ...values,
         successCallback: redirectCallback ?? getItems,
         ...loadingParams,
+      }),
+    )
+  }
+
+  const restoreSubmit = values => {
+    dispatch(cloudVpsActions.setItemForModals({ restore_modal: false }))
+
+    dispatch(
+      cloudVpsOperations.rebuildInstance({
+        action: 'rebuild',
+        elid: instanceId,
+        sok: 'ok',
+        clicked_button: 'ok',
+        ...values,
       }),
     )
   }
@@ -111,14 +125,14 @@ export const ImagesModals = ({
           onSubmit={createImageCopy}
         />
       )}
-      {!!itemForModals?.image_edit && (
+      {!!itemForModals?.images_edit && (
         <CreateEditImageModal
-          item={itemForModals?.image_edit}
+          item={itemForModals?.images_edit}
           closeModal={() =>
-            dispatch(cloudVpsActions.setItemForModals({ image_edit: false }))
+            dispatch(cloudVpsActions.setItemForModals({ images_edit: false }))
           }
           onSubmit={
-            itemForModals?.image_edit === 'create' ? createImageSubmit : editImage
+            itemForModals?.images_edit === 'create' ? createImageSubmit : editImage
           }
           cost={dailyCosts}
         />
@@ -130,6 +144,16 @@ export const ImagesModals = ({
             dispatch(cloudVpsActions.setItemForModals({ image_delete: false }))
           }
           onSubmit={deleteImage}
+        />
+      )}
+      {!!itemForModals?.restore_modal && (
+        <RestoreModal
+          item={itemForModals?.restore_modal}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ restore_modal: false }))
+          }
+          onSubmit={restoreSubmit}
+          instanceId={instanceId}
         />
       )}
     </>

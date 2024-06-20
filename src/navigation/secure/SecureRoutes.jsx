@@ -255,9 +255,10 @@ const Component = ({ fromPromotionLink }) => {
             <Route path="ssh_keys" element={<CloudVPSSSHKeysPageLazy />} />
             <Route path="images" element={<CloudVPSImagesPageLazy />} />
           </Route>
+
           <Route
             path={`${route.CLOUD_VPS}/images/:elid`}
-            element={<CloudVpsImageDetailesPageLazy />}
+            element={<CloudVpsImageDetailesPageLazy pageList="images" />}
           />
 
           <Route
@@ -272,6 +273,15 @@ const Component = ({ fromPromotionLink }) => {
             <Route path="snapshots" element={<InstanceSnapshotsLazy />} />
             <Route path="backups" element={<InstanceBackupsLazy />} />
           </Route>
+
+          <Route
+            path={`${route.CLOUD_VPS}/:id/snapshots/:elid`}
+            element={<CloudVpsImageDetailesPageLazy pageList="snapshots" />}
+          />
+          <Route
+            path={`${route.CLOUD_VPS}/:id/backups/:elid`}
+            element={<CloudVpsImageDetailesPageLazy pageList="backups" />}
+          />
 
           <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
           <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />
