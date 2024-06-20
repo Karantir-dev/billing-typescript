@@ -241,6 +241,19 @@ export default function ForexOrderPage() {
                         } else if (el?.$?.toLocaleLowerCase()?.includes('singapore')) {
                           flag = <Icon name="Singapore" />
                           name = 'Asia, Singapore'
+                        } else if (
+                          el?.$?.toLocaleLowerCase()?.includes('central europe')
+                        ) {
+                          flag = (
+                            <img
+                              className={s.country_img}
+                              src={require('@images/countryFlags/eu.png')}
+                              width={21}
+                              height={21}
+                              alt="flag"
+                            />
+                          )
+                          name = 'Central Europe'
                         }
                         return (
                           <button
