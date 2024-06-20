@@ -12,6 +12,9 @@
 
 .backup_rotation_select {
   max-width: 260px;
+
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms2_shadow);
 }
 
 .backup_rotation_wrapper {

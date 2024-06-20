@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceBackups.module.scss'
 import { useCallback, useState } from 'react'
@@ -5,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader, Select } from '@components'
+import { Button, ImagesList, Loader, Select, EditCell } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_BACKUPS_CELLS = [
@@ -22,10 +23,10 @@ const INSTANCE_BACKUPS_CELLS = [
   },
 ]
 
-const backupRotationItemsList = ['1', '2', '3', '4', '5'].map(el => ({
-  label: el,
-  value: el,
-}))
+// const backupRotationItemsList = ['1', '2', '3', '4', '5'].map(el => ({
+//   label: el,
+//   value: el,
+// }))
 
 export default function InstanceBackups() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
@@ -120,13 +121,21 @@ export default function InstanceBackups() {
         />
 
         <div className={s.backup_rotation_wrapper}>
-          <Select
+          {/* <Select
             className={s.backup_rotation_select}
             label={`${t('backups.backup_rotation')}:`}
             itemsList={backupRotationItemsList}
             value={backupRotation}
             getElement={value => editInstanceHandler({ backup_rotation: value })}
             isShadow
+          /> */}
+          <p>{t('backups.backup_rotation')}:</p>
+          <EditCell
+            originName={backupRotation}
+            className={s.backup_rotation_select}
+            onSubmit={value => editInstanceHandler({ backup_rotation: value })}
+            placeholder={backupRotation}
+            isShadow={true}
           />
           <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
         </div>
