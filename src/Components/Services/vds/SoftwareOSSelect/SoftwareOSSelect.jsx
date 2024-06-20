@@ -1,10 +1,9 @@
-/* eslint-disable no-unused-vars */
 import cn from 'classnames'
 import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Icon } from '@components'
 import { selectors } from '@redux'
-import { useOutsideAlerter } from '@utils'
+import { useOutsideAlerter, getImageIconName } from '@utils'
 
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
@@ -15,7 +14,6 @@ export default function SoftwareOSSelect({
   itemsList,
   state,
   getElement,
-  svgIcon,
   disabled,
 }) {
   const dropdown = useRef(null)
@@ -36,11 +34,11 @@ export default function SoftwareOSSelect({
 
   const inList = SOFTWARE_ICONS_LIST?.includes(iconName)
 
+  const osIcon = getImageIconName(iconName, darkTheme)
+
   const renderImg = () => {
     if (inList) {
-      return require(`@images/soft_os_icons/${
-        darkTheme ? iconName + '_dt' : iconName
-      }.png`)
+      return require(`@images/soft_os_icons/${osIcon}.png`)
     }
 
     return require(`@images/soft_os_icons/linux-logo${darkTheme ? '_dt' : ''}.png`)
@@ -54,13 +52,19 @@ export default function SoftwareOSSelect({
         disabled={disabled}
         onClick={() => setIsOpened(true)}
       >
-        {svgIcon ? (
-          <Icon name={svgIcon} />
+        {iconName === 'iso' ? (
+          <Icon name={'Iso'} />
         ) : (
           <img className={cn(s.img)} src={renderImg()} alt="icon" />
         )}
 
-        <p>{selectedItem?.label}</p>
+        <div>
+          {selectedItem?.label} {selectedItem?.os_version?.$}{' '}
+          {selectedItem?.architecture?.$ && (
+            <span className={s.architecture}>{selectedItem?.architecture?.$}</span>
+          )}
+          {selectedItem?.$name && <p className={s.image_name}>{selectedItem?.$name}</p>}
+        </div>
 
         <Icon name="Shevron" className={cn(ss.right_icon, { [ss.opened]: isOpened })} />
       </button>
@@ -78,17 +82,16 @@ export default function SoftwareOSSelect({
                   onKeyDown={null}
                   role="button"
                 >
-                  {svgIcon ? (
-                    <Icon name={svgIcon} />
-                  ) : (
-                    <img
-                      className={cn(s.img, s.left, s.grey)}
-                      src={renderImg()}
-                      alt="icon"
-                    />
-                  )}
+                  <img
+                    className={cn(s.img, s.left, s.grey)}
+                    src={renderImg()}
+                    alt="icon"
+                  />
 
-                  {el.label}
+                  <div>
+                    {el.label} {el?.os_version?.$}{' '}
+                    {el?.$name && <p className={s.image_name}>{el?.$name}</p>}
+                  </div>
                 </div>
               )
             })}

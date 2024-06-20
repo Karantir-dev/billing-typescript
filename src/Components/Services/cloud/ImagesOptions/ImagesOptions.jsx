@@ -4,18 +4,27 @@ import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { cloudVpsActions } from '@src/Redux'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import * as route from '@src/routes'
 
 export default function ImagesOptions({ item, type, idKey }) {
   const isMobile = useMediaQuery({ query: '(max-width: 1549px)' })
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const isImagesPage = type === 'image'
+
+  const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
+  const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active'
+  const isImageType = item.image_type?.$.toLowerCase() === 'image'
 
   const options = [
     {
       label: t('edit'),
       icon: 'Rename',
+      disabled: !isActive,
+      hidden: !isImageType,
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
@@ -27,14 +36,18 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('launch'),
       icon: 'Launch',
+      disabled: !isActive,
       onClick: () => {
-        console.log('Launch')
+        navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE, {
+          state: { imageId: item.fleio_id.$, dcLabel: item.region.$ },
+        })
       },
       hidden: isImagesPage && item.disk_format.$ === 'iso',
     },
     {
       label: t('copy'),
       icon: 'Copy',
+      disabled: !isActive,
       onClick: () => {
         console.log('Copy')
         dispatch(
@@ -50,6 +63,7 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('restore'),
       icon: 'Restore',
+      disabled: !isActive,
       onClick: () => {
         console.log('Restore')
       },
@@ -58,6 +72,7 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('download'),
       icon: 'DownloadImage',
+      disabled: !isActive,
       onClick: () => {
         console.log('Downnload')
       },
@@ -66,6 +81,7 @@ export default function ImagesOptions({ item, type, idKey }) {
     {
       label: t('delete'),
       icon: 'Remove',
+      disabled: isProtected || !isActive,
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
@@ -93,11 +109,7 @@ export default function ImagesOptions({ item, type, idKey }) {
             .filter(option => !option.hidden)
             .map(option => {
               return (
-                <TooltipWrapper
-                  key={option.label}
-                  content={option.label}
-                  anchor={`${option.icon}_${item[idKey].$}`}
-                >
+                <TooltipWrapper key={option.label} content={option.label}>
                   <button onClick={option.onClick} disabled={option.disabled}>
                     <Icon name={option.icon} />
                   </button>

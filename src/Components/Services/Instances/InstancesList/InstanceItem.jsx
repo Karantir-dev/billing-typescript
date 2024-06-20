@@ -4,8 +4,16 @@ import cn from 'classnames'
 import { CopyText, EditCell, TooltipWrapper, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
+import {
+  getFlagFromCountryName,
+  getInstanceMainInfo,
+  formatCountryName,
+  cutDcSuffix,
+  getImageIconName,
+} from '@utils'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { selectors } from '@redux'
 
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['cloud_vps', 'vds', 'countries'])
@@ -16,6 +24,7 @@ export default function InstanceItem({ item, editInstance }) {
   const ipCell = useRef()
   const hintCell = useRef()
   const navigate = useNavigate()
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
@@ -42,6 +51,8 @@ export default function InstanceItem({ item, editInstance }) {
 
   const isHintStatus = isSuspended || isResized
   const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
+
+  const osIcon = getImageIconName(item?.os_distro?.$, darkTheme)
 
   return (
     <tr
@@ -79,7 +90,6 @@ export default function InstanceItem({ item, editInstance }) {
               className={s.popup}
               wrapperClassName={s.popup__wrapper}
               content={hintMessage}
-              anchor={`status_${item?.id?.$}`}
             >
               <span
                 className={cn(
@@ -111,7 +121,7 @@ export default function InstanceItem({ item, editInstance }) {
           )}
         </div>
       </td>
-      <td className={s.td}>{item.pricelist.$}</td>
+      <td className={s.td}>{cutDcSuffix(item.pricelist.$)}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('day'))}</td>
       <td className={s.td}>
         {item?.datacentername && (
@@ -119,7 +129,6 @@ export default function InstanceItem({ item, editInstance }) {
             className={s.popup}
             wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
             content={t(itemCountry, { ns: 'countries' })}
-            anchor={`country_flag_${item?.id?.$}`}
           >
             <img
               src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -134,14 +143,18 @@ export default function InstanceItem({ item, editInstance }) {
       </td>
       <td className={s.td}>{item.createdate.$}</td>
       <td className={s.td}>
-        <TooltipWrapper
-          className={s.popup}
-          wrapperClassName={s.popup__wrapper}
-          content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
-          anchor={`instances_os_${item?.id?.$}`}
-        >
-          <Icon name={item?.os_distro?.$} />
-        </TooltipWrapper>
+        {osIcon && (
+          <TooltipWrapper
+            className={s.popup}
+            wrapperClassName={s.popup__wrapper}
+            content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
+          >
+            <img
+              src={require(`@images/soft_os_icons/${osIcon}.png`)}
+              alt={item?.os_distro?.$}
+            />
+          </TooltipWrapper>
+        )}
       </td>
       <td className={s.td}>
         <div className={s.ip_cell} ref={ipCell}>

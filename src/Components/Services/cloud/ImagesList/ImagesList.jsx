@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next'
-import s from './ImagesList.module.scss'
 import {
   EditCell,
   Icon,
@@ -13,10 +12,13 @@ import { useEffect, useReducer, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
-import { formatCountryName, getFlagFromCountryName } from '@src/utils'
+import { formatCountryName, getFlagFromCountryName, getImageIconName } from '@utils'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
+import s from './ImagesList.module.scss'
+import { useSelector } from 'react-redux'
+import { selectors } from '@redux'
 
 export default function ImagesList({
   items,
@@ -31,6 +33,7 @@ export default function ImagesList({
   const { t } = useTranslation(['cloud_vps', 'countries'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
   const navigate = useNavigate()
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const [pagination, setPagination] = useReducer(
     (state, action) => {
@@ -127,7 +130,6 @@ export default function ImagesList({
                       className={s.popup}
                       wrapperClassName={s.popup__wrapper}
                       content={t('image.protected')}
-                      anchor={`protected_${item?.[idKey].$}`}
                     >
                       <Icon name="Protected" />
                     </TooltipWrapper>
@@ -173,15 +175,23 @@ export default function ImagesList({
       case 'os':
         if (!cell.renderData) {
           renderData = function renderData(value, item) {
+            const osIcon = getImageIconName(value, darkTheme)
+
             return (
-              <TooltipWrapper
-                className={s.popup}
-                wrapperClassName={s.popup__wrapper}
-                content={value}
-                anchor={`os_${item?.[idKey].$}`}
-              >
-                <Icon name={value} />
-              </TooltipWrapper>
+              <>
+                {osIcon ? (
+                  <TooltipWrapper
+                    className={s.popup}
+                    wrapperClassName={s.popup__wrapper}
+                    content={`${item.os_distro?.$} ${item.os_version?.$}`}
+                  >
+                    <img
+                      src={require(`@images/soft_os_icons/${osIcon}.png`)}
+                      alt={item?.os_distro?.$}
+                    />
+                  </TooltipWrapper>
+                ) : null}
+              </>
             )
           }
           return { ...cell, renderData }
@@ -211,18 +221,18 @@ export default function ImagesList({
         if (!cell.renderData) {
           renderData = function renderData(value, item) {
             const itemCountry = formatCountryName(item, 'region')
+
             return (
               <TooltipWrapper
                 className={s.popup}
                 wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
                 content={t(itemCountry, { ns: 'countries' })}
-                anchor={`country_flag_${item?.[idKey].$}`}
               >
                 {itemCountry ? (
                   <img
-                    src={require(
-                      `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
-                    )}
+                    src={require(`@images/countryFlags/${getFlagFromCountryName(
+                      itemCountry,
+                    )}.png`)}
                     width={20}
                     height={14}
                     alt={value}

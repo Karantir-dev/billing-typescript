@@ -358,7 +358,7 @@ export default function DedicatedServersPage() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <TooltipWrapper content={t('delete', { ns: 'other' })} anchor="delete_btn">
+          <TooltipWrapper content={t('delete', { ns: 'other' })}>
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -373,7 +373,7 @@ export default function DedicatedServersPage() {
               icon="delete"
             />
           </TooltipWrapper>
-          <TooltipWrapper content={t('reload')} anchor="reload_btn">
+          <TooltipWrapper content={t('reload')}>
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -387,7 +387,7 @@ export default function DedicatedServersPage() {
             />
           </TooltipWrapper>
 
-          <TooltipWrapper content={t('prolong')} anchor="prolong_btn">
+          <TooltipWrapper content={t('prolong')}>
             <IconButton
               className={s.tools_icon}
               disabled={

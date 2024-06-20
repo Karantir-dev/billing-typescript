@@ -28,7 +28,6 @@
   "Price": "Price",
   "Access IP": "Access IP",
   "OS": "OS",
-  "create_instance_btn": "Order",
   "day": "Day",
   "hour": "Hour",
   "Yes": "Yes",
@@ -251,8 +250,11 @@
       "min_ram": "Minimum required RAM (MB)Like the minimum required disk size, this option allows you to set a limit for the minimum required RAM an instance created from this image will required in order to run properly.",
       "os": "These special attributes allows Zomro to show the distro icon next to each instance created from this image and allows OpenStack to properly create an Instance especially for Windows or other non Linux distributions.",
       "protected": "Set this option in order to protect the image from accidental deletion."
-    }
+    },
+    "copy_title": "Create Copy"
   },
+  "change_access_method": "Change access method",
+  "new_access_method_warning": "Setting a new access method may not work for modified images.",
   "delete_image": "Delete image",
   "delete_image_text": "Are you sure you want to delete image \"{{name}}\"?",
   "details": {
@@ -271,5 +273,8 @@
     "os_version": "OS version",
     "fleio_status": "Status",
     "visibility": "Visibility"
-  }
+  },
+  "sold_out_messsage": "Unfortunately, this plan is currently sold out!",
+  "sold_out_description": "You can buy it now and your server will be activated as soon as we have resources. Usually it takes no more than 3 days. You will receive a notification about the activation of the service using the method selected in <a>profile settings</a>. Tariffing for the service will begin from the moment the server is activated, and the funds written off for the purchase will be counted towards payment for the first day of use.",
+  "move_the_image": "Move the image to another data center"
 }

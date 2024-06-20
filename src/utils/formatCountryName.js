@@ -14,7 +14,7 @@ export default function formatCountryName(data, key = 'datacentername') {
   }
 
   const countryName = DC_COUNTRIES.find(country =>
-    inputString?.toLowerCase().includes(country.toLowerCase()),
+    inputString?.toLowerCase().includes(country?.toLowerCase()),
   )
 
   if (!countryName) {

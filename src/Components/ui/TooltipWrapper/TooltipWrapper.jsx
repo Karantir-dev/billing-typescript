@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Tooltip } from 'react-tooltip'
-import { useSelector } from 'react-redux'
-import { selectors } from '@redux'
+import { customAlphabet } from 'nanoid'
 import cn from 'classnames'
 import s from './TooltipWrapper.module.scss'
 
+const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
 export default function TooltipWrapper({
-  anchor,
   content,
   hintDelay, // old version of HintWrapper props
   children,
@@ -16,41 +15,29 @@ export default function TooltipWrapper({
   delayShow = 500,
   place = 'top',
   effect = 'solid',
-  variant,
   disabled, // old version of HintWrapper props
+  html,
   ...props
 }) {
-  const currentTheme = useSelector(selectors.getTheme)
-  const [theme, setTheme] = useState(currentTheme)
-
-  useEffect(() => {
-    setTheme(currentTheme)
-  }, [currentTheme])
-
-  const themeVariant = theme === 'dark' ? 'light' : 'dark'
+  const id = nanoid()
 
   return (
     <>
       {disabled ? (
         children
       ) : (
-        <div className={wrapperClassName} id={anchor}>
+        <div className={wrapperClassName} id={id}>
           {children}
           <Tooltip
-            anchorSelect={`#${anchor}`}
-            className={cn(
-              s.hint,
-              {
-                [s.default_theme]: !variant,
-              },
-              className,
-            )}
+            anchorSelect={`#${id}`}
+            className={cn(s.hint, s.default_theme, className)}
             content={content}
+            children={html}
             place={place}
             effect={effect}
-            variant={variant || themeVariant}
             positionStrategy="fixed"
             delayShow={hintDelay || delayShow}
+            globalCloseEvents={{ scroll: true }}
             {...props}
           />
         </div>
@@ -60,7 +47,6 @@ export default function TooltipWrapper({
 }
 
 TooltipWrapper.propTypes = {
-  anchor: PropTypes.string.isRequired /* The selector for the anchor elements. */,
   label:
     PropTypes.string /* label is not required if content is provided. It's the same */,
   content: PropTypes.string /* Content to be displayed in tooltip */,

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Options } from '@components'
 import { cloudVpsActions, cloudVpsOperations } from '@src/Redux'
 import { useCreateTicketOption, getInstanceMainInfo } from '@src/utils'
@@ -7,7 +6,6 @@ import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import s from './InstancesOptions..module.scss'
 
-// eslint-disable-next-line no-unused-vars
 export default function InstancesOptions({
   item,
   isMobile,
@@ -28,9 +26,11 @@ export default function InstancesOptions({
     isWindows,
     isDeleting,
     isBootedFromISO,
+    isImageUploading,
+    isErrorStatus,
   } = getInstanceMainInfo(item)
-
   const isHideMostItems = isResized || isRescued || isBootedFromISO
+
   const createTicketOption = useCreateTicketOption(item.id.$)
 
   const options = [
@@ -142,7 +142,7 @@ export default function InstancesOptions({
     {
       label: t('Instructions'),
       icon: 'Instruction',
-      disabled: isDeleting,
+      disabled: isDeleting || isImageUploading || isErrorStatus,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
     {
@@ -161,13 +161,13 @@ export default function InstancesOptions({
     {
       label: t('Rename'),
       icon: 'Rename',
-      disabled: isDeleting,
+      disabled: isDeleting || isImageUploading,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
       label: t('boot_from_iso'),
       icon: 'Iso',
-      disabled: isProcessing || isDeleting,
+      disabled: isProcessing || isDeleting || isImageUploading || isDisabled,
       hidden: isHideMostItems,
       onClick: () =>
         dispatch(

@@ -42,7 +42,7 @@ export default function VDS(props) {
     <div className={cn(s.tools_footer, { [s.isopen]: selctedItem?.length !== 0 })}>
       {selctedItem?.length !== 0 && (
         <div className={s.buttons_wrapper}>
-          <TooltipWrapper content={t('edit', { ns: 'other' })} anchor="edit_btn">
+          <TooltipWrapper content={t('edit', { ns: 'other' })}>
             <IconButton
               className={s.tools_icon}
               disabled={selctedItem?.length === 0 || !rights?.edit}
@@ -51,7 +51,7 @@ export default function VDS(props) {
             />
           </TooltipWrapper>
 
-          <TooltipWrapper content={t('prolong', { ns: 'vds' })} anchor="prolong_btn">
+          <TooltipWrapper content={t('prolong', { ns: 'vds' })}>
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -64,10 +64,7 @@ export default function VDS(props) {
             />
           </TooltipWrapper>
 
-          <TooltipWrapper
-            content={t('ns_settings', { ns: 'domains' })}
-            anchor="ns_settings"
-          >
+          <TooltipWrapper content={t('ns_settings', { ns: 'domains' })}>
             <IconButton
               className={s.tools_icon}
               disabled={

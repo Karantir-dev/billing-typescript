@@ -18,9 +18,12 @@ import {
   OsList,
   CountryButton,
   CloudTypeSection,
+  PageTabBar,
+  SoftwareOSBtn,
+  SoldOutModal,
 } from '@components'
 import * as Yup from 'yup'
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,6 +39,7 @@ import {
   checkIfHasWindows,
   formatCountryName,
   getFlagFromCountryName,
+  getImageIconName,
   roundToDecimal,
   useCancelRequest,
 } from '@utils'
@@ -48,9 +52,13 @@ import {
   BASIC_TYPE,
   PREMIUM_TYPE,
   DISALLOW_PASS_SPECIFIC_CHARS,
+  DC_WITH_BASICS,
+  IMAGES_TYPES,
+  CLOUD_DC_NAMESPACE,
 } from '@utils/constants'
 import { useMediaQuery } from 'react-responsive'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
+import * as route from '@src/routes'
 
 import s from './CreateInstancePage.module.scss'
 
@@ -58,19 +66,40 @@ const IPv4_DAILY_COST = 1 / 30
 const IPv4_MONTHLY_COST = 1
 
 export default function CreateInstancePage() {
+  const dispatch = useDispatch()
+  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [cloudType, setCloudType] = useState(searchParams.get('type') || PREMIUM_TYPE)
   const isBasic = cloudType === BASIC_TYPE
 
+  useEffect(() => {
+    setCloudType(prev => {
+      if (searchParams.get('type') !== prev) {
+        return searchParams.get('type')
+      } else {
+        return prev
+      }
+    })
+  }, [searchParams])
+
+  const location = useLocation()
+
   const switchCloudType = type => {
-    setSearchParams({ type })
+    setSearchParams({ type }, { state: location.state })
     setCloudType(type)
   }
 
-  const location = useLocation()
-  const dispatch = useDispatch()
-  const { t } = useTranslation(['cloud_vps', 'vds', 'auth', 'other', 'countries'])
+  const dcLabelFromLaunch = location.state?.dcLabel
+  const dcIdFromLaunch = CLOUD_DC_NAMESPACE[dcLabelFromLaunch]
+
+  const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
+
+  const imageIdFromLaunch = location.state?.imageId
+  const isLaunchMode = imageIdFromLaunch && dcLabelFromLaunch
+  const [imagesCurrentTab, setImagesCurrentTab] = useState(
+    imageIdFromLaunch ? IMAGES_TYPES.own : IMAGES_TYPES.public,
+  )
 
   const PERIODS_LIST = [
     { id: 'month', value: 30, label: t('month', { ns: 'other' }) },
@@ -87,14 +116,14 @@ export default function CreateInstancePage() {
   const basicTariffs = useSelector(cloudVpsSelectors.getBasicTariffs)
   const tariffs = isBasic ? basicTariffs : premiumTariffs
 
-  const premiumOperationSystems = useSelector(
-    cloudVpsSelectors.getPremiumOperationSystems,
-  )
-  const basicOperationSystems = useSelector(cloudVpsSelectors.getBasicOperationSystems)
-  const operationSystems = isBasic ? basicOperationSystems : premiumOperationSystems
+  const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
 
   const dcList = useSelector(cloudVpsSelectors.getDClist)
+  const filteredDcList = isBasic
+    ? dcList?.filter(el => DC_WITH_BASICS.includes(el.$key))
+    : dcList
   const windowsTag = useSelector(cloudVpsSelectors.getWindowsTag)
+  const soldOutTag = useSelector(cloudVpsSelectors.getSoldOutTag)
 
   const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
@@ -104,14 +133,29 @@ export default function CreateInstancePage() {
   const [currentDC, setCurrentDC] = useState()
   const [showCaption, setShowCaption] = useState(false)
 
-  const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
+  const [isSoldOutModalOpened, setSoldOutModalOpened] = useState(false)
+
+  const publicImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.public]
+  const ownImages = operationSystems?.[currentDC?.$key]?.[IMAGES_TYPES.own]
+
+  const [isConnectMethodOpened, setIsConnectMethodOpened] = useState(
+    imagesCurrentTab === IMAGES_TYPES.own ? false : true,
+  )
 
   useEffect(() => {
     if (!currentDC?.$key && dcList) {
       const dcLocation = dataFromSite.location
 
       const dcFromSite = dcList.find(el => el.$key === dcLocation)
-      dcFromSite ? setCurrentDC(dcFromSite) : setCurrentDC(dcList?.[0])
+      const dcFromLaunch = dcList.find(el => +el.$key === +dcIdFromLaunch)
+
+      if (dcFromLaunch) {
+        setCurrentDC(dcFromLaunch)
+      } else if (dcFromSite) {
+        setCurrentDC(dcFromSite)
+      } else {
+        setCurrentDC(dcList?.[0])
+      }
     }
   }, [dcList])
 
@@ -126,17 +170,14 @@ export default function CreateInstancePage() {
   }
 
   const getOsListHandler = (cloudType, needSshList = false) => {
+    // це скоріше всього можна буде прибрати
     const isBasic = cloudType === BASIC_TYPE
 
-    let haveOS
-    if (isBasic) {
-      haveOS = basicOperationSystems?.[currentDC?.$key]
-    } else {
-      haveOS = premiumOperationSystems?.[currentDC?.$key]
-    }
+    const haveOS = operationSystems?.[currentDC?.$key]
 
     if (!haveOS) {
       const lastTariffID = getLastTariffID(isBasic)
+
       return dispatch(
         cloudVpsOperations.getOsList({
           signal,
@@ -145,7 +186,6 @@ export default function CreateInstancePage() {
           datacenter: currentDC?.$key,
           setSshList: needSshList ? getAllSSHList : null,
           lastTariffID,
-          isBasic,
         }),
       )
     }
@@ -160,26 +200,24 @@ export default function CreateInstancePage() {
 
   /** First render useEffect */
   useEffect(() => {
+    const dcId = dataFromSite.location || dcIdFromLaunch || undefined
     if (
       /** if we don`t have tariffs list for current DC */
-      !tariffs?.[currentDC?.$key]?.length
+      !tariffs?.[dcId]?.length
     ) {
       dispatch(
         cloudVpsOperations.getAllTariffsInfo({
           signal,
           setIsLoading,
-          needOsList: !operationSystems,
+          needOsList: !operationSystems?.[dcId],
           setSshList: getAllSSHList,
-          datacenter: dataFromSite.location || '',
+          datacenter: dcId,
           isBasic,
         }),
       )
 
       /** if we have tariffs but don`t have OSs for them or ssh keys */
-    } else if (
-      tariffs?.[currentDC?.$key] &&
-      (!operationSystems?.[currentDC?.$key] || !allSshList.length)
-    ) {
+    } else if (tariffs?.[dcId] && (!operationSystems?.[dcId] || !allSshList.length)) {
       getOsListHandler(cloudType, true)
     }
 
@@ -237,7 +275,7 @@ export default function CreateInstancePage() {
   }
 
   const checkIsItWindows = currentOS => {
-    return operationSystems?.[currentDC?.$key]
+    return operationSystems?.[currentDC?.$key][imagesCurrentTab]
       ?.find(el => el.$key === currentOS)
       ?.$.toLowerCase()
       .includes('windows')
@@ -258,7 +296,10 @@ export default function CreateInstancePage() {
         )
         .required(t('warnings.password_required', { ns: 'auth' })),
     }),
-    connectionType: Yup.string().required(t('Is a required field', { ns: 'other' })),
+    connectionType:
+      imagesCurrentTab === IMAGES_TYPES.public
+        ? Yup.string().required(t('Is a required field', { ns: 'other' }))
+        : null,
     ssh_keys: Yup.string().when('connectionType', {
       is: type => type === 'ssh',
       then: Yup.string()
@@ -296,17 +337,26 @@ export default function CreateInstancePage() {
     <div className={s.page_padding}>
       <BreadCrumbs pathnames={location?.pathname.split('/')} />
 
+      <SoldOutModal
+        className={s.sold_out_modal}
+        isOpened={isSoldOutModalOpened}
+        closeFn={() => setSoldOutModalOpened(false)}
+      />
+
       <h2 className="page_title">{t('create_instance', { ns: 'crumbs' })} </h2>
       <ErrorBoundary
         FallbackComponent={Error}
         onError={err => console.log('ErrorBoundary', err)}
       >
         {tariffs?.[currentDC?.$key] &&
-          operationSystems?.[currentDC.$key] &&
-          currentDC && (
+          operationSystems?.[currentDC?.$key] &&
+          currentDC &&
+          ownImages && (
             <Formik
               initialValues={{
-                instances_os: operationSystems?.[currentDC.$key]?.[0]?.$key,
+                instances_os:
+                  imageIdFromLaunch ||
+                  operationSystems?.[currentDC.$key]?.[imagesCurrentTab]?.[0]?.$key,
                 tariff_id: tariffFromSite?.id.$ || tariffs?.[currentDC?.$key]?.[0]?.id.$,
                 tariffData: tariffFromSite || tariffs?.[currentDC?.$key]?.[0],
                 period: 30,
@@ -326,12 +376,12 @@ export default function CreateInstancePage() {
                   setFieldValue('ssh_keys', allSshList?.[0]?.elid.$)
                 }, [allSshList])
 
-                useEffect(() => {
+                const selectFirstImage = tab => {
                   setFieldValue(
                     'instances_os',
-                    operationSystems?.[currentDC.$key]?.[0]?.$key,
+                    operationSystems?.[currentDC.$key]?.[tab]?.[0]?.$key,
                   )
-                }, [operationSystems?.[currentDC.$key]])
+                }
 
                 const onTariffChange = tariff => {
                   setFieldValue('tariff_id', tariff.id.$)
@@ -339,28 +389,6 @@ export default function CreateInstancePage() {
                 }
 
                 const isItWindows = checkIsItWindows(values.instances_os)
-
-                // const filterOSlist = () => {
-                //   let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
-
-                //   if (tariffHasWindows) {
-                //     return operationSystems[currentDC.$key]
-                //   } else {
-                //     const osList = operationSystems[currentDC.$key]?.map(el => {
-                //       let newEl = { ...el }
-                //       if (el.$.toLowerCase().includes('windows')) {
-                //         newEl.disabled = true
-                //       }
-
-                //       return newEl
-                //     })
-
-                //     return osList
-                //   }
-                // }
-
-                /** if we have selected tariff without Windows - we disable this OS */
-                // const filteredOSlist = filterOSlist()
 
                 /** if we have selected OS Windows - we disable tariffs that don`t support this OS */
                 const filterTariffsList = isItWindows => {
@@ -487,6 +515,41 @@ export default function CreateInstancePage() {
                   values.notEnoughMoney && setFieldValue('notEnoughMoney', false)
                 }
 
+                const imagesTabs = [
+                  {
+                    localValue: IMAGES_TYPES.public,
+                    onLocalClick: () => {
+                      setImagesCurrentTab(IMAGES_TYPES.public)
+                      setIsConnectMethodOpened(true)
+                      selectFirstImage(IMAGES_TYPES.public)
+                    },
+                    label: t('Public'),
+                    allowToRender: true,
+                  },
+                  {
+                    localValue: IMAGES_TYPES.own,
+                    onLocalClick: () => {
+                      setImagesCurrentTab(IMAGES_TYPES.own)
+                      setFieldValue('connectionType', '')
+                      setIsConnectMethodOpened(false)
+                      selectFirstImage(IMAGES_TYPES.own)
+                    },
+                    label: t('Your images'),
+                    allowToRender: true,
+                  },
+                ]
+
+                const launchImage = isLaunchMode
+                  ? ownImages.find(el => el.$key === imageIdFromLaunch)
+                  : null
+
+                const imagesToRender =
+                  imagesCurrentTab === IMAGES_TYPES.public ? publicImages : ownImages
+
+                const isSoldOut = values.tariffData.flabel.tag.some(
+                  el => el.$ === soldOutTag,
+                )
+
                 return (
                   <Form>
                     <ScrollToFieldError />
@@ -507,38 +570,83 @@ export default function CreateInstancePage() {
                     )}
 
                     <CloudTypeSection
+                      isLaunchMode={isLaunchMode}
+                      premiumTariffs={premiumTariffs?.[currentDC.$key]}
+                      basicTariffs={basicTariffs?.[currentDC.$key]}
                       value={cloudType}
                       switchCloudType={switchCloudType}
-                      getOsListHandler={getOsListHandler}
                     />
 
                     <section className={s.section}>
                       <h3 className={s.section_title}>{t('server_location')}</h3>
 
                       <ul className={s.grid}>
-                        {dcList?.map(dc => {
-                          return (
-                            <CountryButton
-                              key={dc.$key}
-                              currentItem={currentDC}
-                              item={dc}
-                              onChange={onDCchange}
-                            />
-                          )
-                        })}
+                        {isLaunchMode ? (
+                          <CountryButton
+                            currentItem={currentDC}
+                            item={currentDC}
+                            onChange={onDCchange}
+                            disabled
+                          />
+                        ) : (
+                          filteredDcList?.map(dc => {
+                            return (
+                              <CountryButton
+                                key={dc.$key}
+                                currentItem={currentDC}
+                                item={dc}
+                                onChange={onDCchange}
+                              />
+                            )
+                          })
+                        )}
                       </ul>
+                      {isLaunchMode && (
+                        <div className={s.dc_link}>
+                          <Link className={s.link} to={route.CLOUD_VPS + '/images'}>
+                            {t('move_the_image', { ns: 'cloud_vps' })}
+                          </Link>
+                          <TooltipWrapper
+                            content={t('Hint', { ns: 'other' })}
+                            wrapperClassName={cn(s.tooltip)}
+                          >
+                            <Icon name="Info" />
+                          </TooltipWrapper>
+                        </div>
+                      )}
                     </section>
 
                     <section className={s.section}>
                       <h3 className={s.section_title}>{t('server_image')}</h3>
 
-                      <div className={s.os_list}>
-                        <OsList
-                          list={operationSystems[currentDC.$key]}
-                          value={values.instances_os}
-                          onOSchange={onOSchange}
+                      {isLaunchMode ? (
+                        ''
+                      ) : (
+                        <PageTabBar
+                          sections={imagesTabs}
+                          activeValue={imagesCurrentTab}
                         />
+                      )}
+
+                      <div className={s.os_list}>
+                        {isLaunchMode ? (
+                          <SoftwareOSBtn
+                            value={imageIdFromLaunch}
+                            state={imageIdFromLaunch}
+                            iconName={getImageIconName(launchImage?.$)}
+                            label={launchImage?.$}
+                            imageData={launchImage}
+                            disabled
+                          />
+                        ) : (
+                          <OsList
+                            list={imagesToRender}
+                            value={values.instances_os}
+                            onOSchange={onOSchange}
+                          />
+                        )}
                       </div>
+
                       {isItWindows && (
                         <WarningMessage className={s.notice_wrapper}>
                           {t('windows_os_notice')}
@@ -569,7 +677,6 @@ export default function CreateInstancePage() {
                             content={t('hint_description.ip')}
                             className={s.hintPopup}
                             disabled={!widerThan1550}
-                            anchor="hint_ip_description"
                           >
                             <button
                               type="button"
@@ -604,15 +711,21 @@ export default function CreateInstancePage() {
                       <ul className={s.grid}>
                         {filteredTariffsList?.map(tariff => {
                           const price = calculatePrice(tariff, values)
-
+                          const isSoldOut = tariff.flabel.tag.some(
+                            el => el.$ === soldOutTag,
+                          )
                           return (
                             <TariffCard
                               key={tariff.id.$}
                               tariff={tariff}
-                              onClick={() => onTariffChange(tariff)}
+                              onClick={() => {
+                                isSoldOut && setSoldOutModalOpened(true)
+                                onTariffChange(tariff)
+                              }}
                               price={price}
                               active={values.tariff_id === tariff.id.$}
                               disabled={tariff.disabled}
+                              isSoldOut={isSoldOut}
                             />
                           )
                         })}
@@ -636,6 +749,9 @@ export default function CreateInstancePage() {
                           value: el.elid.$,
                         }))}
                         isWindows={isItWindows}
+                        hiddenMode={imagesCurrentTab === IMAGES_TYPES.own}
+                        isOpened={isConnectMethodOpened}
+                        setIsOpened={setIsConnectMethodOpened}
                       />
                       <ErrorMessage
                         className={s.error_message}
@@ -668,9 +784,11 @@ export default function CreateInstancePage() {
                             </span>
                             <img
                               className={s.flag}
-                              src={require(`@images/countryFlags/${getFlagFromCountryName(
-                                currentCountryName,
-                              )}.png`)}
+                              src={require(
+                                `@images/countryFlags/${getFlagFromCountryName(
+                                  currentCountryName,
+                                )}.png`,
+                              )}
                               width={20}
                               height={14}
                               alt={currentCountryName}
@@ -719,7 +837,6 @@ export default function CreateInstancePage() {
                               wrapperClassName={s.exlude_vat_hint}
                               className={s.exlude_vat_hint_popup}
                               content={t('exlude_vat_hint')}
-                              anchor="exlude_vat_hint"
                             >
                               <Icon name="Info" />
                             </TooltipWrapper>
@@ -728,7 +845,11 @@ export default function CreateInstancePage() {
 
                         <Button
                           className={cn(s.btn_buy, s.footer_item)}
-                          label={t('create_instance', { ns: 'cloud_vps' })}
+                          label={
+                            isSoldOut
+                              ? t('to_order', { ns: 'other' })
+                              : t('create_instance', { ns: 'cloud_vps' })
+                          }
                           type="submit"
                           isShadow
                           onClick={e => {

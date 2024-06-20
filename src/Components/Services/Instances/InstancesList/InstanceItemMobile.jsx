@@ -4,14 +4,23 @@ import cn from 'classnames'
 import { CopyText, Icon, InstancesOptions, TooltipWrapper } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
+import {
+  getFlagFromCountryName,
+  getInstanceMainInfo,
+  formatCountryName,
+  cutDcSuffix,
+  getImageIconName,
+} from '@utils'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { selectors } from '@redux'
 
 export default function InstanceItemMobile({ item }) {
   const { t } = useTranslation(['cloud_vps'])
   const optionsBlock = useRef()
   const ipCell = useRef()
   const navigate = useNavigate()
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const { isResized, displayStatus, displayName, isNotActive, isDeleting, isSuspended } =
     getInstanceMainInfo(item)
@@ -21,6 +30,8 @@ export default function InstanceItemMobile({ item }) {
 
   const isHintStatus = isSuspended || isResized
   const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
+
+  const osIcon = getImageIconName(item?.os_distro?.$, darkTheme)
 
   return (
     <div
@@ -47,7 +58,6 @@ export default function InstanceItemMobile({ item }) {
                 popupClassName={s.popup}
                 wrapperClassName={s.popup__wrapper}
                 label={hintMessage}
-                anchor={`status_${item?.id?.$}`}
               >
                 <p
                   className={cn(
@@ -85,7 +95,7 @@ export default function InstanceItemMobile({ item }) {
       </div>
       <div className={s.mobile_item__body}>
         <p className={s.mobile_item__param}>{t('Flavor')}</p>
-        <p className={s.mobile_item__value}>{item.pricelist.$}</p>
+        <p className={s.mobile_item__value}>{cutDcSuffix(item.pricelist.$)}</p>
 
         <p className={s.mobile_item__param}>{t('Price')}</p>
         <p className={s.mobile_item__value}>{item.cost.$}</p>
@@ -106,11 +116,17 @@ export default function InstanceItemMobile({ item }) {
 
         <p className={s.mobile_item__param}>{t('Created at')}</p>
         <p className={s.mobile_item__value}>{item.createdate.$}</p>
-
-        <p className={s.mobile_item__param}>{t('OS')}</p>
-        <p className={s.mobile_item__value}>
-          <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
-        </p>
+        {osIcon && (
+          <>
+            <p className={s.mobile_item__param}>{t('OS')}</p>
+            <p className={s.mobile_item__value}>
+              <img
+                src={require(`@images/soft_os_icons/${osIcon}.png`)}
+                alt={item?.os_distro?.$}
+              />
+            </p>
+          </>
+        )}
 
         <p className={s.mobile_item__param}>{t('Access IP')}</p>
         <p className={s.mobile_item__value} ref={ipCell}>

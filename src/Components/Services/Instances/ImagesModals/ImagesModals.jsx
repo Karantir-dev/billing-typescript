@@ -31,6 +31,7 @@ export const ImagesModals = ({
       cloudVpsOperations.editImage({
         func: 'instances.snapshots',
         ...values,
+        successCallback: getItems,
       }),
     )
   }
@@ -45,6 +46,7 @@ export const ImagesModals = ({
       cloudVpsOperations.editImage({
         func: 'instances.fleio_bckps',
         ...values,
+        successCallback: getItems,
       }),
     )
   }
@@ -65,6 +67,18 @@ export const ImagesModals = ({
     dispatch(
       cloudVpsOperations.deleteImage({
         elid: itemForModals?.image_delete[itemForModals?.image_delete.idKey].$,
+        successCallback: redirectCallback ?? getItems,
+        ...loadingParams,
+      }),
+    )
+  }
+
+  const createImageCopy = values => {
+    dispatch(cloudVpsActions.setItemForModals({ images_copy: false }))
+    dispatch(
+      cloudVpsOperations.copyModal({
+        elid: itemForModals?.images_copy?.id?.$,
+        ...values,
         successCallback: redirectCallback ?? getItems,
         ...loadingParams,
       }),
@@ -94,7 +108,7 @@ export const ImagesModals = ({
           closeModal={() =>
             dispatch(cloudVpsActions.setItemForModals({ images_copy: false }))
           }
-          onSubmit={() => {}}
+          onSubmit={createImageCopy}
         />
       )}
       {!!itemForModals?.image_edit && (

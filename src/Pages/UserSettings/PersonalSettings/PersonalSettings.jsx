@@ -290,7 +290,6 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                       name="verefied_phone"
                     />
                     <TooltipWrapper
-                      anchor={'verefied_phone'}
                       content={
                         userInfo?.verefied_phone !== 'Verify'
                           ? t('after_verified_number')
@@ -371,7 +370,6 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                         className={s.hintWrapper}
                         content={t('Confirm your email to activate the functionality')}
                         disabled={!isConfirmEmailBtnRender}
-                        anchor={'sendemail'}
                       >
                         <CheckBox
                           value={values.sendemail}
@@ -393,7 +391,6 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                           className={s.hintPopUpWrapperGeoIp}
                           place="bottom"
                           content={t('geo_ip_info')}
-                          anchor={'geo_ip_info'}
                         >
                           <Icon name="Info" />
                         </TooltipWrapper>
@@ -403,7 +400,6 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                         className={s.hintWrapper}
                         content={t('Confirm your email to activate the functionality')}
                         disabled={!isConfirmEmailBtnRender}
-                        anchor={'setgeoip'}
                       >
                         <CheckBox
                           value={values.setgeoip}

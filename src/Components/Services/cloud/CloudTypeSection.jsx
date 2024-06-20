@@ -1,25 +1,33 @@
 import cn from 'classnames'
 import { useTranslation } from 'react-i18next'
 import crown from '@images/crown.svg'
-import { useRef } from 'react'
+
 import { BASIC_TYPE, PREMIUM_TYPE } from '@src/utils/constants'
 
 import s from '../../../Pages/ServicesPage/CloudVPSPage/InstancesPage/CreateInstancePage/CreateInstancePage.module.scss'
 
-export default function CloudTypeSection({ getOsListHandler, value, switchCloudType }) {
-  const CATEGORIES = useRef([
-    { type: PREMIUM_TYPE, label: 'Premium VPS' },
-    { type: BASIC_TYPE, label: 'Basic VPS' },
-  ])
+export default function CloudTypeSection({
+  value,
+  switchCloudType,
+  isLaunchMode,
+  premiumTariffs,
+  basicTariffs,
+}) {
+  const CATEGORIES = [
+    { type: PREMIUM_TYPE, label: 'Premium VPS', hasTariffs: premiumTariffs },
+    { type: BASIC_TYPE, label: 'Basic VPS', hasTariffs: basicTariffs },
+  ]
 
   const { t } = useTranslation(['cloud_vps'])
+
+  const tabsToRender = isLaunchMode ? CATEGORIES.filter(el => el.hasTariffs) : CATEGORIES
 
   return (
     <section className={s.section}>
       <h3 className={s.section_title}>{t('server_type')}</h3>
 
       <ul className={s.grid}>
-        {CATEGORIES.current.map(({ type, label }) => {
+        {tabsToRender.map(({ type, label }) => {
           return (
             <li
               key={type}
@@ -30,11 +38,7 @@ export default function CloudTypeSection({ getOsListHandler, value, switchCloudT
               <button
                 className={cn(s.category_btn, s.serverType_btn)}
                 type="button"
-                onClick={async () => {
-                  await getOsListHandler(type)
-
-                  switchCloudType(type)
-                }}
+                onClick={() => switchCloudType(type)}
               >
                 {type === PREMIUM_TYPE && (
                   <img

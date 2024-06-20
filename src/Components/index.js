@@ -234,7 +234,6 @@ export { default as OrderTariff } from './OrderTariff/OrderTariff'
 
 /** I suggest to rename this section and all of the files with "Cloud" */
 //==========================================Instances==========================================//
-
 export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
 export { default as SshList } from './Services/Instances/SshList/SshList'
 
@@ -246,3 +245,4 @@ export { default as OsList } from './Services/cloud/OsList'
 export { default as CloudTypeSection } from './Services/cloud/CloudTypeSection'
 export { default as ImagesList } from './Services/cloud/ImagesList/ImagesList'
 export { default as ImagesOptions } from './Services/cloud/ImagesOptions/ImagesOptions'
+export { default as SoldOutModal } from './Services/cloud/SoldOutModal/SoldOutModal'

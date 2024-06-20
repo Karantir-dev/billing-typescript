@@ -158,11 +158,7 @@ export default function Component(props) {
             </div>
           )}
         </div>
-        <TooltipWrapper
-          wrapperClassName={s.transferBtn}
-          content={t('Transfer')}
-          anchor="transfet_btn"
-        >
+        <TooltipWrapper wrapperClassName={s.transferBtn} content={t('Transfer')}>
           <IconButton
             disabled={!rights?.transfer}
             onClick={() =>

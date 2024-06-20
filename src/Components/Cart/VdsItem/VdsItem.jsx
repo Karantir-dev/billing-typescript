@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Icon } from '@components'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
-import { translatePeriodToMonths } from '@utils'
+import { cutDcSuffix, translatePeriodToMonths } from '@utils'
 import s from './VdsItem.module.scss'
 
 export default function VdsItem({ el, deleteItemHandler }) {
@@ -17,7 +17,7 @@ export default function VdsItem({ el, deleteItemHandler }) {
   const IPaddresses = el?.desc?.$?.includes('IP-addresses')
   const hasBasePrice = el?.desc?.$?.includes('base price')
 
-  const tariffName = el?.pricelist_name?.$
+  const tariffName = cutDcSuffix(el?.pricelist_name?.$)
 
   const onShevronClick = () => {
     if (!dropOpened) {

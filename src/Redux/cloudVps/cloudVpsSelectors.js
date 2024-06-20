@@ -1,7 +1,6 @@
 const getPremiumTariffs = state => state.cloudVps.premiumTariffs
 const getBasicTariffs = state => state.cloudVps.basicTariffs
-const getPremiumOperationSystems = state => state.cloudVps.premiumOperationSystems
-const getBasicOperationSystems = state => state.cloudVps.basicOperationSystems
+const getOperationSystems = state => state.cloudVps.operationSystems
 
 const getItemForModals = state => state.cloudVps.itemForModalsReducer
 const getInstancesList = state => state.cloudVps.instances
@@ -12,13 +11,12 @@ const getWindowsTag = state => state.cloudVps.windowsTag
 const getSshList = state => state.cloudVps.sshList
 const getSshCount = state => state.cloudVps.sshCount
 const getAllSshList = state => state.cloudVps.allSshList
-
+const getSoldOutTag = state => state.cloudVps.soldOutTag
 
 export default {
   getPremiumTariffs,
   getBasicTariffs,
-  getPremiumOperationSystems,
-  getBasicOperationSystems,
+  getOperationSystems,
   getItemForModals,
   getInstancesList,
   getInstancesCount,
@@ -28,4 +26,5 @@ export default {
   getSshList,
   getSshCount,
   getAllSshList,
+  getSoldOutTag,
 }

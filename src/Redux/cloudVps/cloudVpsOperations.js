@@ -538,15 +538,7 @@ const getInstanceNetworkTrafficInfo =
   }
 
 const getOsList =
-  ({
-    signal,
-    setIsLoading,
-    lastTariffID,
-    closeLoader,
-    datacenter,
-    setSshList,
-    isBasic,
-  }) =>
+  ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
   dispatch => {
     setIsLoading && setIsLoading(true)
 
@@ -555,6 +547,15 @@ const getOsList =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+
+        const OsByZones = {}
+        osList.forEach(el => {
+          if (!OsByZones[el.$depend]) {
+            OsByZones[el.$depend] = [el]
+          } else {
+            OsByZones[el.$depend].push(el)
+          }
+        })
 
         const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
 
@@ -568,13 +569,10 @@ const getOsList =
           }))
         }
 
-        const operationSystems = { [data.doc.datacenter.$]: osList }
+        const operationSystems = { [data.doc.datacenter.$]: OsByZones }
 
-        if (isBasic) {
-          dispatch(cloudVpsActions.setBasicOperationSystems(operationSystems))
-        } else {
-          dispatch(cloudVpsActions.setPremiumOperationSystems(operationSystems))
-        }
+        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
+
         setSshList && setSshList(formatedSshList)
 
         closeLoader && closeLoader()
@@ -623,6 +621,9 @@ const getAllTariffsInfo =
         const windowsTag = data.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
+        const soldOutTag = data.doc.flist.val.find(el =>
+          el.$.toLowerCase().includes('soldout:true'),
+        ).$key
 
         const { basicTariffs, premiumTariffs } = sortCloudsByType(data, cloudBasicTag)
 
@@ -642,7 +643,7 @@ const getAllTariffsInfo =
             lastTariffID = premiumTariffs[dcID][premiumTariffs[dcID].length - 1].id.$
           }
           await dispatch(
-            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList, isBasic }),
+            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList }),
           )
         }
 
@@ -650,6 +651,7 @@ const getAllTariffsInfo =
         dispatch(cloudVpsActions.setPremiumTariffs(premiumTariffs))
         needDcList && dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
+        dispatch(cloudVpsActions.setSoldOutTag(soldOutTag))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
@@ -974,6 +976,7 @@ const getMetrics =
         handleLoadersClosing(error?.message, dispatch)
       })
   }
+
 const getImages =
   ({
     func,
@@ -1184,6 +1187,38 @@ const deleteImage =
       })
   }
 
+const copyModal =
+  ({ elid, values, successCallback = () => {}, setItemData, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'image.copy',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setItemData && setItemData(data.doc)
+        successCallback()
+        values?.sok === 'ok' && toast.success(t('request_sent', { ns: 'cloud_vps' }))
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -1213,4 +1248,5 @@ export default {
   getImageParams,
   createImage,
   deleteImage,
+  copyModal,
 }

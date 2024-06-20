@@ -6,7 +6,7 @@ import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import { Button, ImagesList, Loader, Select } from '@components'
-// import ss from '@components/Services/cloud/ImagesList/ImagesList.module.scss'
+import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_BACKUPS_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
@@ -142,6 +142,14 @@ export default function InstanceBackups() {
           idKey="elid"
         />
       </div>
+
+      <ImagesModals
+        loadingParams={{
+          signal,
+          setIsLoading,
+        }}
+        getItems={getItems}
+      />
 
       {isLoading && <Loader local shown={isLoading} halfScreen />}
     </>

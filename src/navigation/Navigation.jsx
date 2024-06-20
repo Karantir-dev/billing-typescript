@@ -50,6 +50,7 @@ const Component = () => {
   useEffect(() => {
     if (onlineStatus && !firstRender) {
       toast.success(t('online', { ns: 'other' }), {
+        id: 'online',
         position: 'bottom-right',
         autoClose: 8000,
       })

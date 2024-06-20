@@ -15,5 +15,5 @@ export default function Component() {
     dispatch(settingsOperations.confirmEmail(params?.key))
   }, [])
 
-  return <Navigate to={`${route.USER_SETTINGS}/personal`} replace={true} />
+  return <Navigate to={route.USER_SETTINGS_PERSONAL} replace={true} />
 }

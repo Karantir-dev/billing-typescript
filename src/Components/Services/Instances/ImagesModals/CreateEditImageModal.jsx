@@ -244,11 +244,9 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                         <span>{t('image.protected')}</span>
                         {isMobile && (
                           <TooltipWrapper
-                            anchor={'protected_hint'}
                             content={t('image.description.protected')}
                             wrapperClassName={s.label__tooltip}
                             className={s.hint}
-                            globalCloseEvents={{ scroll: true }}
                             place="top"
                           >
                             <Icon name="Info" />

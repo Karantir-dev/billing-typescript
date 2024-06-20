@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   Button,
   InputField,
@@ -14,7 +15,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useMemo, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
-import { generatePassword, getInstanceMainInfo } from '@utils'
+import { generatePassword, getImageIconName, getInstanceMainInfo } from '@utils'
 
 import s from './Modals.module.scss'
 import {
@@ -119,8 +120,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     dataArr = dataArr?.filter(el => el.$depend === depends && el.$key !== 'null')
 
     dataArr?.forEach(element => {
-      const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
-
+      const itemName = getImageIconName(element.$name)
       if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
         elemsData[itemName] = [element]
       } else {
@@ -129,8 +129,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     })
 
     return Object.entries(elemsData).map(([name, el]) => {
-      const svgIconName = isBootFromIso ? 'Iso' : name
-
+      const iconName = isBootFromIso ? 'iso' : name.toLowerCase()
       if (el.length > 1) {
         const optionsList = el.map(({ $key, $ }) => ({
           value: $key,
@@ -140,8 +139,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
         return (
           <SoftwareOSSelect
             key={optionsList[0].value}
-            iconName={name.toLowerCase()}
-            svgIcon={svgIconName}
+            iconName={iconName}
             itemsList={optionsList}
             state={current}
             getElement={item => changeOSHandler(item)}
@@ -153,10 +151,9 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
             key={el[0].$key}
             value={el[0].$key}
             state={current}
-            iconName={name.toLowerCase()}
+            iconName={iconName}
             label={el[0].$}
             onClick={item => changeOSHandler(item)}
-            svgIcon={svgIconName}
           />
         )
       }
@@ -302,9 +299,9 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     </div>
                   ) : isWindowsOS ? (
                     <WarningMessage>{t('windows_password_warning')}</WarningMessage>
-                  ) : state.zone !== IMAGES_TYPES.shared && !isBootFromIso ? (
+                  ) : state.zone === IMAGES_TYPES.public && !isBootFromIso ? (
                     <InputField
-                      inputClassName={s.input}
+                      className={s.rescue_pass_input}
                       name="password"
                       isShadow
                       type="password"

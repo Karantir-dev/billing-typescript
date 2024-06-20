@@ -6,8 +6,7 @@ import { rewriteCloudsPrices } from '@src/utils'
 const initialState = {
   premiumTariffs: null,
   basicTariffs: null,
-  premiumOperationSystems: null,
-  basicOperationSystems: null,
+  operationSystems: null,
 
   itemForModalsReducer: {},
   instances: null,
@@ -18,6 +17,7 @@ const initialState = {
   sshList: null,
   sshCount: 0,
   allSshList: [],
+  soldOutTag: '',
 }
 
 const itemForModalsReducer = createReducer(initialState.itemForModalsReducer, {
@@ -56,15 +56,12 @@ const instancesDcList = createReducer(initialState.instancesDcList, {
 const windowsTag = createReducer(initialState.windowsTag, {
   [cloudVpsActions.setWindowsTag]: (_, { payload }) => payload,
 })
-
-const premiumOperationSystems = createReducer(initialState.premiumOperationSystems, {
-  [cloudVpsActions.setPremiumOperationSystems]: (state, { payload }) => ({
-    ...state,
-    ...payload,
-  }),
+const soldOutTag = createReducer(initialState.soldOutTag, {
+  [cloudVpsActions.setSoldOutTag]: (_, { payload }) => payload,
 })
-const basicOperationSystems = createReducer(initialState.basicOperationSystems, {
-  [cloudVpsActions.setBasicOperationSystems]: (state, { payload }) => ({
+
+const operationSystems = createReducer(initialState.operationSystems, {
+  [cloudVpsActions.setOperationSystems]: (state, { payload }) => ({
     ...state,
     ...payload,
   }),
@@ -85,8 +82,7 @@ const sshCount = createReducer(initialState.sshCount, {
 const cloudVpsReducer = combineReducers({
   premiumTariffs,
   basicTariffs,
-  premiumOperationSystems,
-  basicOperationSystems,
+  operationSystems,
   itemForModalsReducer,
   instances,
   instancesCount,
@@ -96,6 +92,7 @@ const cloudVpsReducer = combineReducers({
   sshList,
   sshCount,
   allSshList,
+  soldOutTag,
 })
 
 export default cloudVpsReducer
