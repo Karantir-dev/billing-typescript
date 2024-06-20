@@ -27,7 +27,7 @@ export default function InstanceBackups() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps'])
 
-  const { item } = useCloudInstanceItemContext()
+  const { item, fetchItemById } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
@@ -117,6 +117,7 @@ export default function InstanceBackups() {
           setIsLoading,
         }}
         getItems={getItems}
+        fetchInstanceData={fetchItemById}
       />
 
       {isLoading && <Loader local shown={isLoading} halfScreen />}

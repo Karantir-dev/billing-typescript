@@ -16,6 +16,7 @@ export const ImagesModals = ({
   getItems,
   editImage,
   dailyCosts,
+  fetchInstanceData,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -94,6 +95,7 @@ export const ImagesModals = ({
         elid: instanceId,
         sok: 'ok',
         clicked_button: 'ok',
+        successCallback: fetchInstanceData,
         ...values,
       }),
     )
