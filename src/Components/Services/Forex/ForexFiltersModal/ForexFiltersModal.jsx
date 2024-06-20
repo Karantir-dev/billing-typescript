@@ -38,7 +38,7 @@ export default function ForexFiltersModal(props) {
   }
 
   const filteredDatacenters = filtersList?.datacenter?.filter(
-    item => item.$key === '2' || item.$key === '7' || item.$key === '8',
+    item => item.$key === '15' || item.$key === '9' || item.$key === '11',
   )
 
   useOutsideAlerter(modal, filterModal, clickOutsideModal)
@@ -85,7 +85,11 @@ export default function ForexFiltersModal(props) {
             <Form className={s.form}>
               <div className={s.formHeader}>
                 <h2>{t('Filter', { ns: 'other' })}</h2>
-                <Icon name="Cross" onClick={() => setFilterModal(false)} className={s.crossIcon} />
+                <Icon
+                  name="Cross"
+                  onClick={() => setFilterModal(false)}
+                  className={s.crossIcon}
+                />
               </div>
               <div className={s.fieldsBlock}>
                 <InputField
