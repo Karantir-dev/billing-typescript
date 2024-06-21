@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceSnapshots.module.scss'
 import { useCallback, useState } from 'react'
@@ -6,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, EditCell, Icon, ImagesList, Loader, WarningMessage } from '@components'
+import { Button, ImagesList, Loader, WarningMessage } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_SNAPSHOTS_CELLS = [
@@ -28,7 +27,7 @@ export default function InstanceSnapshots() {
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps'])
 
-  const { item } = useCloudInstanceItemContext()
+  const { item, fetchItemById } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
@@ -112,7 +111,7 @@ export default function InstanceSnapshots() {
           getItems={getItems}
           editImage={editImage}
           cost={dailyCosts}
-          type="snapshot"
+          pageList="snapshots"
           idKey="elid"
         />
       </div>
@@ -123,6 +122,7 @@ export default function InstanceSnapshots() {
           setIsLoading,
         }}
         getItems={getItems}
+        fetchInstanceData={fetchItemById}
       />
 
       {isLoading && <Loader local shown={isLoading} halfScreen />}
