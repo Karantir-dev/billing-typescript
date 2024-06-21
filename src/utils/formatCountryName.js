@@ -1,4 +1,4 @@
-const DC_COUNTRIES = ['Netherlands', 'Poland']
+const DC_COUNTRIES = ['Netherlands', 'Poland', 'Staging']
 
 /**
  *

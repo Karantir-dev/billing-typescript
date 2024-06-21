@@ -819,6 +819,7 @@ export default function CreateInstancePage() {
                             <span className={s.footer_params_label}>
                               {t('location', { ns: 'cloud_vps' })}
                             </span>
+
                             <img
                               className={s.flag}
                               src={require(
