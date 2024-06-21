@@ -387,9 +387,7 @@ export default function ForexOrderPage() {
                               countRAM === 500 ? 'Mb' : 'Gb'
                             } ${t('RAM', { ns: 'virtual_hosting' })}`}</span>
                             <span className={s.tarif_card_option}>
-                              {`${countMemory} ${t('memory', {
-                                ns: 'other',
-                              })}`}
+                              {`${countMemory} NVMe`}
                             </span>
                             <span className={s.tarif_card_option}>{`${t(osName)}`}</span>
                           </button>
