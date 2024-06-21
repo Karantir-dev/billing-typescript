@@ -292,7 +292,6 @@ export default function ForexOrderPage() {
                   {tarifList?.transformedTarifList
                     ?.filter(item => item.order_available.$ === 'on')
                     ?.map(item => {
-                      console.log(item)
                       const { countTerminal, countRAM, countMemory, osName } = item
                       const descriptionBlocks = item?.desc?.$.split('/')
                       const cardTitle = descriptionBlocks[0]
