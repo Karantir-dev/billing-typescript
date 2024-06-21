@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Loader, ImagesList, Button } from '@components'
 import s from './ImagesPage.module.scss'
 import { useDispatch } from 'react-redux'
@@ -83,7 +82,7 @@ export default function ImagesPage() {
         onClick={() => {
           dispatch(
             cloudVpsActions.setItemForModals({
-              image_edit: 'create',
+              images_edit: 'create',
             }),
           )
         }}
@@ -95,7 +94,7 @@ export default function ImagesPage() {
         getItems={getItems}
         editImage={editImage}
         cost={dailyCosts}
-        type="image"
+        pageList="images"
       />
 
       <ImagesModals

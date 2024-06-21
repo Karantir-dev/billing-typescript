@@ -180,7 +180,7 @@ export default function CloudInstanceItemPage() {
   const osIcon = getImageIconName(item?.os_distro?.$, darkTheme)
 
   return (
-    <CloudInstanceItemProvider value={{ item }}>
+    <CloudInstanceItemProvider value={{ item, fetchItemById }}>
       <div className={s.page}>
         <BreadCrumbs pathnames={parseLocations()} />
         <div className={s.head_coponent}>
