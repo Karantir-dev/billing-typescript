@@ -18,6 +18,8 @@ import * as route from '@src/routes'
 
 import s from './ForexOrderPage.module.scss'
 
+const FOREX_EUROPE_DC = 15
+
 export default function ForexOrderPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -290,6 +292,7 @@ export default function ForexOrderPage() {
                   {tarifList?.transformedTarifList
                     ?.filter(item => item.order_available.$ === 'on')
                     ?.map(item => {
+                      console.log(item)
                       const { countTerminal, countRAM, countMemory, osName } = item
                       const descriptionBlocks = item?.desc?.$.split('/')
                       const cardTitle = descriptionBlocks[0]
@@ -387,7 +390,8 @@ export default function ForexOrderPage() {
                               countRAM === 500 ? 'Mb' : 'Gb'
                             } ${t('RAM', { ns: 'virtual_hosting' })}`}</span>
                             <span className={s.tarif_card_option}>
-                              {`${countMemory} NVMe`}
+                              {countMemory}{' '}
+                              {+values.datacenter === FOREX_EUROPE_DC ? 'NVMe' : 'SSD'}
                             </span>
                             <span className={s.tarif_card_option}>{`${t(osName)}`}</span>
                           </button>
