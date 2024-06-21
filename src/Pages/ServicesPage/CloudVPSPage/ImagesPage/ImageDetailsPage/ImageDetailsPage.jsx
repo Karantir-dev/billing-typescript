@@ -47,18 +47,18 @@ export default function ImageDetailsPage({ pageList }) {
     return pathnames
   }
 
-  const editImage = ({ successCallback, ...values } = {}) => {
+  const editImage = ({ id, successCallback, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
         func: 'image',
-        elid,
         successCallback: () => {
           getImageData()
           successCallback?.()
         },
+        elid: id,
         signal,
         setIsLoading,
-        values: { ...values, clicked_button: 'ok', sok: 'ok' },
+        values: { image_name: name, ...values, clicked_button: 'ok', sok: 'ok' },
       }),
     )
   }

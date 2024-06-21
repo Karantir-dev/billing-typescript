@@ -29,6 +29,7 @@ export default function getInstanceMainInfo(item) {
     fotboStatus === 'unrescuing' ||
     fotboStatus === 'rebuilding' ||
     fotboStatus === 'suspending' ||
+    fotboStatus === 'booting_from_iso' ||
     billingStatus === 'Activation in progress' ||
     isDeleting
 

@@ -61,21 +61,18 @@ export default function InstanceBackups() {
     [],
   )
 
-  const editImage = ({ id, name, ...values }) => {
+  const editImage = ({ id, successCallback, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
         func: 'image',
-        successCallback: getItems,
+        successCallback: () => {
+          getItems()
+          successCallback?.()
+        },
         elid: id,
         signal,
         setIsLoading,
-        values: {
-          image_name: name,
-          plid: elid,
-          ...values,
-          clicked_button: 'ok',
-          sok: 'ok',
-        },
+        values: { image_name: name, ...values, clicked_button: 'ok', sok: 'ok' },
       }),
     )
   }
@@ -117,6 +114,7 @@ export default function InstanceBackups() {
           setIsLoading,
         }}
         getItems={getItems}
+        editImage={editImage}
         fetchInstanceData={fetchItemById}
       />
 
