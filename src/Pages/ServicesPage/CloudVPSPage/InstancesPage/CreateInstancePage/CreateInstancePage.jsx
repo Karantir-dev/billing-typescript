@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
@@ -26,7 +25,7 @@ import {
 import * as Yup from 'yup'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   cloudVpsActions,
@@ -124,10 +123,10 @@ export default function CreateInstancePage() {
 
   const premiumTariffs = useSelector(cloudVpsSelectors.getPremiumTariffs)
   const basicTariffs = useSelector(cloudVpsSelectors.getBasicTariffs)
-  const tariffs = isBasic ? basicTariffs : premiumTariffs
+  const certainTypeTariffs = isBasic ? basicTariffs : premiumTariffs
 
-  const filterSuitableTariffsForLaunch = list => {
-    const filteredList = list?.filter(el => {
+  const filterSuitableTariffsForLaunch = () => {
+    const filteredList = certainTypeTariffs?.[currentDC?.$key]?.filter(el => {
       const ram = parseInt(
         el.detail.find(param => param.name.$.toLowerCase().includes('memory'))?.value?.$,
       )
@@ -136,15 +135,20 @@ export default function CreateInstancePage() {
         el.detail.find(param => param.name.$.toLowerCase().includes('disk space'))?.value
           ?.$,
       )
-      console.log(+launchData.min_ram < ram && +launchData.min_disk < disk)
+
       return +launchData.min_ram < ram && +launchData.min_disk < disk
     })
-    return filteredList
+
+    const filteredTariffs = { ...certainTypeTariffs }
+    filteredTariffs[currentDC?.$key] = filteredList
+    return filteredTariffs
   }
 
-  let tariffsToRender = isLaunchMode
-    ? filterSuitableTariffsForLaunch(tariffs?.[currentDC?.$key])
-    : tariffs
+  /** If it is Launch mode - filter tariffs by min ram and min disk */
+  const tariffs = isLaunchMode
+    ? filterSuitableTariffsForLaunch(certainTypeTariffs?.[currentDC?.$key])
+    : certainTypeTariffs
+
   // if (isLaunchMode) {
   //   tariffsToRender = useMemo(
   //     filterSuitableTariffsForLaunch(tariffs?.[currentDC?.$key]),
