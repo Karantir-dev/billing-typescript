@@ -184,7 +184,7 @@ export default function ImagesList({
                   <TooltipWrapper
                     className={s.popup}
                     wrapperClassName={s.popup__wrapper}
-                    content={`${item.os_distro?.$} ${item.os_version?.$}`}
+                    content={`${item.os_distro?.$} ${item.os_version?.$ ?? ''}`}
                   >
                     <img
                       src={require(`@images/soft_os_icons/${osIcon}.png`)}
