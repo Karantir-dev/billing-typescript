@@ -18,7 +18,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
   const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
   const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active'
   const isImageType = item.image_type?.$.toLowerCase() === 'image'
-  console.log('ImagesOptions item', item)
+
   const options = [
     {
       label: t('edit'),
