@@ -91,8 +91,9 @@ export default function CreateInstancePage() {
   }
 
   const launchData = {
-    dcLabel: location.state?.dcLabel,
+    imageNumber: location.state?.imageNumber,
     imageId: location.state?.imageId,
+    dcLabel: location.state?.dcLabel,
     min_ram: location.state?.min_ram,
     min_disk: location.state?.min_disk,
   }
@@ -648,7 +649,10 @@ export default function CreateInstancePage() {
                         </ul>
                         {isLaunchMode && (
                           <div className={s.dc_link}>
-                            <Link className={s.link} to={route.CLOUD_VPS_IMAGES}>
+                            <Link
+                              className={s.link}
+                              to={`${route.CLOUD_VPS_IMAGES}/${launchData.imageNumber}`}
+                            >
                               {t('move_the_image', { ns: 'cloud_vps' })}
                             </Link>
                             <TooltipWrapper

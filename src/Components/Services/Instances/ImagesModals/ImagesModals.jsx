@@ -94,7 +94,6 @@ export const ImagesModals = ({
         action: 'rebuild',
         elid: instanceId,
         sok: 'ok',
-        clicked_button: 'ok',
         successCallback: fetchInstanceData,
         ...values,
       }),
