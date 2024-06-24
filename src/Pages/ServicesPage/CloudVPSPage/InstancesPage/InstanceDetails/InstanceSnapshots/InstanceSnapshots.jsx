@@ -61,15 +61,18 @@ export default function InstanceSnapshots() {
     [],
   )
 
-  const editImage = ({ id, name, ...values }) => {
+  const editImage = ({ id, successCallback, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
-        func: 'instances.snapshots',
-        successCallback: getItems,
+        func: 'image',
+        successCallback: () => {
+          getItems()
+          successCallback?.()
+        },
         elid: id,
         signal,
         setIsLoading,
-        values: { name, plid: elid, ...values, clicked_button: 'ok', sok: 'ok' },
+        values: { image_name: name, ...values, clicked_button: 'ok', sok: 'ok' },
       }),
     )
   }
@@ -122,6 +125,7 @@ export default function InstanceSnapshots() {
           setIsLoading,
         }}
         getItems={getItems}
+        editImage={editImage}
         fetchInstanceData={fetchItemById}
       />
 

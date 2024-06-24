@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
+import { useDispatch } from 'react-redux'
+import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { CopyText, Loader } from '@components'
 import {
   getFlagFromCountryName,
@@ -22,13 +22,11 @@ export default function InstanceDetailsOverview() {
   const [instanceInfo, setInstanceInfo] = useState({})
 
   const elid = item?.id?.$
-  const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
-
   const itemCountry = formatCountryName(item)
 
   useEffect(() => {
     dispatch(cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading))
-  }, [itemForModals.rdns_edit])
+  }, [])
 
   return (
     <>
