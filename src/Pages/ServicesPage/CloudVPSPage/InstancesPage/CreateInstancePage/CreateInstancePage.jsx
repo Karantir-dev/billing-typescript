@@ -97,12 +97,12 @@ export default function CreateInstancePage() {
     min_disk: location.state?.min_disk,
   }
 
-  const dcLabelFromLaunch = location.state?.dcLabel
+  const dcLabelFromLaunch = launchData?.dcLabel
   const dcIdFromLaunch = CLOUD_DC_NAMESPACE[dcLabelFromLaunch]
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
-  const imageIdFromLaunch = location.state?.imageId
+  const imageIdFromLaunch = launchData?.imageId
   const isLaunchMode = imageIdFromLaunch && dcLabelFromLaunch
   const [imagesCurrentTab, setImagesCurrentTab] = useState(
     imageIdFromLaunch ? IMAGES_TYPES.own : IMAGES_TYPES.public,
