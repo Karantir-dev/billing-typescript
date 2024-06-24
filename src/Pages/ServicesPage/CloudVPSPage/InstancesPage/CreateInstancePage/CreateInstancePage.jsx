@@ -421,6 +421,13 @@ export default function CreateInstancePage() {
                 )
               }
 
+              /** Sets first OS from the list when DC changes */
+              useEffect(() => {
+                if (currentDC.$key) {
+                  selectFirstImage(imagesCurrentTab)
+                }
+              }, [currentDC.$key])
+
               const onTariffChange = tariff => {
                 if (tariff) {
                   setFieldValue('tariff_id', tariff.id.$)
