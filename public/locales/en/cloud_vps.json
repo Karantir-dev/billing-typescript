@@ -108,7 +108,8 @@
       "bootimage": "Rescue",
       "rescue": "Rescue",
       "rebuild": "Rebuild instance",
-      "boot_from_iso": "Boot from ISO"
+      "boot_from_iso": "Boot from ISO",
+      "restore": "Restore from image"
     },
     "text": {
       "bootimage": "Select distribution",

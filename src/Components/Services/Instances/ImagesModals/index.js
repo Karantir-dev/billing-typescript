@@ -2,3 +2,4 @@ export { CreateSnapshotOrBackupModal } from '../ImagesModals/CreateSnapshotOrBac
 export { CopyModal } from '../ImagesModals/CopyModal'
 export { CreateEditImageModal } from './CreateEditImageModal'
 export { DeleteModal } from './DeleteModal'
+export { RestoreModal } from './RestoreModal'

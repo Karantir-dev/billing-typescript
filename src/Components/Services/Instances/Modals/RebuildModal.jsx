@@ -37,14 +37,16 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const [data, setData] = useState()
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
 
+  const [isConnectMethodOpened, setIsConnectMethodOpened] = useState(false)
+
   const isRebuild = item.rebuild_action === 'rebuild'
   const isBootFromIso = item.rebuild_action === 'boot_from_iso'
 
   const select = isRebuild
     ? 'select_rebuild'
     : isBootFromIso
-    ? 'select_boot_from_iso'
-    : 'select_boot'
+      ? 'select_boot_from_iso'
+      : 'select_boot'
 
   const [state, setState] = useReducer(
     (state, action) => {
@@ -74,6 +76,8 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       localValue: zone,
       onLocalClick: () => {
         setState({ [select]: '', zone })
+
+        setIsConnectMethodOpened(zone === IMAGES_TYPES.own ? false : true)
       },
     }))
   }, [data])
@@ -290,6 +294,9 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                         }))}
                         sshKey={values.ssh_keys}
                         isWindows={isWindowsOS}
+                        hiddenMode={state.zone === IMAGES_TYPES.own}
+                        isOpened={isConnectMethodOpened}
+                        setIsOpened={setIsConnectMethodOpened}
                       />
                       <ErrorMessage
                         className={s.error_message}

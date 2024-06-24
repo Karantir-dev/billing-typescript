@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { BreadCrumbs, Icon, ImagesOptions, Loader, TooltipWrapper } from '@components'
+import { BreadCrumbs, ImagesOptions, Loader, TooltipWrapper } from '@components'
 import { cloudVpsOperations, selectors } from '@redux'
 import { useCancelRequest, getImageIconName } from '@utils'
 import { useEffect, useState } from 'react'
@@ -28,7 +27,7 @@ const DETAILS_FIELDS = [
   { value: 'visibility' },
 ]
 
-export default function ImageDetailsPage() {
+export default function ImageDetailsPage({ pageList }) {
   const { elid } = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -133,7 +132,7 @@ export default function ImageDetailsPage() {
               </p>
             </div>
 
-            <ImagesOptions item={data} idKey="id" type="image" />
+            <ImagesOptions item={data} idKey="id" pageList={pageList} />
           </div>
           <div className={s.block_wrapper}>
             <h3 className={s.block_title}>{t('details.title')}</h3>

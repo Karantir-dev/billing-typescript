@@ -14,7 +14,7 @@ import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
 import { formatCountryName, getFlagFromCountryName, getImageIconName } from '@utils'
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import * as route from '@src/routes'
 import s from './ImagesList.module.scss'
 import { useSelector } from 'react-redux'
@@ -27,13 +27,14 @@ export default function ImagesList({
   getItems,
   editImage,
   idKey = 'id',
-  type,
+  pageList,
   cost,
 }) {
   const { t } = useTranslation(['cloud_vps', 'countries'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
   const navigate = useNavigate()
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
+  const { id: instanceId } = useParams()
 
   const [pagination, setPagination] = useReducer(
     (state, action) => {
@@ -167,7 +168,7 @@ export default function ImagesList({
       case 'options':
         if (!cell.renderData) {
           renderData = function renderData(_, item) {
-            return <ImagesOptions item={item} type={type} idKey={idKey} />
+            return <ImagesOptions item={item} pageList={pageList} idKey={idKey} />
           }
           return { ...cell, renderData }
         }
@@ -257,7 +258,11 @@ export default function ImagesList({
       e.target.closest('[data-target="name"]')
     )
       return
-    navigate(`${route.CLOUD_VPS}/images/${item[idKey].$}`)
+    if (pageList === 'images') {
+      navigate(`${route.CLOUD_VPS}/images/${item[idKey].$}`)
+    } else {
+      navigate(`${route.CLOUD_VPS}/${instanceId}/${pageList}/${item[idKey].$}`)
+    }
   }
 
   return (
@@ -358,5 +363,5 @@ ImagesList.propTypes = {
   getItems: PropTypes.func,
   editImage: PropTypes.func,
   idKey: PropTypes.string,
-  type: PropTypes.string,
+  pageList: PropTypes.string,
 }

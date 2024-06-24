@@ -7,13 +7,13 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 
-export default function ImagesOptions({ item, type, idKey }) {
+export default function ImagesOptions({ item, pageList, idKey }) {
   const isMobile = useMediaQuery({ query: '(max-width: 1549px)' })
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const isImagesPage = type === 'image'
+  const isImagesPage = pageList === 'images'
 
   const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
   const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active'
@@ -28,7 +28,7 @@ export default function ImagesOptions({ item, type, idKey }) {
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
-            [`${type}_edit`]: item,
+            [`${pageList}_edit`]: item,
           }),
         )
       },
@@ -49,7 +49,6 @@ export default function ImagesOptions({ item, type, idKey }) {
       icon: 'Copy',
       disabled: !isActive,
       onClick: () => {
-        console.log('Copy')
         dispatch(
           cloudVpsActions.setItemForModals({
             images_copy: {
@@ -65,7 +64,11 @@ export default function ImagesOptions({ item, type, idKey }) {
       icon: 'Restore',
       disabled: !isActive,
       onClick: () => {
-        console.log('Restore')
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            restore_modal: { ...item },
+          }),
+        )
       },
       hidden: isImagesPage,
     },
