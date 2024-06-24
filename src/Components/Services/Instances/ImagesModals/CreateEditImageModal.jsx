@@ -28,7 +28,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
 
   const type = data?.image_type?.$.toLowerCase()
 
-  const isImageType = type === 'image'
+  const isImageType = type === 'image' || isCreate
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(t('Is a required field', { ns: 'other' })),
