@@ -648,7 +648,7 @@ export default function CreateInstancePage() {
                         </ul>
                         {isLaunchMode && (
                           <div className={s.dc_link}>
-                            <Link className={s.link} to={route.CLOUD_VPS + '/images'}>
+                            <Link className={s.link} to={route.CLOUD_VPS_IMAGES}>
                               {t('move_the_image', { ns: 'cloud_vps' })}
                             </Link>
                             <TooltipWrapper
