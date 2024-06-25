@@ -4,14 +4,32 @@ import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import { cloudVpsActions } from '@src/Redux'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
+import { useEffect } from 'react'
 
 export default function ImagesOptions({ item, pageList, idKey }) {
   const isMobile = useMediaQuery({ query: '(max-width: 1549px)' })
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const openCopyModal = () => {
+    dispatch(
+      cloudVpsActions.setItemForModals({
+        images_copy: {
+          ...item,
+        },
+      }),
+    )
+  }
+
+  useEffect(() => {
+    if (location.state?.copy) {
+      openCopyModal()
+    }
+  }, [])
 
   const isImagesPage = pageList === 'images'
 
@@ -53,13 +71,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
       icon: 'Copy',
       disabled: !isActive,
       onClick: () => {
-        dispatch(
-          cloudVpsActions.setItemForModals({
-            images_copy: {
-              ...item,
-            },
-          }),
-        )
+        openCopyModal()
       },
       hidden: !isImagesPage,
     },
