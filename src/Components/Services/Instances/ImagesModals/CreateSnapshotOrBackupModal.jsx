@@ -1,19 +1,31 @@
-import { Button, InputField, Modal, WarningMessage } from '@components'
+import { Button, InputField, Modal, WarningMessage, WeekdaySelector } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './ImagesModals.module.scss'
 import { getInstanceMainInfo } from '@utils'
+import { TIME_REGEX } from '@utils/constants'
 
 export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
-  const itemDetails = item?.snapshot_create || item?.backup_create
+  const itemDetails =
+    item?.snapshot_create || item?.backup_create || item?.backup_schedule_create
   const { displayName } = getInstanceMainInfo(itemDetails)
 
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
+    rotation_time: item.backup_schedule_create
+      ? Yup.string()
+          .matches(TIME_REGEX, t('Invalid time format', { ns: 'other' }))
+          .required(t('Is a required field', { ns: 'other' }))
+      : null,
+    rotation_days: item.backup_schedule_create
+      ? Yup.array()
+          .of(Yup.number())
+          .min(1, t('At least one day must be selected', { ns: 'other' }))
+      : null,
   })
 
   return (
@@ -32,15 +44,21 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
         </WarningMessage>
 
         <Formik
-          initialValues={{ name: '' }}
+          initialValues={{ name: '', rotation_time: '', rotation_days: [] }}
           validationSchema={validationSchema}
           onSubmit={values => {
             onSubmit({
-              values: { name: values.name.trim(), plid: itemDetails.id.$, sok: 'ok' },
+              values: {
+                name: values.name.trim(),
+                rotation_days: values.rotation_days.join(','),
+                rotation_time: values.rotation_time,
+                plid: itemDetails.id.$,
+                sok: 'ok',
+              },
             })
           }}
         >
-          {({ errors, touched }) => {
+          {({ values, setFieldValue, errors, touched }) => {
             return (
               <Form id={'create_image'}>
                 <div>
@@ -55,6 +73,31 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
                     isRequired
                     autoComplete="off"
                   />
+
+                  {item?.backup_schedule_create && (
+                    <div className={s.backup_schedules}>
+                      <WeekdaySelector
+                        name="rotation_days"
+                        selectedDays={values.rotation_days}
+                        setSelectedDays={days => setFieldValue('rotation_days', days)}
+                        isRequired
+                      />
+
+                      <InputField
+                        inputClassName={s.input}
+                        labelTooltip={t('rotation_time_descr', { ns: 'cloud_vps' })}
+                        labelTooltipPlace="top-start"
+                        name="rotation_time"
+                        label={`${t('time', { ns: 'other' })} (GMT+3):`}
+                        placeholder={'14:25'}
+                        error={!!errors.rotation_time}
+                        touched={!!touched.rotation_time}
+                        isRequired
+                        isShadow
+                        autoComplete="off"
+                      />
+                    </div>
+                  )}
                 </div>
               </Form>
             )
@@ -62,12 +105,14 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
         </Formik>
       </Modal.Body>
       <Modal.Footer className={s.snapshot_create__footer_wrapper}>
-        <div className={s.snapshot_create__footer_block}>
-          <p className={s.tariff__param_name}>{t('Price')}</p>
-          <p>
-            {itemDetails?.stat_cost?.$} EUR / GB / {t('day')}
-          </p>
-        </div>
+        {!item?.backup_schedule_create && (
+          <div className={s.snapshot_create__footer_block}>
+            <p className={s.tariff__param_name}>{t('Price')}</p>
+            <p>
+              {itemDetails?.stat_cost?.$} EUR / GB / {t('day')}
+            </p>
+          </div>
+        )}
 
         <div className={s.snapshot_create__buttons_wrapper}>
           <Button

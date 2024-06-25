@@ -112,7 +112,6 @@ export default function InstanceSnapshots() {
           editImage={editImage}
           cost={dailyCosts}
           pageList="snapshots"
-          idKey="elid"
         />
       </div>
 

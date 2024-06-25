@@ -216,6 +216,8 @@
   "pcs": "pcs.",
   "create_snapshot": "Create Snapshot",
   "create_backup": "Create New Backup",
+  "create_backup_schedule": "Create new schedule",
+  "rotation_time_descr": "Please note that the time will change depending on the transition to daylight saving time or standard time.",
   "boot_from_iso": "Boot from ISO",
   "snapshots": {
     "create": "Create snapshot for instance",
@@ -227,6 +229,8 @@
     "create": "Create backup for instance",
     "create_warning": "Instance will not be available while the backup is being processed.",
     "backup_rotation": "Backup rotation",
+    "value_in_a_range": "The value must be in the range from 1 to 10",
+    "limit_value": "You can create 5 backups per day.",
     "backup_rotation_changed": "Backup rotation quantity changed",
     "rotation_info": "Number of backups to keep (the rest backups of type manual will be deleted)"
   },

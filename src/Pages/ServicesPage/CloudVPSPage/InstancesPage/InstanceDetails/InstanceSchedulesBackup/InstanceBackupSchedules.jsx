@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next'
-import s from './InstanceBackups.module.scss'
-import { useCallback, useState } from 'react'
+import s from './InstanceBackupSchedules.module.scss'
+import { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader, WarningMessage } from '@components'
+import { Button, ImagesList, Loader, EditCell } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_BACKUPS_CELLS = [
@@ -22,7 +22,7 @@ const INSTANCE_BACKUPS_CELLS = [
   },
 ]
 
-export default function InstanceBackups() {
+export default function InstanceBackupSchedules() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps'])
@@ -32,6 +32,8 @@ export default function InstanceBackups() {
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
+  const [backupRotation, setBackupRotation] = useState()
+  const [rotationFieldError, setRotationFieldError] = useState('')
 
   const elid = item?.id?.$
 
@@ -51,6 +53,7 @@ export default function InstanceBackups() {
             elid,
             setData,
             setCount,
+            setBackupRotation,
             setDailyCosts,
             signal,
             setIsLoading,
@@ -80,35 +83,70 @@ export default function InstanceBackups() {
     )
   }
 
-  const createdToday = dailyCosts?.created_today?.$
+  const editInstanceHandler = values => {
+    dispatch(
+      cloudVpsOperations.editInstance({
+        values,
+        elid,
+        successCallback: () => setBackupRotation(values.backup_rotation),
+        successToast: t('backups.backup_rotation_changed'),
+        signal,
+        setIsLoading,
+      }),
+    )
+  }
+
+  useEffect(() => {
+    if (rotationFieldError) {
+      const timer = setTimeout(() => {
+        setRotationFieldError('')
+      }, 10000) // 10 sec
+
+      return () => clearTimeout(timer)
+    }
+  }, [rotationFieldError])
 
   return (
     <>
       <div className={s.container}>
-        <div className={s.create_wrapper}>
-          <p>{t('backups.limit_value')}</p>
-          <Button
-            label={t('create_backup')}
-            size="large"
-            isShadow
-            onClick={() => {
-              dispatch(
-                cloudVpsActions.setItemForModals({
-                  backup_create: {
-                    ...item,
-                    ...dailyCosts,
-                  },
-                }),
-              )
-            }}
-            disabled={createdToday >= 5}
-          />
+        <Button
+          label={t('create_backup_schedule')}
+          size="large"
+          isShadow
+          onClick={() => {
+            dispatch(
+              cloudVpsActions.setItemForModals({
+                backup_schedule_create: {
+                  ...item,
+                  ...dailyCosts,
+                },
+              }),
+            )
+          }}
+        />
 
-          {createdToday >= 5 && (
-            <WarningMessage className={s.backup_limit_message}>
-              {t('snapshots.limit_reached')}
-            </WarningMessage>
-          )}
+        <div className={s.backup_rotation_wrapper}>
+          <p>{t('backups.backup_rotation')}:</p>
+          <div className={s.rotation_edit__field_wrapper}>
+            <EditCell
+              originName={backupRotation}
+              className={s.backup_rotation_select}
+              onSubmit={value => {
+                const numValue = Number(value)
+                if (numValue > 0 && numValue < 11) {
+                  editInstanceHandler({ backup_rotation: value })
+                } else {
+                  setRotationFieldError('backups.value_in_a_range')
+                }
+              }}
+              placeholder={backupRotation}
+              isShadow={true}
+            />
+            {rotationFieldError && (
+              <p className={s.rotation_error}>{t(rotationFieldError)}</p>
+            )}
+          </div>
+          <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
         </div>
 
         <ImagesList
