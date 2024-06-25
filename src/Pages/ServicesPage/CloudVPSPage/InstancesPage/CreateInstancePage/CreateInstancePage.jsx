@@ -652,6 +652,7 @@ export default function CreateInstancePage() {
                             <Link
                               className={s.link}
                               to={`${route.CLOUD_VPS_IMAGES}/${launchData.imageNumber}`}
+                              state={{ copy: true }}
                             >
                               {t('move_the_image', { ns: 'cloud_vps' })}
                             </Link>
