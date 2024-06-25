@@ -5,6 +5,6 @@ export default function getFlagFromCountryName(country) {
     case 'poland':
       return 'pl'
     default:
-      return
+      return 'undefined'
   }
 }

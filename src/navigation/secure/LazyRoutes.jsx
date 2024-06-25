@@ -553,7 +553,7 @@ export const CloudVPSImagesPageLazy = () => {
   )
 }
 
-export const CloudVpsImageDetailesPageLazy = () => {
+export const CloudVpsImageDetailesPageLazy = ({ pageList }) => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
     { value: 'burger_menu.services.services_list.images', ns: 'container' },
@@ -561,7 +561,7 @@ export const CloudVpsImageDetailesPageLazy = () => {
 
   return (
     <ShellСomponent title={title}>
-      <CloudVpsImageDetailesPage />
+      <CloudVpsImageDetailesPage pageList={pageList} />
     </ShellСomponent>
   )
 }

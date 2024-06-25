@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
@@ -24,7 +25,7 @@ import {
 } from '@components'
 import * as Yup from 'yup'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -90,12 +91,20 @@ export default function CreateInstancePage() {
     setCloudType(type)
   }
 
-  const dcLabelFromLaunch = location.state?.dcLabel
+  const launchData = {
+    imageNumber: location.state?.imageNumber,
+    imageId: location.state?.imageId,
+    dcLabel: location.state?.dcLabel,
+    min_ram: location.state?.min_ram,
+    min_disk: location.state?.min_disk,
+  }
+
+  const dcLabelFromLaunch = launchData?.dcLabel
   const dcIdFromLaunch = CLOUD_DC_NAMESPACE[dcLabelFromLaunch]
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
-  const imageIdFromLaunch = location.state?.imageId
+  const imageIdFromLaunch = launchData?.imageId
   const isLaunchMode = imageIdFromLaunch && dcLabelFromLaunch
   const [imagesCurrentTab, setImagesCurrentTab] = useState(
     imageIdFromLaunch ? IMAGES_TYPES.own : IMAGES_TYPES.public,
@@ -112,9 +121,44 @@ export default function CreateInstancePage() {
 
   const warningEl = useRef()
 
+  const [currentDC, setCurrentDC] = useState()
+
   const premiumTariffs = useSelector(cloudVpsSelectors.getPremiumTariffs)
   const basicTariffs = useSelector(cloudVpsSelectors.getBasicTariffs)
-  const tariffs = isBasic ? basicTariffs : premiumTariffs
+  const certainTypeTariffs = isBasic ? basicTariffs : premiumTariffs
+
+  const filterSuitableTariffsForLaunch = () => {
+    const filteredList = certainTypeTariffs?.[currentDC?.$key]?.filter(el => {
+      const ram = parseInt(
+        el.detail.find(param => param.name.$.toLowerCase().includes('memory'))?.value?.$,
+      )
+
+      const disk = parseInt(
+        el.detail.find(param => param.name.$.toLowerCase().includes('disk space'))?.value
+          ?.$,
+      )
+
+      return +launchData.min_ram <= ram && +launchData.min_disk <= disk
+    })
+
+    const filteredTariffs = { ...certainTypeTariffs }
+    filteredTariffs[currentDC?.$key] = filteredList
+    return filteredTariffs
+  }
+
+  /** If it is Launch mode - filter tariffs by min ram and min disk */
+  const tariffs = isLaunchMode
+    ? filterSuitableTariffsForLaunch(certainTypeTariffs?.[currentDC?.$key])
+    : certainTypeTariffs
+
+  // if (isLaunchMode) {
+  //   tariffsToRender = useMemo(
+  //     filterSuitableTariffsForLaunch(tariffs?.[currentDC?.$key]),
+  //     [tariffs?.[currentDC?.$key]],
+  //   )
+  // } else {
+  //   tariffs
+  // }
 
   const operationSystems = useSelector(cloudVpsSelectors.getOperationSystems)
 
@@ -130,7 +174,6 @@ export default function CreateInstancePage() {
 
   const { credit, realbalance } = useSelector(userSelectors.getUserInfo)
 
-  const [currentDC, setCurrentDC] = useState()
   const [showCaption, setShowCaption] = useState(false)
 
   const [isSoldOutModalOpened, setSoldOutModalOpened] = useState(false)
@@ -348,528 +391,560 @@ export default function CreateInstancePage() {
         FallbackComponent={Error}
         onError={err => console.log('ErrorBoundary', err)}
       >
-        {tariffs?.[currentDC?.$key] &&
-          operationSystems?.[currentDC?.$key] &&
-          currentDC &&
-          ownImages && (
-            <Formik
-              initialValues={{
-                instances_os:
-                  imageIdFromLaunch ||
-                  operationSystems?.[currentDC.$key]?.[imagesCurrentTab]?.[0]?.$key,
-                tariff_id: tariffFromSite?.id.$ || tariffs?.[currentDC?.$key]?.[0]?.id.$,
-                tariffData: tariffFromSite || tariffs?.[currentDC?.$key]?.[0],
-                period: 30,
-                network_ipv6: !!dataFromSite?.network_ipv6 || false,
-                connectionType: '',
-                ssh_keys: '',
-                password: '',
-                servername: '',
-                order_count: '1',
-                notEnoughMoney: false,
-              }}
-              validationSchema={validationSchema}
-              onSubmit={onFormSubmit}
-            >
-              {({ values, setFieldValue, errors, touched }) => {
-                useEffect(() => {
-                  setFieldValue('ssh_keys', allSshList?.[0]?.elid.$)
-                }, [allSshList])
+        {tariffs?.[currentDC?.$key] && operationSystems?.[currentDC?.$key] && (
+          <Formik
+            initialValues={{
+              instances_os:
+                imageIdFromLaunch ||
+                operationSystems?.[currentDC.$key]?.[imagesCurrentTab]?.[0]?.$key,
+              tariff_id: tariffFromSite?.id.$ || tariffs?.[currentDC?.$key]?.[0]?.id.$,
+              tariffData: tariffFromSite || tariffs?.[currentDC?.$key]?.[0],
+              period: 30,
+              network_ipv6: !!dataFromSite?.network_ipv6 || false,
+              connectionType: '',
+              ssh_keys: '',
+              password: '',
+              servername: '',
+              order_count: '1',
+              notEnoughMoney: false,
+            }}
+            validationSchema={validationSchema}
+            onSubmit={onFormSubmit}
+          >
+            {({ values, setFieldValue, errors, touched }) => {
+              useEffect(() => {
+                setFieldValue('ssh_keys', allSshList?.[0]?.elid.$)
+              }, [allSshList])
 
-                const selectFirstImage = tab => {
-                  setFieldValue(
-                    'instances_os',
-                    operationSystems?.[currentDC.$key]?.[tab]?.[0]?.$key,
-                  )
+              const selectFirstImage = tab => {
+                setFieldValue(
+                  'instances_os',
+                  operationSystems?.[currentDC.$key]?.[tab]?.[0]?.$key,
+                )
+              }
+
+              /** Sets first OS from the list when DC changes */
+              useEffect(() => {
+                if (currentDC.$key) {
+                  selectFirstImage(imagesCurrentTab)
                 }
+              }, [currentDC.$key])
 
-                const onTariffChange = tariff => {
+              const onTariffChange = tariff => {
+                if (tariff) {
                   setFieldValue('tariff_id', tariff.id.$)
                   setFieldValue('tariffData', tariff)
                 }
+              }
 
-                const isItWindows = checkIsItWindows(values.instances_os)
+              const isItWindows = checkIsItWindows(values.instances_os)
 
-                /** if we have selected OS Windows - we disable tariffs that don`t support this OS */
-                const filterTariffsList = isItWindows => {
-                  return isItWindows
-                    ? tariffs[currentDC.$key].map(tariff => {
-                        const newTariff = { ...tariff }
-                        let supportsWindows
-                        if (Array.isArray(tariff.flabel.tag)) {
-                          supportsWindows = tariff.flabel.tag.some(
-                            el => el.$ === windowsTag,
-                          )
-                        } else {
-                          supportsWindows = tariff.flabel.tag.$ === windowsTag
-                        }
+              /** if we have selected OS Windows - we disable tariffs that don`t support this OS */
+              const disableWindowsOnlyTariffs = isItWindows => {
+                return isItWindows
+                  ? tariffs[currentDC.$key].map(tariff => {
+                      const newTariff = { ...tariff }
+                      let supportsWindows
+                      if (Array.isArray(tariff.flabel.tag)) {
+                        supportsWindows = tariff.flabel.tag.some(
+                          el => el.$ === windowsTag,
+                        )
+                      } else {
+                        supportsWindows = tariff.flabel.tag.$ === windowsTag
+                      }
 
-                        newTariff.disabled = !supportsWindows
-                        return newTariff
-                      })
-                    : tariffs[currentDC.$key]
+                      newTariff.disabled = !supportsWindows
+                      return newTariff
+                    })
+                  : tariffs[currentDC.$key]
+              }
+
+              const tariffsListToRender = disableWindowsOnlyTariffs(isItWindows)
+
+              const onDCchange = async dc => {
+                if (!tariffs[dc.$key]) {
+                  await dispatch(
+                    cloudVpsOperations.getAllTariffsInfo({
+                      signal,
+                      setIsLoading,
+                      datacenter: dc.$key,
+                      needOsList: !operationSystems[dc.$key],
+                      needDcList: false,
+                      isBasic,
+                    }),
+                  )
                 }
 
-                const filteredTariffsList = filterTariffsList(isItWindows)
+                setCurrentDC(dc)
+              }
 
-                const onDCchange = async dc => {
-                  if (!tariffs[dc.$key]) {
-                    await dispatch(
-                      cloudVpsOperations.getAllTariffsInfo({
-                        signal,
-                        setIsLoading,
-                        datacenter: dc.$key,
-                        needOsList: !operationSystems[dc.$key],
-                        needDcList: false,
-                        isBasic,
-                      }),
-                    )
-                  }
-
-                  setCurrentDC(dc)
-                }
-
-                useEffect(() => {
-                  if (!tariffFromSite) {
-                    onTariffChange(filteredTariffsList[0])
-                  } else {
-                    localStorage.removeItem('site_cart')
-                  }
-                }, [currentDC?.$key, cloudType])
-
-                const onOSchange = value => {
-                  setFieldValue('instances_os', value)
-
-                  if (checkIsItWindows(value)) {
-                    const tariffsBasedOnOs = filterTariffsList(true)
-                    const firstAvailableTariff = tariffsBasedOnOs.find(el => !el.disabled)
-
-                    let tariffHasWindows = checkIfHasWindows(
-                      values.tariffData,
-                      windowsTag,
-                    )
-
-                    values.connectionType === 'ssh' && setFieldValue('connectionType', '')
-                    setFieldValue('ssh_keys', '')
-                    if (!tariffHasWindows) {
-                      onTariffChange(firstAvailableTariff)
-                    }
-                  }
-                }
-
-                const calculatePrice = (tariff, values, period = null, count = 1) => {
-                  const dailyCost = tariff?.prices.price.cost.$
-                  const monthlyCost = tariff?.prices.price.cost.month
-
-                  period = period ? period : values.period
-
-                  let price = dailyCost
-
-                  if (period === 30) {
-                    price = monthlyCost
-                  }
-
-                  if (values.network_ipv6) {
-                    if (period === 30) {
-                      price -= IPv4_MONTHLY_COST
-                    } else {
-                      price -= IPv4_DAILY_COST
-                    }
-                  }
-
-                  if (period === 30) {
-                    price = price * count
-                  } else {
-                    price = price * period * count
-                  }
-
-                  if (price < 0.01) {
-                    price = roundToDecimal(price, 'ceil', 3)
-                  } else {
-                    price = roundToDecimal(price)
-                  }
-                  return price
-                }
-
-                const currentCpu = values.tariffData?.detail.find(el =>
-                  el.name.$.toLowerCase().includes('cpu'),
-                )?.value.$
-
-                const currentDisk = values.tariffData?.detail
-                  .find(el => el.name.$.toLowerCase() === 'disk space')
-                  .value.$.replace('.', '')
-                const currentCountryName = formatCountryName(currentDC.$)
-
-                const finalPrice = calculatePrice(
-                  values.tariffData,
-                  values,
-                  PERIODS_LIST.find(el => el.id === 'day').value,
-                  values.order_count,
-                )
-
-                const totalBalance = credit ? +realbalance + +credit : +realbalance
-
-                if (finalPrice > totalBalance && finalPrice < 1) {
-                  !values.notEnoughMoney && setFieldValue('notEnoughMoney', true)
+              useEffect(() => {
+                if (!tariffFromSite) {
+                  onTariffChange(tariffsListToRender[0])
                 } else {
-                  values.notEnoughMoney && setFieldValue('notEnoughMoney', false)
+                  localStorage.removeItem('site_cart')
+                }
+              }, [currentDC?.$key, cloudType])
+
+              const onOSchange = value => {
+                setFieldValue('instances_os', value)
+
+                if (checkIsItWindows(value)) {
+                  const tariffsBasedOnOs = disableWindowsOnlyTariffs(true)
+                  const firstAvailableTariff = tariffsBasedOnOs.find(el => !el.disabled)
+
+                  let tariffHasWindows = checkIfHasWindows(values.tariffData, windowsTag)
+
+                  values.connectionType === 'ssh' && setFieldValue('connectionType', '')
+                  setFieldValue('ssh_keys', '')
+                  if (!tariffHasWindows) {
+                    onTariffChange(firstAvailableTariff)
+                  }
+                }
+              }
+
+              const calculatePrice = (tariff, values, period = null, count = 1) => {
+                const dailyCost = tariff?.prices.price.cost.$
+                const monthlyCost = tariff?.prices.price.cost.month
+
+                period = period ? period : values.period
+
+                let price = dailyCost
+
+                if (period === 30) {
+                  price = monthlyCost
                 }
 
-                const imagesTabs = [
-                  {
-                    localValue: IMAGES_TYPES.public,
-                    onLocalClick: () => {
-                      setImagesCurrentTab(IMAGES_TYPES.public)
-                      setIsConnectMethodOpened(true)
-                      selectFirstImage(IMAGES_TYPES.public)
-                    },
-                    label: t('Public'),
-                    allowToRender: true,
+                if (values.network_ipv6) {
+                  if (period === 30) {
+                    price -= IPv4_MONTHLY_COST
+                  } else {
+                    price -= IPv4_DAILY_COST
+                  }
+                }
+
+                if (period === 30) {
+                  price = price * count
+                } else {
+                  price = price * period * count
+                }
+
+                if (price < 0.01) {
+                  price = roundToDecimal(price, 'ceil', 3)
+                } else {
+                  price = roundToDecimal(price)
+                }
+                return price
+              }
+
+              const currentCpu = values.tariffData?.detail.find(el =>
+                el.name.$.toLowerCase().includes('cpu'),
+              )?.value.$
+
+              const currentDisk = values.tariffData?.detail
+                .find(el => el.name.$.toLowerCase() === 'disk space')
+                .value.$.replace('.', '')
+              const currentCountryName = formatCountryName(currentDC.$)
+
+              const finalPrice = calculatePrice(
+                values.tariffData,
+                values,
+                PERIODS_LIST.find(el => el.id === 'day').value,
+                values.order_count,
+              )
+
+              const totalBalance = credit ? +realbalance + +credit : +realbalance
+
+              if (finalPrice > totalBalance && finalPrice < 1) {
+                !values.notEnoughMoney && setFieldValue('notEnoughMoney', true)
+              } else {
+                values.notEnoughMoney && setFieldValue('notEnoughMoney', false)
+              }
+
+              const imagesTabs = [
+                {
+                  localValue: IMAGES_TYPES.public,
+                  onLocalClick: () => {
+                    setImagesCurrentTab(IMAGES_TYPES.public)
+                    setIsConnectMethodOpened(true)
+                    selectFirstImage(IMAGES_TYPES.public)
                   },
-                  {
-                    localValue: IMAGES_TYPES.own,
-                    onLocalClick: () => {
-                      setImagesCurrentTab(IMAGES_TYPES.own)
-                      setFieldValue('connectionType', '')
-                      setIsConnectMethodOpened(false)
-                      selectFirstImage(IMAGES_TYPES.own)
-                    },
-                    label: t('Your images'),
-                    allowToRender: true,
+                  label: t('Public'),
+                  allowToRender: true,
+                },
+                {
+                  localValue: IMAGES_TYPES.own,
+                  onLocalClick: () => {
+                    setImagesCurrentTab(IMAGES_TYPES.own)
+                    setFieldValue('connectionType', '')
+                    setIsConnectMethodOpened(false)
+                    selectFirstImage(IMAGES_TYPES.own)
                   },
-                ]
+                  label: t('Your images'),
+                  allowToRender: true,
+                },
+              ]
 
-                const launchImage = isLaunchMode
-                  ? ownImages.find(el => el.$key === imageIdFromLaunch)
-                  : null
+              const launchImage = isLaunchMode
+                ? ownImages.find(el => el.$key === imageIdFromLaunch)
+                : null
 
-                const imagesToRender =
-                  imagesCurrentTab === IMAGES_TYPES.public ? publicImages : ownImages
+              const imagesToRender =
+                imagesCurrentTab === IMAGES_TYPES.public ? publicImages : ownImages
 
-                const isSoldOut = values.tariffData.flabel.tag.some(
-                  el => el.$ === soldOutTag,
-                )
+              const isSoldOut = values.tariffData?.flabel.tag.some(
+                el => el.$ === soldOutTag,
+              )
 
-                return (
-                  <Form>
-                    <ScrollToFieldError />
-
-                    {values.notEnoughMoney && (
-                      <WarningMessage className={s.warning} ref={warningEl}>
-                        {t('not_enough_money', { ns: 'cloud_vps' })}{' '}
-                        <button
-                          className={s.link}
-                          type="button"
-                          onClick={() =>
-                            dispatch(billingActions.setIsModalCreatePaymentOpened(true))
-                          }
-                        >
-                          {t('top_up', { ns: 'cloud_vps' })}
-                        </button>
-                      </WarningMessage>
-                    )}
-
-                    <CloudTypeSection
-                      isLaunchMode={isLaunchMode}
-                      premiumTariffs={premiumTariffs?.[currentDC.$key]}
-                      basicTariffs={basicTariffs?.[currentDC.$key]}
-                      value={cloudType}
-                      switchCloudType={switchCloudType}
-                    />
-
-                    <section className={s.section}>
-                      <h3 className={s.section_title}>{t('server_location')}</h3>
-
-                      <ul className={s.grid}>
-                        {isLaunchMode ? (
-                          <CountryButton
-                            currentItem={currentDC}
-                            item={currentDC}
-                            onChange={onDCchange}
-                            disabled
-                          />
-                        ) : (
-                          filteredDcList?.map(dc => {
-                            return (
-                              <CountryButton
-                                key={dc.$key}
-                                currentItem={currentDC}
-                                item={dc}
-                                onChange={onDCchange}
-                              />
-                            )
-                          })
-                        )}
-                      </ul>
-                      {isLaunchMode && (
-                        <div className={s.dc_link}>
-                          <Link className={s.link} to={route.CLOUD_VPS + '/images'}>
-                            {t('move_the_image', { ns: 'cloud_vps' })}
-                          </Link>
-                          <TooltipWrapper
-                            content={t('Hint', { ns: 'other' })}
-                            wrapperClassName={cn(s.tooltip)}
+              return (
+                <Form>
+                  <ScrollToFieldError />
+                  {tariffsListToRender?.length > 0 ? (
+                    <>
+                      {values.notEnoughMoney && (
+                        <WarningMessage className={s.warning} ref={warningEl}>
+                          {t('not_enough_money', { ns: 'cloud_vps' })}{' '}
+                          <button
+                            className={s.link}
+                            type="button"
+                            onClick={() =>
+                              dispatch(billingActions.setIsModalCreatePaymentOpened(true))
+                            }
                           >
-                            <Icon name="Info" />
-                          </TooltipWrapper>
-                        </div>
-                      )}
-                    </section>
-
-                    <section className={s.section}>
-                      <h3 className={s.section_title}>{t('server_image')}</h3>
-
-                      {isLaunchMode ? (
-                        ''
-                      ) : (
-                        <PageTabBar
-                          sections={imagesTabs}
-                          activeValue={imagesCurrentTab}
-                        />
-                      )}
-
-                      <div className={s.os_list}>
-                        {isLaunchMode ? (
-                          <SoftwareOSBtn
-                            value={imageIdFromLaunch}
-                            state={imageIdFromLaunch}
-                            iconName={getImageIconName(launchImage?.$)}
-                            label={launchImage?.$}
-                            imageData={launchImage}
-                            disabled
-                          />
-                        ) : (
-                          <OsList
-                            list={imagesToRender}
-                            value={values.instances_os}
-                            onOSchange={onOSchange}
-                          />
-                        )}
-                      </div>
-
-                      {isItWindows && (
-                        <WarningMessage className={s.notice_wrapper}>
-                          {t('windows_os_notice')}
+                            {t('top_up', { ns: 'cloud_vps' })}
+                          </button>
                         </WarningMessage>
                       )}
-                    </section>
 
-                    <section className={s.section}>
-                      <h3 className={s.section_title}>{t('server_size')}</h3>
+                      <CloudTypeSection
+                        isLaunchMode={isLaunchMode}
+                        premiumTariffs={premiumTariffs?.[currentDC.$key]}
+                        basicTariffs={basicTariffs?.[currentDC.$key]}
+                        value={cloudType}
+                        switchCloudType={switchCloudType}
+                      />
 
-                      <div className={s.period_bar}>
-                        <div className={s.ip_wrapper}>
-                          <label className={s.ip_checkbox} htmlFor="ipv6">
-                            <CheckBox
-                              name="network_ipv6"
-                              id="ipv6"
-                              value={values.network_ipv6}
-                              onClick={() => {
-                                setFieldValue('network_ipv6', !values.network_ipv6)
+                      <section className={s.section}>
+                        <h3 className={s.section_title}>{t('server_location')}</h3>
+
+                        <ul className={s.grid}>
+                          {isLaunchMode ? (
+                            <CountryButton
+                              currentItem={currentDC}
+                              item={currentDC}
+                              onChange={onDCchange}
+                              disabled
+                            />
+                          ) : (
+                            filteredDcList?.map(dc => {
+                              return (
+                                <CountryButton
+                                  key={dc.$key}
+                                  currentItem={currentDC}
+                                  item={dc}
+                                  onChange={onDCchange}
+                                />
+                              )
+                            })
+                          )}
+                        </ul>
+
+                        {isLaunchMode && (
+                          <div className={s.dc_link}>
+                            <Trans
+                              t={key => t(key, { ns: 'cloud_vps' })}
+                              i18nKey="move_the_image"
+                              components={{
+                                a: (
+                                  <Link
+                                    className={s.link}
+                                    to={`${route.CLOUD_VPS_IMAGES}/${launchData.imageNumber}`}
+                                    state={{ copy: true }}
+                                  />
+                                ),
                               }}
                             />
-                            {t('cloud_ipv6')}
-                            <span className={s.ip_discount}>
-                              -1€/{t('short_month', { ns: 'other' })}
-                            </span>
-                          </label>
-                          <TooltipWrapper
-                            content={t('hint_description.ip')}
-                            className={s.hintPopup}
-                            disabled={!widerThan1550}
-                          >
-                            <button
-                              type="button"
-                              onClick={() => toggleCaptionHandler('ip')}
-                            >
-                              <Icon name="Info" />
-                            </button>
-                          </TooltipWrapper>
-                        </div>
-
-                        <RadioTypeButton
-                          withCaption
-                          label={t('price_per')}
-                          list={PERIODS_LIST}
-                          value={values.period}
-                          onClick={value => setFieldValue('period', value)}
-                          captionText={t('hint_description.period')}
-                          popupClassName={s.hintPopup}
-                          toggleCaption={() => toggleCaptionHandler('period')}
-                        />
-                      </div>
-                      {!widerThan1550 && showCaption && (
-                        <div
-                          className={cn(s.period_description, {
-                            [s.truncated]: !showCaption,
-                          })}
-                        >
-                          <span className="asterisk">*</span>
-                          {t(`hint_description.${showCaption}`)}
-                        </div>
-                      )}
-                      <ul className={s.grid}>
-                        {filteredTariffsList?.map(tariff => {
-                          const price = calculatePrice(tariff, values)
-                          const isSoldOut = tariff.flabel.tag.some(
-                            el => el.$ === soldOutTag,
-                          )
-                          return (
-                            <TariffCard
-                              key={tariff.id.$}
-                              tariff={tariff}
-                              onClick={() => {
-                                isSoldOut && setSoldOutModalOpened(true)
-                                onTariffChange(tariff)
-                              }}
-                              price={price}
-                              active={values.tariff_id === tariff.id.$}
-                              disabled={tariff.disabled}
-                              isSoldOut={isSoldOut}
-                            />
-                          )
-                        })}
-                      </ul>
-                    </section>
-
-                    <section className={s.section}>
-                      <h3 className={s.section_title}>{t('authentication_method')}</h3>
-
-                      <ConnectMethod
-                        connectionType={values.connectionType}
-                        name="connectionType"
-                        sshKey={values.ssh_keys}
-                        onChangeType={type => setFieldValue('connectionType', type)}
-                        setSSHkey={value => setFieldValue('ssh_keys', value)}
-                        setPassword={value => setFieldValue('password', value)}
-                        errors={errors}
-                        touched={touched}
-                        sshList={allSshList.map(el => ({
-                          label: el.comment.$,
-                          value: el.elid.$,
-                        }))}
-                        isWindows={isItWindows}
-                        hiddenMode={imagesCurrentTab === IMAGES_TYPES.own}
-                        isOpened={isConnectMethodOpened}
-                        setIsOpened={setIsConnectMethodOpened}
-                      />
-                      <ErrorMessage
-                        className={s.error_message}
-                        name="connectionType"
-                        component="span"
-                      />
-                    </section>
-
-                    <section className={s.section}>
-                      <h3 className={s.section_title}>
-                        {t('server_name', { ns: 'vds' })}
-                      </h3>
-                      <div className={s.grid}>
-                        <InputField
-                          inputWrapperClass={s.input_wrapper}
-                          inputClassName={s.input}
-                          name="servername"
-                          placeholder={t('server_name', { ns: 'vds' })}
-                          isShadow
-                        />
-                      </div>
-                    </section>
-
-                    <FixedFooter isShown={values.tariff_id}>
-                      <div className={s.footer_container}>
-                        <div className={cn(s.footer_parameters, s.footer_item)}>
-                          <div className={s.footer_params_row}>
-                            <span className={s.footer_params_label}>
-                              {t('location', { ns: 'cloud_vps' })}
-                            </span>
-                            <img
-                              className={s.flag}
-                              src={require(
-                                `@images/countryFlags/${getFlagFromCountryName(
-                                  currentCountryName,
-                                )}.png`,
-                              )}
-                              width={20}
-                              height={14}
-                              alt={currentCountryName}
-                            />
-                            {t(currentCountryName, { ns: 'countries' })}
                           </div>
-                          <div className={s.footer_params_row}>
-                            <span className={s.footer_params_label}>CPU</span>
-                            {currentCpu}
-                          </div>
-                          <div className={s.footer_params_row}>
-                            <span className={s.footer_params_label}>NVMe</span>
-                            {currentDisk}
-                          </div>
-                        </div>
+                        )}
+                      </section>
 
-                        <div className={s.footer_item}>
-                          <p className={s.label}>{t('amount_servers', { ns: 'vds' })}</p>
-                          <Incrementer
-                            count={values.order_count}
-                            setCount={value => setFieldValue('order_count', value)}
-                            max={35}
+                      <section className={s.section}>
+                        <h3 className={s.section_title}>{t('server_image')}</h3>
+
+                        {isLaunchMode ? (
+                          ''
+                        ) : (
+                          <PageTabBar
+                            sections={imagesTabs}
+                            activeValue={imagesCurrentTab}
                           />
+                        )}
+
+                        <div className={s.os_list}>
+                          {isLaunchMode ? (
+                            <SoftwareOSBtn
+                              value={imageIdFromLaunch}
+                              state={imageIdFromLaunch}
+                              iconName={getImageIconName(launchImage?.$)}
+                              label={launchImage?.$}
+                              imageData={launchImage}
+                              disabled
+                            />
+                          ) : (
+                            <OsList
+                              list={imagesToRender}
+                              value={values.instances_os}
+                              onOSchange={onOSchange}
+                            />
+                          )}
                         </div>
 
-                        <div className={s.footer_item}>
-                          <p className={s.label}>{t('Sum', { ns: 'other' })}</p>
-                          <p className={s.footer_price}>
-                            €{finalPrice}/
-                            <span className={s.price_period}>{t('day')}</span>
-                          </p>
-                          <p className={s.footer_hour_price}>
-                            (€
-                            {calculatePrice(
-                              values.tariffData,
-                              values,
-                              PERIODS_LIST.find(el => el.id === 'hour').value,
-                              values.order_count,
-                            )}
-                            /{t('hour')})
-                          </p>
-                          <div className={s.exlude_vat}>
-                            <span className="asterisk">*</span>
-                            {t('excluding_vat')}
+                        {isItWindows && (
+                          <WarningMessage className={s.notice_wrapper}>
+                            {t('windows_os_notice')}
+                          </WarningMessage>
+                        )}
+                      </section>
+
+                      <section className={s.section}>
+                        <h3 className={s.section_title}>{t('server_size')}</h3>
+
+                        <div className={s.period_bar}>
+                          <div className={s.ip_wrapper}>
+                            <label className={s.ip_checkbox} htmlFor="ipv6">
+                              <CheckBox
+                                name="network_ipv6"
+                                id="ipv6"
+                                value={values.network_ipv6}
+                                onClick={() => {
+                                  setFieldValue('network_ipv6', !values.network_ipv6)
+                                }}
+                              />
+                              {t('cloud_ipv6')}
+                              <span className={s.ip_discount}>
+                                -1€/{t('short_month', { ns: 'other' })}
+                              </span>
+                            </label>
                             <TooltipWrapper
-                              wrapperClassName={s.exlude_vat_hint}
-                              className={s.exlude_vat_hint_popup}
-                              content={t('exlude_vat_hint')}
+                              content={t('hint_description.ip')}
+                              className={s.hintPopup}
+                              disabled={!widerThan1550}
                             >
-                              <Icon name="Info" />
+                              <button
+                                type="button"
+                                onClick={() => toggleCaptionHandler('ip')}
+                              >
+                                <Icon name="Info" />
+                              </button>
                             </TooltipWrapper>
                           </div>
+
+                          <RadioTypeButton
+                            withCaption
+                            label={t('price_per')}
+                            list={PERIODS_LIST}
+                            value={values.period}
+                            onClick={value => setFieldValue('period', value)}
+                            captionText={t('hint_description.period')}
+                            popupClassName={s.hintPopup}
+                            toggleCaption={() => toggleCaptionHandler('period')}
+                          />
                         </div>
+                        {!widerThan1550 && showCaption && (
+                          <div
+                            className={cn(s.period_description, {
+                              [s.truncated]: !showCaption,
+                            })}
+                          >
+                            <span className="asterisk">*</span>
+                            {t(`hint_description.${showCaption}`)}
+                          </div>
+                        )}
 
-                        <Button
-                          className={cn(s.btn_buy, s.footer_item)}
-                          label={
-                            isSoldOut
-                              ? t('to_order', { ns: 'other' })
-                              : t('create_instance', { ns: 'cloud_vps' })
-                          }
-                          type="submit"
-                          isShadow
-                          onClick={e => {
-                            if (values.notEnoughMoney) {
-                              e.preventDefault()
+                        <ul className={s.grid}>
+                          {tariffsListToRender?.map(tariff => {
+                            const price = calculatePrice(tariff, values)
+                            const isSoldOut = tariff.flabel.tag.some(
+                              el => el.$ === soldOutTag,
+                            )
+                            return (
+                              <TariffCard
+                                key={tariff.id.$}
+                                tariff={tariff}
+                                onClick={() => {
+                                  isSoldOut && setSoldOutModalOpened(true)
+                                  onTariffChange(tariff)
+                                }}
+                                price={price}
+                                active={values.tariff_id === tariff.id.$}
+                                disabled={tariff.disabled}
+                                isSoldOut={isSoldOut}
+                              />
+                            )
+                          })}
+                        </ul>
+                      </section>
 
-                              warningEl.current.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'center',
-                              })
+                      <section className={s.section}>
+                        <h3 className={s.section_title}>{t('authentication_method')}</h3>
+
+                        <ConnectMethod
+                          connectionType={values.connectionType}
+                          name="connectionType"
+                          sshKey={values.ssh_keys}
+                          onChangeType={type => setFieldValue('connectionType', type)}
+                          setSSHkey={value => setFieldValue('ssh_keys', value)}
+                          setPassword={value => setFieldValue('password', value)}
+                          errors={errors}
+                          touched={touched}
+                          sshList={allSshList.map(el => ({
+                            label: el.comment.$,
+                            value: el.elid.$,
+                          }))}
+                          isWindows={isItWindows}
+                          hiddenMode={imagesCurrentTab === IMAGES_TYPES.own}
+                          isOpened={isConnectMethodOpened}
+                          setIsOpened={setIsConnectMethodOpened}
+                        />
+                        <ErrorMessage
+                          className={s.error_message}
+                          name="connectionType"
+                          component="span"
+                        />
+                      </section>
+
+                      <section className={s.section}>
+                        <h3 className={s.section_title}>
+                          {t('server_name', { ns: 'vds' })}
+                        </h3>
+                        <div className={s.grid}>
+                          <InputField
+                            inputWrapperClass={s.input_wrapper}
+                            inputClassName={s.input}
+                            name="servername"
+                            placeholder={t('server_name', { ns: 'vds' })}
+                            isShadow
+                          />
+                        </div>
+                      </section>
+
+                      <FixedFooter isShown={values.tariff_id}>
+                        <div className={s.footer_container}>
+                          <div className={cn(s.footer_parameters, s.footer_item)}>
+                            <div className={s.footer_params_row}>
+                              <span className={s.footer_params_label}>
+                                {t('location', { ns: 'cloud_vps' })}
+                              </span>
+
+                              <img
+                                className={s.flag}
+                                src={require(
+                                  `@images/countryFlags/${getFlagFromCountryName(
+                                    currentCountryName,
+                                  )}.png`,
+                                )}
+                                width={20}
+                                height={14}
+                                alt={currentCountryName}
+                              />
+                              {t(currentCountryName, { ns: 'countries' })}
+                            </div>
+                            <div className={s.footer_params_row}>
+                              <span className={s.footer_params_label}>CPU</span>
+                              {currentCpu}
+                            </div>
+                            <div className={s.footer_params_row}>
+                              <span className={s.footer_params_label}>NVMe</span>
+                              {currentDisk}
+                            </div>
+                          </div>
+
+                          <div className={s.footer_item}>
+                            <p className={s.label}>
+                              {t('amount_servers', { ns: 'vds' })}
+                            </p>
+                            <Incrementer
+                              count={values.order_count}
+                              setCount={value => setFieldValue('order_count', value)}
+                              max={35}
+                            />
+                          </div>
+
+                          <div className={s.footer_item}>
+                            <p className={s.label}>{t('Sum', { ns: 'other' })}</p>
+                            <p className={s.footer_price}>
+                              €{finalPrice}/
+                              <span className={s.price_period}>{t('day')}</span>
+                            </p>
+                            <p className={s.footer_hour_price}>
+                              (€
+                              {calculatePrice(
+                                values.tariffData,
+                                values,
+                                PERIODS_LIST.find(el => el.id === 'hour').value,
+                                values.order_count,
+                              )}
+                              /{t('hour')})
+                            </p>
+                            <div className={s.exlude_vat}>
+                              <span className="asterisk">*</span>
+                              {t('excluding_vat')}
+                              <TooltipWrapper
+                                wrapperClassName={s.exlude_vat_hint}
+                                className={s.exlude_vat_hint_popup}
+                                content={t('exlude_vat_hint')}
+                              >
+                                <Icon name="Info" />
+                              </TooltipWrapper>
+                            </div>
+                          </div>
+
+                          <Button
+                            className={cn(s.btn_buy, s.footer_item)}
+                            label={
+                              isSoldOut
+                                ? t('to_order', { ns: 'other' })
+                                : t('create_instance', { ns: 'cloud_vps' })
                             }
-                          }}
+                            type="submit"
+                            isShadow
+                            onClick={e => {
+                              if (values.notEnoughMoney) {
+                                e.preventDefault()
+
+                                warningEl.current.scrollIntoView({
+                                  behavior: 'smooth',
+                                  block: 'center',
+                                })
+                              }
+                            }}
+                          />
+                        </div>
+                      </FixedFooter>
+                    </>
+                  ) : (
+                    <section className={s.section}>
+                      <h3 className={s.section_title}>{t('server_image')}</h3>
+                      <div className={s.os_list}>
+                        <SoftwareOSBtn
+                          value={imageIdFromLaunch}
+                          state={imageIdFromLaunch}
+                          iconName={getImageIconName(launchImage?.$)}
+                          label={launchImage?.$}
+                          imageData={launchImage}
+                          disabled
                         />
                       </div>
-                    </FixedFooter>
-                  </Form>
-                )
-              }}
-            </Formik>
-          )}
+                      <WarningMessage>
+                        {t('no_tariffs_for_launch', { ns: 'cloud_vps' })}
+                      </WarningMessage>
+                    </section>
+                  )}
+                </Form>
+              )
+            }}
+          </Formik>
+        )}
         <Modals addNewSshSubmit={setNewSshKey} />
         {isLoading && <Loader local shown={isLoading} />}
       </ErrorBoundary>

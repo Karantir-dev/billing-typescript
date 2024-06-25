@@ -10,6 +10,7 @@ import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/Im
 
 const INSTANCE_BACKUPS_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
+  { label: 'backup_type', isSort: false, value: 'backup_type' },
   { label: 'size', isSort: false, value: 'image_size' },
   { label: 'created_at', isSort: false, value: 'createdate' },
   { label: 'price_per_day', isSort: false, value: 'cost' },
@@ -61,21 +62,18 @@ export default function InstanceBackups() {
     [],
   )
 
-  const editImage = ({ id, name, ...values }) => {
+  const editImage = ({ id, successCallback, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
         func: 'image',
-        successCallback: getItems,
+        successCallback: () => {
+          getItems()
+          successCallback?.()
+        },
         elid: id,
         signal,
         setIsLoading,
-        values: {
-          image_name: name,
-          plid: elid,
-          ...values,
-          clicked_button: 'ok',
-          sok: 'ok',
-        },
+        values: { image_name: name, ...values, clicked_button: 'ok', sok: 'ok' },
       }),
     )
   }
@@ -128,6 +126,7 @@ export default function InstanceBackups() {
           setIsLoading,
         }}
         getItems={getItems}
+        editImage={editImage}
         fetchInstanceData={fetchItemById}
       />
 

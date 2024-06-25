@@ -7,6 +7,7 @@ import {
 } from './'
 
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
+import { IMAGES_TYPES } from '@src/utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -69,10 +70,10 @@ export const ImagesModals = ({
 
   // const editScheduleBackup = values => { }
 
-  const createImageSubmit = values => {
+  const createImageSubmit = ({ name, ...values }) => {
     dispatch(
       cloudVpsOperations.createImage({
-        values,
+        values: { image_name: name, ...values },
         successCallback: () => getItems(),
         closeModal: () =>
           dispatch(cloudVpsActions.setItemForModals({ images_edit: false })),
@@ -111,7 +112,7 @@ export const ImagesModals = ({
         action: 'rebuild',
         elid: instanceId,
         sok: 'ok',
-        clicked_button: 'ok',
+        zone: IMAGES_TYPES.own,
         successCallback: fetchInstanceData,
         ...values,
       }),

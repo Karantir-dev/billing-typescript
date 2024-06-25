@@ -12,6 +12,7 @@ import * as route from '@src/routes'
 
 const DETAILS_FIELDS = [
   { value: 'fleio_id' },
+  { value: 'instances_id' },
   { value: 'region' },
   { value: 'image_size' },
   { value: 'min_ram' },
@@ -21,10 +22,11 @@ const DETAILS_FIELDS = [
   { value: 'architecture' },
   { value: 'disk_format' },
   { value: 'os_distro' },
-  { value: 'hypervisor_type' },
   { value: 'os_version' },
   { value: 'fleio_status' },
-  { value: 'visibility' },
+  { value: 'image_type' },
+  { value: 'url' },
+  { value: 'backup_type' },
 ]
 
 export default function ImageDetailsPage({ pageList }) {
@@ -47,18 +49,18 @@ export default function ImageDetailsPage({ pageList }) {
     return pathnames
   }
 
-  const editImage = ({ successCallback, ...values } = {}) => {
+  const editImage = ({ id, successCallback, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
         func: 'image',
-        elid,
         successCallback: () => {
           getImageData()
           successCallback?.()
         },
+        elid: id,
         signal,
         setIsLoading,
-        values: { ...values, clicked_button: 'ok', sok: 'ok' },
+        values: { image_name: name, ...values, clicked_button: 'ok', sok: 'ok' },
       }),
     )
   }
@@ -84,18 +86,9 @@ export default function ImageDetailsPage({ pageList }) {
     switch (field.value) {
       case 'image_size':
       case 'min_disk':
-        renderData = function renderData(value) {
-          return <>{value ? `${value} GB` : '-'}</>
-        }
-        return { ...field, renderData }
       case 'min_ram':
         renderData = function renderData(value) {
-          return <>{value ? `${value} MB` : '-'}</>
-        }
-        return { ...field, renderData }
-      case 'hypervisor_type':
-        renderData = function renderData(value) {
-          return <>{value.replace(/_/g, ' ')}</>
+          return <>{value ? `${value} GB` : '-'}</>
         }
         return { ...field, renderData }
       default:
@@ -118,7 +111,7 @@ export default function ImageDetailsPage({ pageList }) {
                   <TooltipWrapper
                     className={s.popup}
                     wrapperClassName={s.popup__wrapper}
-                    content={data.os_distro.$}
+                    content={`${data.os_distro.$} ${data.os_version?.$ ?? ''}`}
                   >
                     <img
                       src={require(`@images/soft_os_icons/${osIcon}.png`)}
@@ -138,16 +131,28 @@ export default function ImageDetailsPage({ pageList }) {
             <h3 className={s.block_title}>{t('details.title')}</h3>
 
             <ul className={s.info_block_wrapper}>
-              {fields.map(field => (
-                <li className={s.info_block_item} key={field.value}>
-                  <span className={s.item_name}>{t(`details.${field.value}`)}</span>
-                  <span className={s.item_info}>
-                    {field.renderData?.(data[field.value]?.$) ??
-                      data[field.value]?.$ ??
-                      '-'}
-                  </span>
-                </li>
-              ))}
+              {fields
+                .filter(({ value }) => {
+                  if (
+                    (value === 'url' && data.image_type.$ !== 'image') ||
+                    (value === 'backup_type' && data.image_type.$ !== 'backup') ||
+                    (value === 'instances_id' && data.image_type.$ === 'image')
+                  ) {
+                    return false
+                  }
+
+                  return true
+                })
+                .map(field => (
+                  <li className={s.info_block_item} key={field.value}>
+                    <span className={s.item_name}>{t(`details.${field.value}`)}</span>
+                    <span className={s.item_info}>
+                      {field.renderData?.(data[field.value]?.$) ??
+                        data[field.value]?.$ ??
+                        '-'}
+                    </span>
+                  </li>
+                ))}
             </ul>
           </div>
         </>
@@ -159,7 +164,7 @@ export default function ImageDetailsPage({ pageList }) {
         }}
         getItems={editImage}
         editImage={editImage}
-        redirectCallback={() => navigate(navigate(`${route.CLOUD_VPS}/images`))}
+        redirectCallback={() => navigate(navigate(route.CLOUD_VPS_IMAGES))}
       />
       {isLoading && <Loader local shown={isLoading} />}
     </div>

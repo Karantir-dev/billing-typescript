@@ -18,21 +18,21 @@ export default function DedicPage() {
 
   const tabBarSections = [
     {
-      route: `${route.CLOUD_VPS}`,
+      route: route.CLOUD_VPS,
       label: 'Instances',
       allowToRender: true,
       replace: true,
       end: true,
     },
     {
-      route: `${route.CLOUD_VPS}/ssh_keys`,
+      route: route.CLOUD_VPS_SSH_KEYS,
       label: 'SSH keys',
       allowToRender: true,
       replace: true,
       end: true,
     },
     {
-      route: `${route.CLOUD_VPS}/images`,
+      route: route.CLOUD_VPS_IMAGES,
       label: 'Images',
       allowToRender: true,
       replace: true,

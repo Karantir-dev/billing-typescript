@@ -83,6 +83,7 @@
   "Confirm Resize": "Confirm Resize",
   "Revert Resize": "Revert Resize",
   "unmount_iso": "Unmount ISO",
+  "restore": "Restore current server",
   "confirm": {
     "title": {
       "stop": "Stop instance",
@@ -219,6 +220,7 @@
   "create_backup_schedule": "Create new schedule",
   "rotation_time_descr": "Please note that the time will change depending on the transition to daylight saving time or standard time.",
   "boot_from_iso": "Boot from ISO",
+  "backup_type": "Backup type",
   "snapshots": {
     "create": "Create snapshot for instance",
     "create_warning": "Instance will not be available while the snapshot is being processed.",
@@ -240,12 +242,11 @@
   },
   "empty_list": "Empty list",
   "create_image": "Create image",
-  "edit_image": "Update image",
   "image": {
     "create": "Create new image",
     "image_name": "Image name",
     "min_disk": "Minimum disk size (GB)",
-    "min_ram": "Minimum required RAM (MB)",
+    "min_ram": "Minimum required RAM (GB)",
     "disk_format": "Disk format",
     "os_distro": "OS distro",
     "os_version": "OS version",
@@ -253,14 +254,28 @@
     "url": "Source",
     "url_placeholder": "Enter URL",
     "protected": "Protected",
-    "description": {
-      "image_name": "Set an image display name that will reflect what the image contains, like its operating system or snapshot of an instance.",
-      "min_disk": "This property will tell OpenStack Compute what the minimum required disk size is for this image. This allows you to set a limit in order to avoid potential problems while creating an Instance with a lower disk size than the installed software on that image.",
-      "min_ram": "Minimum required RAM (MB)Like the minimum required disk size, this option allows you to set a limit for the minimum required RAM an instance created from this image will required in order to run properly.",
-      "os": "These special attributes allows Zomro to show the distro icon next to each instance created from this image and allows OpenStack to properly create an Instance especially for Windows or other non Linux distributions.",
-      "protected": "Set this option in order to protect the image from accidental deletion."
+    "name": {
+      "image": "Image name",
+      "snapshot": "Snapshot name",
+      "backup": "Backup name"
     },
-    "copy_title": "Create Copy"
+    "description": {
+      "image_name": "Set a display name that will reflect what the image contains, like its operating system or snapshot of an instance.",
+      "min_disk": "This property will tell OpenStack Compute what the minimum required disk size is for this image. This allows you to set a limit in order to avoid potential problems while creating an Instance with a lower disk size than the installed software on that image.",
+      "min_ram": "Minimum required RAM (GB)Like the minimum required disk size, this option allows you to set a limit for the minimum required RAM an instance created from this image will required in order to run properly.",
+      "os": "These special attributes allows Zomro to show the distro icon next to each instance created from this image and allows OpenStack to properly create an Instance especially for Windows or other non Linux distributions.",
+      "protected": {
+        "image": "Set this option in order to protect the image from accidental deletion.",
+        "snapshot": "Set this option in order to protect the snapshot from accidental deletion.",
+        "backup": "Set this option in order to protect the backup from accidental deletion."
+      }
+    },
+    "copy_title": "Create Copy",
+    "edit": {
+      "image": "Update image",
+      "snapshot": "Update snapshot",
+      "backup": "Update backup"
+    }
   },
   "change_access_method": "Change access method",
   "new_access_method_warning": "Setting a new access method may not work for modified images.",
@@ -271,7 +286,7 @@
     "fleio_id": "ID",
     "region": "Region",
     "image_size": "Size",
-    "min_ram": "Minimum memory",
+    "min_ram": "Minimum required RAM",
     "min_disk": "Minimum disk size",
     "created": "Created at",
     "updated": "Updated at",
@@ -281,9 +296,14 @@
     "hypervisor_type": "Hypervisor type",
     "os_version": "OS version",
     "fleio_status": "Status",
-    "visibility": "Visibility"
+    "visibility": "Visibility",
+    "image_type": "Type",
+    "url": "URL",
+    "backup_type": "Backup type",
+    "instances_id": "Server ID"
   },
   "sold_out_messsage": "Unfortunately, this plan is currently sold out!",
   "sold_out_description": "You can buy it now and your server will be activated as soon as we have resources. Usually it takes no more than 3 days. You will receive a notification about the activation of the service using the method selected in <a>profile settings</a>. Tariffing for the service will begin from the moment the server is activated, and the funds written off for the purchase will be counted towards payment for the first day of use.",
-  "move_the_image": "Move the image to another data center"
+  "move_the_image": "Do you need a server in another DC?<br/> <a>Copy the image</a> to the DC in which you want to create a server.",
+  "no_tariffs_for_launch": "No tariffs match the current image's minimum required parameters. Check the values of the minimum disk size and minimum RAM parameters set into the image details and adjust them if necessary"
 }

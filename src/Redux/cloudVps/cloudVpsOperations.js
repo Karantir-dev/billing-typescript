@@ -623,7 +623,7 @@ const getAllTariffsInfo =
         ).$key
         const soldOutTag = data.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('soldout:true'),
-        ).$key
+        )?.$key
 
         const { basicTariffs, premiumTariffs } = sortCloudsByType(data, cloudBasicTag)
 
@@ -651,7 +651,7 @@ const getAllTariffsInfo =
         dispatch(cloudVpsActions.setPremiumTariffs(premiumTariffs))
         needDcList && dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
-        dispatch(cloudVpsActions.setSoldOutTag(soldOutTag))
+        soldOutTag && dispatch(cloudVpsActions.setSoldOutTag(soldOutTag))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
