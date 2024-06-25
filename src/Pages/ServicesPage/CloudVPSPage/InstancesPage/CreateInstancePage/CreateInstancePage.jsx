@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ErrorBoundary } from 'react-error-boundary'
 import {
   BreadCrumbs,
@@ -24,7 +25,7 @@ import {
 } from '@components'
 import * as Yup from 'yup'
 import { Link, useLocation, useSearchParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -647,21 +648,22 @@ export default function CreateInstancePage() {
                             })
                           )}
                         </ul>
+
                         {isLaunchMode && (
                           <div className={s.dc_link}>
-                            <Link
-                              className={s.link}
-                              to={`${route.CLOUD_VPS_IMAGES}/${launchData.imageNumber}`}
-                              state={{ copy: true }}
-                            >
-                              {t('move_the_image', { ns: 'cloud_vps' })}
-                            </Link>
-                            <TooltipWrapper
-                              content={t('Hint', { ns: 'other' })}
-                              wrapperClassName={cn(s.tooltip)}
-                            >
-                              <Icon name="Info" />
-                            </TooltipWrapper>
+                            <Trans
+                              t={key => t(key, { ns: 'cloud_vps' })}
+                              i18nKey="move_the_image"
+                              components={{
+                                a: (
+                                  <Link
+                                    className={s.link}
+                                    to={`${route.CLOUD_VPS_IMAGES}/${launchData.imageNumber}`}
+                                    state={{ copy: true }}
+                                  />
+                                ),
+                              }}
+                            />
                           </div>
                         )}
                       </section>
