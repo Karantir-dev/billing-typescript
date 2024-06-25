@@ -67,7 +67,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
           order_period: data.order_period.$,
         }
       : {
-          elid: data.elid.$,
+          elid: data.id.$,
         }
 
     onSubmit({ ...values, ...params, successCallback: closeModal })
