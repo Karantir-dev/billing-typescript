@@ -67,6 +67,8 @@ export const ImagesModals = ({
     )
   }
 
+  // const editScheduleBackup = values => { }
+
   const createImageSubmit = values => {
     dispatch(
       cloudVpsOperations.createImage({
@@ -132,7 +134,6 @@ export const ImagesModals = ({
               }),
             )
           }
-          // onSubmit={itemForModals?.snapshot_create ? createSnapshot : createBackup}
           onSubmit={
             itemForModals?.snapshot_create
               ? createSnapshot
@@ -140,7 +141,7 @@ export const ImagesModals = ({
               ? createBackup
               : itemForModals?.backup_schedule_create
               ? createScheduleBackup
-              : undefined // На випадок, якщо жодна умова не виконається
+              : undefined // editScheduleBackup
           }
         />
       )}

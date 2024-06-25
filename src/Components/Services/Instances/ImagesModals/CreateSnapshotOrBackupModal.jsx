@@ -31,7 +31,19 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
   return (
     <Modal isOpen={!!itemDetails} closeModal={closeModal}>
       <Modal.Header>
-        <p>{t(`${item?.snapshot_create ? 'snapshots' : 'backups'}.create`)}</p>
+        <p>
+          {t(
+            `${
+              item?.snapshot_create
+                ? 'snapshots'
+                : item?.backup_create
+                ? 'backups'
+                : item?.backup_schedule_create
+                ? 'schedule_backups'
+                : 'edit'
+            }.create`,
+          )}
+        </p>
       </Modal.Header>
       <Modal.Body>
         <p className={s.modal__subtitle}>

@@ -234,6 +234,10 @@
     "backup_rotation_changed": "Backup rotation quantity changed",
     "rotation_info": "Number of backups to keep (the rest backups of type manual will be deleted)"
   },
+  "schedule_backups": {
+    "create": "Create backup schedule for instance",
+    "edit": "Edit backup schedule for instance"
+  },
   "empty_list": "Empty list",
   "create_image": "Create image",
   "edit_image": "Update image",
