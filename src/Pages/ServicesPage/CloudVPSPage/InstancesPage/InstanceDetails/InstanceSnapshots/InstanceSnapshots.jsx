@@ -9,11 +9,11 @@ import { Button, ImagesList, Loader, WarningMessage } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_SNAPSHOTS_CELLS = [
-  { label: 'name', isSort: false, value: 'name' },
-  { label: 'size', isSort: false, value: 'image_size' },
-  { label: 'created_at', isSort: false, value: 'createdate' },
+  { label: 'name', isSort: true, value: 'name' },
+  { label: 'size', isSort: true, value: 'image_size' },
+  { label: 'created_at', isSort: true, value: 'createdate' },
   { label: 'price_per_day', isSort: false, value: 'cost' },
-  { label: 'os', isSort: false, value: 'os_distro' },
+  { label: 'os', isSort: true, value: 'os_distro' },
   {
     label: 'options',
     isSort: false,
@@ -115,7 +115,6 @@ export default function InstanceSnapshots() {
           editImage={editImage}
           cost={dailyCosts}
           pageList="snapshots"
-          idKey="elid"
         />
       </div>
 

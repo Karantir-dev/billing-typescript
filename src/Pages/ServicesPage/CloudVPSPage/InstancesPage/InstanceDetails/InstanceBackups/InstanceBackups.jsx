@@ -10,6 +10,7 @@ import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/Im
 
 const INSTANCE_BACKUPS_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
+  { label: 'backup_type', isSort: false, value: 'backup_type' },
   { label: 'size', isSort: false, value: 'image_size' },
   { label: 'created_at', isSort: false, value: 'createdate' },
   { label: 'price_per_day', isSort: false, value: 'cost' },
@@ -104,7 +105,6 @@ export default function InstanceBackups() {
           editImage={editImage}
           cost={dailyCosts}
           pageList="backups"
-          idKey="elid"
         />
       </div>
 

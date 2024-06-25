@@ -53,10 +53,10 @@ export const ImagesModals = ({
     )
   }
 
-  const createImageSubmit = values => {
+  const createImageSubmit = ({ name, ...values }) => {
     dispatch(
       cloudVpsOperations.createImage({
-        values,
+        values: { image_name: name, ...values },
         successCallback: () => getItems(),
         closeModal: () =>
           dispatch(cloudVpsActions.setItemForModals({ images_edit: false })),

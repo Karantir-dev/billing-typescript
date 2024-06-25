@@ -33,7 +33,7 @@ export const RestoreModal = ({ item, closeModal, onSubmit, instanceId }) => {
     dispatch(
       cloudVpsOperations.editImage({
         func: 'image',
-        elid: item.elid.$,
+        elid: item.id?.$,
         successCallback: data => {
           const select_rebuild = data.fleio_id.$
           setState({ select_rebuild })
