@@ -159,7 +159,7 @@ export default function ImageDetailsPage({ pageList }) {
         }}
         getItems={editImage}
         editImage={editImage}
-        redirectCallback={() => navigate(navigate(`${route.CLOUD_VPS}/images`))}
+        redirectCallback={() => navigate(navigate(route.CLOUD_VPS_IMAGES))}
       />
       {isLoading && <Loader local shown={isLoading} />}
     </div>

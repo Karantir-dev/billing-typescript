@@ -230,12 +230,12 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
           validationSchema={validationSchema}
           onSubmit={values => {
             const submitData = values
+            submitData.zone = state.zone
+
             if (isRebuild) {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
             }
-            if (!isRebuild) {
-              submitData.zone = state.zone
-            }
+
             if (isWindowsOS && !isRebuild) {
               submitData.password = generatePassword({
                 length: 10,

@@ -91,18 +91,19 @@ export default function CreateInstancePage() {
   }
 
   const launchData = {
-    dcLabel: location.state?.dcLabel,
+    imageNumber: location.state?.imageNumber,
     imageId: location.state?.imageId,
+    dcLabel: location.state?.dcLabel,
     min_ram: location.state?.min_ram,
     min_disk: location.state?.min_disk,
   }
 
-  const dcLabelFromLaunch = location.state?.dcLabel
+  const dcLabelFromLaunch = launchData?.dcLabel
   const dcIdFromLaunch = CLOUD_DC_NAMESPACE[dcLabelFromLaunch]
 
   const dataFromSite = JSON.parse(localStorage.getItem('site_cart') || '{}')
 
-  const imageIdFromLaunch = location.state?.imageId
+  const imageIdFromLaunch = launchData?.imageId
   const isLaunchMode = imageIdFromLaunch && dcLabelFromLaunch
   const [imagesCurrentTab, setImagesCurrentTab] = useState(
     imageIdFromLaunch ? IMAGES_TYPES.own : IMAGES_TYPES.public,
@@ -421,6 +422,13 @@ export default function CreateInstancePage() {
                 )
               }
 
+              /** Sets first OS from the list when DC changes */
+              useEffect(() => {
+                if (currentDC.$key) {
+                  selectFirstImage(imagesCurrentTab)
+                }
+              }, [currentDC.$key])
+
               const onTariffChange = tariff => {
                 if (tariff) {
                   setFieldValue('tariff_id', tariff.id.$)
@@ -641,7 +649,10 @@ export default function CreateInstancePage() {
                         </ul>
                         {isLaunchMode && (
                           <div className={s.dc_link}>
-                            <Link className={s.link} to={route.CLOUD_VPS + '/images'}>
+                            <Link
+                              className={s.link}
+                              to={`${route.CLOUD_VPS_IMAGES}/${launchData.imageNumber}`}
+                            >
                               {t('move_the_image', { ns: 'cloud_vps' })}
                             </Link>
                             <TooltipWrapper

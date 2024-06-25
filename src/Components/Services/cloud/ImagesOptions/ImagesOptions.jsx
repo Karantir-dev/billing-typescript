@@ -38,6 +38,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
       onClick: () => {
         navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE, {
           state: {
+            imageNumber: item.id.$,
             imageId: item.fleio_id.$,
             dcLabel: item.region.$,
             min_disk: item.min_disk?.$,

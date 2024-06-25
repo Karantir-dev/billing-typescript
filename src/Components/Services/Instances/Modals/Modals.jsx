@@ -121,7 +121,6 @@ export const Modals = ({
         action: itemForModals.rebuild.rebuild_action,
         elid: itemForModals.rebuild.id.$,
         sok: 'ok',
-        clicked_button: 'ok',
         ...values,
         successCallback: () => getInstances(),
       }),
