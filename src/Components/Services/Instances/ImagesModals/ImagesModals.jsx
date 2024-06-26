@@ -68,7 +68,19 @@ export const ImagesModals = ({
     dispatch(cloudVpsActions.setItemForModals({ image_delete: false }))
     dispatch(
       cloudVpsOperations.deleteImage({
+        func: 'image',
         elid: itemForModals?.image_delete[itemForModals?.image_delete.idKey].$,
+        successCallback: redirectCallback ?? getItems,
+        ...loadingParams,
+      }),
+    )
+  }
+  const deleteSchedule = () => {
+    dispatch(cloudVpsActions.setItemForModals({ schedule_delete: false }))
+    dispatch(
+      cloudVpsOperations.deleteImage({
+        func: 'instances.fleio_bckps.schedule',
+        elid: itemForModals?.schedule_delete.id.$,
         successCallback: redirectCallback ?? getItems,
         ...loadingParams,
       }),
@@ -147,6 +159,16 @@ export const ImagesModals = ({
             dispatch(cloudVpsActions.setItemForModals({ image_delete: false }))
           }
           onSubmit={deleteImage}
+        />
+      )}
+      {!!itemForModals?.schedule_delete && (
+        <DeleteModal
+          item={itemForModals?.schedule_delete}
+          closeModal={() =>
+            dispatch(cloudVpsActions.setItemForModals({ schedule_delete: false }))
+          }
+          onSubmit={deleteSchedule}
+          type="schedule"
         />
       )}
       {!!itemForModals?.restore_modal && (

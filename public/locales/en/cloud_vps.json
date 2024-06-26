@@ -206,6 +206,8 @@
   "type": "Type",
   "region": "Region",
   "created_at": "Created at",
+  "rotation_days": "Days",
+  "rotation_time": "Time",
   "size": "Size",
   "os": "OS",
   "price_per_day": "Price/day",
@@ -270,6 +272,8 @@
   "new_access_method_warning": "Setting a new access method may not work for modified images.",
   "delete_image": "Delete image",
   "delete_image_text": "Are you sure you want to delete image \"{{name}}\"?",
+  "delete_schedule": "Delete schedule",
+  "delete_schedule_text": "Are you sure you want to delete schedule \"{{name}}\"?",
   "details": {
     "title": "Details",
     "fleio_id": "ID",
@@ -294,5 +298,12 @@
   "sold_out_messsage": "Unfortunately, this plan is currently sold out!",
   "sold_out_description": "You can buy it now and your server will be activated as soon as we have resources. Usually it takes no more than 3 days. You will receive a notification about the activation of the service using the method selected in <a>profile settings</a>. Tariffing for the service will begin from the moment the server is activated, and the funds written off for the purchase will be counted towards payment for the first day of use.",
   "move_the_image": "Do you need a server in another DC?<br/> <a>Copy the image</a> to the DC in which you want to create a server.",
-  "no_tariffs_for_launch": "No tariffs match the current image's minimum required parameters. Check the values of the minimum disk size and minimum RAM parameters set into the image details and adjust them if necessary"
+  "no_tariffs_for_launch": "No tariffs match the current image's minimum required parameters. Check the values of the minimum disk size and minimum RAM parameters set into the image details and adjust them if necessary",
+  "sunday": "Sun",
+  "monday": "Mon",
+  "tuesday": "Tue",
+  "wednesday": "Wed",
+  "thursday": "Thu",
+  "friday": "Fri",
+  "saturday": "Sat"
 }

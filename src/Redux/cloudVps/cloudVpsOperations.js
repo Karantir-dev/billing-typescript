@@ -1023,7 +1023,7 @@ const getImages =
           created_today: { $: Number(created_today_value) },
         }
 
-        setDailyCosts(costSummaryObj)
+        setDailyCosts?.(costSummaryObj)
 
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
@@ -1154,7 +1154,7 @@ const createImage =
   }
 
 const deleteImage =
-  ({ elid, successCallback, signal, setIsLoading }) =>
+  ({ func, elid, successCallback, signal, setIsLoading, values }) =>
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
@@ -1163,11 +1163,12 @@ const deleteImage =
       .post(
         '/',
         qs.stringify({
-          func: 'image.delete',
+          func: `${func}.delete`,
           out: 'json',
           auth: sessionId,
           lang: 'en',
           elid,
+          ...values,
         }),
         { signal },
       )

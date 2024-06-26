@@ -77,6 +77,7 @@ import {
   InstanceNetworkTrafficLazy,
   InstanceSnapshotsLazy,
   InstanceBackupsLazy,
+  InstanceBackupsSchedulesLazy,
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
@@ -272,6 +273,7 @@ const Component = ({ fromPromotionLink }) => {
             <Route path="network_traffic" element={<InstanceNetworkTrafficLazy />} />
             <Route path="snapshots" element={<InstanceSnapshotsLazy />} />
             <Route path="backups" element={<InstanceBackupsLazy />} />
+            <Route path="backups-schedules" element={<InstanceBackupsSchedulesLazy />} />
           </Route>
 
           <Route

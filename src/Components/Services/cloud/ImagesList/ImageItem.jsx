@@ -1,10 +1,20 @@
+/* eslint-disable no-unused-vars */
 import s from './ImagesList.module.scss'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
 
-export default function ImageItem({ item, cells, itemOnClickHandler, idKey }) {
+export default function ImageItem({
+  item,
+  cells,
+  itemOnClickHandler,
+  idKey,
+  isItemClickable,
+}) {
   return (
-    <tr className={s.tr} onClick={e => itemOnClickHandler(e, item)}>
+    <tr
+      className={cn(s.tr, { [s.disabled]: !isItemClickable })}
+      onClick={e => itemOnClickHandler(e, item)}
+    >
       {cells.map(cell => (
         <td
           key={`item_${item?.[idKey].$}${cell.label}`}

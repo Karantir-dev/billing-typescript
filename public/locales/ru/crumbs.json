@@ -35,5 +35,6 @@
   "metrics": "Метрики",
   "images": "Images",
   "snapshots": "Снимки",
-  "backups": "Резервные копии"
+  "backups": "Резервные копии",
+  "backups-schedules": "Расписание бэкапов"
 }
