@@ -312,7 +312,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                       name="password"
                       isShadow
                       type="password"
-                      label={`${t('new_password', { ns: 'vds' })}:`}
+                      label={`${t('temp_password', { ns: 'cloud_vps' })}:`}
                       placeholder={t('new_password_placeholder', { ns: 'vds' })}
                       error={!!errors.password}
                       touched={!!touched.password}
