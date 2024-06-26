@@ -56,8 +56,8 @@
           left: 0;
           top: 0;
           z-index: -1;
-          box-shadow: 0 1px 8px rgba(65, 38, 114, 0.15);
-          border-radius: 3px;
+          box-shadow: var(--forms_shadow);
+          background: var(--elements-bgc);
         }
       }
     }
@@ -81,7 +81,8 @@
 
 .mobile_item {
   padding: 24px 20px;
-  box-shadow: 0px 1px 8px 0px #41267226;
+  box-shadow: var(--forms_shadow);
+  background: var(--elements-bgc);
   max-width: 330px;
   border-radius: 3px;
   text-align: left;
