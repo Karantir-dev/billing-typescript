@@ -31,6 +31,7 @@ export default function getInstanceMainInfo(item) {
     fotboStatus === 'suspending' ||
     fotboStatus === 'booting_from_iso' ||
     billingStatus === 'Activation in progress' ||
+    isImageUploading ||
     isDeleting
 
   const isDisabled =
