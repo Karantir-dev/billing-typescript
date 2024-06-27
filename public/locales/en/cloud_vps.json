@@ -155,7 +155,7 @@
   "create": "Create",
   "download": "Download",
   "hint_description": {
-    "period": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours unused on the day of the order is returned to the balance if the server has not been deleted before 08:30 GMT+2 the next day. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable",
+    "period": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours not used on the day of order is returned to the balance if the server has not been deleted within 24 hours from the moment of activation. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable.",
     "ip": "Your provider should support IPv6 functionality"
   },
   "excluding_vat": "Excluding VAT",
