@@ -977,6 +977,35 @@ const getMetrics =
       })
   }
 
+const setImageFilter =
+  ({ func, values, signal, setIsLoading, successCallback }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `${func}.filter`,
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          lang: 'en',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
 const getImages =
   ({
     func,
@@ -989,6 +1018,7 @@ const getImages =
     setDailyCosts,
     signal,
     setIsLoading,
+    setFilters,
     setBackupRotation,
   }) =>
   (dispatch, getState) => {
@@ -1032,6 +1062,28 @@ const getImages =
         setBackupRotation && setBackupRotation(data.doc?.backup_rotation?.$)
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
+        if (setFilters) {
+          return axiosInstance.post(
+            '/',
+            qs.stringify({
+              func: `${func}.filter`,
+              out: 'json',
+              auth: sessionId,
+              lang: 'en',
+              elid,
+              p_cnt,
+              p_num,
+              p_col,
+            }),
+            { signal },
+          )
+        } else {
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+          return
+        }
+      })
+      .then(({ data } = {}) => {
+        setFilters?.(data.doc)
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
       })
       .catch(error => {
@@ -1250,4 +1302,5 @@ export default {
   createImage,
   deleteImage,
   copyModal,
+  setImageFilter,
 }
