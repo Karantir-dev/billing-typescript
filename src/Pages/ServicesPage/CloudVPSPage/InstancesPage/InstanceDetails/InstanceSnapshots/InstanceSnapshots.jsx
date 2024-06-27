@@ -7,6 +7,8 @@ import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import { Button, ImagesList, Loader, WarningMessage } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
+import { useNavigate } from 'react-router-dom'
+import * as route from '@src/routes'
 
 const INSTANCE_SNAPSHOTS_CELLS = [
   { label: 'name', isSort: true, value: 'name' },
@@ -26,6 +28,7 @@ export default function InstanceSnapshots() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps'])
+  const navigate = useNavigate()
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
 
@@ -77,6 +80,15 @@ export default function InstanceSnapshots() {
     )
   }
 
+  const itemOnClickHandler = (e, item, instanceId) => {
+    if (
+      e.target.closest('[data-target="options"]') ||
+      e.target.closest('[data-target="name"]')
+    )
+      return
+    navigate(`${route.CLOUD_VPS}/${instanceId}/snapshots/${item.id.$}`)
+  }
+
   const createdToday = dailyCosts?.created_today?.$
 
   return (
@@ -115,6 +127,7 @@ export default function InstanceSnapshots() {
           editImage={editImage}
           cost={dailyCosts}
           pageList="snapshots"
+          itemOnClickHandler={itemOnClickHandler}
         />
       </div>
 

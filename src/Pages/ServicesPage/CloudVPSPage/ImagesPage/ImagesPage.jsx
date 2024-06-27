@@ -6,6 +6,8 @@ import { useCallback, useState } from 'react'
 import { cloudVpsOperations, cloudVpsActions } from '@src/Redux'
 import { useTranslation } from 'react-i18next'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
+import { useNavigate } from 'react-router-dom'
+import * as route from '@src/routes'
 
 export const CLOUD_IMAGE_CELLS = [
   { label: 'name', isSort: true, value: 'image_name' },
@@ -31,6 +33,7 @@ export default function ImagesPage() {
   const [imagesCount, setImagesCount] = useState(0)
   const [dailyCosts, setDailyCosts] = useState(0)
   const { t } = useTranslation(['cloud_vps'])
+  const navigate = useNavigate()
 
   const getItems = useCallback(
     (() => {
@@ -73,6 +76,15 @@ export default function ImagesPage() {
     )
   }
 
+  const itemOnClickHandler = (e, item) => {
+    if (
+      e.target.closest('[data-target="options"]') ||
+      e.target.closest('[data-target="name"]')
+    )
+      return
+    navigate(`${route.CLOUD_VPS}/images/${item.id.$}`)
+  }
+
   return (
     <div className={s.images}>
       <Button
@@ -95,6 +107,7 @@ export default function ImagesPage() {
         editImage={editImage}
         cost={dailyCosts}
         pageList="images"
+        itemOnClickHandler={itemOnClickHandler}
       />
 
       <ImagesModals

@@ -35,5 +35,6 @@
   "metrics": "Metrics",
   "images": "Images",
   "snapshots": "Snapshots",
-  "backups": "Backups"
+  "backups": "Backups",
+  "backup_schedules": "Backup schedules"
 }

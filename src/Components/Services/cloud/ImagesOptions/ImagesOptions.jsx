@@ -33,8 +33,10 @@ export default function ImagesOptions({ item, pageList, idKey }) {
 
   const isImagesPage = pageList === 'images'
 
+  const isSchedules = pageList === 'backups-schedules'
+
   const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
-  const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active'
+  const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active' || isSchedules
 
   const options = [
     {
@@ -64,7 +66,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
           },
         })
       },
-      hidden: isImagesPage && item.disk_format.$ === 'iso',
+      hidden: (isImagesPage && item.disk_format.$ === 'iso') || isSchedules,
     },
     {
       label: t('copy'),
@@ -73,7 +75,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
       onClick: () => {
         openCopyModal()
       },
-      hidden: !isImagesPage,
+      hidden: !isImagesPage || isSchedules,
     },
     {
       label: t('restore'),
@@ -86,7 +88,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
           }),
         )
       },
-      hidden: isImagesPage,
+      hidden: isImagesPage || isSchedules,
     },
     {
       label: t('download'),
@@ -104,7 +106,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
-            image_delete: { ...item, idKey },
+            [`${isSchedules ? 'schedule' : 'image'}_delete`]: { ...item, idKey },
           }),
         )
       },

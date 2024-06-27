@@ -2,15 +2,15 @@ import { Button, Modal } from '@components'
 import { useTranslation } from 'react-i18next'
 import s from './ImagesModals.module.scss'
 
-export const DeleteModal = ({ item, closeModal, onSubmit }) => {
+export const DeleteModal = ({ item, closeModal, onSubmit, type = 'image' }) => {
   const { t } = useTranslation(['cloud_vps', 'other'])
 
   return (
     <Modal isOpen={!!item} closeModal={closeModal} isClickOutside>
-      <Modal.Header>{t('delete_image')}</Modal.Header>
+      <Modal.Header>{t(`delete_${type}`)}</Modal.Header>
       <Modal.Body>
         <p>
-          {t('delete_image_text', {
+          {t(`delete_${type}_text`, {
             name: `#${item[item.idKey].$} ${item.image_name?.$ ?? item.name?.$}`,
           })}
         </p>
