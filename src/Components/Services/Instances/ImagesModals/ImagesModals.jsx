@@ -33,7 +33,10 @@ export const ImagesModals = ({
       cloudVpsOperations.editImage({
         func: 'instances.snapshots',
         ...values,
-        successCallback: getItems,
+        successCallback: () => {
+          getItems()
+          fetchInstanceData()
+        },
       }),
     )
   }
@@ -48,7 +51,10 @@ export const ImagesModals = ({
       cloudVpsOperations.editImage({
         func: 'instances.fleio_bckps',
         ...values,
-        successCallback: getItems,
+        successCallback: () => {
+          getItems()
+          fetchInstanceData()
+        },
       }),
     )
   }
