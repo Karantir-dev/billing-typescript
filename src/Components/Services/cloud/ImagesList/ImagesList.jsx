@@ -14,8 +14,7 @@ import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
 import { formatCountryName, getFlagFromCountryName, getImageIconName } from '@utils'
 import PropTypes from 'prop-types'
-import { useNavigate, useParams } from 'react-router-dom'
-import * as route from '@src/routes'
+import { useParams } from 'react-router-dom'
 import s from './ImagesList.module.scss'
 import { useSelector } from 'react-redux'
 import { selectors } from '@redux'
@@ -29,10 +28,10 @@ export default function ImagesList({
   idKey = 'id',
   pageList,
   cost,
+  itemOnClickHandler,
 }) {
   const { t } = useTranslation(['cloud_vps', 'countries'])
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
-  const navigate = useNavigate()
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const { id: instanceId } = useParams()
 
@@ -252,18 +251,8 @@ export default function ImagesList({
     }
   })
 
-  const itemOnClickHandler = (e, item) => {
-    if (
-      e.target.closest('[data-target="options"]') ||
-      e.target.closest('[data-target="name"]')
-    )
-      return
-    if (pageList === 'images') {
-      navigate(`${route.CLOUD_VPS}/images/${item[idKey].$}`)
-    } else {
-      navigate(`${route.CLOUD_VPS}/${instanceId}/${pageList}/${item[idKey].$}`)
-    }
-  }
+  const itemOnClick = (e, item) => itemOnClickHandler?.(e, item, instanceId)
+  const isItemClickable = !!itemOnClickHandler
 
   return (
     <>
@@ -285,8 +274,9 @@ export default function ImagesList({
                         key={item?.[idKey].$}
                         item={item}
                         cells={renderCells}
-                        itemOnClickHandler={itemOnClickHandler}
+                        itemOnClickHandler={itemOnClick}
                         idKey={idKey}
+                        isItemClickable={isItemClickable}
                       />
                     ))}
                   </tbody>
@@ -322,7 +312,7 @@ export default function ImagesList({
                           key={item?.[idKey].$}
                           item={item}
                           cells={renderCells}
-                          itemOnClickHandler={itemOnClickHandler}
+                          itemOnClickHandler={itemOnClick}
                           idKey={idKey}
                         />
                       )

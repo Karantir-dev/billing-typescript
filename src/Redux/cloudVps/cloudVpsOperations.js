@@ -155,6 +155,7 @@ const editInstance =
     errorCallback = () => {},
     closeModal = () => {},
     successCallback,
+    successToast,
     setIsLoading,
     signal,
   }) =>
@@ -182,7 +183,9 @@ const editInstance =
         successCallback()
         closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('request_sent', { ns: 'cloud_vps' }))
+        successToast
+          ? toast.success(successToast)
+          : toast.success(t('request_sent', { ns: 'cloud_vps' }))
       })
       .catch(error => {
         errorCallback()
@@ -471,6 +474,7 @@ const getInstanceInfo =
           ip: renamedSlistData?.ip?.$,
           ip_v6: renamedSlistData?.ip_v6?.$,
           rdns_record: renamedSlistData?.rdns_record?.$,
+          backup_rotation: renamedSlistData?.backup_rotation?.$,
         }
 
         const clearStr = /\s*\(.*?\)\s*\.?/g
@@ -1015,6 +1019,7 @@ const getImages =
     signal,
     setIsLoading,
     setFilters,
+    setBackupRotation,
   }) =>
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
@@ -1053,8 +1058,8 @@ const getImages =
           created_today: { $: Number(created_today_value) },
         }
 
-        setDailyCosts(costSummaryObj)
-
+        setDailyCosts?.(costSummaryObj)
+        setBackupRotation && setBackupRotation(data.doc?.backup_rotation?.$)
         setCount(+data.doc.p_elems.$)
         setData(elemsList)
         if (setFilters) {
@@ -1206,7 +1211,7 @@ const createImage =
   }
 
 const deleteImage =
-  ({ elid, successCallback, signal, setIsLoading }) =>
+  ({ func, elid, successCallback, signal, setIsLoading, values }) =>
   (dispatch, getState) => {
     handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
@@ -1215,11 +1220,12 @@ const deleteImage =
       .post(
         '/',
         qs.stringify({
-          func: 'image.delete',
+          func: `${func}.delete`,
           out: 'json',
           auth: sessionId,
           lang: 'en',
           elid,
+          ...values,
         }),
         { signal },
       )

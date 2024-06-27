@@ -17,22 +17,35 @@
   gap: 20px;
 }
 
-.create_wrapper {
+.rotation_edit__field_wrapper {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.backup_limit_message {
-  margin: unset;
+.rotation_error {
+  font-size: 14px;
+  color: var(--error-color);
+}
+
+.rotation_info {
+  max-width: 300px;
+
+  @media (min-width: 1024px) {
+    max-width: unset;
+  }
 }
 
 @media screen and (min-width: 768px) {
   .container {
     padding-top: 32px;
   }
+  .rotation_edit__field_wrapper {
+    flex-direction: row;
+    align-items: center;
+  }
 
-  .create_wrapper {
-    gap: 16px;
+  .rotation_error {
+    font-size: 14px;
   }
 }

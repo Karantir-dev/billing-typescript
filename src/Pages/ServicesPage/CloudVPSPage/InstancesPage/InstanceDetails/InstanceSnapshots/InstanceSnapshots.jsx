@@ -8,6 +8,8 @@ import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudIn
 import { Button, ImagesList, Loader, WarningMessage, Filter } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 import { t } from 'i18next'
+import { useNavigate } from 'react-router-dom'
+import * as route from '@src/routes'
 
 const INSTANCE_SNAPSHOTS_CELLS = [
   { label: 'name', isSort: true, value: 'name' },
@@ -40,6 +42,7 @@ export default function InstanceSnapshots() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps'])
+  const navigate = useNavigate()
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
 
@@ -92,6 +95,15 @@ export default function InstanceSnapshots() {
         values: { image_name: name, ...values, clicked_button: 'ok', sok: 'ok' },
       }),
     )
+  }
+
+  const itemOnClickHandler = (e, item, instanceId) => {
+    if (
+      e.target.closest('[data-target="options"]') ||
+      e.target.closest('[data-target="name"]')
+    )
+      return
+    navigate(`${route.CLOUD_VPS}/${instanceId}/snapshots/${item.id.$}`)
   }
 
   const createdToday = dailyCosts?.created_today?.$
@@ -150,6 +162,7 @@ export default function InstanceSnapshots() {
             editImage={editImage}
             cost={dailyCosts}
             pageList="snapshots"
+            itemOnClickHandler={itemOnClickHandler}
           />
         )}
       </div>

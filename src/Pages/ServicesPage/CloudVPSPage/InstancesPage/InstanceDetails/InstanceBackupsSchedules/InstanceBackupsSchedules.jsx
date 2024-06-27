@@ -1,22 +1,19 @@
+/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
-import s from './InstanceBackups.module.scss'
+import s from './InstanceBackupsSchedules.module.scss'
 import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader, WarningMessage } from '@components'
+import { Button, ImagesList, Loader } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
-import { useNavigate } from 'react-router-dom'
-import * as route from '@src/routes'
 
-const INSTANCE_BACKUPS_CELLS = [
+const INSTANCE_BACKUPS_SCHEDULES_CELLS = [
   { label: 'name', isSort: false, value: 'name' },
-  { label: 'backup_type', isSort: false, value: 'backup_type' },
-  { label: 'size', isSort: false, value: 'image_size' },
-  { label: 'created_at', isSort: false, value: 'createdate' },
-  { label: 'price_per_day', isSort: false, value: 'cost' },
-  { label: 'os', isSort: false, value: 'os_distro' },
+  { label: 'rotation_days', isSort: false, value: 'rotation_days' },
+  { label: 'rotation_time', isSort: false, value: 'rotation_time' },
+  { label: 'created_at', isSort: false, value: 'create_date' },
   {
     label: 'options',
     isSort: false,
@@ -25,16 +22,15 @@ const INSTANCE_BACKUPS_CELLS = [
   },
 ]
 
-export default function InstanceBackups() {
+export default function InstanceBackupsSchedules() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
   const { t } = useTranslation(['cloud_vps'])
-  const navigate = useNavigate()
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
-  const [dailyCosts, setDailyCosts] = useState({})
+  // const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
 
   const elid = item?.id?.$
@@ -51,11 +47,10 @@ export default function InstanceBackups() {
             p_col: col,
             p_num: num,
             p_cnt: cnt,
-            func: 'instances.fleio_bckps',
+            func: 'instances.fleio_bckps.schedule',
             elid,
             setData,
             setCount,
-            setDailyCosts,
             signal,
             setIsLoading,
           }),
@@ -68,67 +63,64 @@ export default function InstanceBackups() {
   const editImage = ({ id, successCallback, name, ...values }) => {
     dispatch(
       cloudVpsOperations.editImage({
-        func: 'image',
+        func: 'instances.fleio_bckps.schedule',
         successCallback: () => {
           getItems()
           successCallback?.()
         },
         elid: id,
+
         signal,
         setIsLoading,
-        values: { image_name: name, ...values, clicked_button: 'ok', sok: 'ok' },
+        values: { name, plid: elid, ...values, clicked_button: 'ok', sok: 'ok' },
       }),
     )
   }
 
-  const itemOnClickHandler = (e, item, instanceId) => {
-    if (
-      e.target.closest('[data-target="options"]') ||
-      e.target.closest('[data-target="name"]')
-    )
-      return
-    navigate(`${route.CLOUD_VPS}/${instanceId}/backups/${item.id.$}`)
-  }
-  const createdToday = dailyCosts?.created_today?.$
+  const cells = INSTANCE_BACKUPS_SCHEDULES_CELLS.map(cell => {
+    let renderData
+    switch (cell.label) {
+      case 'rotation_days':
+        renderData = function renderData(value) {
+          const renderValue = value
+            .trim()
+            .split(' ')
+            .map(el => t(el.toLowerCase()))
+            .join(', ')
+          return <>{renderValue}</>
+        }
+        return { ...cell, renderData }
+
+      default:
+        return cell
+    }
+  })
 
   return (
     <>
       <div className={s.container}>
-        <div className={s.create_wrapper}>
-          <p>{t('backups.limit_value')}</p>
-          <Button
-            label={t('create_backup')}
-            size="large"
-            isShadow
-            onClick={() => {
-              dispatch(
-                cloudVpsActions.setItemForModals({
-                  backup_create: {
-                    ...item,
-                    ...dailyCosts,
-                  },
-                }),
-              )
-            }}
-            disabled={createdToday >= 5}
-          />
-
-          {createdToday >= 5 && (
-            <WarningMessage className={s.backup_limit_message}>
-              {t('snapshots.limit_reached')}
-            </WarningMessage>
-          )}
-        </div>
+        <Button
+          label={t('create_schedule')}
+          size="large"
+          isShadow
+          onClick={() => {
+            dispatch(
+              cloudVpsActions.setItemForModals({
+                schedule_create: {
+                  ...item,
+                },
+              }),
+            )
+          }}
+        />
 
         <ImagesList
-          cells={INSTANCE_BACKUPS_CELLS}
+          cells={cells}
           items={data}
           itemsCount={count}
           getItems={getItems}
           editImage={editImage}
-          cost={dailyCosts}
-          pageList="backups"
-          itemOnClickHandler={itemOnClickHandler}
+          pageList="backups-schedules"
         />
       </div>
 

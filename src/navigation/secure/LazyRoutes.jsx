@@ -132,7 +132,13 @@ const InstanceSnapshots = lazy(() =>
 )
 const InstanceBackups = lazy(() =>
   import(
-    /* webpackChunkName: "InstanceSnapshots" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceBackups/InstanceBackups'
+    /* webpackChunkName: "InstanceBackups" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceBackups/InstanceBackups'
+  ),
+)
+
+const InstanceBackupsSchedules = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceBackupsSchedules" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceBackupsSchedules/InstanceBackupsSchedules'
   ),
 )
 
@@ -630,6 +636,19 @@ export const InstanceBackupsLazy = () => {
   return (
     <ShellСomponent title={title}>
       <InstanceBackups />
+    </ShellСomponent>
+  )
+}
+
+export const InstanceBackupsSchedulesLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'backup_schedules', ns: 'crumbs' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceBackupsSchedules />
     </ShellСomponent>
   )
 }

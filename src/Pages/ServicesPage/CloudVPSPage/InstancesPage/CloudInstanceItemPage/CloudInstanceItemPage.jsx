@@ -149,6 +149,13 @@ export default function CloudInstanceItemPage() {
       replace: true,
       end: true,
     },
+    {
+      route: `${route.CLOUD_VPS}/${params.id}/backup_schedules`,
+      label: t('backup_schedules', { ns: 'crumbs' }),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
   ]
 
   const editInstanceHandler = ({ values, elid, closeModal, errorCallback }) => {

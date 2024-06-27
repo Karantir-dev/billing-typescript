@@ -279,3 +279,5 @@ export const CLOUD_DC_NAMESPACE = {
 export const DC_WITH_BASICS = [CLOUD_DC_NAMESPACE.Staging]
 
 export const IMAGES_TYPES = { public: 'pub', own: 'own', shared: 'shr' }
+
+export const TIME_REGEX = /^(?:[01]\d|2[0-3]):[0-5]\d$/
