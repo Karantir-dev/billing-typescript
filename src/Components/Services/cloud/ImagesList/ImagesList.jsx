@@ -293,26 +293,28 @@ export default function ImagesList({
                 </table>
               ) : (
                 <>
-                  <Select
-                    className={s.sort_select}
-                    placeholder={t('sort')}
-                    label={`${t('sort')}:`}
-                    isShadow
-                    itemsList={cells
-                      .filter(el => el.isSort)
-                      .map(el => {
-                        const { icon } = checkSortItem(el.value)
-                        return {
-                          ...el,
-                          label: t(el.label),
-                          icon,
-                        }
-                      })}
-                    itemIcon
-                    getElement={value => changeSort(value)}
-                    value={sortBy?.replace(/[+-]/g, '')}
-                    disableClickActive={false}
-                  />
+                  {renderCells.find(cell => cell.isSort) && (
+                    <Select
+                      className={s.sort_select}
+                      placeholder={t('sort')}
+                      label={`${t('sort')}:`}
+                      isShadow
+                      itemsList={cells
+                        .filter(el => el.isSort)
+                        .map(el => {
+                          const { icon } = checkSortItem(el.value)
+                          return {
+                            ...el,
+                            label: t(el.label),
+                            icon,
+                          }
+                        })}
+                      itemIcon
+                      getElement={value => changeSort(value)}
+                      value={sortBy?.replace(/[+-]/g, '')}
+                      disableClickActive={false}
+                    />
+                  )}
                   <div className={s.mobile__list}>
                     {items.map(item => {
                       return (
