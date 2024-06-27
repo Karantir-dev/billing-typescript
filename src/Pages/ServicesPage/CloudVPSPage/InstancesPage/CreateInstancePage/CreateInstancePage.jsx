@@ -425,7 +425,8 @@ export default function CreateInstancePage() {
 
               /** Sets first OS from the list when DC changes */
               useEffect(() => {
-                if (currentDC.$key) {
+                /** !imageIdFromLaunch condition prevents changing os for Launch mode */
+                if (currentDC.$key && !imageIdFromLaunch) {
                   selectFirstImage(imagesCurrentTab)
                 }
               }, [currentDC.$key])
