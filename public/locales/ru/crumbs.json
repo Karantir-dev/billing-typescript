@@ -36,5 +36,5 @@
   "images": "Images",
   "snapshots": "Снимки",
   "backups": "Резервные копии",
-  "backups-schedules": "Расписание бэкапов"
+  "backup_schedules": "Расписания бэкапов"
 }

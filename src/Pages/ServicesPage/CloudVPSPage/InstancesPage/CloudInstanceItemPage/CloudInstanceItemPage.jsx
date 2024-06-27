@@ -150,8 +150,8 @@ export default function CloudInstanceItemPage() {
       end: true,
     },
     {
-      route: `${route.CLOUD_VPS}/${params.id}/backups-schedules`,
-      label: t('backups-schedules', { ns: 'crumbs' }),
+      route: `${route.CLOUD_VPS}/${params.id}/backup_schedules`,
+      label: t('backup_schedules', { ns: 'crumbs' }),
       allowToRender: true,
       replace: true,
       end: true,

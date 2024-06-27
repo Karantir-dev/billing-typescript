@@ -1,0 +1,54 @@
+.weekday__wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.weekday__checkbox {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox__label {
+  cursor: pointer;
+}
+
+.weekday__label {
+  font-size: 14px;
+  line-height: 1.2;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.required_star {
+  color: #d93f21;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.error_message {
+  margin-left: 2px;
+  margin-top: 6px;
+  color: var(--error-color);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+  .weekday__wrapper {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .weekday__checkbox:not(:last-child)::after {
+    content: '';
+    width: 1px;
+    height: 100%;
+    background: var(--access_rights_bg_item_title_gradient);
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

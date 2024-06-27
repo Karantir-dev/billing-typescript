@@ -53,6 +53,23 @@ export const ImagesModals = ({
     )
   }
 
+  const createScheduleBackup = values => {
+    dispatch(
+      cloudVpsActions.setItemForModals({
+        backup_schedule_create: false,
+      }),
+    )
+    dispatch(
+      cloudVpsOperations.editImage({
+        func: 'instances.fleio_bckps.schedule',
+        ...values,
+        successCallback: getItems,
+      }),
+    )
+  }
+
+  // const editScheduleBackup = values => { }
+
   const createImageSubmit = ({ name, ...values }) => {
     dispatch(
       cloudVpsOperations.createImage({
@@ -116,7 +133,9 @@ export const ImagesModals = ({
 
   return (
     <>
-      {['snapshot_create', 'backup_create'].some(key => !!itemForModals?.[key]) && (
+      {['snapshot_create', 'backup_create', 'backup_schedule_create'].some(
+        key => !!itemForModals?.[key],
+      ) && (
         <CreateSnapshotOrBackupModal
           item={itemForModals}
           closeModal={() =>
@@ -124,10 +143,19 @@ export const ImagesModals = ({
               cloudVpsActions.setItemForModals({
                 snapshot_create: false,
                 backup_create: false,
+                backup_schedule_create: false,
               }),
             )
           }
-          onSubmit={itemForModals?.snapshot_create ? createSnapshot : createBackup}
+          onSubmit={
+            itemForModals?.snapshot_create
+              ? createSnapshot
+              : itemForModals?.backup_create
+              ? createBackup
+              : itemForModals?.backup_schedule_create
+              ? createScheduleBackup
+              : undefined // editScheduleBackup
+          }
         />
       )}
 

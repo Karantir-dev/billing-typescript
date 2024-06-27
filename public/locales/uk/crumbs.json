@@ -36,5 +36,5 @@
   "images": "Images",
   "snapshots": "Знімки",
   "backups": "Резервні копії",
-  "backups-schedules": "Розклад бекапів"
+  "backup_schedules": "Розклади бекапів"
 }

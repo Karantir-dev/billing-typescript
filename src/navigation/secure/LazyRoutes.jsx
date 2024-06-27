@@ -643,7 +643,7 @@ export const InstanceBackupsLazy = () => {
 export const InstanceBackupsSchedulesLazy = () => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
-    { value: 'backups', ns: 'crumbs' },
+    { value: 'backup_schedules', ns: 'crumbs' },
   ]
 
   return (

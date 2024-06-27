@@ -36,5 +36,5 @@
   "images": "Images",
   "snapshots": "Snapshots",
   "backups": "Backups",
-  "backups-schedules": "Backup schedules"
+  "backup_schedules": "Backup schedules"
 }
