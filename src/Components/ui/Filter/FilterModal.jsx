@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { forwardRef } from 'react'
 import { Formik, Form } from 'formik'
 import { InputField, Button, Icon, Portal, CheckBox } from '@components'
