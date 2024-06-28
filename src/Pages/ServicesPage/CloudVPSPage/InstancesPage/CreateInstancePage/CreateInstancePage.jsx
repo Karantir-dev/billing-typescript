@@ -428,6 +428,9 @@ export default function CreateInstancePage() {
                 /** !imageIdFromLaunch condition prevents changing os for Launch mode */
                 if (currentDC.$key && !imageIdFromLaunch) {
                   selectFirstImage(imagesCurrentTab)
+
+                  /** Selects public images tab if current DC doesn`t have own images */
+                  !ownImages && setImagesCurrentTab(IMAGES_TYPES.public)
                 }
               }, [currentDC.$key])
 
@@ -582,7 +585,7 @@ export default function CreateInstancePage() {
                     selectFirstImage(IMAGES_TYPES.own)
                   },
                   label: t('Your images'),
-                  allowToRender: true,
+                  allowToRender: ownImages,
                 },
               ]
 
@@ -700,7 +703,7 @@ export default function CreateInstancePage() {
                           )}
                         </div>
 
-                        {isItWindows && (
+                        {isItWindows && imagesCurrentTab !== IMAGES_TYPES.own && (
                           <WarningMessage className={s.notice_wrapper}>
                             {t('windows_os_notice')}
                           </WarningMessage>
