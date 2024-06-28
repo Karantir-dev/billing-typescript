@@ -546,36 +546,44 @@ const getOsList =
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+        try {
+          const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
 
-        const OsByZones = {}
-        osList.forEach(el => {
-          if (!OsByZones[el.$depend]) {
-            OsByZones[el.$depend] = [el]
+          const OsByZones = {}
+          osList.forEach(el => {
+            if (!OsByZones[el.$depend]) {
+              OsByZones[el.$depend] = [el]
+            } else {
+              OsByZones[el.$depend].push(el)
+            }
+          })
+
+          const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
+
+          let formatedSshList
+          if (sshList[0].$key === 'none') {
+            formatedSshList = []
           } else {
-            OsByZones[el.$depend].push(el)
+            formatedSshList = sshList.map(el => ({
+              label: el.$,
+              value: el.$key,
+            }))
           }
-        })
 
-        const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
+          const operationSystems = { [data.doc.datacenter.$]: OsByZones }
 
-        let formatedSshList
-        if (sshList[0].$key === 'none') {
-          formatedSshList = []
-        } else {
-          formatedSshList = sshList.map(el => ({
-            label: el.$,
-            value: el.$key,
-          }))
+          dispatch(cloudVpsActions.setOperationSystems(operationSystems))
+
+          setSshList && setSshList(formatedSshList)
+
+          closeLoader && closeLoader()
+        } catch (error) {
+          console.error(error)
+          toast.error(t('warnings.unknown_error', { ns: 'auth' }), {
+            toastId: 'unknown_error',
+            updateId: 'unknown_error',
+          })
         }
-
-        const operationSystems = { [data.doc.datacenter.$]: OsByZones }
-
-        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
-
-        setSshList && setSshList(formatedSshList)
-
-        closeLoader && closeLoader()
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
