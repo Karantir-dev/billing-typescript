@@ -213,6 +213,7 @@
 }
 
 .mobile__list {
+  padding-top: 20px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 8px 15px;
@@ -276,11 +277,6 @@
 
 .sort_select {
   max-width: 240px;
-  margin-bottom: 20px;
-
-  @media (min-width: 768px) {
-    margin-bottom: 0;
-  }
 }
 
 .name_wrapper {

@@ -15,9 +15,9 @@ export default function OsList({ value, list, onOSchange }) {
     }
   })
 
-  return Object.entries(elemsData).map(([name, el]) => {
-    if (el.length > 1) {
-      const optionsList = el.map(item => {
+  return Object.entries(elemsData).map(([name, osArr]) => {
+    if (osArr.length > 1) {
+      const optionsList = osArr.map(item => {
         item.value = item.$key
         item.label = item.$
         return item
@@ -25,7 +25,7 @@ export default function OsList({ value, list, onOSchange }) {
 
       return (
         <SoftwareOSSelect
-          key={el[0].$key}
+          key={osArr[0].$key}
           iconName={name.toLowerCase()}
           itemsList={optionsList}
           state={value}
@@ -35,12 +35,12 @@ export default function OsList({ value, list, onOSchange }) {
     } else {
       return (
         <SoftwareOSBtn
-          key={el[0].$key}
-          value={el[0].$key}
+          key={osArr[0].$key}
+          value={osArr[0].$key}
           state={value}
           iconName={name.toLowerCase()}
-          label={el[0].$}
-          imageData={el[0]}
+          label={osArr[0].$}
+          imageData={osArr[0]}
           onClick={onOSchange}
         />
       )

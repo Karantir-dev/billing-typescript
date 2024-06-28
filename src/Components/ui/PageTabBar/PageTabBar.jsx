@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import s from './PageTabBar.module.scss'
 import { Fragment } from 'react'
 
-export default function Component({ sections, activeValue }) {
+export default function PageTabBar({ sections, activeValue }) {
   const sectionsToRender = sections.filter(item => item.allowToRender)
 
   return (
@@ -48,7 +48,7 @@ export default function Component({ sections, activeValue }) {
   )
 }
 
-Component.propTypes = {
+PageTabBar.propTypes = {
   sections: PropTypes.arrayOf(
     PropTypes.shape({
       route: PropTypes.string,

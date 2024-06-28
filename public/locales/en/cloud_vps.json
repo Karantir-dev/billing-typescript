@@ -83,7 +83,8 @@
   "Confirm Resize": "Confirm Resize",
   "Revert Resize": "Revert Resize",
   "unmount_iso": "Unmount ISO",
-  "restore": "Restore current server",
+  "restore": "Restore current instance with this image",
+  "temp_password": "Rescue temporary password",
   "confirm": {
     "title": {
       "stop": "Stop instance",
@@ -155,7 +156,7 @@
   "create": "Create",
   "download": "Download",
   "hint_description": {
-    "period": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours unused on the day of the order is returned to the balance if the server has not been deleted before 08:30 GMT+2 the next day. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable",
+    "period": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours not used on the day of order is returned to the balance if the server has not been deleted within 24 hours from the moment of activation. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable.",
     "ip": "Your provider should support IPv6 functionality"
   },
   "excluding_vat": "Excluding VAT",
@@ -256,7 +257,7 @@
     "architecture": "Architecture",
     "url": "Source",
     "url_placeholder": "Enter URL",
-    "protected": "Protected",
+    "protected": "Protected from deletion",
     "name": {
       "image": "Image name",
       "snapshot": "Snapshot name",
@@ -280,7 +281,7 @@
       "backup": "Update backup"
     }
   },
-  "change_access_method": "Change access method",
+  "change_access_method": "Change access data",
   "new_access_method_warning": "Setting a new access method may not work for modified images.",
   "delete_image": "Delete image",
   "delete_image_text": "Are you sure you want to delete image \"{{name}}\"?",

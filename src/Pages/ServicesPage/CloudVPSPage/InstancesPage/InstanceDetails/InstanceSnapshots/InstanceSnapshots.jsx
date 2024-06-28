@@ -5,8 +5,9 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader, WarningMessage } from '@components'
+import { Button, ImagesList, Loader, WarningMessage, Filter } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
+import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 
@@ -24,6 +25,19 @@ const INSTANCE_SNAPSHOTS_CELLS = [
   },
 ]
 
+const FILTER_FIELDS = [
+  { label: t('image.name.snapshot', { ns: 'cloud_vps' }), value: 'name' },
+  { label: 'ID', value: 'id' },
+  { label: t('Status', { ns: 'cloud_vps' }), value: 'fleio_status' },
+  { label: t('image.os_distro', { ns: 'cloud_vps' }), value: 'os_distro' },
+  {
+    label: t('image.protected', { ns: 'cloud_vps' }),
+    value: 'protected',
+    type: 'checkbox',
+    checkboxValues: { checked: 'on', unchecked: 'off' },
+  },
+]
+
 export default function InstanceSnapshots() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
@@ -35,6 +49,8 @@ export default function InstanceSnapshots() {
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
+  const [filters, setFilters] = useState({})
+  const [isFilterSet, setIsFilterSet] = useState(false)
 
   const elid = item?.id?.$
 
@@ -57,6 +73,7 @@ export default function InstanceSnapshots() {
             setDailyCosts,
             signal,
             setIsLoading,
+            setFilters,
           }),
         )
       }
@@ -91,11 +108,23 @@ export default function InstanceSnapshots() {
 
   const createdToday = dailyCosts?.created_today?.$
 
+  const setFiltersHandler = (values, render) => {
+    dispatch(
+      cloudVpsOperations.setImageFilter({
+        func: 'instances.snapshots',
+        values,
+        signal,
+        setIsLoading,
+        successCallback: render === 'first' ? () => setIsFilterSet(true) : getItems,
+      }),
+    )
+  }
+
   return (
     <>
       <div className={s.container}>
+        <p>{t('snapshots.limit_value')}</p>
         <div className={s.create_wrapper}>
-          <p>{t('snapshots.limit_value')}</p>
           <Button
             label={t('create_snapshot')}
             size="large"
@@ -112,23 +141,30 @@ export default function InstanceSnapshots() {
             }}
             disabled={createdToday >= 5}
           />
-          {createdToday >= 5 && (
-            <WarningMessage className={s.snapshot_limit_message}>
-              {t('snapshots.limit_reached')}
-            </WarningMessage>
-          )}
+          <Filter
+            fields={FILTER_FIELDS}
+            filters={filters}
+            setFiltersHandler={setFiltersHandler}
+            itemsCount={data?.length}
+          />
         </div>
-
-        <ImagesList
-          cells={INSTANCE_SNAPSHOTS_CELLS}
-          items={data}
-          itemsCount={count}
-          getItems={getItems}
-          editImage={editImage}
-          cost={dailyCosts}
-          pageList="snapshots"
-          itemOnClickHandler={itemOnClickHandler}
-        />
+        {createdToday >= 5 && (
+          <WarningMessage className={s.snapshot_limit_message}>
+            {t('snapshots.limit_reached')}
+          </WarningMessage>
+        )}
+        {isFilterSet && (
+          <ImagesList
+            cells={INSTANCE_SNAPSHOTS_CELLS}
+            items={data}
+            itemsCount={count}
+            getItems={getItems}
+            editImage={editImage}
+            cost={dailyCosts}
+            pageList="snapshots"
+            itemOnClickHandler={itemOnClickHandler}
+          />
+        )}
       </div>
 
       <ImagesModals
