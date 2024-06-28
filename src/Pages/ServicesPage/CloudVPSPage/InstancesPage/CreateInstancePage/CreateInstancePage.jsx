@@ -478,9 +478,7 @@ export default function CreateInstancePage() {
                     }),
                   )
                 }
-                // console.log('operationSystems', operationSystems)
-                // const ownImagesForNewDc = operationSystems?.[dc?.$key]?.[IMAGES_TYPES.own]
-                // !ownImagesForNewDc && setImagesCurrentTab(IMAGES_TYPES.public)
+
                 setCurrentDC(dc)
               }
 
