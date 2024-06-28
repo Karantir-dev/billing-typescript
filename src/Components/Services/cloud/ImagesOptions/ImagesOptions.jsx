@@ -45,9 +45,17 @@ export default function ImagesOptions({ item, pageList, idKey }) {
       disabled: !isActive,
       onClick: () => {
         dispatch(
-          cloudVpsActions.setItemForModals({
-            images_edit: { ...item, idKey },
-          }),
+          cloudVpsActions.setItemForModals(
+            isSchedules
+              ? {
+                  backup_schedule_edit: {
+                    ...item,
+                  },
+                }
+              : {
+                  images_edit: { ...item, idKey },
+                },
+          ),
         )
       },
     },

@@ -240,7 +240,8 @@
   },
   "schedule_backups": {
     "create": "Create backup schedule for instance",
-    "edit": "Edit backup schedule for instance"
+    "edit": "Edit backup schedule for instance",
+    "warning": "The instance will be unavailable during the backup."
   },
   "empty_list": "Empty list",
   "create_image": "Create image",

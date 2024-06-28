@@ -1,10 +1,9 @@
-import { Button, InputField, Modal, WarningMessage, WeekdaySelector } from '@components'
+import { Button, InputField, Modal, WarningMessage } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useTranslation } from 'react-i18next'
 import s from './ImagesModals.module.scss'
 import { getInstanceMainInfo } from '@utils'
-import { TIME_REGEX } from '@utils/constants'
 
 export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
@@ -16,34 +15,12 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
     name: Yup.string()
       .required(t('Is a required field', { ns: 'other' }))
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
-    rotation_time: item.backup_schedule_create
-      ? Yup.string()
-          .matches(TIME_REGEX, t('Invalid time format', { ns: 'other' }))
-          .required(t('Is a required field', { ns: 'other' }))
-      : null,
-    rotation_days: item.backup_schedule_create
-      ? Yup.array()
-          .of(Yup.number())
-          .min(1, t('At least one day must be selected', { ns: 'other' }))
-      : null,
   })
 
   return (
     <Modal isOpen={!!itemDetails} closeModal={closeModal}>
       <Modal.Header>
-        <p>
-          {t(
-            `${
-              item?.snapshot_create
-                ? 'snapshots'
-                : item?.backup_create
-                ? 'backups'
-                : item?.backup_schedule_create
-                ? 'schedule_backups'
-                : 'edit'
-            }.create`,
-          )}
-        </p>
+        <p>{t(`${item?.snapshot_create ? 'snapshots' : 'backups'}.create`)}</p>
       </Modal.Header>
       <Modal.Body>
         <p className={s.modal__subtitle}>
@@ -70,7 +47,7 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
             })
           }}
         >
-          {({ values, setFieldValue, errors, touched }) => {
+          {({ errors, touched }) => {
             return (
               <Form id={'create_image'}>
                 <div>
@@ -85,31 +62,6 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
                     isRequired
                     autoComplete="off"
                   />
-
-                  {item?.backup_schedule_create && (
-                    <div className={s.backup_schedules}>
-                      <WeekdaySelector
-                        name="rotation_days"
-                        selectedDays={values.rotation_days}
-                        setSelectedDays={days => setFieldValue('rotation_days', days)}
-                        isRequired
-                      />
-
-                      <InputField
-                        inputClassName={s.input}
-                        labelTooltip={t('rotation_time_descr', { ns: 'cloud_vps' })}
-                        labelTooltipPlace="top-start"
-                        name="rotation_time"
-                        label={`${t('time', { ns: 'other' })} (GMT+3):`}
-                        placeholder={'14:25'}
-                        error={!!errors.rotation_time}
-                        touched={!!touched.rotation_time}
-                        isRequired
-                        isShadow
-                        autoComplete="off"
-                      />
-                    </div>
-                  )}
                 </div>
               </Form>
             )
@@ -117,15 +69,6 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
         </Formik>
       </Modal.Body>
       <Modal.Footer className={s.snapshot_create__footer_wrapper}>
-        {!item?.backup_schedule_create && (
-          <div className={s.snapshot_create__footer_block}>
-            <p className={s.tariff__param_name}>{t('Price')}</p>
-            <p>
-              {itemDetails?.stat_cost?.$} EUR / GB / {t('day')}
-            </p>
-          </div>
-        )}
-
         <div className={s.snapshot_create__buttons_wrapper}>
           <Button
             label={t('create')}

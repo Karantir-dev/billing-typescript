@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceBackupsSchedules.module.scss'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader } from '@components'
+import { Button, ImagesList, Loader, EditCell } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_BACKUPS_SCHEDULES_CELLS = [
@@ -30,8 +29,9 @@ export default function InstanceBackupsSchedules() {
   const { item, fetchItemById } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
-  // const [dailyCosts, setDailyCosts] = useState({})
   const [count, setCount] = useState(0)
+  const [backupRotation, setBackupRotation] = useState()
+  const [rotationFieldError, setRotationFieldError] = useState('')
 
   const elid = item?.id?.$
 
@@ -51,6 +51,7 @@ export default function InstanceBackupsSchedules() {
             elid,
             setData,
             setCount,
+            setBackupRotation,
             signal,
             setIsLoading,
           }),
@@ -77,6 +78,29 @@ export default function InstanceBackupsSchedules() {
     )
   }
 
+  const editInstanceHandler = values => {
+    dispatch(
+      cloudVpsOperations.editInstance({
+        values,
+        elid,
+        successCallback: () => setBackupRotation(values.backup_rotation),
+        successToast: t('backups.backup_rotation_changed'),
+        signal,
+        setIsLoading,
+      }),
+    )
+  }
+
+  useEffect(() => {
+    if (rotationFieldError) {
+      const timer = setTimeout(() => {
+        setRotationFieldError('')
+      }, 10000) // 10 sec
+
+      return () => clearTimeout(timer)
+    }
+  }, [rotationFieldError])
+
   const cells = INSTANCE_BACKUPS_SCHEDULES_CELLS.map(cell => {
     let renderData
     switch (cell.label) {
@@ -96,17 +120,29 @@ export default function InstanceBackupsSchedules() {
     }
   })
 
+  // useEffect(() => {
+  //   console.log('Instance Item should be: ', item)
+  //   const newData = data?.map(dataEl => {
+  //     return { ...dataEl, servername: item?.servername, plid: item?.id }
+  //   })
+  //   console.log('newData: ', newData)
+  //   setData(newData)
+  // items={data?.map(item => {
+  //   return { ...item, plid: elid }
+  // })}
+  // }, [item])
+
   return (
     <>
       <div className={s.container}>
         <Button
-          label={t('create_schedule')}
+          label={t('create_backup_schedule')}
           size="large"
           isShadow
           onClick={() => {
             dispatch(
               cloudVpsActions.setItemForModals({
-                schedule_create: {
+                backup_schedule_create: {
                   ...item,
                 },
               }),
@@ -114,6 +150,31 @@ export default function InstanceBackupsSchedules() {
           }}
         />
 
+        <div className={s.backup_rotation_wrapper}>
+          <p>{t('backups.backup_rotation')}:</p>
+          <div className={s.rotation_edit__field_wrapper}>
+            <EditCell
+              originName={backupRotation}
+              className={s.backup_rotation_select}
+              onSubmit={value => {
+                const numValue = Number(value)
+                if (numValue > 0 && numValue < 11) {
+                  editInstanceHandler({ backup_rotation: value })
+                } else {
+                  setRotationFieldError('backups.value_in_a_range')
+                }
+              }}
+              placeholder={backupRotation}
+              isShadow={true}
+            />
+            {rotationFieldError && (
+              <p className={s.rotation_error}>{t(rotationFieldError)}</p>
+            )}
+          </div>
+          <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
+        </div>
+
+        {console.log('data: ', data)}
         <ImagesList
           cells={cells}
           items={data}
