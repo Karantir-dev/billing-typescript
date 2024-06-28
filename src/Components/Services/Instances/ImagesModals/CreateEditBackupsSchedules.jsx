@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Button, InputField, Modal, WarningMessage, WeekdaySelector } from '@components'
 import { Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -26,12 +25,10 @@ const convertDaysStringToArray = daysString => {
 
 export const CreateEditBackupsSchedules = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'vds', 'other'])
-  console.log('item is: ', item)
   const itemDetails = item?.backup_schedule_create || item?.backup_schedule_edit
 
   const editItemDetails = item?.backup_schedule_edit
 
-  console.log('item details: ', itemDetails)
   const { displayName } = getInstanceMainInfo(itemDetails)
 
   const validationSchema = Yup.object().shape({
@@ -45,11 +42,6 @@ export const CreateEditBackupsSchedules = ({ item, closeModal, onSubmit }) => {
       .of(Yup.number())
       .min(1, t('At least one day must be selected', { ns: 'other' })),
   })
-
-  console.log(
-    'rotation_days init array: ',
-    itemDetails.rotation_days?.$.trim().split(' '),
-  )
 
   return (
     <Modal isOpen={!!itemDetails} closeModal={closeModal}>

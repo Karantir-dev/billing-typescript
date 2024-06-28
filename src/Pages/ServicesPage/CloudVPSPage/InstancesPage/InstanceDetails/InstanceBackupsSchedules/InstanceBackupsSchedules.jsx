@@ -120,18 +120,6 @@ export default function InstanceBackupsSchedules() {
     }
   })
 
-  // useEffect(() => {
-  //   console.log('Instance Item should be: ', item)
-  //   const newData = data?.map(dataEl => {
-  //     return { ...dataEl, servername: item?.servername, plid: item?.id }
-  //   })
-  //   console.log('newData: ', newData)
-  //   setData(newData)
-  // items={data?.map(item => {
-  //   return { ...item, plid: elid }
-  // })}
-  // }, [item])
-
   return (
     <>
       <div className={s.container}>
@@ -174,7 +162,6 @@ export default function InstanceBackupsSchedules() {
           <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
         </div>
 
-        {console.log('data: ', data)}
         <ImagesList
           cells={cells}
           items={data}

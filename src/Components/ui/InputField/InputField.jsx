@@ -55,8 +55,6 @@ const InputField = function InputField(props) {
         return <Icon name="Person" className={pos} />
       case 'copy':
         return <Icon name="Copy" className={pos} />
-      case 'clock':
-        return <Icon name="Clock" className={pos} />
       case 'plus':
         return (
           <Icon
@@ -190,15 +188,7 @@ function requiredLabel(labelName) {
 
 InputField.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  iconRight: PropTypes.oneOf([
-    'envelope',
-    'padlock',
-    'search',
-    'person',
-    'copy',
-    'plus',
-    'clock',
-  ]),
+  iconRight: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person', 'copy', 'plus']),
   iconLeft: PropTypes.oneOf(['envelope', 'padlock', 'search', 'person', 'plus', 'copy']),
   placeholder: PropTypes.string,
   className: PropTypes.string,

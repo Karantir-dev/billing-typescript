@@ -69,6 +69,12 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
         </Formik>
       </Modal.Body>
       <Modal.Footer className={s.snapshot_create__footer_wrapper}>
+        <div className={s.snapshot_create__footer_block}>
+          <p className={s.tariff__param_name}>{t('Price')}</p>
+          <p>
+            {itemDetails?.stat_cost?.$} EUR / GB / {t('day')}
+          </p>
+        </div>
         <div className={s.snapshot_create__buttons_wrapper}>
           <Button
             label={t('create')}
