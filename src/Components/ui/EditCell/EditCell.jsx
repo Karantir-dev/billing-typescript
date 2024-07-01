@@ -47,9 +47,10 @@ export default function EditCell({
 
   const handleChange = e => {
     const value = e.target.value
-    const isValid = onChange(value)
+    const isValid = onChange?.(value)
 
-    if (isValid) {
+    /* Update editName if onChange returns undefined (no validation = backward compatibility) or true (valid input) */
+    if (typeof isValid === 'undefined' || isValid) {
       setEditName(value)
     }
   }
