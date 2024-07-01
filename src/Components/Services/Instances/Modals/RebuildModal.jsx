@@ -8,6 +8,7 @@ import {
   SoftwareOSSelect,
   WarningMessage,
   PageTabBar,
+  OsList,
 } from '@components'
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -112,11 +113,11 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     )
   }, [])
 
+  const changeOSHandler = value => {
+    setState({ passwordType: '' })
+    setState({ [fieldName]: value })
+  }
   const renderSoftwareOSFields = (fieldName, current, depends) => {
-    const changeOSHandler = value => {
-      setState({ passwordType: '' })
-      setState({ [fieldName]: value })
-    }
 
     let dataArr = data?.slist?.find(el => el.$name === fieldName)?.val
 
@@ -266,6 +267,7 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                   <div>
                     <div className={s.rebuild__os_list}>
                       {renderSoftwareOSFields(select, values[select], depends)}
+                      <OsList list={} value={}  onOSchange={}/>
                     </div>
 
                     {isWindowsOS && (
