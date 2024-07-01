@@ -168,7 +168,7 @@ export default function InstanceBackupsSchedules() {
               originName={backupRotation}
               className={s.backup_rotation_select}
               onSubmit={handleEditSubmit}
-              onChange={handleEditChange}
+              validateOnChange={handleEditChange}
               placeholder={backupRotation}
               isShadow={true}
             />

@@ -10,7 +10,7 @@ export default function EditCell({
   onSubmit,
   isShadow,
   className,
-  onChange,
+  validateOnChange,
 }) {
   const [isEdit, setIsEdit] = useState(false)
   const [editName, setEditName] = useState('')
@@ -47,10 +47,10 @@ export default function EditCell({
 
   const handleChange = e => {
     const value = e.target.value
-    const validateOnChange = onChange?.(value) ?? true
+    const isValid = validateOnChange?.(value) ?? true
 
     /* Update editName if onChange returns undefined (no validation = backward compatibility) or true (valid input) */
-    if (validateOnChange) {
+    if (isValid) {
       setEditName(value)
     }
   }
