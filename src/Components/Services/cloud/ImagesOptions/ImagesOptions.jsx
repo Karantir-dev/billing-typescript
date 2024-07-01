@@ -123,6 +123,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
               <Icon name="MoreDots" />
             </p>
           )}
+          listItemClassName={s.option__btn_text}
         />
       ) : (
         <div className={s.options}>
