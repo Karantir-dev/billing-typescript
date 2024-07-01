@@ -120,6 +120,29 @@ export default function InstanceBackupsSchedules() {
     }
   })
 
+  const handleEditChange = value => {
+    const isNumber = /^[0-9]+$/.test(value)
+
+    setRotationFieldError('')
+    if (!isNumber && !value === '') {
+      setRotationFieldError('backups.invalid_number')
+      return false
+    }
+
+    return true
+  }
+
+  const handleEditSubmit = value => {
+    const numValue = Number(value)
+    if (numValue > 0 && numValue < 11) {
+      editInstanceHandler({ backup_rotation: value })
+    } else if (numValue > 10) {
+      editInstanceHandler({ backup_rotation: '10' })
+    } else {
+      setRotationFieldError('backups.value_in_a_range')
+    }
+  }
+
   return (
     <>
       <div className={s.container}>
@@ -144,14 +167,8 @@ export default function InstanceBackupsSchedules() {
             <EditCell
               originName={backupRotation}
               className={s.backup_rotation_select}
-              onSubmit={value => {
-                const numValue = Number(value)
-                if (numValue > 0 && numValue < 11) {
-                  editInstanceHandler({ backup_rotation: value })
-                } else {
-                  setRotationFieldError('backups.value_in_a_range')
-                }
-              }}
+              onSubmit={handleEditSubmit}
+              onChange={handleEditChange}
               placeholder={backupRotation}
               isShadow={true}
             />

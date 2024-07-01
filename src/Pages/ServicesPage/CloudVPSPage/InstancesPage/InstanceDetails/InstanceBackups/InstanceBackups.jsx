@@ -95,7 +95,6 @@ export default function InstanceBackups() {
     <>
       <div className={s.container}>
         <div className={s.create_wrapper}>
-          <p>{t('backups.limit_value')}</p>
           <Button
             label={t('create_backup')}
             size="large"
@@ -112,6 +111,13 @@ export default function InstanceBackups() {
             }}
             disabled={createdToday >= 5}
           />
+
+          <p>
+            {t('backups.count')}: {count || 0} / 100
+          </p>
+          <p>
+            {t('backups.limit_value')}: {createdToday || 0} / 5
+          </p>
 
           {createdToday >= 5 && (
             <WarningMessage className={s.backup_limit_message}>
