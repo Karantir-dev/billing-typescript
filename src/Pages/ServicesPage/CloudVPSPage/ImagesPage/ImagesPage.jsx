@@ -1,4 +1,4 @@
-import { Loader, ImagesList, Button } from '@components'
+import { Loader, ImagesList, Button, Filter } from '@components'
 import s from './ImagesPage.module.scss'
 import { useDispatch } from 'react-redux'
 import { useCancelRequest } from '@src/utils'
@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
+import { t } from 'i18next'
 
 export const CLOUD_IMAGE_CELLS = [
   { label: 'name', isSort: true, value: 'image_name' },
@@ -26,14 +27,26 @@ export const CLOUD_IMAGE_CELLS = [
   },
 ]
 
+const FILTER_FIELDS = [
+  { label: t('image.name.image', { ns: 'cloud_vps' }), value: 'name' },
+  { label: 'ID', value: 'id' },
+  { label: t('Status', { ns: 'cloud_vps' }), value: 'fleio_status' },
+  { label: t('image.os_distro', { ns: 'cloud_vps' }), value: 'os_distro' },
+  { label: t('type', { ns: 'cloud_vps' }), value: 'image_type' },
+  { label: t('region', { ns: 'cloud_vps' }), value: 'region' },
+  { label: t('disk_format', { ns: 'cloud_vps' }), value: 'disk_format' },
+]
+
 export default function ImagesPage() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
-  const [images, setImages] = useState()
+  const [data, setData] = useState()
   const [imagesCount, setImagesCount] = useState(0)
   const [dailyCosts, setDailyCosts] = useState(0)
   const { t } = useTranslation(['cloud_vps'])
   const navigate = useNavigate()
+  const [filters, setFilters] = useState({})
+  const [isFilterSet, setIsFilterSet] = useState(false)
 
   const getItems = useCallback(
     (() => {
@@ -48,11 +61,12 @@ export default function ImagesPage() {
             p_num: num,
             p_cnt: cnt,
             func: 'image',
-            setData: setImages,
+            setData,
             setCount: setImagesCount,
             setDailyCosts,
             signal,
             setIsLoading,
+            setFilters,
           }),
         )
       }
@@ -85,30 +99,53 @@ export default function ImagesPage() {
     navigate(`${route.CLOUD_VPS}/images/${item.id.$}`)
   }
 
+  const setFiltersHandler = (values, render) => {
+    dispatch(
+      cloudVpsOperations.setImageFilter({
+        func: 'image',
+        values,
+        signal,
+        setIsLoading,
+        successCallback: render === 'first' ? () => setIsFilterSet(true) : getItems,
+      }),
+    )
+  }
+
   return (
     <div className={s.images}>
-      <Button
-        label={t('create_image')}
-        size="large"
-        isShadow
-        onClick={() => {
-          dispatch(
-            cloudVpsActions.setItemForModals({
-              images_edit: 'create',
-            }),
-          )
-        }}
-      />
-      <ImagesList
-        cells={CLOUD_IMAGE_CELLS}
-        items={images}
-        itemsCount={imagesCount}
-        getItems={getItems}
-        editImage={editImage}
-        cost={dailyCosts}
-        pageList="images"
-        itemOnClickHandler={itemOnClickHandler}
-      />
+      <div className={s.create_wrapper}>
+        <Button
+          label={t('create_image')}
+          size="large"
+          isShadow
+          onClick={() => {
+            dispatch(
+              cloudVpsActions.setItemForModals({
+                images_edit: 'create',
+              }),
+            )
+          }}
+        />
+        <Filter
+          fields={FILTER_FIELDS}
+          filters={filters}
+          setFiltersHandler={setFiltersHandler}
+          itemsCount={data?.length}
+        />
+      </div>
+
+      {isFilterSet && (
+        <ImagesList
+          cells={CLOUD_IMAGE_CELLS}
+          items={data}
+          itemsCount={imagesCount}
+          getItems={getItems}
+          editImage={editImage}
+          cost={dailyCosts}
+          pageList="images"
+          itemOnClickHandler={itemOnClickHandler}
+        />
+      )}
 
       <ImagesModals
         loadingParams={{

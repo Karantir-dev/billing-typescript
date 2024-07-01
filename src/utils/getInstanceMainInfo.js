@@ -8,7 +8,7 @@ export default function getInstanceMainInfo(item) {
   const isRescued = fotboStatus === 'rescued'
   const isSuspended = fotboStatus === 'suspended'
   const isBootedFromISO = fotboStatus === 'booted_from_iso'
-  const isImageUploading = fotboStatus === 'running_image_uploading'
+  const isImageUploading = fotboStatus === 'image_uploading'
   const isErrorStatus = fotboStatus === 'error'
   const isWindows = item.instances_os?.$.includes('Windows')
 
