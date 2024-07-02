@@ -41,7 +41,7 @@ export default function ImagesPage() {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const dispatch = useDispatch()
   const [data, setData] = useState()
-  const [imagesCount, setImagesCount] = useState(0)
+  const [pagination, setPagination] = useState({})
   const [dailyCosts, setDailyCosts] = useState(0)
   const { t } = useTranslation(['cloud_vps'])
   const navigate = useNavigate()
@@ -50,19 +50,17 @@ export default function ImagesPage() {
 
   const getItems = useCallback(
     (() => {
-      let col, num, cnt
+      let num
       return ({ p_col, p_num, p_cnt } = {}) => {
-        col = p_col ?? col
         num = p_num ?? num
-        cnt = p_cnt ?? cnt
         dispatch(
           cloudVpsOperations.getImages({
-            p_col: col,
+            p_col,
             p_num: num,
-            p_cnt: cnt,
+            p_cnt,
             func: 'image',
             setData,
-            setCount: setImagesCount,
+            setPagination,
             setDailyCosts,
             signal,
             setIsLoading,
@@ -138,7 +136,7 @@ export default function ImagesPage() {
         <ImagesList
           cells={CLOUD_IMAGE_CELLS}
           items={data}
-          itemsCount={imagesCount}
+          pagination={pagination}
           getItems={getItems}
           editImage={editImage}
           cost={dailyCosts}

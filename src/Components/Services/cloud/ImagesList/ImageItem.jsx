@@ -1,6 +1,7 @@
 import s from './ImagesList.module.scss'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 export default function ImageItem({
   item,
@@ -9,6 +10,7 @@ export default function ImageItem({
   idKey,
   isItemClickable,
 }) {
+  const { t } = useTranslation(['cloud_vps'])
   return (
     <tr
       className={cn(s.tr, { [s.disabled]: !isItemClickable })}
@@ -20,7 +22,10 @@ export default function ImageItem({
           data-target={cell.label}
           className={cn(s.td, s[cell.label])}
         >
-          {cell.renderData?.(item[cell.value]?.$, item) ?? item[cell.value]?.$}
+          {}
+          {['image_type', 'backup_type'].some(key => cell.value === key)
+            ? t(item[cell.value]?.$)
+            : cell.renderData?.(item[cell.value]?.$, item) ?? item[cell.value]?.$}
         </td>
       ))}
     </tr>

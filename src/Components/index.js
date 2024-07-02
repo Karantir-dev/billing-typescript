@@ -45,6 +45,7 @@ export { default as RadioButton } from './ui/RadioButton/RadioButton'
 export { default as Alert } from './ui/Alert/Alert'
 
 export { default as Pagination } from './ui/Pagination/Pagination'
+export { default as PaginationUpdated } from './ui/PaginationUpdated/Pagination'
 export { default as Portal } from './ui/Portal/Portal'
 export { default as PageTabBar } from './ui/PageTabBar/PageTabBar'
 export { default as Loader } from './ui/Loader/Loader'

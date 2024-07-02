@@ -47,7 +47,7 @@ export default function InstanceDetailsOverview() {
               </div>
 
               <div className={s.info_block_item}>
-                <p className={s.item_name}>{t('Memory')}</p>
+                <p className={s.item_name}>RAM</p>
                 <p className={s.item_info}>{instanceInfo?.Memory?.replace('.', '')}</p>
               </div>
 
