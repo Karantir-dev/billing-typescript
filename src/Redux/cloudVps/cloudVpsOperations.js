@@ -23,6 +23,7 @@ const getInstances =
     signal,
     setIsLoading,
     isLoader = true,
+    setPagination,
     setLocalInstancesItems,
   }) =>
   (dispatch, getState) => {
@@ -54,6 +55,11 @@ const getInstances =
             el.createdate.$ = el.createdate[0].$
           }
         })
+
+        const p_cnt = +data.doc.p_cnt.$
+        const p_elems = +data.doc.p_elems.$
+        const p_num = +data.doc.p_num.$
+        setPagination?.({ p_cnt, p_elems, p_num })
 
         if (setLocalInstancesItems) {
           setLocalInstancesItems(elemsList)
@@ -1022,7 +1028,7 @@ const getImages =
     p_num,
     p_col,
     setData,
-    setCount,
+    setPagination,
     setDailyCosts,
     signal,
     setIsLoading,
@@ -1058,17 +1064,23 @@ const getImages =
           }
         })
 
-        const created_today_value = data.doc?.created_today?.$ || 0
+        const created_today_value = data.doc?.manual_created_today?.$ || 0
+        const created_total = data.doc?.manual_created_total?.$ || 0
         const priceObj = data.doc.cost || {}
 
         const costSummaryObj = {
           ...priceObj,
           created_today: { $: Number(created_today_value) },
+          created_total: { $: Number(created_total) },
         }
+
+        const p_cnt = +data.doc.p_cnt.$
+        const p_elems = +data.doc.p_elems.$
+        const p_num = +data.doc.p_num.$
 
         setDailyCosts?.(costSummaryObj)
         setBackupRotation && setBackupRotation(data.doc?.backup_rotation?.$)
-        setCount(+data.doc.p_elems.$)
+        setPagination({ p_cnt, p_elems, p_num })
         setData(elemsList)
         if (setFilters) {
           return axiosInstance.post(
@@ -1079,9 +1091,6 @@ const getImages =
               auth: sessionId,
               lang: 'en',
               elid,
-              p_cnt,
-              p_num,
-              p_col,
             }),
             { signal },
           )

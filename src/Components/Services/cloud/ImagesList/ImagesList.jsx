@@ -3,12 +3,12 @@ import {
   EditCell,
   Icon,
   ImagesOptions,
-  Pagination,
+  PaginationUpdated,
   Select,
   TooltipWrapper,
 } from '@components'
 import cn from 'classnames'
-import { useEffect, useReducer, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
 import ImageItem from './ImageItem'
 import ImageMobileItem from './ImageMobileItem'
@@ -21,7 +21,7 @@ import { selectors } from '@redux'
 
 export default function ImagesList({
   items,
-  itemsCount,
+  pagination,
   cells,
   getItems,
   editImage,
@@ -35,37 +35,11 @@ export default function ImagesList({
   const darkTheme = useSelector(selectors.getTheme) === 'dark'
   const { id: instanceId } = useParams()
 
-  const [pagination, setPagination] = useReducer(
-    (state, action) => {
-      return { ...state, ...action }
-    },
-    { p_num: 1, p_cnt: '10' },
-  )
-
-  /* crutch for paginations */
-  const [isPaginationChanged, setIsPaginationChanged] = useState(false)
-  const [isFirstRender, setIsFirstRender] = useState(true)
-
   const [sortBy, setSortBy] = useState(`+${idKey}`)
 
-  const getItemsHandler = ({ p_col, p_num, p_cnt } = {}) => {
-    getItems({
-      p_col,
-      p_cnt: p_cnt ?? pagination.p_cnt,
-      p_num: p_num ?? pagination.p_num,
-    })
-  }
-
   useEffect(() => {
-    getItemsHandler({ p_col: sortBy })
-    setIsFirstRender(false)
+    getItems({ p_col: sortBy })
   }, [])
-
-  useEffect(() => {
-    if (!isFirstRender) {
-      getItemsHandler()
-    }
-  }, [isPaginationChanged])
 
   const checkSortItem = value => {
     const isActive = sortBy?.replace(/[+-]/g, '') === value
@@ -80,7 +54,7 @@ export default function ImagesList({
 
   const setSortValue = p_col => {
     setSortBy(p_col)
-    getItemsHandler({ p_col })
+    getItems({ p_col })
   }
 
   const changeSort = value => {
@@ -320,28 +294,17 @@ export default function ImagesList({
                   </div>
                 </>
               )}
-
-              {itemsCount > 5 && (
-                <Pagination
-                  className={s.pagination}
-                  currentPage={pagination.p_num}
-                  totalCount={itemsCount}
-                  onPageChange={value => {
-                    setPagination({ p_num: value })
-                    setIsPaginationChanged(prev => !prev)
-                  }}
-                  pageSize={pagination.p_cnt}
-                  onPageItemChange={value => {
-                    setPagination({ p_cnt: value })
-                  }}
-                />
-              )}
             </div>
           ) : (
             <div className={s.no_images_wrapper}>
               <p className={s.no_images_title}>{t('empty_list')}</p>
             </div>
           )}
+          <PaginationUpdated
+            className={s.pagination}
+            pagination={pagination}
+            getItemsHandler={getItems}
+          />
         </>
       )}
     </>
@@ -350,10 +313,10 @@ export default function ImagesList({
 
 ImagesList.propTypes = {
   items: PropTypes.array,
-  itemsCount: PropTypes.number,
   cells: PropTypes.array,
   getItems: PropTypes.func,
   editImage: PropTypes.func,
   idKey: PropTypes.string,
   pageList: PropTypes.string,
+  pagination: PropTypes.object,
 }

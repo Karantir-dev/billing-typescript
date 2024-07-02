@@ -29,29 +29,28 @@ export default function InstanceBackupsSchedules() {
   const { item, fetchItemById } = useCloudInstanceItemContext()
 
   const [data, setData] = useState()
-  const [count, setCount] = useState(0)
   const [backupRotation, setBackupRotation] = useState()
   const [rotationFieldError, setRotationFieldError] = useState('')
+
+  const [pagination, setPagination] = useState({})
 
   const elid = item?.id?.$
 
   const getItems = useCallback(
     (() => {
-      let col, num, cnt
+      let num
       return ({ p_col, p_num, p_cnt } = {}) => {
-        col = p_col ?? col
         num = p_num ?? num
-        cnt = p_cnt ?? cnt
         dispatch(
           cloudVpsOperations.getImages({
-            p_col: col,
+            p_col,
             p_num: num,
-            p_cnt: cnt,
+            p_cnt,
             func: 'instances.fleio_bckps.schedule',
             elid,
             setData,
-            setCount,
             setBackupRotation,
+            setPagination,
             signal,
             setIsLoading,
           }),
@@ -182,7 +181,7 @@ export default function InstanceBackupsSchedules() {
         <ImagesList
           cells={cells}
           items={data}
-          itemsCount={count}
+          pagination={pagination}
           getItems={getItems}
           editImage={editImage}
           pageList="backups-schedules"
