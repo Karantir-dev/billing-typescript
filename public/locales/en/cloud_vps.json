@@ -1,6 +1,10 @@
 {
   "Instance specifications": "Instance specifications",
   "Image": "Image",
+  "Snapshot": "Snapshot",
+  "Backup": "Backup",
+  "manual": "Manual",
+  "auto": "On schedule",
   "Flavor": "Flavor",
   "Memory": "Memory",
   "Virtual CPUs": "Virtual CPUs",
@@ -53,7 +57,7 @@
   "Name can only contain": "The name must contain only valid characters: Latin letters, numbers, spaces, dashes or underscores",
   "pass_method_ssh": "Connect to your instance using SSH key pair",
   "pass_method_password": "Connect to your instance as {{user}} user via password",
-  "windows_password_warning": "Please proceed to the console to set up a password",
+  "windows_password_warning": "After connecting the image, go to the console to set the password.",
   "resize_popup_text": "Check if files have been successfully migrated to the new instance disk. Choose Confirm resize from the instance menu to confirm migration was successful, otherwise choose Revert resize to revert back to the initial disk.",
   "by_admin": "Suspended by admin",
   "sort": "Sort by",
@@ -83,7 +87,7 @@
   "Confirm Resize": "Confirm Resize",
   "Revert Resize": "Revert Resize",
   "unmount_iso": "Unmount ISO",
-  "restore": "Restore current instance with this image",
+  "restore": "Restore with this image",
   "temp_password": "Rescue temporary password",
   "confirm": {
     "title": {
@@ -213,7 +217,7 @@
   "os": "OS",
   "price_per_day": "Price/day",
   "edit": "Edit",
-  "launch": "Launch",
+  "launch": "Create a new server with this image",
   "copy": "Copy",
   "delete": "Delete",
   "disk_format": "Disk format",
@@ -265,7 +269,7 @@
       "backup": "Backup name"
     },
     "description": {
-      "image_name": "Set a display name that will reflect what the image contains, like its operating system or snapshot of an instance.",
+      "image_name": "Set a display name that will reflect what the image contains.",
       "min_disk": "This property will tell OpenStack Compute what the minimum required disk size is for this image. This allows you to set a limit in order to avoid potential problems while creating an Instance with a lower disk size than the installed software on that image.",
       "min_ram": "Minimum required RAM (GB)Like the minimum required disk size, this option allows you to set a limit for the minimum required RAM an instance created from this image will required in order to run properly.",
       "os": "These special attributes allows Zomro to show the distro icon next to each instance created from this image and allows OpenStack to properly create an Instance especially for Windows or other non Linux distributions.",
