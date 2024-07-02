@@ -39,7 +39,12 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import { replaceAllFn, useFormFraudCheckData, roundToDecimal } from '@utils'
-import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
+import {
+  QIWI_PHONE_COUNTRIES,
+  SBER_PHONE_COUNTRIES,
+  OFFER_FIELD,
+  PAYMETHODS_ORDER,
+} from '@utils/constants'
 
 export default function Component() {
   const dispatch = useDispatch()
@@ -81,7 +86,19 @@ export default function Component() {
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
-    setPaymentsMethodList(data)
+    const sortedList = [...data].sort((a, b) => {
+      if (a.paymethod_type?.$ === '0') return -1
+      if (b.paymethod_type?.$ === '0') return 1
+
+      const indexA = PAYMETHODS_ORDER.indexOf(a.paymethod?.$)
+      const indexB = PAYMETHODS_ORDER.indexOf(b.paymethod?.$)
+
+      if (indexA === -1) return 1
+      if (indexB === -1) return -1
+
+      return indexA - indexB
+    })
+    setPaymentsMethodList(sortedList)
     setState({ paymentListLoaded: true })
   }
 
@@ -1012,7 +1029,7 @@ export default function Component() {
                 cnp: payersData.state?.cnp || payersData.selectedPayerFields?.cnp || '',
                 [OFFER_FIELD]: state.isPolicyChecked || false,
 
-                selectedPayMethod: state.selectedPayMethod || undefined,
+                selectedPayMethod: state.selectedPayMethod || paymentsMethodList?.[0],
                 promocode: state.promocode || '',
                 isPersonalBalance:
                   state.selectedPayMethod?.name?.$?.includes('balance') &&
@@ -1089,6 +1106,17 @@ export default function Component() {
 
                 const setAdditionalPayMethodts = value =>
                   setState({ additionalPayMethodts: value })
+
+                useEffect(() => {
+                  dispatch(
+                    cartOperations.getPayMethodItem(
+                      {
+                        paymethod: paymentsMethodList[0]?.paymethod?.$,
+                      },
+                      setAdditionalPayMethodts,
+                    ),
+                  )
+                }, [paymentsMethodList])
 
                 return (
                   <Form className={s.form}>

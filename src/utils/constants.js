@@ -225,3 +225,5 @@ Below ID and names of all services
 
 export const PREMIUM_TYPE = 'premium'
 export const BASIC_TYPE = 'basic'
+
+export const PAYMETHODS_ORDER = ['111', '110', '108', '96', '71', '93']

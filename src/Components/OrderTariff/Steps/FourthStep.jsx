@@ -1,10 +1,16 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ErrorMessage, Form, Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import s from '../OrderTariff.module.scss'
 import cn from 'classnames'
-import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
+import {
+  QIWI_PHONE_COUNTRIES,
+  SBER_PHONE_COUNTRIES,
+  OFFER_FIELD,
+  PAYMETHODS_ORDER,
+} from '@utils/constants'
 import {
   cartActions,
   cartOperations,
@@ -65,7 +71,23 @@ export default function FourthStep({
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
-    setState({ paymentListLoaded: true, paymentsMethodList: data })
+    const sortedList = [...data].sort((a, b) => {
+      if (a.paymethod_type?.$ === '0') return -1
+      if (b.paymethod_type?.$ === '0') return 1
+
+      const indexA = PAYMETHODS_ORDER.indexOf(a.paymethod?.$)
+      const indexB = PAYMETHODS_ORDER.indexOf(b.paymethod?.$)
+
+      if (indexA === -1) return 1
+      if (indexB === -1) return -1
+
+      return indexA - indexB
+    })
+    setState({
+      paymentListLoaded: true,
+      paymentsMethodList: sortedList,
+      selectedPayMethod: state.selectedPayMethod || sortedList?.[0],
+    })
   }
 
   const setCartData = value => setState({ cartData: value })
@@ -110,7 +132,10 @@ export default function FourthStep({
 
   useEffect(() => {
     if (state.additionalPayMethodts && state.additionalPayMethodts?.length > 0) {
-      setState({ selectedAddPaymentMethod: state.additionalPayMethodts[0]?.$key })
+      setState({
+        selectedAddPaymentMethod:
+          state.selectedAddPaymentMethod || state.additionalPayMethodts[0]?.$key,
+      })
     }
   }, [state.additionalPayMethodts])
 
@@ -247,6 +272,7 @@ export default function FourthStep({
         }),
       )
     }
+
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
   }
 
@@ -360,6 +386,19 @@ export default function FourthStep({
 
   const setAdditionalPayMethodts = value => setState({ additionalPayMethodts: value })
 
+  useEffect(() => {
+    dispatch(
+      cartOperations.getPayMethodItem(
+        {
+          paymethod:
+            state.selectedPayMethod?.paymethod?.$ ||
+            state.paymentsMethodList?.[0]?.paymethod?.$,
+        },
+        setAdditionalPayMethodts,
+      ),
+    )
+  }, [state.paymentsMethodList])
+
   const renderPhoneList = paymethod => {
     if (paymethod === 'qiwi') {
       return QIWI_PHONE_COUNTRIES
@@ -377,7 +416,7 @@ export default function FourthStep({
         enableReinitialize
         validationSchema={validationSchema}
         initialValues={{
-          selectedPayMethod: state.selectedPayMethod || undefined,
+          selectedPayMethod: state.selectedPayMethod || state.paymentsMethodList?.[0],
           promocode: state.promocode,
           isPersonalBalance:
             state.selectedPayMethod?.name?.$?.includes('balance') &&
@@ -662,7 +701,7 @@ export default function FourthStep({
                           value={values.promocode}
                           onChange={e => setState({ promocode: e.target.value })}
                         />
-                        {console.log(state)}
+
                         <button
                           onClick={() => setPromocodeToCart(values?.promocode)}
                           disabled={Boolean(!values?.promocode?.length)}
