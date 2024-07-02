@@ -437,9 +437,14 @@ export default function FourthStep({
           }, [state.cartData?.total_sum, state.paymentsMethodList])
 
           const parsePaymentInfo = text => {
-            const splittedText = text?.split('<p>')
+            const splittedText = text?.replace(/&nbsp;/g, ' ').split('<p>')
             if (splittedText?.length > 0) {
-              const minAmount = splittedText[0]?.replace('\n', '').replace(/&nbsp;/g, ' ')
+              const minAmount = splittedText[0]?.split('Commission')[0].replace('\n', '')
+
+              const commission = splittedText[0]
+                .split('Commission')[1]
+                ?.replace('\n', '')
+                .trim()
 
               let infoText = ''
 
@@ -452,7 +457,7 @@ export default function FourthStep({
 
                 infoText = replaceAllFn(replacedText, '\n', '')
               }
-              return { minAmount, infoText }
+              return { minAmount, infoText, commission }
             }
           }
           const parsedText =
@@ -654,7 +659,14 @@ export default function FourthStep({
                       >
                         <div>
                           <span>
-                            {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                            {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}{' '}
+                            {parsedText?.commission && (
+                              <strong>
+                                {t(`Commission ${parsedText?.commission}`, {
+                                  ns: 'cart',
+                                })}
+                              </strong>
+                            )}
                           </span>
                           {parsedText?.infoText && (
                             <p>{t(`${parsedText?.infoText?.trim()}`, { ns: 'cart' })}</p>
