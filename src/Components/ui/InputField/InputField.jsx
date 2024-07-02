@@ -193,7 +193,7 @@ InputField.propTypes = {
   placeholder: PropTypes.string,
   className: PropTypes.string,
   dataTestid: PropTypes.string,
-  type: PropTypes.oneOf(['text', 'email', 'number', 'password']),
+  type: PropTypes.oneOf(['text', 'email', 'number', 'password', 'time']),
   as: PropTypes.string,
   name: PropTypes.string.isRequired,
   error: PropTypes.bool,

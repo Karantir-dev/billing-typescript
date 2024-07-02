@@ -122,7 +122,6 @@ export default function InstanceSnapshots() {
   return (
     <>
       <div className={s.container}>
-        <p>{t('snapshots.limit_value')}</p>
         <div className={s.create_wrapper}>
           <Button
             label={t('create_snapshot')}
@@ -147,6 +146,9 @@ export default function InstanceSnapshots() {
             itemsCount={data?.length}
           />
         </div>
+        <p>
+          {t('snapshots.limit_value')}: {createdToday || 0} / 5
+        </p>
         {createdToday >= 5 && (
           <WarningMessage className={s.snapshot_limit_message}>
             {t('snapshots.limit_reached')}

@@ -10,6 +10,7 @@ export default function EditCell({
   onSubmit,
   isShadow,
   className,
+  validateOnChange,
 }) {
   const [isEdit, setIsEdit] = useState(false)
   const [editName, setEditName] = useState('')
@@ -44,6 +45,16 @@ export default function EditCell({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isEdit])
 
+  const handleChange = e => {
+    const value = e.target.value
+    const isValid = validateOnChange?.(value) ?? true
+
+    /* Update editName if onChange returns undefined (no validation = backward compatibility) or true (valid input) */
+    if (isValid) {
+      setEditName(value)
+    }
+  }
+
   return (
     <div
       style={isEdit ? { overflow: 'inherit' } : {}}
@@ -66,7 +77,7 @@ export default function EditCell({
           <input
             placeholder={placeholder}
             value={editName}
-            onChange={e => setEditName(e.target.value)}
+            onChange={handleChange}
             onMouseUp={() => input.current.focus()}
             ref={input}
           />

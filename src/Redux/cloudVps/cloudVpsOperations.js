@@ -1064,12 +1064,14 @@ const getImages =
           }
         })
 
-        const created_today_value = data.doc?.created_today?.$ || 0
+        const created_today_value = data.doc?.manual_created_today?.$ || 0
+        const created_total = data.doc?.manual_created_total?.$ || 0
         const priceObj = data.doc.cost || {}
 
         const costSummaryObj = {
           ...priceObj,
           created_today: { $: Number(created_today_value) },
+          created_total: { $: Number(created_total) },
         }
 
         const p_cnt = +data.doc.p_cnt.$

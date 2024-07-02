@@ -252,3 +252,9 @@
     height: 50px;
   }
 }
+
+input[type='time']::-webkit-calendar-picker-indicator {
+  background-color: #decbfe;
+  color: (--main-text);
+  border-radius: 50%;
+}
