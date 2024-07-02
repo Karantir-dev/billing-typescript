@@ -1,0 +1,230 @@
+@import '@scss/placeholders.scss';
+
+.pageItemContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+
+  .servperpage {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 130%;
+    color: var(--main-text);
+    margin-right: 10px;
+  }
+
+  .input {
+    min-width: 80px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 70.9%;
+    color: var(--main-text);
+  }
+
+  .paginationItem {
+    padding: 0 8px;
+    height: 35px;
+    text-align: center;
+    margin: auto 0;
+    color: var(--main-text);
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    letter-spacing: 0.01071em;
+    border-radius: 16px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    min-width: 35px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &.inputItem {
+      background: var(--forms_bgc_2);
+      box-shadow: var(--forms_shadow);
+      border-radius: 2px;
+      margin-right: 10px;
+    }
+
+    &.selected {
+      box-shadow: var(--forms_shadow);
+      background: var(--forms_bgc_2);
+      border-radius: 3px;
+    }
+  }
+}
+
+.paginationContainer {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  color: var(--main-text);
+
+  .totalPages {
+    color: var(--transparent-color);
+    padding: 0 8px;
+  }
+
+  .paginationItem {
+    padding: 0 8px;
+    height: 35px;
+    text-align: center;
+    margin: auto 0;
+    color: var(--main-text);
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    letter-spacing: 0.01071em;
+    border-radius: 16px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 130%;
+    min-width: 35px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &.inputItem {
+      background: var(--forms_bgc_2);
+      box-shadow: var(--forms_shadow);
+      border-radius: 2px;
+      margin-right: 10px;
+    }
+
+    &.arrow {
+      margin: 0 20px;
+    }
+
+    &.dots:hover {
+      background-color: transparent;
+      cursor: default;
+    }
+
+    &.selected {
+      box-shadow: var(--forms_shadow);
+      background: var(--forms_bgc_2);
+      border-radius: 3px;
+    }
+
+    .arrow {
+      &::before {
+        position: relative;
+        /* top: 3pt; Uncomment this to lower the icons as requested in comments*/
+        content: '';
+        /* By using an em scale, the arrows will size with the font */
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border-right: 2px solid var(--main-text);
+        border-top: 2px solid var(--main-text);
+      }
+
+      &.left {
+        transform: rotate(-135deg);
+      }
+
+      &.right {
+        transform: rotate(45deg);
+      }
+    }
+
+    &.disabled {
+      pointer-events: none;
+
+      .arrow::before {
+        border-right: 2px solid var(--transparent-color);
+        border-top: 2px solid var(--transparent-color);
+      }
+
+      &:hover {
+        background-color: transparent;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.input {
+  padding: 11px 15px;
+  border: none;
+  max-width: 55px;
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  outline: none;
+  line-height: 70.9%;
+  max-height: 34px;
+  color: var(--main-text);
+  background: none;
+}
+
+.blockPagination {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.total {
+  margin-bottom: 15px;
+  font-weight: 400;
+  font-size: 18px;
+}
+
+.btn_desktop,
+.btn_mobile {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 70.9%;
+  text-decoration-line: underline;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.btn_desktop {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .pageItemContainer {
+    width: 100%;
+    margin-bottom: 0;
+    justify-content: flex-start;
+
+    .servperpage {
+      font-size: 16px;
+    }
+  }
+
+  .blockPagination {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .total {
+    margin-bottom: unset;
+  }
+
+  .btn_mobile {
+    display: none;
+  }
+  .btn_desktop {
+    margin-top: 0;
+    display: block;
+  }
+}
