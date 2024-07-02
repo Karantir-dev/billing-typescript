@@ -5,12 +5,7 @@ import { ErrorMessage, Form, Formik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import s from '../OrderTariff.module.scss'
 import cn from 'classnames'
-import {
-  QIWI_PHONE_COUNTRIES,
-  SBER_PHONE_COUNTRIES,
-  OFFER_FIELD,
-  PAYMETHODS_ORDER,
-} from '@utils/constants'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 import {
   cartActions,
   cartOperations,
@@ -29,7 +24,12 @@ import {
   InputField,
   Select,
 } from '@components'
-import { replaceAllFn, roundToDecimal, useFormFraudCheckData } from '@utils'
+import {
+  replaceAllFn,
+  roundToDecimal,
+  useFormFraudCheckData,
+  sortPaymethodList,
+} from '@utils'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import * as Yup from 'yup'
 import * as route from '@src/routes'
@@ -71,18 +71,8 @@ export default function FourthStep({
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
-    const sortedList = [...data].sort((a, b) => {
-      if (a.paymethod_type?.$ === '0') return -1
-      if (b.paymethod_type?.$ === '0') return 1
+    const sortedList = sortPaymethodList(data)
 
-      const indexA = PAYMETHODS_ORDER.indexOf(a.paymethod?.$)
-      const indexB = PAYMETHODS_ORDER.indexOf(b.paymethod?.$)
-
-      if (indexA === -1) return 1
-      if (indexB === -1) return -1
-
-      return indexA - indexB
-    })
     setState({
       paymentListLoaded: true,
       paymentsMethodList: sortedList,

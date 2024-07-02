@@ -28,13 +28,8 @@ import {
 } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
-import { checkIfTokenAlive, replaceAllFn } from '@utils'
-import {
-  QIWI_PHONE_COUNTRIES,
-  SBER_PHONE_COUNTRIES,
-  OFFER_FIELD,
-  PAYMETHODS_ORDER,
-} from '@utils/constants'
+import { checkIfTokenAlive, replaceAllFn, sortPaymethodList } from '@utils'
+import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
 
@@ -75,18 +70,7 @@ export default function ModalCreatePayment() {
   const [paymentsList, setPaymentsList] = useState([])
 
   useEffect(() => {
-    const sortedList = [...(paymentsMethodList || [])].sort((a, b) => {
-      if (a.paymethod_type?.$ === '0') return -1
-      if (b.paymethod_type?.$ === '0') return 1
-
-      const indexA = PAYMETHODS_ORDER.indexOf(a.paymethod?.$)
-      const indexB = PAYMETHODS_ORDER.indexOf(b.paymethod?.$)
-
-      if (indexA === -1) return 1
-      if (indexB === -1) return -1
-
-      return indexA - indexB
-    })
+    const sortedList = sortPaymethodList(paymentsMethodList || [])
 
     setPaymentsList(sortedList)
   }, [paymentsMethodList])
