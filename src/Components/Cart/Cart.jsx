@@ -38,7 +38,12 @@ import {
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
-import { replaceAllFn, useFormFraudCheckData, roundToDecimal } from '@utils'
+import {
+  replaceAllFn,
+  useFormFraudCheckData,
+  roundToDecimal,
+  sortPaymethodList,
+} from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 export default function Component() {
@@ -81,7 +86,9 @@ export default function Component() {
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
-    setPaymentsMethodList(data)
+    const sortedList = sortPaymethodList(data)
+
+    setPaymentsMethodList(sortedList)
     setState({ paymentListLoaded: true })
   }
 
@@ -1012,7 +1019,7 @@ export default function Component() {
                 cnp: payersData.state?.cnp || payersData.selectedPayerFields?.cnp || '',
                 [OFFER_FIELD]: state.isPolicyChecked || false,
 
-                selectedPayMethod: state.selectedPayMethod || undefined,
+                selectedPayMethod: state.selectedPayMethod || paymentsMethodList?.[0],
                 promocode: state.promocode || '',
                 isPersonalBalance:
                   state.selectedPayMethod?.name?.$?.includes('balance') &&
@@ -1089,6 +1096,17 @@ export default function Component() {
 
                 const setAdditionalPayMethodts = value =>
                   setState({ additionalPayMethodts: value })
+
+                useEffect(() => {
+                  dispatch(
+                    cartOperations.getPayMethodItem(
+                      {
+                        paymethod: paymentsMethodList[0]?.paymethod?.$,
+                      },
+                      setAdditionalPayMethodts,
+                    ),
+                  )
+                }, [paymentsMethodList])
 
                 return (
                   <Form className={s.form}>

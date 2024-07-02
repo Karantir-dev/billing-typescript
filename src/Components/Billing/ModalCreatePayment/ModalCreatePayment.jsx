@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useReducer } from 'react'
+import { useEffect, useLayoutEffect, useReducer, useState } from 'react'
 import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -28,7 +28,7 @@ import {
 } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
-import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { checkIfTokenAlive, replaceAllFn, sortPaymethodList } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
@@ -66,6 +66,14 @@ export default function ModalCreatePayment() {
   const filteredPayment_method = state.additionalPayMethodts?.find(
     e => e?.$key === state.selectedAddPaymentMethod,
   )
+
+  const [paymentsList, setPaymentsList] = useState([])
+
+  useEffect(() => {
+    const sortedList = sortPaymethodList(paymentsMethodList || [])
+
+    setPaymentsList(sortedList)
+  }, [paymentsMethodList])
 
   useLayoutEffect(() => {
     dispatch(billingActions.setIsModalCreatePaymentOpened(true))
@@ -265,7 +273,7 @@ export default function ModalCreatePayment() {
                 payersList?.[payersList?.length - 1]?.id?.$ ||
                 '',
               amount: paymentData?.amount.$ || state.amount || '',
-              selectedPayMethod: state.selectedPayMethod || undefined,
+              selectedPayMethod: state.selectedPayMethod || paymentsList?.[0],
               name: payersData.state?.name || payersData.selectedPayerFields?.name || '',
               address_physical:
                 payersData.state?.addressPhysical ??
@@ -399,13 +407,28 @@ export default function ModalCreatePayment() {
               const setAdditionalPayMethodts = value =>
                 setState({ additionalPayMethodts: value })
 
+              useEffect(() => {
+                dispatch(
+                  cartOperations.getPayMethodItem(
+                    {
+                      paymethod: paymentsList[0]?.paymethod?.$,
+                    },
+                    setAdditionalPayMethodts,
+                  ),
+                )
+
+                setState({
+                  minAmount: Number(paymentsList?.[0]?.payment_minamount?.$),
+                  maxAmount: Number(paymentsList?.[0]?.payment_maxamount?.$),
+                })
+              }, [paymentsList])
               return (
                 <Form id="payment">
                   <ScrollToFieldError />
                   <div className={s.formBlock}>
                     <div className={s.formBlockTitle}>1. {t('Payment method')}</div>
                     <div className={s.formFieldsBlock} name="selectedPayMethod">
-                      {paymentsMethodList?.map(method => {
+                      {paymentsList?.map(method => {
                         const {
                           paymethod,
                           image,

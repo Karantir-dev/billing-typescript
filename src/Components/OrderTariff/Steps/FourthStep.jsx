@@ -23,7 +23,12 @@ import {
   InputField,
   Select,
 } from '@components'
-import { replaceAllFn, roundToDecimal, useFormFraudCheckData } from '@utils'
+import {
+  replaceAllFn,
+  roundToDecimal,
+  useFormFraudCheckData,
+  sortPaymethodList,
+} from '@utils'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import * as Yup from 'yup'
 import * as route from '@src/routes'
@@ -65,7 +70,13 @@ export default function FourthStep({
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
-    setState({ paymentListLoaded: true, paymentsMethodList: data })
+    const sortedList = sortPaymethodList(data)
+
+    setState({
+      paymentListLoaded: true,
+      paymentsMethodList: sortedList,
+      selectedPayMethod: state.selectedPayMethod || sortedList?.[0],
+    })
   }
 
   const setCartData = value => setState({ cartData: value })
@@ -110,7 +121,10 @@ export default function FourthStep({
 
   useEffect(() => {
     if (state.additionalPayMethodts && state.additionalPayMethodts?.length > 0) {
-      setState({ selectedAddPaymentMethod: state.additionalPayMethodts[0]?.$key })
+      setState({
+        selectedAddPaymentMethod:
+          state.selectedAddPaymentMethod || state.additionalPayMethodts[0]?.$key,
+      })
     }
   }, [state.additionalPayMethodts])
 
@@ -247,6 +261,7 @@ export default function FourthStep({
         }),
       )
     }
+
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
   }
 
@@ -360,6 +375,19 @@ export default function FourthStep({
 
   const setAdditionalPayMethodts = value => setState({ additionalPayMethodts: value })
 
+  useEffect(() => {
+    dispatch(
+      cartOperations.getPayMethodItem(
+        {
+          paymethod:
+            state.selectedPayMethod?.paymethod?.$ ||
+            state.paymentsMethodList?.[0]?.paymethod?.$,
+        },
+        setAdditionalPayMethodts,
+      ),
+    )
+  }, [state.paymentsMethodList])
+
   const renderPhoneList = paymethod => {
     if (paymethod === 'qiwi') {
       return QIWI_PHONE_COUNTRIES
@@ -377,7 +405,7 @@ export default function FourthStep({
         enableReinitialize
         validationSchema={validationSchema}
         initialValues={{
-          selectedPayMethod: state.selectedPayMethod || undefined,
+          selectedPayMethod: state.selectedPayMethod || state.paymentsMethodList?.[0],
           promocode: state.promocode,
           isPersonalBalance:
             state.selectedPayMethod?.name?.$?.includes('balance') &&
@@ -662,7 +690,7 @@ export default function FourthStep({
                           value={values.promocode}
                           onChange={e => setState({ promocode: e.target.value })}
                         />
-                        {console.log(state)}
+
                         <button
                           onClick={() => setPromocodeToCart(values?.promocode)}
                           disabled={Boolean(!values?.promocode?.length)}
