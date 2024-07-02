@@ -1,6 +1,6 @@
 import { BreadCrumbs, ImagesOptions, Loader, TooltipWrapper } from '@components'
 import { cloudVpsOperations, selectors } from '@redux'
-import { useCancelRequest, getImageIconName } from '@utils'
+import { useCancelRequest, getImageIconName, capitalize } from '@utils'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -90,6 +90,17 @@ export default function ImageDetailsPage({ pageList }) {
         renderData = function renderData(value) {
           return <>{value ? `${value} GB` : '-'}</>
         }
+        return { ...field, renderData }
+      case 'region':
+      case 'fleio_status':
+      case 'image_type':
+        renderData = value => value && t(capitalize(value))
+
+        return { ...field, renderData }
+
+      case 'backup_type':
+        renderData = value => value && t(value)
+
         return { ...field, renderData }
       default:
         return field
