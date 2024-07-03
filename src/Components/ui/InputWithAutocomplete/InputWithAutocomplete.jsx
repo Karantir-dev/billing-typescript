@@ -202,7 +202,6 @@ export default function InputWithAutocomplete({
               wrapperClassName={s.infoBtn}
               className={ss.adressHint}
               content={infoText}
-              anchor={`${fieldName}_info`}
               place="top-end"
             >
               <Icon name="Info" />

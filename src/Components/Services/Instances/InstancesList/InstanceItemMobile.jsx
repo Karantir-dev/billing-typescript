@@ -58,7 +58,6 @@ export default function InstanceItemMobile({ item }) {
                 popupClassName={s.popup}
                 wrapperClassName={s.popup__wrapper}
                 label={hintMessage}
-                anchor={`status_${item?.id?.$}`}
               >
                 <p
                   className={cn(
@@ -105,9 +104,9 @@ export default function InstanceItemMobile({ item }) {
         <p className={s.mobile_item__value}>
           {item?.datacentername && (
             <img
-              src={require(`@images/countryFlags/${getFlagFromCountryName(
-                itemCountry,
-              )}.png`)}
+              src={require(
+                `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
+              )}
               width={20}
               height={14}
               alt={itemCountry}

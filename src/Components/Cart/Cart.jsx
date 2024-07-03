@@ -1381,7 +1381,6 @@ export default function Component() {
                                 className={s.InfoBtn}
                                 wrapperClassName={s.infoBtnCard}
                                 content={renderActiveDiscounts()}
-                                anchor={'Saving'}
                               >
                                 <Icon name="Info" />
                               </TooltipWrapper>

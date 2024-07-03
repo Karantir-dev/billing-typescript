@@ -320,7 +320,6 @@ export default function ModalAddPayer(props) {
                         wrapperClassName={s.infoBtn}
                         className={s.descriptionBlock}
                         content={t('address_format', { ns: 'other' })}
-                        anchor={'adress_info'}
                         place="top-end"
                       >
                         <Icon name="Info" />
