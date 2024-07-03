@@ -41,7 +41,7 @@ export default function CloudInstanceItemPage() {
 
   const setItemData = ([item]) => {
     setItem(item)
-    navigate({ state: item })
+    navigate(location.pathname, { replace: true, state: item })
   }
 
   const fetchItemById = () => {
@@ -87,7 +87,7 @@ export default function CloudInstanceItemPage() {
     return () => {
       clearInterval(interval.current)
     }
-  }, [item])
+  }, [item, location])
 
   if (!item) {
     return <Loader local shown halfScreen />

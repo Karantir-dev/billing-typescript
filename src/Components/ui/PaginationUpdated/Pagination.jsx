@@ -14,7 +14,7 @@ export default function Component({
 
   const [pageNumber, setPageNumber] = useState(pagination.p_num)
   const [itemNumber, setItemNumber] = useState(pagination.p_cnt)
-  const lastPage = Math.ceil(pagination.p_elems / pagination.p_cn || 1)
+  const lastPage = Math.ceil(pagination.p_elems / pagination.p_cnt || 1)
 
   useEffect(() => {
     if (pagination.p_num > lastPage) {
