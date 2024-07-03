@@ -39,10 +39,10 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import {
-  replaceAllFn,
   useFormFraudCheckData,
   roundToDecimal,
   sortPaymethodList,
+  parsePaymentInfo,
 } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
@@ -1048,34 +1048,6 @@ export default function Component() {
                     })
                   }
                 }, [state.cartData?.total_sum, paymentsMethodList])
-
-                const parsePaymentInfo = text => {
-                  const splittedText = text?.replace(/&nbsp;/g, ' ').split('<p>')
-
-                  if (splittedText?.length > 0) {
-                    const minAmount = splittedText[0]
-                      .split('Commission')[0]
-                      ?.replace('\n', '')
-
-                    const commission = splittedText[0]
-                      .split('Commission')[1]
-                      ?.replace('\n', '')
-                      .trim()
-
-                    let infoText = ''
-
-                    if (splittedText[1]) {
-                      let replacedText = splittedText[1]
-                        ?.replace('<p>', '')
-                        ?.replace('</p>', '')
-                        ?.replace('<strong>', '')
-                        ?.replace('</strong>', '')
-
-                      infoText = replaceAllFn(replacedText, '\n', '')
-                    }
-                    return { minAmount, infoText, commission }
-                  }
-                }
 
                 const parsedText =
                   values?.selectedPayMethod &&
