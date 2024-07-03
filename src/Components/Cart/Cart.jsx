@@ -39,10 +39,10 @@ import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import {
-  replaceAllFn,
   useFormFraudCheckData,
   roundToDecimal,
   sortPaymethodList,
+  parsePaymentInfo,
 } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
@@ -1049,28 +1049,6 @@ export default function Component() {
                   }
                 }, [state.cartData?.total_sum, paymentsMethodList])
 
-                const parsePaymentInfo = text => {
-                  const splittedText = text?.split('<p>')
-                  if (splittedText?.length > 0) {
-                    const minAmount = splittedText[0]
-                      ?.replace('\n', '')
-                      .replace(/&nbsp;/g, ' ')
-
-                    let infoText = ''
-
-                    if (splittedText[1]) {
-                      let replacedText = splittedText[1]
-                        ?.replace('<p>', '')
-                        ?.replace('</p>', '')
-                        ?.replace('<strong>', '')
-                        ?.replace('</strong>', '')
-
-                      infoText = replaceAllFn(replacedText, '\n', '')
-                    }
-                    return { minAmount, infoText }
-                  }
-                }
-
                 const parsedText =
                   values?.selectedPayMethod &&
                   parsePaymentInfo(values?.selectedPayMethod?.desc?.$)
@@ -1325,7 +1303,14 @@ export default function Component() {
                         >
                           <div>
                             <span>
-                              {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                              {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}{' '}
+                              {parsedText?.commission && (
+                                <strong>
+                                  {t(`Commission ${parsedText?.commission}`, {
+                                    ns: 'cart',
+                                  })}
+                                </strong>
+                              )}
                             </span>
                             {parsedText?.infoText && (
                               <p>

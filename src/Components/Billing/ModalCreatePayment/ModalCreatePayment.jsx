@@ -28,7 +28,7 @@ import {
 } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
-import { checkIfTokenAlive, replaceAllFn, sortPaymethodList } from '@utils'
+import { checkIfTokenAlive, sortPaymethodList, parsePaymentInfo } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
@@ -311,27 +311,6 @@ export default function ModalCreatePayment() {
             onSubmit={createPaymentMethodHandler}
           >
             {({ values, setFieldValue, touched, errors, handleBlur }) => {
-              const parsePaymentInfo = text => {
-                const splittedText = text?.replace(/&nbsp;/g, '').split('<p>')
-                if (splittedText?.length > 0) {
-                  const minAmount = splittedText[0]?.replace('\n', '')
-
-                  let infoText = ''
-
-                  if (splittedText[1] && splittedText?.length > 1) {
-                    let replacedText = splittedText[1]
-                      ?.replace('<p>', '')
-                      ?.replace('</p>', '')
-                      ?.replace('<strong>', '')
-                      ?.replace('</strong>', '')
-
-                    infoText = replaceAllFn(replacedText, '\n', '')
-                  }
-
-                  return { minAmount, infoText }
-                }
-              }
-
               const getFieldErrorNames = formikErrors => {
                 const transformObjectToDotNotation = (obj, prefix = '', result = []) => {
                   Object.keys(obj).forEach(key => {
@@ -677,7 +656,14 @@ export default function ModalCreatePayment() {
                     {values?.selectedPayMethod && (
                       <div>
                         <span>
-                          {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                          {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}{' '}
+                          {parsedText?.commission && (
+                            <strong>
+                              {t(`Commission ${parsedText?.commission}`, {
+                                ns: 'cart',
+                              })}
+                            </strong>
+                          )}
                         </span>
                         {parsedText?.infoText && (
                           <p>{t(`${parsedText?.infoText?.trim()}`, { ns: 'cart' })}</p>
