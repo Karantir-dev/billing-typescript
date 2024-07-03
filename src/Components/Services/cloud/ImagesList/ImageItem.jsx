@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import s from './ImagesList.module.scss'
 import cn from 'classnames'
 import PropTypes from 'prop-types'

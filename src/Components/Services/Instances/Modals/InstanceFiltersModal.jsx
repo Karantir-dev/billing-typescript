@@ -44,6 +44,7 @@ export const InstanceFiltersModal = ({
           cost_from: filters?.cost_from || '',
           cost_to: filters?.cost_to || '',
           datacenter: filters?.datacenter || '',
+          name: filters?.name || '',
         }}
         onSubmit={handleSubmit}
       >
@@ -63,6 +64,18 @@ export const InstanceFiltersModal = ({
               </div>
               <div className={cn(s.form)}>
                 <div className={s.fieldsBlock}>
+                  <InputField
+                    inputWrapperClass={s.inputHeight}
+                    inputClassName={s.input_bgc}
+                    name="name"
+                    label={`${t('name', { ns: 'cloud_vps' })}:`}
+                    placeholder={t('name', { ns: 'cloud_vps' })}
+                    isShadow
+                    className={s.input}
+                    error={!!errors.name}
+                    touched={!!touched.name}
+                  />
+
                   <InputField
                     inputWrapperClass={s.inputHeight}
                     inputClassName={s.input_bgc}

@@ -16,3 +16,13 @@
     }
   }
 }
+
+.create_wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  @media (min-width: 768px) {
+    gap: 16px;
+  }
+}

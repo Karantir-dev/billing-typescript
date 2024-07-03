@@ -102,6 +102,7 @@ const getInstances =
           cost_from: data.doc?.cost_from?.$ || '',
           cost_to: data.doc?.cost_to?.$ || '',
           datacenter: data.doc?.datacenter?.$ || '',
+          name: data.doc?.name?.$ || '',
         }
         dispatch(cloudVpsActions.setInstancesFilters({ active, filtersList }))
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
@@ -141,6 +142,7 @@ const setInstancesFilter =
           period: values?.period || '',
           pricelist: values?.pricelist || '',
           instance_status: values?.instance_status || '',
+          name: values?.name || '',
         }),
         { signal },
       )

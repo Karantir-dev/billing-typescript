@@ -14,7 +14,7 @@ export default function Component({
 
   const [pageNumber, setPageNumber] = useState(pagination.p_num)
   const [itemNumber, setItemNumber] = useState(pagination.p_cnt)
-  const lastPage = Math.ceil(pagination.p_elems / pagination.p_cnt)
+  const lastPage = Math.ceil(pagination.p_elems / pagination.p_cn || 1)
 
   useEffect(() => {
     if (pagination.p_num > lastPage) {
@@ -90,20 +90,18 @@ export default function Component({
 
   return (
     <div className={cn(s.blockPagination, { [className]: className })}>
-      <>
-        <div className={s.pageItemContainer}>
-          <div className={s.servperpage}>{t('Services per page')}:</div>
-          <div className={cn(s.paginationItem, s.inputItem, paginationItemClassName)}>
-            <input
-              className={s.input}
-              onKeyDown={onPressEnter}
-              value={itemNumber}
-              onBlur={changePageItems}
-              onChange={e => onInputItemsChange(e.target.value)}
-            />
-          </div>
+      <div className={s.pageItemContainer}>
+        <div className={s.servperpage}>{t('Services per page')}:</div>
+        <div className={cn(s.paginationItem, s.inputItem, paginationItemClassName)}>
+          <input
+            className={s.input}
+            onKeyDown={onPressEnter}
+            value={itemNumber}
+            onBlur={changePageItems}
+            onChange={e => onInputItemsChange(e.target.value)}
+          />
         </div>
-      </>
+      </div>
       {!(pageNumber === 0 || lastPage < 2) && (
         <div className={s.paginationContainer}>
           <div
