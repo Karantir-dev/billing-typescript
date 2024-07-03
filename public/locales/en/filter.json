@@ -1,0 +1,13 @@
+{
+  "filter": "Filter",
+  "search": "Search",
+  "clear_filter": "Clear filter",
+  "image_name": "Image name",
+  "snapshot_name": "Snapshot name",
+  "status": "Status",
+  "os_distro": "OS distro",
+  "type": "Type",
+  "region": "Region",
+  "disk_format": "Disk format",
+  "protected": "Protected from deletion"
+}

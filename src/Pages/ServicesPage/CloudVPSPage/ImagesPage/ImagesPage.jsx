@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
-import { t } from 'i18next'
 
 export const CLOUD_IMAGE_CELLS = [
   { label: 'name', isSort: true, value: 'image_name' },
@@ -28,13 +27,13 @@ export const CLOUD_IMAGE_CELLS = [
 ]
 
 const FILTER_FIELDS = [
-  { label: t('image.name.image', { ns: 'cloud_vps' }), value: 'name' },
+  { label: 'image_name', value: 'name' },
   { label: 'ID', value: 'id' },
-  { label: t('Status', { ns: 'cloud_vps' }), value: 'fleio_status' },
-  { label: t('image.os_distro', { ns: 'cloud_vps' }), value: 'os_distro' },
-  { label: t('type', { ns: 'cloud_vps' }), value: 'image_type' },
-  { label: t('region', { ns: 'cloud_vps' }), value: 'region' },
-  { label: t('disk_format', { ns: 'cloud_vps' }), value: 'disk_format' },
+  { label: 'status', value: 'fleio_status' },
+  { label: 'os_distro', value: 'os_distro' },
+  { label: 'type', value: 'image_type' },
+  { label: 'region', value: 'region' },
+  { label: 'disk_format', value: 'disk_format' },
 ]
 
 export default function ImagesPage() {
