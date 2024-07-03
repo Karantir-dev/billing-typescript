@@ -1131,7 +1131,8 @@ const editImage =
         { signal },
       )
       .then(({ data }) => {
-        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        if (data.doc?.error && !data.doc?.error?.$object === 'runningoperation')
+          throw new Error(data.doc.error.msg.$)
 
         successCallback(data.doc)
 
