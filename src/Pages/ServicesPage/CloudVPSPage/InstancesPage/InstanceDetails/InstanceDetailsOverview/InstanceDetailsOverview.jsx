@@ -25,7 +25,9 @@ export default function InstanceDetailsOverview() {
   const itemCountry = formatCountryName(item)
 
   useEffect(() => {
-    dispatch(cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading))
+    dispatch(
+      cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading),
+    )
   }, [])
 
   return (
@@ -85,14 +87,14 @@ export default function InstanceDetailsOverview() {
                 <p className={s.item_name}>{t('Region')}</p>
                 <div className={s.item_info_block}>
                   <img
-                    src={require(
-                      `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
-                    )}
+                    src={require(`@images/countryFlags/${getFlagFromCountryName(
+                      itemCountry,
+                    )}.png`)}
                     width={20}
                     height={14}
                     alt={itemCountry}
                   />
-                  <p>{itemCountry}</p>
+                  <p>{t(itemCountry)}</p>
                 </div>
               </div>
             </div>
