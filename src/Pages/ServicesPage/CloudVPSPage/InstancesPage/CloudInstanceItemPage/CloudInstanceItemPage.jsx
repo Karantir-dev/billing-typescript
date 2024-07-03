@@ -52,8 +52,6 @@ export default function CloudInstanceItemPage() {
           dispatch(
             cloudVpsOperations.getInstances({
               setLocalInstancesItems: setItemData,
-              signal,
-              setIsLoading,
             }),
           ),
       }),
