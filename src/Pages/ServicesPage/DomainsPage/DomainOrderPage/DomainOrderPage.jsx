@@ -27,6 +27,7 @@ export default function Component({ transfer = false }) {
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
   const [domains, setDomains] = useState([])
+  const [billUnavailableDomains, setBillUnavailableDomains] = useState([])
   const [autoprolongPrices, setAutoprolongPrices] = useState([])
   const [pickUpDomains, setPickUpDomains] = useState([])
   const [selectedDomains, setSelectedDomains] = useState([])
@@ -34,6 +35,8 @@ export default function Component({ transfer = false }) {
   const [siteDomainCheckData, setSiteDomainCheckData] = useState([])
   const [inputValue, setInputValue] = useState('')
   const isDomainsOrderAllowed = location?.state?.isDomainsOrderAllowed
+
+  const [selectedPricelist, setSelectedPricelist] = useState([])
 
   const setAutoProlong = () => (!autoprolongPrices.length ? setAutoprolongPrices : null)
 
@@ -74,6 +77,7 @@ export default function Component({ transfer = false }) {
             undefined,
             signal,
             setIsLoading,
+            setBillUnavailableDomains,
           ),
         )
       } else {
@@ -86,6 +90,7 @@ export default function Component({ transfer = false }) {
             undefined,
             signal,
             setIsLoading,
+            setBillUnavailableDomains,
           ),
         )
       }
@@ -160,6 +165,7 @@ export default function Component({ transfer = false }) {
     } else {
       values['domain_action'] = 'register'
     }
+    setSelectedPricelist(values['selected_pricelist'])
     dispatch(
       domainsOperations.getDomainsOrderName(
         setPickUpDomains,
@@ -169,6 +175,7 @@ export default function Component({ transfer = false }) {
         signal,
         setIsLoading,
         siteDomainCheckData,
+        setBillUnavailableDomains,
       ),
     )
 
@@ -186,15 +193,16 @@ export default function Component({ transfer = false }) {
     const newCheckedDomains = []
 
     const selected_domain = []
-    pickUpDomains?.selected?.forEach(el => {
-      const newString = el?.replace('select_domain_', '')
+
+    selected_domain_names?.forEach(el => {
+      const newString = el?.replace('.', '____________')
+      const elemParts = el?.split('.')
 
       selected_domain?.push(newString)
-      checkedDomain?.forEach(checked => {
-        const check = checked.substring(0, checked.length - 1) + '1'
 
-        if (checked?.includes(newString)) {
-          newCheckedDomains.push(check)
+      checkedDomain?.forEach(checked => {
+        if (checked.includes(elemParts?.[0] && elemParts?.[1])) {
+          newCheckedDomains.push(checked)
         }
       })
     })
@@ -207,15 +215,11 @@ export default function Component({ transfer = false }) {
 
     const data = {
       domain_name: pickUpDomains?.domain_name,
-      'zoom-domain_name': pickUpDomains?.domain_name,
       checked_domain: newCheckedDomains?.join(', '),
       selected_domain: selected_domain?.join(', '),
       selected_domain_real_name: selected_domain_real_name?.join(', '),
+      selected_pricelist: selectedPricelist,
     }
-
-    selected_domain_names?.forEach(n => {
-      data[n] = 'on'
-    })
 
     if (transfer) {
       data['domain_action'] = 'transfer'
@@ -307,6 +311,7 @@ export default function Component({ transfer = false }) {
                     registerDomainHandler={registerDomainHandler}
                     transfer={transfer}
                     siteDomainCheckData={siteDomainCheckData}
+                    billUnavailableDomains={billUnavailableDomains}
                   />
                 ) : (
                   <DomainsZone

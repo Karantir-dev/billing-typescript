@@ -6,14 +6,14 @@ import s from './VPSCompareModal.module.scss'
 
 import { Button, Modal } from '@components'
 
-export default function VPSCompareModal({ isOpen, closeModal }) {
+export default function VPSCompareModal({ isOpen, closeModal, closeClassName }) {
   const { t } = useTranslation(['vds', 'other'])
 
   const navigate = useNavigate()
 
   return (
     <Modal isOpen={isOpen} closeModal={closeModal} isClickOutside>
-      <Modal.Header>
+      <Modal.Header closeClassName={closeClassName}>
         <p className={s.title}>{t('compare_modal_title')}</p>
       </Modal.Header>
       <Modal.Body>
