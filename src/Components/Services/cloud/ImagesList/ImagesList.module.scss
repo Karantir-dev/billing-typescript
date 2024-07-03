@@ -174,26 +174,7 @@
   line-height: 1;
   position: relative;
   background-color: #f79649;
-  &.resized,
-  &.suspended {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 22px 5px 10px;
 
-    svg {
-      position: absolute;
-      right: 5px;
-      width: 14px;
-      height: 14px;
-      circle {
-        fill: #fff;
-      }
-      path {
-        fill: #f79649;
-      }
-    }
-  }
   &.suspended {
     svg {
       path {
