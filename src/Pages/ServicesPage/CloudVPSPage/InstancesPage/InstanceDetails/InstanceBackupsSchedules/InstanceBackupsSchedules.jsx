@@ -166,6 +166,7 @@ export default function InstanceBackupsSchedules() {
             <EditCell
               originName={backupRotation}
               className={s.backup_rotation_select}
+              initBtnClassName={s.backup_rotation_btn}
               onSubmit={handleEditSubmit}
               validateOnChange={handleEditChange}
               placeholder={backupRotation}

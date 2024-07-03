@@ -10,6 +10,8 @@ export default function EditCell({
   onSubmit,
   isShadow,
   className,
+  initBtnClassName,
+  // inputClassName,
   validateOnChange,
 }) {
   const [isEdit, setIsEdit] = useState(false)
@@ -63,22 +65,27 @@ export default function EditCell({
     >
       {!isEdit ? (
         <button
-          className={cn(s.edit_btn, {
-            [s.placeholder]: editName === '' && originName === '',
-            [s.shadow]: isShadow,
-          })}
+          className={cn(
+            s.edit_btn,
+            {
+              [s.placeholder]: editName === '' && originName === '',
+              [s.shadow]: isShadow,
+            },
+            initBtnClassName,
+          )}
           onMouseDown={activateEditMode}
         >
           <span className={s.text}>{placeholder}</span>
           <Icon name="Edit" />
         </button>
       ) : (
-        <form className={s.editBlock} onSubmit={onSubmitHandler}>
+        <form className={cn(s.editBlock, initBtnClassName)} onSubmit={onSubmitHandler}>
           <input
             placeholder={placeholder}
             value={editName}
             onChange={handleChange}
             onMouseUp={() => input.current.focus()}
+            className={s.edit_input}
             ref={input}
           />
           <Icon
