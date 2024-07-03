@@ -128,7 +128,7 @@ export const CreateEditBackupsSchedules = ({ item, closeModal, onSubmit }) => {
       <Modal.Footer className={s.snapshot_create__footer_wrapper}>
         <div className={s.snapshot_create__buttons_wrapper}>
           <Button
-            label={t('create')}
+            label={t(editItemDetails ? 'edit' : 'create')}
             size={'large'}
             type="submit"
             form={'create_image'}

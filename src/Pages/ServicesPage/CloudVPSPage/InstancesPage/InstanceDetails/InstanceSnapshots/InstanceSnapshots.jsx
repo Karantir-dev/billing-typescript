@@ -146,11 +146,11 @@ export default function InstanceSnapshots() {
           />
         </div>
         <p>
-          {t('snapshots.limit_value')}: {createdToday || 0} / 5
+          {t('snapshot.limit_value')}: {createdToday || 0} / 5
         </p>
         {createdToday >= 5 && (
           <WarningMessage className={s.snapshot_limit_message}>
-            {t('snapshots.limit_reached')}
+            {t('snapshot.limit_reached')}
           </WarningMessage>
         )}
         {isFilterSet && (
@@ -161,7 +161,7 @@ export default function InstanceSnapshots() {
             getItems={getItems}
             editImage={editImage}
             cost={dailyCosts}
-            pageList="snapshots"
+            pageList="snapshot"
             itemOnClickHandler={itemOnClickHandler}
           />
         )}

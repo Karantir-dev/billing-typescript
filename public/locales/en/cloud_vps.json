@@ -228,13 +228,13 @@
   "rotation_time_descr": "Please note that the time will change depending on the transition to daylight saving time or standard time.",
   "boot_from_iso": "Boot from ISO",
   "backup_type": "Backup type",
-  "snapshots": {
+  "snapshot": {
     "create": "Create snapshot for instance",
     "create_warning": "Instance will not be available while the snapshot is being processed.",
     "limit_value": "Instances created for today",
     "limit_reached": "You have reached the creation limit for today."
   },
-  "backups": {
+  "backup": {
     "create": "Create backup for instance",
     "create_warning": "Instance will not be available while the backup is being processed.",
     "count":"Number of backups",

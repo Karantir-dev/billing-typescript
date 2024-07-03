@@ -17,10 +17,12 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
       .max(100, t('warnings.max_count', { ns: 'auth', max: 100 })),
   })
 
+  const type = item?.snapshot_create ? 'snapshot' : 'backup'
+
   return (
     <Modal isOpen={!!itemDetails} closeModal={closeModal}>
       <Modal.Header>
-        <p>{t(`${item?.snapshot_create ? 'snapshots' : 'backups'}.create`)}</p>
+        <p>{t(`${type}.create`)}</p>
       </Modal.Header>
       <Modal.Body>
         <p className={s.modal__subtitle}>
@@ -28,9 +30,7 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
           {displayName}
         </p>
 
-        <WarningMessage>
-          {t(`${item?.snapshot_create ? 'snapshots' : 'backups'}.create_warning`)}
-        </WarningMessage>
+        <WarningMessage>{t(`${type}.create_warning`)}</WarningMessage>
 
         <Formik
           initialValues={{ name: '', rotation_time: '', rotation_days: [] }}
@@ -55,8 +55,8 @@ export const CreateSnapshotOrBackupModal = ({ item, closeModal, onSubmit }) => {
                     inputClassName={s.input}
                     name="name"
                     isShadow
-                    label={`${t('name', { ns: 'vds' })}:`}
-                    placeholder={t('server_placeholder', { ns: 'vds' })}
+                    label={`${t(`image.name.${type}`)}:`}
+                    placeholder={t(`image.name.${type}`)}
                     error={!!errors.name}
                     touched={!!touched.name}
                     isRequired
