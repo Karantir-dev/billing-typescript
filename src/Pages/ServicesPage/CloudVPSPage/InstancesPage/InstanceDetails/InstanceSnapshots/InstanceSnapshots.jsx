@@ -7,7 +7,6 @@ import { useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import { Button, ImagesList, Loader, WarningMessage, Filter } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
-import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 
@@ -26,12 +25,12 @@ const INSTANCE_SNAPSHOTS_CELLS = [
 ]
 
 const FILTER_FIELDS = [
-  { label: t('image.name.snapshot', { ns: 'cloud_vps' }), value: 'name' },
+  { label: 'snapshot_name', value: 'name' },
   { label: 'ID', value: 'id' },
-  { label: t('Status', { ns: 'cloud_vps' }), value: 'fleio_status' },
-  { label: t('image.os_distro', { ns: 'cloud_vps' }), value: 'os_distro' },
+  { label: 'status', value: 'fleio_status' },
+  { label: 'os_distro', value: 'os_distro' },
   {
-    label: t('image.protected', { ns: 'cloud_vps' }),
+    label: 'protected',
     value: 'protected',
     type: 'checkbox',
     checkboxValues: { checked: 'on', unchecked: 'off' },

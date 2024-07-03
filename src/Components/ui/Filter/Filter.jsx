@@ -4,6 +4,7 @@ import { Icon, IconButton } from '@components'
 import cn from 'classnames'
 import s from './Filter.module.scss'
 import FilterModal from './FilterModal'
+import { useTranslation } from 'react-i18next'
 
 export default function Filter({
   filters,
@@ -12,6 +13,8 @@ export default function Filter({
   itemsCount,
   cloudsClassName,
 }) {
+  const { t } = useTranslation(['filter'])
+
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
 
   const closeFilterModal = () => setIsFiltersOpened(false)
@@ -71,7 +74,7 @@ export default function Filter({
 
             return (
               <li key={key} className={s.filter__cloud}>
-                <span className={s.filter__cloud_name}>{label}:</span>
+                <span className={s.filter__cloud_name}>{t(label)}:</span>
                 <span className={s.filter__cloud_value}>{value.trim()}</span>
                 <button
                   className={s.filter__cloud_btn}

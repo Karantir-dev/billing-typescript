@@ -17,7 +17,7 @@ export default forwardRef(function FilterModal(
   },
   ref,
 ) {
-  const { t } = useTranslation(['other'])
+  const { t } = useTranslation(['filter'])
 
   return (
     <div ref={ref} className={cn(s.filters_modal, { [s.opened]: isFiltersOpened })}>
@@ -32,7 +32,7 @@ export default forwardRef(function FilterModal(
           return (
             <Form>
               <div className={s.formHeader}>
-                <h2>{t('Filter')}</h2>
+                <h2>{t('filter')}</h2>
                 <Icon name="Cross" onClick={closeFilterModal} className={s.crossIcon} />
               </div>
               <div className={cn(s.form)}>
@@ -52,7 +52,7 @@ export default forwardRef(function FilterModal(
                               )
                             }}
                           />
-                          <span>{field.label}</span>
+                          <span>{t(field.label)}</span>
                         </span>
                       )
                     }
@@ -62,8 +62,8 @@ export default forwardRef(function FilterModal(
                         inputWrapperClass={s.inputHeight}
                         inputClassName={s.input_bgc}
                         name={field.value}
-                        label={`${field.label}:`}
-                        placeholder={`${field.label}`}
+                        label={`${t(field.label)}:`}
+                        placeholder={`${t(field.label)}`}
                         isShadow
                         className={s.input}
                         error={!!errors[field.value]}
@@ -95,7 +95,7 @@ export default forwardRef(function FilterModal(
                   type="button"
                   className={s.clearFilters}
                 >
-                  {t('Clear filter')}
+                  {t('clear_filter')}
                 </button>
               </div>
             </Form>
