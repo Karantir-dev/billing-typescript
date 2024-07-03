@@ -11,7 +11,6 @@ export default function EditCell({
   isShadow,
   className,
   initBtnClassName,
-  // inputClassName,
   validateOnChange,
 }) {
   const [isEdit, setIsEdit] = useState(false)
