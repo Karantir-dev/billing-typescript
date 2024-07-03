@@ -56,6 +56,8 @@ export default function CloudInstanceItemPage() {
               setIsLoading,
             }),
           ),
+        signal,
+        setIsLoading,
       }),
     )
   }
