@@ -370,6 +370,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                         className={s.hintWrapper}
                         content={t('Confirm your email to activate the functionality')}
                         disabled={!isConfirmEmailBtnRender}
+                        anchor={'sendemail'}
                       >
                         <CheckBox
                           value={values.sendemail}
@@ -400,6 +401,7 @@ export default function Component({ isComponentAllowedToEdit, signal, setIsLoadi
                         className={s.hintWrapper}
                         content={t('Confirm your email to activate the functionality')}
                         disabled={!isConfirmEmailBtnRender}
+                        anchor={'setgeoip'}
                       >
                         <CheckBox
                           value={values.setgeoip}

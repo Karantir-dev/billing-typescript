@@ -170,6 +170,7 @@ export default function VDSItem({
               disabled={server?.domain?.$.length < 15}
               content={server?.domain?.$}
               wrapperClassName={cn(s.hint)}
+              anchor="server_name"
             >
               <span>{server?.domain?.$}</span>
             </TooltipWrapper>

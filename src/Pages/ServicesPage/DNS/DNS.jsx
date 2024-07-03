@@ -257,6 +257,7 @@ export default function DNS() {
           <TooltipWrapper
             content={t('No tariff plans available for order', { ns: 'other' })}
             disabled={!isNoAvailableTariff}
+            anchor="order_dns_btn"
           >
             <Button
               className={s.order_btn}

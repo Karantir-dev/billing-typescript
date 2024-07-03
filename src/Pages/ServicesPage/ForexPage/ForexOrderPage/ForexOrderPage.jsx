@@ -18,6 +18,8 @@ import * as route from '@src/routes'
 
 import s from './ForexOrderPage.module.scss'
 
+const FOREX_EUROPE_DC = 15
+
 export default function ForexOrderPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -241,6 +243,19 @@ export default function ForexOrderPage() {
                         } else if (el?.$?.toLocaleLowerCase()?.includes('singapore')) {
                           flag = <Icon name="Singapore" />
                           name = 'Asia, Singapore'
+                        } else if (
+                          el?.$?.toLocaleLowerCase()?.includes('central europe')
+                        ) {
+                          flag = (
+                            <img
+                              className={s.country_img}
+                              src={require('@images/countryFlags/eu.png')}
+                              width={21}
+                              height={21}
+                              alt="flag"
+                            />
+                          )
+                          name = 'Central Europe'
                         }
                         return (
                           <button
@@ -374,9 +389,8 @@ export default function ForexOrderPage() {
                               countRAM === 500 ? 'Mb' : 'Gb'
                             } ${t('RAM', { ns: 'virtual_hosting' })}`}</span>
                             <span className={s.tarif_card_option}>
-                              {`${countMemory} ${t('memory', {
-                                ns: 'other',
-                              })}`}
+                              {countMemory}{' '}
+                              {+values.datacenter === FOREX_EUROPE_DC ? 'NVMe' : 'SSD'}
                             </span>
                             <span className={s.tarif_card_option}>{`${t(osName)}`}</span>
                           </button>

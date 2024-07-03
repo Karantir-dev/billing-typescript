@@ -100,16 +100,18 @@ export default function Component({ transfer = false }) {
 
     if (paymentData) {
       selectedDomain?.forEach(select => {
-        data[`autoprolong_${select}`] = paymentData[`autoprolong_${select}`]?.$
-        data[`licence_agreement_${select}`] =
-          paymentData[`licence_agreement_${select}`]?.$
+        const formatedSelect = select.replace(/-/g, '_')
+        data[`autoprolong_${formatedSelect}`] =
+          paymentData[`autoprolong_${formatedSelect}`]?.$
+        data[`licence_agreement_${formatedSelect}`] =
+          paymentData[`licence_agreement_${formatedSelect}`]?.$
 
         if (transfer) {
-          data[`domainparam_${select}_auth_code`] = ''
+          data[`domainparam_${formatedSelect}_auth_code`] = ''
 
           shema = {
             ...shema,
-            [`domainparam_${select}_auth_code`]: Yup.string().required(
+            [`domainparam_${formatedSelect}_auth_code`]: Yup.string().required(
               t('Is a required field', { ns: 'other' }),
             ),
           }
@@ -202,8 +204,9 @@ export default function Component({ transfer = false }) {
                   <>
                     {differentNS ? (
                       selectedDomain?.map((select, index) => {
+                        const formatedSelect = select.replace(/-/g, '_')
                         return (
-                          <div key={select} className={s.formBlock}>
+                          <div key={formatedSelect} className={s.formBlock}>
                             <div className={s.formBlockTitle}>
                               {
                                 state?.contacts?.selected_domain_real_name?.split(', ')[
@@ -214,7 +217,7 @@ export default function Component({ transfer = false }) {
                             <NsItem
                               setFieldValue={setFieldValue}
                               values={values}
-                              select={select}
+                              select={formatedSelect}
                               errors={errors}
                               touched={touched}
                             />
@@ -236,6 +239,7 @@ export default function Component({ transfer = false }) {
 
                       {paymentData &&
                         selectedDomain?.map((select, index) => {
+                          const formatedSelect = select.replace(/-/g, '_')
                           let defenseSum = '0'
                           let checkBoxName = ''
 
@@ -245,13 +249,13 @@ export default function Component({ transfer = false }) {
                             if (
                               key?.includes('addon') &&
                               key?.includes('sum') &&
-                              key?.includes(select)
+                              key?.includes(formatedSelect)
                             ) {
                               defenseSum = paymentData[key]?.match(/[\d|.|\\+]+/g)[0]
                             } else if (
                               key?.includes('addon') &&
                               !key?.includes('sum') &&
-                              key?.includes(select)
+                              key?.includes(formatedSelect)
                             ) {
                               checkBoxName = key
                             }
@@ -260,26 +264,32 @@ export default function Component({ transfer = false }) {
                           const domainName =
                             state?.contacts?.selected_domain_real_name?.split(', ')[index]
 
-                          const sums = paymentData[`domain_${select}_details`]?.$?.match(
-                            /([\d.]+) EUR/g,
-                          ).map(amount => parseFloat(amount))
+                          const sums = paymentData[
+                            `domain_${formatedSelect}_details`
+                          ]?.$?.match(/([\d.]+) EUR/g).map(amount => parseFloat(amount))
 
                           return (
-                            <div key={select} className={s.formBlock}>
+                            <div key={formatedSelect} className={s.formBlock}>
                               <div className={s.formBlockTitle}>{domainName}</div>
                               <div className={s.formFieldsBlock}>
                                 {transfer && (
                                   <>
                                     <InputField
                                       inputWrapperClass={s.inputHeight}
-                                      name={`domainparam_${select}_auth_code`}
+                                      name={`domainparam_${formatedSelect}_auth_code`}
                                       label={`${t('Confirmation code')}:`}
                                       placeholder={t('Enter code', { ns: 'other' })}
                                       isShadow
                                       className={s.input}
-                                      error={!!errors[`domainparam_${select}_auth_code`]}
+                                      error={
+                                        !!errors[
+                                          `domainparam_${formatedSelect}_auth_code`
+                                        ]
+                                      }
                                       touched={
-                                        !!touched[`domainparam_${select}_auth_code`]
+                                        !!touched[
+                                          `domainparam_${formatedSelect}_auth_code`
+                                        ]
                                       }
                                       isRequired
                                     />
@@ -293,14 +303,14 @@ export default function Component({ transfer = false }) {
                                   <Select
                                     placeholder={t('Not chosen', { ns: 'other' })}
                                     label={`${t('Auto renewal')}:`}
-                                    value={values[`autoprolong_${select}`]}
+                                    value={values[`autoprolong_${formatedSelect}`]}
                                     getElement={item =>
-                                      setFieldValue(`autoprolong_${select}`, item)
+                                      setFieldValue(`autoprolong_${formatedSelect}`, item)
                                     }
                                     isShadow
                                     className={s.select}
                                     itemsList={paymentData[
-                                      `autoprolong_${select}_list`
+                                      `autoprolong_${formatedSelect}_list`
                                     ]?.map(({ $key, $ }) => ({
                                       label: translatePeriod($.trim(), $key, t),
                                       value: $key,
