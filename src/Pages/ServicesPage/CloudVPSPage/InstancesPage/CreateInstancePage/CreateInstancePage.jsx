@@ -573,7 +573,7 @@ export default function CreateInstancePage() {
                     setIsConnectMethodOpened(true)
                     selectFirstImage(IMAGES_TYPES.public)
                   },
-                  label: t('Public'),
+                  label: t('rescue_tab.pub'),
                   allowToRender: true,
                 },
                 {
@@ -584,7 +584,7 @@ export default function CreateInstancePage() {
                     setIsConnectMethodOpened(false)
                     selectFirstImage(IMAGES_TYPES.own)
                   },
-                  label: t('Your images'),
+                  label: t('rescue_tab.own'),
                   allowToRender: ownImages,
                 },
               ]
@@ -675,6 +675,7 @@ export default function CreateInstancePage() {
                       <section className={s.section}>
                         <h3 className={s.section_title}>{t('server_image')}</h3>
 
+                        {console.log('imagesCurrentTab: ', imagesCurrentTab)}
                         {isLaunchMode ? (
                           ''
                         ) : (
@@ -849,11 +850,9 @@ export default function CreateInstancePage() {
 
                               <img
                                 className={s.flag}
-                                src={require(
-                                  `@images/countryFlags/${getFlagFromCountryName(
-                                    currentCountryName,
-                                  )}.png`,
-                                )}
+                                src={require(`@images/countryFlags/${getFlagFromCountryName(
+                                  currentCountryName,
+                                )}.png`)}
                                 width={20}
                                 height={14}
                                 alt={currentCountryName}
