@@ -33,9 +33,17 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(t('Is a required field', { ns: 'other' })),
     min_disk:
-      isImageType && Yup.string().required(t('Is a required field', { ns: 'other' })),
+      isImageType &&
+      Yup.number()
+        .min(0, t('value_too_short', { number: 0 }))
+        .max(10000, t('value_too_large', { number: 10000 }))
+        .required(t('Is a required field', { ns: 'other' })),
     min_ram:
-      isImageType && Yup.string().required(t('Is a required field', { ns: 'other' })),
+      isImageType &&
+      Yup.number()
+        .min(0, t('value_too_short', { number: 0 }))
+        .max(10000, t('value_too_large', { number: 10000 }))
+        .required(t('Is a required field', { ns: 'other' })),
     url: isCreate
       ? Yup.string()
           .required(t('Is a required field', { ns: 'other' }))
