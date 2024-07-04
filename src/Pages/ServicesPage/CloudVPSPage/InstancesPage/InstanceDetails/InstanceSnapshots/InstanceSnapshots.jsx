@@ -3,11 +3,10 @@ import s from './InstanceSnapshots.module.scss'
 import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
-import { useCancelRequest } from '@utils'
+import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import { Button, ImagesList, Loader, WarningMessage, Filter } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
-import { t } from 'i18next'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 
@@ -26,12 +25,12 @@ const INSTANCE_SNAPSHOTS_CELLS = [
 ]
 
 const FILTER_FIELDS = [
-  { label: t('image.name.snapshot', { ns: 'cloud_vps' }), value: 'name' },
+  { label: 'snapshot_name', value: 'name' },
   { label: 'ID', value: 'id' },
-  { label: t('Status', { ns: 'cloud_vps' }), value: 'fleio_status' },
-  { label: t('image.os_distro', { ns: 'cloud_vps' }), value: 'os_distro' },
+  { label: 'status', value: 'fleio_status' },
+  { label: 'os_distro', value: 'os_distro' },
   {
-    label: t('image.protected', { ns: 'cloud_vps' }),
+    label: 'protected',
     value: 'protected',
     type: 'checkbox',
     checkboxValues: { checked: 'on', unchecked: 'off' },
@@ -45,31 +44,30 @@ export default function InstanceSnapshots() {
   const navigate = useNavigate()
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
+  const { isErrorStatus } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
-  const [count, setCount] = useState(0)
   const [filters, setFilters] = useState({})
   const [isFilterSet, setIsFilterSet] = useState(false)
+  const [pagination, setPagination] = useState({})
 
   const elid = item?.id?.$
 
   const getItems = useCallback(
     (() => {
-      let col, num, cnt
+      let num
       return ({ p_col, p_num, p_cnt } = {}) => {
-        col = p_col ?? col
         num = p_num ?? num
-        cnt = p_cnt ?? cnt
         dispatch(
           cloudVpsOperations.getImages({
-            p_col: col,
+            p_col,
             p_num: num,
-            p_cnt: cnt,
+            p_cnt,
             func: 'instances.snapshots',
             elid,
             setData,
-            setCount,
+            setPagination,
             setDailyCosts,
             signal,
             setIsLoading,
@@ -115,7 +113,8 @@ export default function InstanceSnapshots() {
         values,
         signal,
         setIsLoading,
-        successCallback: render === 'first' ? () => setIsFilterSet(true) : getItems,
+        successCallback:
+          render === 'first' ? () => setIsFilterSet(true) : () => getItems({ p_num: 1 }),
       }),
     )
   }
@@ -123,7 +122,6 @@ export default function InstanceSnapshots() {
   return (
     <>
       <div className={s.container}>
-        <p>{t('snapshots.limit_value')}</p>
         <div className={s.create_wrapper}>
           <Button
             label={t('create_snapshot')}
@@ -139,7 +137,7 @@ export default function InstanceSnapshots() {
                 }),
               )
             }}
-            disabled={createdToday >= 5}
+            disabled={createdToday >= 5 || isErrorStatus}
           />
           <Filter
             fields={FILTER_FIELDS}
@@ -148,6 +146,9 @@ export default function InstanceSnapshots() {
             itemsCount={data?.length}
           />
         </div>
+        <p>
+          {t('snapshots.limit_value')}: {createdToday || 0} / 5
+        </p>
         {createdToday >= 5 && (
           <WarningMessage className={s.snapshot_limit_message}>
             {t('snapshots.limit_reached')}
@@ -157,7 +158,7 @@ export default function InstanceSnapshots() {
           <ImagesList
             cells={INSTANCE_SNAPSHOTS_CELLS}
             items={data}
-            itemsCount={count}
+            pagination={pagination}
             getItems={getItems}
             editImage={editImage}
             cost={dailyCosts}

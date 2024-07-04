@@ -37,6 +37,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
 
   const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
   const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active' || isSchedules
+  const isSuspended = item.fleio_status?.$.trim().toLowerCase() === 'suspended'
 
   const options = [
     {
@@ -45,9 +46,17 @@ export default function ImagesOptions({ item, pageList, idKey }) {
       disabled: !isActive,
       onClick: () => {
         dispatch(
-          cloudVpsActions.setItemForModals({
-            images_edit: { ...item, idKey },
-          }),
+          cloudVpsActions.setItemForModals(
+            isSchedules
+              ? {
+                  backup_schedule_edit: {
+                    ...item,
+                  },
+                }
+              : {
+                  images_edit: { ...item, idKey },
+                },
+          ),
         )
       },
     },
@@ -102,7 +111,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
     {
       label: t('delete'),
       icon: 'Remove',
-      disabled: isProtected || !isActive,
+      disabled: isProtected || (!isActive && !isSuspended),
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
@@ -123,6 +132,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
               <Icon name="MoreDots" />
             </p>
           )}
+          listItemClassName={s.option__btn_text}
         />
       ) : (
         <div className={s.options}>

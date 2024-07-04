@@ -8,12 +8,12 @@ export default function getInstanceMainInfo(item) {
   const isRescued = fotboStatus === 'rescued'
   const isSuspended = fotboStatus === 'suspended'
   const isBootedFromISO = fotboStatus === 'booted_from_iso'
-  const isImageUploading = fotboStatus === 'running_image_uploading'
+  const isImageUploading = fotboStatus === 'image_uploading'
   const isErrorStatus = fotboStatus === 'error'
   const isWindows = item.instances_os?.$.includes('Windows')
 
   const isNotActive =
-    item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
+    item?.status?.$ === '1' || item?.status?.$ === '4' || item?.status?.$ === '5'
 
   const isDeleting = billingStatus === 'Deletion in progress'
 
@@ -42,7 +42,7 @@ export default function getInstanceMainInfo(item) {
     isImageUploading ||
     isErrorStatus
 
-  const displayName = item.servername?.$ || item.name.$
+  const displayName = item?.servername?.$ || item?.name?.$
   const displayStatus = isDeleting
     ? billingStatus
     : fotboStatus?.replaceAll('_', ' ') || billingStatus

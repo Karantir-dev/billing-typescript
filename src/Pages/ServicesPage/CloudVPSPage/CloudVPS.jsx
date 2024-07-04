@@ -6,7 +6,7 @@ import s from './CloudVPS.module.scss'
 import * as route from '@src/routes'
 
 export default function DedicPage() {
-  const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
+  const { t } = useTranslation(['crumbs', 'container'])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -19,21 +19,21 @@ export default function DedicPage() {
   const tabBarSections = [
     {
       route: route.CLOUD_VPS,
-      label: 'Instances',
+      label: t('Instances'),
       allowToRender: true,
       replace: true,
       end: true,
     },
     {
       route: route.CLOUD_VPS_SSH_KEYS,
-      label: 'SSH keys',
+      label: t('ssh_keys'),
       allowToRender: true,
       replace: true,
       end: true,
     },
     {
       route: route.CLOUD_VPS_IMAGES,
-      label: 'Images',
+      label: t('images'),
       allowToRender: true,
       replace: true,
       end: true,

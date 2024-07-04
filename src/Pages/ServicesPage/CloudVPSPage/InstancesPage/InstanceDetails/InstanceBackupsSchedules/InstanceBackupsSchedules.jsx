@@ -1,12 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceBackupsSchedules.module.scss'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
-import { useCancelRequest } from '@utils'
+import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader } from '@components'
+import { Button, ImagesList, Loader, EditCell } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_BACKUPS_SCHEDULES_CELLS = [
@@ -28,29 +27,31 @@ export default function InstanceBackupsSchedules() {
   const { t } = useTranslation(['cloud_vps'])
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
+  const { isErrorStatus } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
-  // const [dailyCosts, setDailyCosts] = useState({})
-  const [count, setCount] = useState(0)
+  const [backupRotation, setBackupRotation] = useState()
+  const [rotationFieldError, setRotationFieldError] = useState('')
+
+  const [pagination, setPagination] = useState({})
 
   const elid = item?.id?.$
 
   const getItems = useCallback(
     (() => {
-      let col, num, cnt
+      let num
       return ({ p_col, p_num, p_cnt } = {}) => {
-        col = p_col ?? col
         num = p_num ?? num
-        cnt = p_cnt ?? cnt
         dispatch(
           cloudVpsOperations.getImages({
-            p_col: col,
+            p_col,
             p_num: num,
-            p_cnt: cnt,
+            p_cnt,
             func: 'instances.fleio_bckps.schedule',
             elid,
             setData,
-            setCount,
+            setBackupRotation,
+            setPagination,
             signal,
             setIsLoading,
           }),
@@ -77,6 +78,29 @@ export default function InstanceBackupsSchedules() {
     )
   }
 
+  const editInstanceHandler = values => {
+    dispatch(
+      cloudVpsOperations.editInstance({
+        values,
+        elid,
+        successCallback: () => setBackupRotation(values.backup_rotation),
+        successToast: t('backups.backup_rotation_changed'),
+        signal,
+        setIsLoading,
+      }),
+    )
+  }
+
+  useEffect(() => {
+    if (rotationFieldError) {
+      const timer = setTimeout(() => {
+        setRotationFieldError('')
+      }, 10000) // 10 sec
+
+      return () => clearTimeout(timer)
+    }
+  }, [rotationFieldError])
+
   const cells = INSTANCE_BACKUPS_SCHEDULES_CELLS.map(cell => {
     let renderData
     switch (cell.label) {
@@ -96,28 +120,72 @@ export default function InstanceBackupsSchedules() {
     }
   })
 
+  const handleEditChange = value => {
+    const isNumber = /^[0-9]+$/.test(value)
+
+    setRotationFieldError('')
+    if (!isNumber && !value === '') {
+      setRotationFieldError('backups.invalid_number')
+      return false
+    }
+
+    return true
+  }
+
+  const handleEditSubmit = value => {
+    const numValue = Number(value)
+    if (numValue > 0 && numValue < 11) {
+      editInstanceHandler({ backup_rotation: value })
+    } else if (numValue > 10) {
+      editInstanceHandler({ backup_rotation: '10' })
+    } else {
+      setRotationFieldError('backups.value_in_a_range')
+    }
+  }
+
   return (
     <>
       <div className={s.container}>
         <Button
-          label={t('create_schedule')}
+          label={t('create_backup_schedule')}
           size="large"
           isShadow
           onClick={() => {
             dispatch(
               cloudVpsActions.setItemForModals({
-                schedule_create: {
+                backup_schedule_create: {
                   ...item,
                 },
               }),
             )
           }}
+          disabled={isErrorStatus}
         />
+
+        <div className={s.backup_rotation_wrapper}>
+          <p className={s.rotation_label}>{t('backups.backup_rotation')}:</p>
+          <div className={s.rotation_edit__field_wrapper}>
+            <EditCell
+              originName={backupRotation}
+              className={s.backup_rotation_select}
+              initBtnClassName={s.backup_rotation_btn}
+              onSubmit={handleEditSubmit}
+              validateOnChange={handleEditChange}
+              placeholder={backupRotation}
+              isShadow={true}
+            />
+            {rotationFieldError && (
+              <p className={s.rotation_error}>{t(rotationFieldError)}</p>
+            )}
+          </div>
+
+          <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
+        </div>
 
         <ImagesList
           cells={cells}
           items={data}
-          itemsCount={count}
+          pagination={pagination}
           getItems={getItems}
           editImage={editImage}
           pageList="backups-schedules"

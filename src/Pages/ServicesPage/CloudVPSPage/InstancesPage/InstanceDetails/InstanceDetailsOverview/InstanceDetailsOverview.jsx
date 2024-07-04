@@ -25,7 +25,9 @@ export default function InstanceDetailsOverview() {
   const itemCountry = formatCountryName(item)
 
   useEffect(() => {
-    dispatch(cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading))
+    dispatch(
+      cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading),
+    )
   }, [])
 
   return (
@@ -47,7 +49,7 @@ export default function InstanceDetailsOverview() {
               </div>
 
               <div className={s.info_block_item}>
-                <p className={s.item_name}>{t('Memory')}</p>
+                <p className={s.item_name}>RAM</p>
                 <p className={s.item_info}>{instanceInfo?.Memory?.replace('.', '')}</p>
               </div>
 
@@ -77,7 +79,9 @@ export default function InstanceDetailsOverview() {
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Created at')}</p>
                 {instanceInfo?.createdate && (
-                  <p className={s.item_info}>{instanceInfo.createdate}</p>
+                  <p className={s.item_info}>
+                    {instanceInfo.createdate} {instanceInfo.opentime}
+                  </p>
                 )}
               </div>
               {/* Region Block */}
@@ -85,14 +89,14 @@ export default function InstanceDetailsOverview() {
                 <p className={s.item_name}>{t('Region')}</p>
                 <div className={s.item_info_block}>
                   <img
-                    src={require(
-                      `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
-                    )}
+                    src={require(`@images/countryFlags/${getFlagFromCountryName(
+                      itemCountry,
+                    )}.png`)}
                     width={20}
                     height={14}
                     alt={itemCountry}
                   />
-                  <p>{itemCountry}</p>
+                  <p>{t(itemCountry)}</p>
                 </div>
               </div>
             </div>

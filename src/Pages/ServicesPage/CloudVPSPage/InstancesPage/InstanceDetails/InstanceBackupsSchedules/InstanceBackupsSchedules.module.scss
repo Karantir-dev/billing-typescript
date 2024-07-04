@@ -4,8 +4,60 @@
   gap: 20px;
 }
 
+.backup_rotation_select {
+  max-width: 260px;
+
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms2_shadow);
+  border-radius: 3px;
+}
+
+.backup_rotation_btn {
+  height: 50px;
+  max-height: 50px;
+  padding-left: 15px;
+}
+
+.backup_rotation_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.rotation_label {
+  line-height: 120%;
+  margin: 0 0 7px 15px;
+}
+
+.rotation_edit__field_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rotation_error {
+  font-size: 14px;
+  color: var(--error-color);
+}
+
+.rotation_info {
+  max-width: 300px;
+  margin-top: 20px;
+
+  @media (min-width: 1024px) {
+    max-width: unset;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .container {
     padding-top: 32px;
+  }
+  .rotation_edit__field_wrapper {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .rotation_error {
+    font-size: 14px;
   }
 }

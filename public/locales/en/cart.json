@@ -68,5 +68,6 @@
   "form_invalid": "The form is invalid",
   "edit": "Edit",
   "off": "Off",
-  "clone_error": "Current tariff is no longer available for buying. Please choose another one from the list."
+  "clone_error": "Current tariff is no longer available for buying. Please choose another one from the list.",
+  "Commission 0.25 EUR.": "Commission 0.25 EUR."
 }

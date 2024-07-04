@@ -12,9 +12,9 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
   const dispatch = useDispatch()
 
   const paymentHandler = values => {
-    const { summ, message } = values
+    const { summ, zomro_message } = values
 
-    dispatch(supportOperations.paySupportTips(elid, summ, message, setSuccessModal))
+    dispatch(supportOperations.paySupportTips(elid, summ, zomro_message, setSuccessModal))
     closeTipsModal()
   }
 
@@ -36,7 +36,7 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
           validationSchema={validationSchema}
           initialValues={{
             summ: '',
-            message: '',
+            zomro_message: '',
           }}
           onSubmit={paymentHandler}
         >
@@ -61,14 +61,14 @@ export default function TipsModal({ closeTipsModal, elid, setSuccessModal }) {
                   {t('The transfer amount will be debited from your balance')}
                 </p>
 
-                <label htmlFor="tipsComment" className={s.comment}>
+                <label htmlFor="zomro_message" className={s.comment}>
                   {t('Comment')}:
                 </label>
 
                 <MessageInput
-                  message={values.message}
+                  message={values.zomro_message}
                   enableFiles={false}
-                  name={'tipsComment'}
+                  name={'zomro_message'}
                 />
               </Form>
             )

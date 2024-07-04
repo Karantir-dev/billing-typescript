@@ -25,8 +25,6 @@ export const Modals = ({
   renameSshSubmit,
   addNewSshSubmit,
   loadingParams = {},
-  pagination = {},
-  setPagination = () => {},
   getInstances = () => {},
   redirectCallback,
 }) => {
@@ -43,8 +41,7 @@ export const Modals = ({
           if (redirectCallback) {
             redirectCallback()
           } else {
-            getInstances({ p_num: 1 })
-            setPagination({ p_num: 1 })
+            getInstances()
           }
         },
       }),
@@ -59,7 +56,7 @@ export const Modals = ({
           elid,
           closeModal: () =>
             dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-          successCallback: () => getInstances({ ...loadingParams, ...pagination }),
+          successCallback: () => getInstances({ ...loadingParams }),
         }),
       )
     } else if (action === 'unrescue' || action === 'unmount') {
@@ -80,7 +77,7 @@ export const Modals = ({
           elid,
           closeModal: () =>
             dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-          successCallback: () => getInstances({ ...loadingParams, ...pagination }),
+          successCallback: () => getInstances({ ...loadingParams }),
         }),
       )
     }
@@ -93,7 +90,7 @@ export const Modals = ({
         pricelist: values.pricelist,
         successCallback: () => {
           dispatch(cloudVpsActions.setItemForModals({ resize: false }))
-          getInstances({ ...loadingParams, ...pagination })
+          getInstances({ ...loadingParams })
         },
         errorCallback,
       }),

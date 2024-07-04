@@ -78,17 +78,21 @@ const getTarifs =
         const { val: period } = data.doc.slist[0]
         const { $: currentDatacenter } = data.doc.datacenter
 
+        const isEUTariff = currentDatacenter === '15'
+
         const transformedTarifList = tarifList?.map(elem => {
           const currentForexRate = elem?.desc?.$?.split(' ')[2]
 
           elem.countTerminal = currentForexRate
-          elem.countRAM = currentForexRate
+          elem.countRAM = isEUTariff ? currentForexRate * 2 : currentForexRate
           // if (index === 0 || index === 1) {
           //   elem.countRAM = 1
           // } else {
           //   elem.countRAM = currentForexRate * 0.5
           // }
-          elem.countMemory = currentForexRate * 3 + ' ' + 'Gb'
+          elem.countMemory = isEUTariff
+            ? currentForexRate * 5 + ' ' + 'Gb'
+            : currentForexRate * 3 + ' ' + 'Gb'
           elem.osName = 'Windows'
 
           return elem

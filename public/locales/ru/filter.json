@@ -1,0 +1,13 @@
+{
+  "filter": "Фильтр",
+  "search": "Поиск",
+  "clear_filter": "Очистить фильтр",
+  "image_name": "Имя образа",
+  "snapshot_name": "Имя снимка",
+  "status": "Статус",
+  "os_distro": "Дистрибутив ОС",
+  "type": "Тип",
+  "region": "Регион",
+  "disk_format": "Формат диска",
+  "protected": "Защищен от удаления"
+}

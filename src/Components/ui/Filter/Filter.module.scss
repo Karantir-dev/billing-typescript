@@ -340,3 +340,46 @@
   align-self: flex-end;
   margin-bottom: 10px;
 }
+
+.filter__clouds {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  gap: 15px;
+  padding-top: 8px;
+}
+
+.filter__cloud {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 9px 9px 12px;
+  box-shadow: var(--forms_shadow);
+  background: var(--elements-bgc);
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 3px;
+}
+
+.filter__cloud_name {
+  color: var(--transparent-color);
+}
+
+.filter__cloud_btn {
+  margin-left: 5px;
+  width: 10px;
+  height: 10px;
+  line-height: 10px;
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--transparent-color);
+  }
+
+  &:hover {
+    svg {
+      fill: var(--main-text);
+    }
+  }
+}

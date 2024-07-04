@@ -354,6 +354,11 @@
       margin-right: 8px;
     }
 
+    img {
+      margin-right: 8px;
+      object-fit: contain;
+    }
+
     span {
       font-style: normal;
       font-weight: 400;
@@ -373,7 +378,7 @@
   }
   @media (min-width: 768px) {
     flex-direction: row;
-    max-width: 631px;
+    max-width: fit-content;
 
     .countryBtn {
       padding: 8px 16px;
@@ -381,7 +386,6 @@
     }
   }
   @media (min-width: 1550px) {
-    max-width: 748px;
     .countryBtn {
       span {
         font-size: 18px;

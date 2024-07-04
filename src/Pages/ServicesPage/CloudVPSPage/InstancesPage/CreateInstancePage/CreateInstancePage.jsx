@@ -761,7 +761,14 @@ export default function CreateInstancePage() {
                             })}
                           >
                             <span className="asterisk">*</span>
-                            {t(`hint_description.${showCaption}`)}
+                            {t('excluding_vat')}
+                            <TooltipWrapper
+                              wrapperClassName={s.exlude_vat_hint}
+                              className={s.exlude_vat_hint_popup}
+                              content={t('exlude_vat_hint')}
+                            >
+                              <Icon name="Info" />
+                            </TooltipWrapper>
                           </div>
                         )}
 
@@ -789,7 +796,7 @@ export default function CreateInstancePage() {
                         </ul>
                       </section>
 
-                      <section className={s.section}>
+                      <section className={cn(s.section, s.access_section)}>
                         <h3 className={s.section_title}>{t('authentication_method')}</h3>
 
                         <ConnectMethod

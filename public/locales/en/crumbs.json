@@ -27,6 +27,7 @@
   "wordpress": "Wordpress hosting",
   "wordpress_order": "Wordpress hosting order",
   "cloud_vps": "Cloud VPS",
+  "Instances": "Instances",
   "ssh_keys": "SSH keys",
   "create_instance": "Create virtual server",
   "premium": "Premium VPS",

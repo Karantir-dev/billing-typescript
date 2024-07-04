@@ -8,6 +8,7 @@ export default function Options({
   options,
   columns = 1,
   buttonClassName,
+  listItemClassName,
   renderButton,
   isTileLayout,
 }) {
@@ -29,7 +30,9 @@ export default function Options({
             })}
           >
             <button
-              className={cn(s.tool_btn, { [s.tile_btn]: isTileLayout })}
+              className={cn(s.tool_btn, {
+                [s.tile_btn]: isTileLayout,
+              })}
               type="button"
               onClick={() => {
                 option.onClick()
@@ -76,7 +79,9 @@ export default function Options({
               .map(option => (
                 <li
                   key={option.label}
-                  className={cn(s.tool_item, { [s.tool_item_delete]: option.isDelete })}
+                  className={cn(s.tool_item, [listItemClassName], {
+                    [s.tool_item_delete]: option.isDelete,
+                  })}
                 >
                   <button
                     className={s.tool_btn}

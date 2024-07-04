@@ -4,6 +4,7 @@ import {
   CreateEditImageModal,
   DeleteModal,
   RestoreModal,
+  CreateEditBackupsSchedules,
 } from './'
 
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
@@ -69,12 +70,31 @@ export const ImagesModals = ({
       cloudVpsOperations.editImage({
         func: 'instances.fleio_bckps.schedule',
         ...values,
-        successCallback: getItems,
+        successCallback: () => {
+          getItems()
+          fetchInstanceData()
+        },
       }),
     )
   }
 
-  // const editScheduleBackup = values => { }
+  const editScheduleBackup = values => {
+    dispatch(
+      cloudVpsActions.setItemForModals({
+        backup_schedule_edit: false,
+      }),
+    )
+    dispatch(
+      cloudVpsOperations.editImage({
+        func: 'instances.fleio_bckps.schedule',
+        ...values,
+        successCallback: () => {
+          getItems()
+          fetchInstanceData()
+        },
+      }),
+    )
+  }
 
   const createImageSubmit = ({ name, ...values }) => {
     dispatch(
@@ -139,9 +159,7 @@ export const ImagesModals = ({
 
   return (
     <>
-      {['snapshot_create', 'backup_create', 'backup_schedule_create'].some(
-        key => !!itemForModals?.[key],
-      ) && (
+      {['snapshot_create', 'backup_create'].some(key => !!itemForModals?.[key]) && (
         <CreateSnapshotOrBackupModal
           item={itemForModals}
           closeModal={() =>
@@ -149,18 +167,30 @@ export const ImagesModals = ({
               cloudVpsActions.setItemForModals({
                 snapshot_create: false,
                 backup_create: false,
+              }),
+            )
+          }
+          onSubmit={itemForModals?.snapshot_create ? createSnapshot : createBackup}
+        />
+      )}
+
+      {['backup_schedule_create', 'backup_schedule_edit'].some(
+        key => !!itemForModals?.[key],
+      ) && (
+        <CreateEditBackupsSchedules
+          item={itemForModals}
+          closeModal={() =>
+            dispatch(
+              cloudVpsActions.setItemForModals({
                 backup_schedule_create: false,
+                backup_schedule_edit: false,
               }),
             )
           }
           onSubmit={
-            itemForModals?.snapshot_create
-              ? createSnapshot
-              : itemForModals?.backup_create
-              ? createBackup
-              : itemForModals?.backup_schedule_create
+            itemForModals?.backup_schedule_create
               ? createScheduleBackup
-              : undefined // editScheduleBackup
+              : editScheduleBackup
           }
         />
       )}
