@@ -7,7 +7,7 @@ export default function OsList({ value, list, onOSchange }) {
 
   list?.forEach(element => {
     const itemName = getImageIconName(element.$)
-    itemName
+
     if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
       elemsData[itemName] = [{ ...element }]
     } else {
