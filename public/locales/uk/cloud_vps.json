@@ -153,9 +153,9 @@
   "key_copied": "SSH ключ скопійовано",
   "rescue_tab": {
     "shr": "Shared",
-    "pub": "Public",
+    "pub": "Публічні",
     "image": "Public",
-    "own": "Your Images"
+    "own": "Мої образи"
   },
   "create": "Створити",
   "download": "Завантажити",

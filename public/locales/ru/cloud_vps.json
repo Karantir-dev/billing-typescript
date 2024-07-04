@@ -152,8 +152,8 @@
   "key_copied": "SSH ключ скопирован",
   "rescue_tab": {
     "shr": "Shared",
-    "pub": "Public",
-    "own": "Your Images"
+    "pub": "Публичные",
+    "own": "Мои образы"
   },
   "create": "Создать",
   "download": "Скачать",
