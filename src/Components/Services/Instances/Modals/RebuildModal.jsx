@@ -24,7 +24,7 @@ import {
   IMAGES_TYPES,
 } from '@utils/constants'
 
-const RESCUE_TABS_ORDER = [IMAGES_TYPES.own, IMAGES_TYPES.shared, IMAGES_TYPES.public]
+const RESCUE_TABS_ORDER = [IMAGES_TYPES.public, IMAGES_TYPES.own, IMAGES_TYPES.shared]
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
