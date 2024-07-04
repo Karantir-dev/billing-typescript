@@ -179,7 +179,7 @@ export default function InstancesOptions({
     {
       label: t('Delete'),
       icon: 'Remove',
-      disabled: isProcessing || isDeleting,
+      disabled: isProcessing || isDeleting || isErrorStatus,
       isDelete: true,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
     },

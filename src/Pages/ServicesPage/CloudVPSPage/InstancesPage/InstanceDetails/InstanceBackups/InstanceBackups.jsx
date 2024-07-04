@@ -3,7 +3,7 @@ import s from './InstanceBackups.module.scss'
 import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
-import { useCancelRequest } from '@utils'
+import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import { Button, ImagesList, Loader, WarningMessage } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
@@ -32,6 +32,7 @@ export default function InstanceBackups() {
   const navigate = useNavigate()
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
+  const { isErrorStatus } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
@@ -108,7 +109,7 @@ export default function InstanceBackups() {
                 }),
               )
             }}
-            disabled={createdToday >= 5}
+            disabled={createdToday >= 5 || isErrorStatus}
           />
 
           <p>
