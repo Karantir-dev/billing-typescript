@@ -232,17 +232,18 @@
     "create": "Create snapshot for instance",
     "create_warning": "Instance will not be available while the snapshot is being processed.",
     "limit_value": "Instances created for today",
-    "limit_reached": "You have reached the creation limit for today."
+    "limit_reached": "You have reached the creation limit for creating instances for today."
   },
   "backup": {
     "create": "Create backup for instance",
     "create_warning": "Instance will not be available while the backup is being processed.",
-    "count":"Number of backups",
+    "count": "Number of backups",
     "backup_rotation": "Backup rotation",
     "value_in_a_range": "The value must be in the range from 1 to 10",
     "limit_value": "Backups created for today",
     "backup_rotation_changed": "Backup rotation quantity changed",
-    "rotation_info": "Number of backups to keep (the rest backups of type manual will be deleted)"
+    "rotation_info": "Maximum number of backups saved on a schedule (older copies will be overwritten)",
+    "limit_reached": "You have reached the limit for creating backups for today."
   },
   "schedule_backups": {
     "create": "Create backup schedule for instance",
