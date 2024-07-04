@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader, EditCell } from '@components'
+import { Button, ImagesList, Loader, EditCell, BlockPageMessage } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 
 const INSTANCE_BACKUPS_SCHEDULES_CELLS = [
@@ -27,7 +27,7 @@ export default function InstanceBackupsSchedules() {
   const { t } = useTranslation(['cloud_vps'])
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
-  const { isErrorStatus } = getInstanceMainInfo(item)
+  const { isErrorStatus, isImageUploading, displayStatus } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
   const [backupRotation, setBackupRotation] = useState()
@@ -145,6 +145,11 @@ export default function InstanceBackupsSchedules() {
 
   return (
     <>
+      {(isErrorStatus || isImageUploading) && (
+        <BlockPageMessage
+          text={t('functionality_unavailable', { status: displayStatus.toUpperCase() })}
+        />
+      )}
       <div className={s.container}>
         <Button
           label={t('create_backup_schedule')}

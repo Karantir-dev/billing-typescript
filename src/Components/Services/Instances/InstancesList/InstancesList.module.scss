@@ -217,7 +217,7 @@
   &.suspended {
     svg {
       path {
-        fill: #fa6848;
+        fill: var(--red-text);
       }
     }
   }
@@ -229,7 +229,7 @@
   &.deletion_in_progress,
   &.suspended,
   &.error {
-    background-color: #fa6848;
+    background-color: var(--red-text);
   }
 }
 

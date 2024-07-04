@@ -1,0 +1,37 @@
+@import '@scss/placeholders.scss';
+
+.wrapper {
+  @extend %backdrop;
+  padding: 60px 20px;
+  position: absolute;
+  align-items: flex-start;
+  opacity: 1;
+  pointer-events: initial;
+  z-index: 9;
+  margin: 0 -30px -125px;
+  @media screen and (min-width: 768px) {
+    --right-padding: 60px;
+    margin: 0 -60px -210px;
+  }
+  @media screen and (min-width: 1024px) {
+    margin: 0 -60px -80px -200px;
+  }
+  @media screen and (min-width: 1550px) {
+    margin: 0 -135px -188px -259px;
+  }
+
+  @media screen and (min-width: 1918px) {
+    margin: 0 -155px -120px -290px;
+  }
+}
+
+.block {
+  padding: 40px;
+  background: var(--main-bgc);
+  box-shadow: var(--forms2_shadow);
+  font-size: 20px;
+  border-radius: 3px;
+  min-width: 300px;
+  max-width: 95%;
+  text-align: center;
+}

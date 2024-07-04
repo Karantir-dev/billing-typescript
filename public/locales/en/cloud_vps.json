@@ -325,5 +325,6 @@
   "friday": "Fri",
   "saturday": "Sat",
   "value_too_large": "The value cannot be greater than {{number}}",
-  "value_too_short": "The value cannot be less than {{number}}"
+  "value_too_short": "The value cannot be less than {{number}}",
+  "functionality_unavailable": "This functionality is unavailable when the status is \"{{status}}\""
 }

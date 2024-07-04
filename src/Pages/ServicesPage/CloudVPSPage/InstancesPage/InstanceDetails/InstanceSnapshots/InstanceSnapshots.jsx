@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useTranslation } from 'react-i18next'
 import s from './InstanceSnapshots.module.scss'
 import { useCallback, useState } from 'react'
@@ -5,7 +6,14 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader, WarningMessage, Filter } from '@components'
+import {
+  Button,
+  ImagesList,
+  Loader,
+  WarningMessage,
+  Filter,
+  BlockPageMessage,
+} from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
@@ -44,7 +52,7 @@ export default function InstanceSnapshots() {
   const navigate = useNavigate()
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
-  const { isErrorStatus } = getInstanceMainInfo(item)
+  const { isErrorStatus, isImageUploading, displayStatus } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
@@ -121,6 +129,11 @@ export default function InstanceSnapshots() {
 
   return (
     <>
+      {(isErrorStatus || isImageUploading) && (
+        <BlockPageMessage
+          text={t('functionality_unavailable', { status: displayStatus.toUpperCase() })}
+        />
+      )}
       <div className={s.container}>
         <div className={s.create_wrapper}>
           <Button
