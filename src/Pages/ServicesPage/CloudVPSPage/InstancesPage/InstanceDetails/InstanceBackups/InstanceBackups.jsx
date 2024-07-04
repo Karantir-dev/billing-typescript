@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
 import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
-import { Button, ImagesList, Loader, WarningMessage } from '@components'
+import { BlockPageMessage, Button, ImagesList, Loader, WarningMessage } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
@@ -32,7 +32,7 @@ export default function InstanceBackups() {
   const navigate = useNavigate()
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
-  const { isErrorStatus } = getInstanceMainInfo(item)
+  const { isErrorStatus, isImageUploading, displayStatus } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
@@ -93,6 +93,11 @@ export default function InstanceBackups() {
 
   return (
     <>
+      {(isErrorStatus || isImageUploading) && (
+        <BlockPageMessage
+          text={t('functionality_unavailable', { status: displayStatus.toUpperCase() })}
+        />
+      )}
       <div className={s.container}>
         <div className={s.create_wrapper}>
           <Button

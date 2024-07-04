@@ -75,6 +75,7 @@ export { default as FixedFooter } from './ui/FixedFooter/FixedFooter'
 export { default as Error } from './ui/Error/Error'
 export { default as CountryButton } from './ui/CountryButton/CountryButton'
 export { default as Filter } from './ui/Filter/Filter'
+export { default as BlockPageMessage } from './ui/BlockPageMessage/BlockPageMessage'
 
 //==========================================ACCESS LOGS==========================================//
 

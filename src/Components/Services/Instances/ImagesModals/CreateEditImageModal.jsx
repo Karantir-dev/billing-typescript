@@ -42,7 +42,7 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
       isImageType &&
       Yup.number()
         .min(0, t('value_too_short', { number: 0 }))
-        .max(10000, t('value_too_large', { number: 10000 }))
+        .max(1000, t('value_too_large', { number: 1000 }))
         .required(t('Is a required field', { ns: 'other' })),
     url: isCreate
       ? Yup.string()

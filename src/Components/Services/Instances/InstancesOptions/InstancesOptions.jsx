@@ -161,7 +161,7 @@ export default function InstancesOptions({
     {
       label: t('Rename'),
       icon: 'Rename',
-      disabled: isDeleting || isImageUploading,
+      disabled: isDeleting,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
     },
     {
