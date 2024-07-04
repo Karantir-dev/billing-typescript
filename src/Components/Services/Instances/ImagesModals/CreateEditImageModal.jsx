@@ -97,6 +97,11 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
             onSubmit={onSubmitHandler}
           >
             {({ values, errors, touched, setFieldValue }) => {
+              const onlyDigitsHandler = (e, field) => {
+                const value = e.target.value.replace(/\D/g, '')
+                setFieldValue(field, value)
+              }
+
               return (
                 <Form id={'create_image'}>
                   <div className={s.image_modal_wrapper}>
@@ -162,8 +167,8 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                               error={!!errors.min_disk}
                               touched={!!touched.min_disk}
                               isRequired
-                              type={'number'}
                               autoComplete="off"
+                              onChange={e => onlyDigitsHandler(e, 'min_disk')}
                             />
                             <InputField
                               inputClassName={s.input}
@@ -179,8 +184,8 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                               error={!!errors.min_ram}
                               touched={!!touched.min_ram}
                               isRequired
-                              type={'number'}
                               autoComplete="off"
+                              onChange={e => onlyDigitsHandler(e, 'min_ram')}
                             />
                           </div>
                           {isCreate && (
