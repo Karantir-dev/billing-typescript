@@ -27,7 +27,7 @@
   position: relative;
   height: calc(100% - 2px);
   width: calc(100% - 2px);
-  padding: 15px 20px;
+  padding: 15px 14px;
   border-radius: 3px;
   background-color: var(--forms_bgc_2);
   box-shadow: var(--forms2_shadow);
@@ -66,4 +66,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media screen and (min-width: 768px) {
+  .btn {
+    padding: 15px 20px;
+  }
 }
