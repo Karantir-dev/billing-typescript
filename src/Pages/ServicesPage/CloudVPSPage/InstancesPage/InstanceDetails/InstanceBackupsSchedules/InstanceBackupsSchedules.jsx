@@ -84,7 +84,7 @@ export default function InstanceBackupsSchedules() {
         values,
         elid,
         successCallback: () => setBackupRotation(values.backup_rotation),
-        successToast: t('backups.backup_rotation_changed'),
+        successToast: t('backup.backup_rotation_changed'),
         signal,
         setIsLoading,
       }),
@@ -125,7 +125,7 @@ export default function InstanceBackupsSchedules() {
 
     setRotationFieldError('')
     if (!isNumber && !value === '') {
-      setRotationFieldError('backups.invalid_number')
+      setRotationFieldError('backup.invalid_number')
       return false
     }
 
@@ -139,7 +139,7 @@ export default function InstanceBackupsSchedules() {
     } else if (numValue > 10) {
       editInstanceHandler({ backup_rotation: '10' })
     } else {
-      setRotationFieldError('backups.value_in_a_range')
+      setRotationFieldError('backup.value_in_a_range')
     }
   }
 
@@ -168,7 +168,7 @@ export default function InstanceBackupsSchedules() {
         />
 
         <div className={s.backup_rotation_wrapper}>
-          <p className={s.rotation_label}>{t('backups.backup_rotation')}:</p>
+          <p className={s.rotation_label}>{t('backup.backup_rotation')}:</p>
           <div className={s.rotation_edit__field_wrapper}>
             <EditCell
               originName={backupRotation}
@@ -183,8 +183,7 @@ export default function InstanceBackupsSchedules() {
               <p className={s.rotation_error}>{t(rotationFieldError)}</p>
             )}
           </div>
-
-          <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
+          <p className={s.rotation_info}>{t('backup.rotation_info')}</p>
         </div>
 
         <ImagesList

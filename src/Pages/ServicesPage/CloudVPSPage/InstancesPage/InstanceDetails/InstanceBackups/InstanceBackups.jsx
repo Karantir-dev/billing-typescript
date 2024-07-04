@@ -118,15 +118,15 @@ export default function InstanceBackups() {
           />
 
           <p>
-            {t('backups.count')}: {createdTotal || 0} / 100
+            {t('backup.count')}: {createdTotal || 0} / 100
           </p>
           <p>
-            {t('backups.limit_value')}: {createdToday || 0} / 5
+            {t('backup.limit_value')}: {createdToday || 0} / 5
           </p>
 
           {createdToday >= 5 && (
             <WarningMessage className={s.backup_limit_message}>
-              {t('snapshots.limit_reached')}
+              {t('snapshot.limit_reached')}
             </WarningMessage>
           )}
         </div>
@@ -138,7 +138,7 @@ export default function InstanceBackups() {
           getItems={getItems}
           editImage={editImage}
           cost={dailyCosts}
-          pageList="backups"
+          pageList="backup"
           itemOnClickHandler={itemOnClickHandler}
         />
       </div>

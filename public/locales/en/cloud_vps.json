@@ -155,7 +155,7 @@
     "shr": "Shared",
     "pub": "Public",
     "image": "Public",
-    "own": "Your Images"
+    "own": "My Images"
   },
   "create": "Create",
   "download": "Download",
@@ -228,13 +228,13 @@
   "rotation_time_descr": "Please note that the time will change depending on the transition to daylight saving time or standard time.",
   "boot_from_iso": "Boot from ISO",
   "backup_type": "Backup type",
-  "snapshots": {
+  "snapshot": {
     "create": "Create snapshot for instance",
     "create_warning": "Instance will not be available while the snapshot is being processed.",
     "limit_value": "Instances created for today",
-    "limit_reached": "You have reached the creation limit for today."
+    "limit_reached": "You have reached the limit for creating snapshots for today."
   },
-  "backups": {
+  "backup": {
     "create": "Create backup for instance",
     "create_warning": "Instance will not be available while the backup is being processed.",
     "count": "Number of backups",
@@ -242,7 +242,8 @@
     "value_in_a_range": "The value must be in the range from 1 to 10",
     "limit_value": "Backups created for today",
     "backup_rotation_changed": "Backup rotation quantity changed",
-    "rotation_info": "Number of backups to keep (the rest backups of type manual will be deleted)"
+    "rotation_info": "Maximum number of scheduled backups that will be stored (older copies will be overwritten)",
+    "limit_reached": "You have reached the limit for creating backups for today."
   },
   "schedule_backups": {
     "create": "Create backup schedule for instance",
