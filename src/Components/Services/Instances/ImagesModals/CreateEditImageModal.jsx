@@ -33,9 +33,17 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(t('Is a required field', { ns: 'other' })),
     min_disk:
-      isImageType && Yup.string().required(t('Is a required field', { ns: 'other' })),
+      isImageType &&
+      Yup.number()
+        .min(0, t('value_too_short', { number: 0 }))
+        .max(10000, t('value_too_large', { number: 10000 }))
+        .required(t('Is a required field', { ns: 'other' })),
     min_ram:
-      isImageType && Yup.string().required(t('Is a required field', { ns: 'other' })),
+      isImageType &&
+      Yup.number()
+        .min(0, t('value_too_short', { number: 0 }))
+        .max(10000, t('value_too_large', { number: 10000 }))
+        .required(t('Is a required field', { ns: 'other' })),
     url: isCreate
       ? Yup.string()
           .required(t('Is a required field', { ns: 'other' }))
@@ -97,6 +105,11 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
             onSubmit={onSubmitHandler}
           >
             {({ values, errors, touched, setFieldValue }) => {
+              const onlyDigitsHandler = (e, field) => {
+                const value = e.target.value.replace(/\D/g, '')
+                setFieldValue(field, value)
+              }
+
               return (
                 <Form id={'create_image'}>
                   <div className={s.image_modal_wrapper}>
@@ -162,8 +175,8 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                               error={!!errors.min_disk}
                               touched={!!touched.min_disk}
                               isRequired
-                              type={'number'}
                               autoComplete="off"
+                              onChange={e => onlyDigitsHandler(e, 'min_disk')}
                             />
                             <InputField
                               inputClassName={s.input}
@@ -179,8 +192,8 @@ export const CreateEditImageModal = ({ item, closeModal, onSubmit, cost }) => {
                               error={!!errors.min_ram}
                               touched={!!touched.min_ram}
                               isRequired
-                              type={'number'}
                               autoComplete="off"
+                              onChange={e => onlyDigitsHandler(e, 'min_ram')}
                             />
                           </div>
                           {isCreate && (

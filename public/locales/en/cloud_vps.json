@@ -237,7 +237,7 @@
   "backups": {
     "create": "Create backup for instance",
     "create_warning": "Instance will not be available while the backup is being processed.",
-    "count":"Number of backups",
+    "count": "Number of backups",
     "backup_rotation": "Backup rotation",
     "value_in_a_range": "The value must be in the range from 1 to 10",
     "limit_value": "Backups created for today",
@@ -323,5 +323,7 @@
   "wednesday": "Wed",
   "thursday": "Thu",
   "friday": "Fri",
-  "saturday": "Sat"
+  "saturday": "Sat",
+  "value_too_large": "The value cannot be greater than {{number}}",
+  "value_too_short": "The value cannot be less than {{number}}"
 }
