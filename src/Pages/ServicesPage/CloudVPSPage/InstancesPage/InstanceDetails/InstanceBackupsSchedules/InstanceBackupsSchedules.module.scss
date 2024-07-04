@@ -15,12 +15,17 @@
 .backup_rotation_btn {
   height: 50px;
   max-height: 50px;
+  padding-left: 15px;
 }
 
 .backup_rotation_wrapper {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+}
+
+.rotation_label {
+  line-height: 120%;
+  margin: 0 0 7px 15px;
 }
 
 .rotation_edit__field_wrapper {
@@ -36,6 +41,7 @@
 
 .rotation_info {
   max-width: 300px;
+  margin-top: 20px;
 
   @media (min-width: 1024px) {
     max-width: unset;
