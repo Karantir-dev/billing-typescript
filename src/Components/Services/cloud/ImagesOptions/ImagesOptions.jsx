@@ -37,6 +37,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
 
   const isProtected = item?.protected?.$orig === 'on' || item?.protected?.$ === 'on'
   const isActive = item.fleio_status?.$.trim().toLowerCase() === 'active' || isSchedules
+  const isSuspended = item.fleio_status?.$.trim().toLowerCase() === 'suspended'
 
   const options = [
     {
@@ -110,7 +111,7 @@ export default function ImagesOptions({ item, pageList, idKey }) {
     {
       label: t('delete'),
       icon: 'Remove',
-      disabled: isProtected || !isActive,
+      disabled: isProtected || (!isActive && !isSuspended),
       onClick: () => {
         dispatch(
           cloudVpsActions.setItemForModals({
