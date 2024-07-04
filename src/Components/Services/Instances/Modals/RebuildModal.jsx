@@ -1,13 +1,11 @@
-/* eslint-disable no-unused-vars */
 import {
   Button,
   InputField,
   Modal,
   ConnectMethod,
-  SoftwareOSBtn,
-  SoftwareOSSelect,
   WarningMessage,
   PageTabBar,
+  OsList,
 } from '@components'
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -15,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useMemo, useReducer, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
-import { generatePassword, getImageIconName, getInstanceMainInfo } from '@utils'
+import { generatePassword, getInstanceMainInfo } from '@utils'
 
 import s from './Modals.module.scss'
 import {
@@ -26,7 +24,7 @@ import {
   IMAGES_TYPES,
 } from '@utils/constants'
 
-const RESCUE_TABS_ORDER = [IMAGES_TYPES.own, IMAGES_TYPES.shared, IMAGES_TYPES.public]
+const RESCUE_TABS_ORDER = [IMAGES_TYPES.public, IMAGES_TYPES.own, IMAGES_TYPES.shared]
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
@@ -54,8 +52,6 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     },
     { zone: IMAGES_TYPES.own },
   )
-
-  const depends = state.zone
 
   const navSections = useMemo(() => {
     const zoneList = data?.slist.find(el => el.$name === 'zone')?.val.map(({ $ }) => $)
@@ -112,58 +108,6 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     )
   }, [])
 
-  const renderSoftwareOSFields = (fieldName, current, depends) => {
-    const changeOSHandler = value => {
-      setState({ passwordType: '' })
-      setState({ [fieldName]: value })
-    }
-
-    let dataArr = data?.slist?.find(el => el.$name === fieldName)?.val
-
-    const elemsData = {}
-    dataArr = dataArr?.filter(el => el.$depend === depends && el.$key !== 'null')
-
-    dataArr?.forEach(element => {
-      const itemName = getImageIconName(element.$name)
-      if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
-        elemsData[itemName] = [element]
-      } else {
-        elemsData[itemName].push(element)
-      }
-    })
-
-    return Object.entries(elemsData).map(([name, el]) => {
-      const iconName = isBootFromIso ? 'iso' : name.toLowerCase()
-      if (el.length > 1) {
-        const optionsList = el.map(({ $key, $ }) => ({
-          value: $key,
-          label: $,
-        }))
-
-        return (
-          <SoftwareOSSelect
-            key={optionsList[0].value}
-            iconName={iconName}
-            itemsList={optionsList}
-            state={current}
-            getElement={item => changeOSHandler(item)}
-          />
-        )
-      } else {
-        return (
-          <SoftwareOSBtn
-            key={el[0].$key}
-            value={el[0].$key}
-            state={current}
-            iconName={iconName}
-            label={el[0].$}
-            onClick={item => changeOSHandler(item)}
-          />
-        )
-      }
-    })
-  }
-
   const validationSchema = Yup.object().shape({
     password:
       ((!isRebuild &&
@@ -209,6 +153,11 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     setState({ ssh_keys: allSshList?.[0]?.fleio_key_uuid.$ })
   }, [allSshList])
 
+  const changeOSHandler = value => {
+    setState({ passwordType: '' })
+    setState({ [select]: value })
+  }
+
   return (
     <Modal isOpen={!!item && !!data} closeModal={closeModal} className={s.rebuild_modal}>
       <Modal.Header>
@@ -248,6 +197,14 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
           }}
         >
           {({ values, errors, touched }) => {
+            const allImages = data?.slist?.find(el => el.$name === select)?.val
+
+            const osListToRender = useMemo(
+              () =>
+                allImages?.filter(el => el.$depend === state.zone && el.$key !== 'null'),
+              [state.zone],
+            )
+
             return (
               <Form id={'rebuild'}>
                 <div className={s.body}>
@@ -265,7 +222,11 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
 
                   <div>
                     <div className={s.rebuild__os_list}>
-                      {renderSoftwareOSFields(select, values[select], depends)}
+                      <OsList
+                        value={values[select]}
+                        list={osListToRender}
+                        onOSchange={changeOSHandler}
+                      />
                     </div>
 
                     {isWindowsOS && (
