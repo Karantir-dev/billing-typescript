@@ -322,5 +322,7 @@
   "wednesday": "Ср",
   "thursday": "Чт",
   "friday": "Пт",
-  "saturday": "Сб"
+  "saturday": "Сб",
+  "value_too_large": "Значение не может быть больше {{number}}",
+  "value_too_short": "Значение не может быть меньше {{number}}"
 }

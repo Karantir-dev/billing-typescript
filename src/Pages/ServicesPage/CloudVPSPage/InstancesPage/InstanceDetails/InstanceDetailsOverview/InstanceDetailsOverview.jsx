@@ -79,7 +79,9 @@ export default function InstanceDetailsOverview() {
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Created at')}</p>
                 {instanceInfo?.createdate && (
-                  <p className={s.item_info}>{instanceInfo.createdate}</p>
+                  <p className={s.item_info}>
+                    {instanceInfo.createdate} {instanceInfo.opentime}
+                  </p>
                 )}
               </div>
               {/* Region Block */}

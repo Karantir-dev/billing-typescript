@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useReducer } from 'react'
+import { useEffect, useState, useReducer } from 'react'
 import cn from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -38,7 +38,12 @@ import {
 import * as Yup from 'yup'
 import s from './Cart.module.scss'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
-import { replaceAllFn, useFormFraudCheckData, roundToDecimal } from '@utils'
+import {
+  useFormFraudCheckData,
+  roundToDecimal,
+  sortPaymethodList,
+  parsePaymentInfo,
+} from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 export default function Component() {
@@ -49,8 +54,6 @@ export default function Component() {
   const [state, setState] = useReducer((state, action) => {
     return { ...state, ...action }
   }, {})
-
-  const dropdownSale = useRef(null)
 
   const { t } = useTranslation([
     'cart',
@@ -83,7 +86,9 @@ export default function Component() {
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
-    setPaymentsMethodList(data)
+    const sortedList = sortPaymethodList(data)
+
+    setPaymentsMethodList(sortedList)
     setState({ paymentListLoaded: true })
   }
 
@@ -1014,7 +1019,7 @@ export default function Component() {
                 cnp: payersData.state?.cnp || payersData.selectedPayerFields?.cnp || '',
                 [OFFER_FIELD]: state.isPolicyChecked || false,
 
-                selectedPayMethod: state.selectedPayMethod || undefined,
+                selectedPayMethod: state.selectedPayMethod || paymentsMethodList?.[0],
                 promocode: state.promocode || '',
                 isPersonalBalance:
                   state.selectedPayMethod?.name?.$?.includes('balance') &&
@@ -1044,28 +1049,6 @@ export default function Component() {
                   }
                 }, [state.cartData?.total_sum, paymentsMethodList])
 
-                const parsePaymentInfo = text => {
-                  const splittedText = text?.split('<p>')
-                  if (splittedText?.length > 0) {
-                    const minAmount = splittedText[0]
-                      ?.replace('\n', '')
-                      .replace(/&nbsp;/g, ' ')
-
-                    let infoText = ''
-
-                    if (splittedText[1]) {
-                      let replacedText = splittedText[1]
-                        ?.replace('<p>', '')
-                        ?.replace('</p>', '')
-                        ?.replace('<strong>', '')
-                        ?.replace('</strong>', '')
-
-                      infoText = replaceAllFn(replacedText, '\n', '')
-                    }
-                    return { minAmount, infoText }
-                  }
-                }
-
                 const parsedText =
                   values?.selectedPayMethod &&
                   parsePaymentInfo(values?.selectedPayMethod?.desc?.$)
@@ -1091,6 +1074,17 @@ export default function Component() {
 
                 const setAdditionalPayMethodts = value =>
                   setState({ additionalPayMethodts: value })
+
+                useEffect(() => {
+                  dispatch(
+                    cartOperations.getPayMethodItem(
+                      {
+                        paymethod: paymentsMethodList[0]?.paymethod?.$,
+                      },
+                      setAdditionalPayMethodts,
+                    ),
+                  )
+                }, [paymentsMethodList])
 
                 return (
                   <Form className={s.form}>
@@ -1308,7 +1302,14 @@ export default function Component() {
                         >
                           <div>
                             <span>
-                              {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                              {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}{' '}
+                              {parsedText?.commission && (
+                                <strong>
+                                  {t(`Commission ${parsedText?.commission}`, {
+                                    ns: 'cart',
+                                  })}
+                                </strong>
+                              )}
                             </span>
                             {parsedText?.infoText && (
                               <p>
@@ -1370,18 +1371,19 @@ export default function Component() {
                     )}
                     <div className={s.padding}>
                       <div className={s.totalSum}>
-                        <span>
+                        <span className={s.price_row}>
                           {state.cartData?.full_discount &&
                           Number(state.cartData?.full_discount) !== 0 ? (
                             <>
                               {t('Saving')}:{' '}
                               <b>{roundToDecimal(state.cartData?.full_discount)} EUR</b>
-                              <button type="button" className={s.infoBtn}>
+                              <TooltipWrapper
+                                className={s.InfoBtn}
+                                wrapperClassName={s.infoBtnCard}
+                                content={renderActiveDiscounts()}
+                              >
                                 <Icon name="Info" />
-                                <div ref={dropdownSale} className={s.descriptionBlock}>
-                                  {renderActiveDiscounts()}
-                                </div>
-                              </button>
+                              </TooltipWrapper>
                             </>
                           ) : null}
                         </span>

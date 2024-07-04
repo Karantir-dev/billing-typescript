@@ -40,6 +40,7 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
+  align-items: flex-start;
 }
 
 .page_title {
@@ -101,7 +102,8 @@
   }
   &.stopped,
   &.deletion_in_progress,
-  &.suspended {
+  &.suspended,
+  &.error {
     background-color: #fa6848;
   }
 }
@@ -130,9 +132,6 @@
   }
   .head_coponent {
     margin-bottom: 32px;
-  }
-  .page_title_container {
-    align-items: flex-start;
   }
 }
 

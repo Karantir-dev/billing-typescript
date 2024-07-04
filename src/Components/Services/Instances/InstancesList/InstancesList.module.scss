@@ -227,7 +227,8 @@
   }
   &.stopped,
   &.deletion_in_progress,
-  &.suspended {
+  &.suspended,
+  &.error {
     background-color: #fa6848;
   }
 }

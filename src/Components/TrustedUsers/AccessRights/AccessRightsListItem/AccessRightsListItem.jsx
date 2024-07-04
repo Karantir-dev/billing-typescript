@@ -260,6 +260,8 @@ export default function AccessRightsListItem({
         return <Icon name="Home" />
       case 'reselling':
         return <Icon name="Money" />
+      case 'cloud':
+        return <Icon name="Cloud" />
       default:
         return null
     }

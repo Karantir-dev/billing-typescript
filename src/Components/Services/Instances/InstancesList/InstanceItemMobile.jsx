@@ -104,9 +104,9 @@ export default function InstanceItemMobile({ item }) {
         <p className={s.mobile_item__value}>
           {item?.datacentername && (
             <img
-              src={require(`@images/countryFlags/${getFlagFromCountryName(
-                itemCountry,
-              )}.png`)}
+              src={require(
+                `@images/countryFlags/${getFlagFromCountryName(itemCountry)}.png`,
+              )}
               width={20}
               height={14}
               alt={itemCountry}

@@ -324,5 +324,7 @@
   "wednesday": "Wed",
   "thursday": "Thu",
   "friday": "Fri",
-  "saturday": "Sat"
+  "saturday": "Sat",
+  "value_too_large": "The value cannot be greater than {{number}}",
+  "value_too_short": "The value cannot be less than {{number}}"
 }

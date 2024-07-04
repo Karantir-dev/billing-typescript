@@ -3,7 +3,7 @@ import s from './InstanceBackupsSchedules.module.scss'
 import { useCallback, useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsActions, cloudVpsOperations } from '@redux'
-import { useCancelRequest } from '@utils'
+import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import { Button, ImagesList, Loader, EditCell } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
@@ -27,6 +27,7 @@ export default function InstanceBackupsSchedules() {
   const { t } = useTranslation(['cloud_vps'])
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
+  const { isErrorStatus } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
   const [backupRotation, setBackupRotation] = useState()
@@ -158,14 +159,16 @@ export default function InstanceBackupsSchedules() {
               }),
             )
           }}
+          disabled={isErrorStatus}
         />
 
         <div className={s.backup_rotation_wrapper}>
-          <p>{t('backup.backup_rotation')}:</p>
+          <p className={s.rotation_label}>{t('backup.backup_rotation')}:</p>
           <div className={s.rotation_edit__field_wrapper}>
             <EditCell
               originName={backupRotation}
               className={s.backup_rotation_select}
+              initBtnClassName={s.backup_rotation_btn}
               onSubmit={handleEditSubmit}
               validateOnChange={handleEditChange}
               placeholder={backupRotation}

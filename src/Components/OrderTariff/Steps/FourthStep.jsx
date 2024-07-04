@@ -23,7 +23,12 @@ import {
   InputField,
   Select,
 } from '@components'
-import { replaceAllFn, roundToDecimal, useFormFraudCheckData } from '@utils'
+import {
+  roundToDecimal,
+  useFormFraudCheckData,
+  sortPaymethodList,
+  parsePaymentInfo,
+} from '@utils'
 import { PRIVACY_URL, OFERTA_URL } from '@config/config'
 import * as Yup from 'yup'
 import * as route from '@src/routes'
@@ -65,7 +70,13 @@ export default function FourthStep({
   const userInfo = useSelector(userSelectors.getUserInfo)
 
   const paymentListhandler = data => {
-    setState({ paymentListLoaded: true, paymentsMethodList: data })
+    const sortedList = sortPaymethodList(data)
+
+    setState({
+      paymentListLoaded: true,
+      paymentsMethodList: sortedList,
+      selectedPayMethod: state.selectedPayMethod || sortedList?.[0],
+    })
   }
 
   const setCartData = value => setState({ cartData: value })
@@ -110,7 +121,10 @@ export default function FourthStep({
 
   useEffect(() => {
     if (state.additionalPayMethodts && state.additionalPayMethodts?.length > 0) {
-      setState({ selectedAddPaymentMethod: state.additionalPayMethodts[0]?.$key })
+      setState({
+        selectedAddPaymentMethod:
+          state.selectedAddPaymentMethod || state.additionalPayMethodts[0]?.$key,
+      })
     }
   }, [state.additionalPayMethodts])
 
@@ -247,6 +261,7 @@ export default function FourthStep({
         }),
       )
     }
+
     dispatch(cartOperations.setPaymentMethods(data, navigate, cart, fraudData))
   }
 
@@ -360,6 +375,19 @@ export default function FourthStep({
 
   const setAdditionalPayMethodts = value => setState({ additionalPayMethodts: value })
 
+  useEffect(() => {
+    dispatch(
+      cartOperations.getPayMethodItem(
+        {
+          paymethod:
+            state.selectedPayMethod?.paymethod?.$ ||
+            state.paymentsMethodList?.[0]?.paymethod?.$,
+        },
+        setAdditionalPayMethodts,
+      ),
+    )
+  }, [state.paymentsMethodList])
+
   const renderPhoneList = paymethod => {
     if (paymethod === 'qiwi') {
       return QIWI_PHONE_COUNTRIES
@@ -377,7 +405,7 @@ export default function FourthStep({
         enableReinitialize
         validationSchema={validationSchema}
         initialValues={{
-          selectedPayMethod: state.selectedPayMethod || undefined,
+          selectedPayMethod: state.selectedPayMethod || state.paymentsMethodList?.[0],
           promocode: state.promocode,
           isPersonalBalance:
             state.selectedPayMethod?.name?.$?.includes('balance') &&
@@ -408,25 +436,6 @@ export default function FourthStep({
             }
           }, [state.cartData?.total_sum, state.paymentsMethodList])
 
-          const parsePaymentInfo = text => {
-            const splittedText = text?.split('<p>')
-            if (splittedText?.length > 0) {
-              const minAmount = splittedText[0]?.replace('\n', '').replace(/&nbsp;/g, ' ')
-
-              let infoText = ''
-
-              if (splittedText[1]) {
-                let replacedText = splittedText[1]
-                  ?.replace('<p>', '')
-                  ?.replace('</p>', '')
-                  ?.replace('<strong>', '')
-                  ?.replace('</strong>', '')
-
-                infoText = replaceAllFn(replacedText, '\n', '')
-              }
-              return { minAmount, infoText }
-            }
-          }
           const parsedText =
             values?.selectedPayMethod &&
             parsePaymentInfo(values?.selectedPayMethod?.desc?.$)
@@ -625,7 +634,14 @@ export default function FourthStep({
                       >
                         <div>
                           <span>
-                            {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                            {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}{' '}
+                            {parsedText?.commission && (
+                              <strong>
+                                {t(`Commission ${parsedText?.commission}`, {
+                                  ns: 'cart',
+                                })}
+                              </strong>
+                            )}
                           </span>
                           {parsedText?.infoText && (
                             <p>{t(`${parsedText?.infoText?.trim()}`, { ns: 'cart' })}</p>

@@ -3,7 +3,7 @@ import s from './InstanceSnapshots.module.scss'
 import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions } from '@redux'
-import { useCancelRequest } from '@utils'
+import { getInstanceMainInfo, useCancelRequest } from '@utils'
 import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import { Button, ImagesList, Loader, WarningMessage, Filter } from '@components'
 import { ImagesModals } from '@src/Components/Services/Instances/ImagesModals/ImagesModals'
@@ -44,6 +44,7 @@ export default function InstanceSnapshots() {
   const navigate = useNavigate()
 
   const { item, fetchItemById } = useCloudInstanceItemContext()
+  const { isErrorStatus } = getInstanceMainInfo(item)
 
   const [data, setData] = useState()
   const [dailyCosts, setDailyCosts] = useState({})
@@ -136,7 +137,7 @@ export default function InstanceSnapshots() {
                 }),
               )
             }}
-            disabled={createdToday >= 5}
+            disabled={createdToday >= 5 || isErrorStatus}
           />
           <Filter
             fields={FILTER_FIELDS}
