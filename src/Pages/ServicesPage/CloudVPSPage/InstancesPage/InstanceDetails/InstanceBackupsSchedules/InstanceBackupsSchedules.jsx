@@ -161,11 +161,12 @@ export default function InstanceBackupsSchedules() {
         />
 
         <div className={s.backup_rotation_wrapper}>
-          <p>{t('backups.backup_rotation')}:</p>
+          <p className={s.rotation_label}>{t('backups.backup_rotation')}:</p>
           <div className={s.rotation_edit__field_wrapper}>
             <EditCell
               originName={backupRotation}
               className={s.backup_rotation_select}
+              initBtnClassName={s.backup_rotation_btn}
               onSubmit={handleEditSubmit}
               validateOnChange={handleEditChange}
               placeholder={backupRotation}
@@ -175,6 +176,7 @@ export default function InstanceBackupsSchedules() {
               <p className={s.rotation_error}>{t(rotationFieldError)}</p>
             )}
           </div>
+
           <p className={s.rotation_info}>{t('backups.rotation_info')}</p>
         </div>
 
