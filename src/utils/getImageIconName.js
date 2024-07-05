@@ -28,6 +28,20 @@ const EXIST_OS_ICON = [
   'windows',
   'wireguard',
   'zabbix',
+  'altlinux',
+  'arch',
+  'cirros',
+  'dos',
+  'gnome',
+  'mageia',
+  'macos',
+  'mandrake',
+  'netbsd',
+  'opensuse',
+  'rhel',
+  'rhl',
+  'solaris',
+  'suse',
 ]
 
 export default function getImageIconName(distro, isDarkTheme) {
