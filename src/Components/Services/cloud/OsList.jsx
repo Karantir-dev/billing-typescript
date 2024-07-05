@@ -6,7 +6,6 @@ export default function OsList({ value, list, onOSchange }) {
   const elemsData = {}
 
   list?.forEach(element => {
-    console.log(element.$)
     const itemName = getImageIconName(element.$)
 
     if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
@@ -15,7 +14,7 @@ export default function OsList({ value, list, onOSchange }) {
       elemsData[itemName].push({ ...element })
     }
   })
-  console.log(elemsData)
+
   return Object.entries(elemsData).map(([name, osArr]) => {
     if (osArr.length > 1) {
       const optionsList = osArr.map(item => {
