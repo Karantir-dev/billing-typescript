@@ -7,7 +7,6 @@ import { useOutsideAlerter, getImageIconName } from '@utils'
 
 import s from './SoftwareOSSelect.module.scss'
 import ss from '../../../ui/Select/Select.module.scss'
-import { SOFTWARE_ICONS_LIST } from '@utils/constants'
 
 export default function SoftwareOSSelect({
   iconName,
@@ -32,16 +31,10 @@ export default function SoftwareOSSelect({
     setIsOpened(false)
   }
 
-  const inList = SOFTWARE_ICONS_LIST?.includes(iconName)
-
   const osIcon = getImageIconName(iconName, darkTheme)
 
   const renderImg = () => {
-    if (inList) {
-      return require(`@images/soft_os_icons/${osIcon}.png`)
-    }
-
-    return require(`@images/soft_os_icons/linux-logo${darkTheme ? '_dt' : ''}.png`)
+    return require(`@images/soft_os_icons/${osIcon}.png`)
   }
 
   return (

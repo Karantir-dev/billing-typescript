@@ -25,38 +25,6 @@ export const ADDRESS_SPECIAL_CHARACTERS_REGEX = /^[^!$%^&\]~}[{=?<>+]+$/g
 
 export const CNP_REGEX = /^\d{13}$/
 
-export const SOFTWARE_ICONS_LIST = [
-  'almalinux',
-  'bitrix',
-  'centos',
-  'debian',
-  'django',
-  'fedora',
-  'freebsd',
-  'hestiacp',
-  'ispmanager',
-  'lamp',
-  'lemp',
-  'null',
-  'openvpn',
-  'redmine',
-  'teamspeak',
-  'tomcat',
-  'ubuntu',
-  'vestacp',
-  'vmmanager',
-  'windows',
-  'rocky',
-  'oracle',
-  'nagios',
-  'wireguard',
-  'zabbix',
-  'chrome',
-  'astralinux',
-  'proxmox',
-  'iso',
-]
-
 // phone countries for yookassa payment method (QIWI)
 export const QIWI_PHONE_COUNTRIES = [
   'am',

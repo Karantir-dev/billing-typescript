@@ -1,12 +1,10 @@
 import cn from 'classnames'
-
 import { useSelector } from 'react-redux'
 import { selectors } from '@redux'
-
-import { SOFTWARE_ICONS_LIST } from '@utils/constants'
-import s from './SoftwareOSBtn.module.scss'
 import { getImageIconName } from '@utils'
 import { Icon } from '@components'
+
+import s from './SoftwareOSBtn.module.scss'
 
 export default function SoftwareOSBtn({
   iconName,
@@ -23,21 +21,15 @@ export default function SoftwareOSBtn({
     iconName === 'alma'
       ? 'almalinux'
       : iconName === 'astra'
-      ? 'astralinux'
-      : iconName === 'noos'
-      ? 'null'
-      : iconName
-
-  const inList = SOFTWARE_ICONS_LIST?.includes(icon)
+        ? 'astralinux'
+        : iconName === 'noos'
+          ? 'null'
+          : iconName
 
   const osIcon = getImageIconName(icon, darkTheme)
 
   const renderImg = () => {
-    if (inList) {
-      return require(`@images/soft_os_icons/${osIcon}.png`)
-    }
-
-    return require(`@images/soft_os_icons/linux-logo${darkTheme ? '_dt' : ''}.png`)
+    return require(`@images/soft_os_icons/${osIcon}.png`)
   }
 
   return (
