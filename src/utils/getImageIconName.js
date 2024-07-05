@@ -42,10 +42,17 @@ const EXIST_OS_ICON = [
   'rhl',
   'solaris',
   'suse',
+  'iso',
 ]
 
 export default function getImageIconName(distro, isDarkTheme) {
   const icon = distro?.match(/^(.+?)(?=-|\s|$)/g)?.[0]?.toLowerCase()
 
-  return EXIST_OS_ICON.includes(icon) ? (isDarkTheme ? `${icon}_dt` : icon) : ''
+  return EXIST_OS_ICON.includes(icon)
+    ? isDarkTheme
+      ? `${icon}_dt`
+      : icon
+    : isDarkTheme
+      ? 'linux-logo_dt'
+      : 'linux-logo'
 }
