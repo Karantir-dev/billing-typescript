@@ -24,7 +24,7 @@ import {
 import s from './LoginForm.module.scss'
 import cn from 'classnames'
 
-export default function LoginForm({ geoCountryId }) {
+export default function LoginForm({ geoCountryId }: { geoCountryId: String }) {
   const { t } = useTranslation('auth')
   const dispatch = useDispatch()
   const location = useLocation()

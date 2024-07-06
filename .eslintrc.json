@@ -8,10 +8,16 @@
     "plugin:react-hooks/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
-
     "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["@typescript-eslint", "react", "import", "jsx-a11y", "jest", "auto-import"],
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "import",
+    "jsx-a11y",
+    "jest"
+    //  "auto-import"
+  ],
   "rules": {
     "no-unused-vars": ["error", { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }],
     "import/no-duplicates": ["error", { "considerQueryString": true }],
@@ -64,7 +70,7 @@
           ["@src", "./src"],
           ["@scss", "./scss"]
         ],
-        "extensions": [".ts", ".js", ".jsx", ".json"]
+        "extensions": [".ts", ".js", ".jsx", ".tsx", ".json"]
       }
     }
   },
