@@ -11,6 +11,22 @@
   margin-bottom: 15px;
 }
 
+.ftp_img {
+  display: block;
+  margin: 0 auto 20px;
+  filter: grayscale(1);
+}
+
+.comment {
+  font-size: 16px;
+  text-align: center;
+}
+
+.noMore_ftp {
+  display: grid;
+  align-items: center;
+}
+
 //tariffs
 
 .tarifs_block {
@@ -263,6 +279,10 @@
 // ADAPTIVE
 
 @media screen and (min-width: 768px) {
+  .comment {
+    font-size: 18px;
+  }
+
   .terms_block {
     margin-top: 0px;
   }

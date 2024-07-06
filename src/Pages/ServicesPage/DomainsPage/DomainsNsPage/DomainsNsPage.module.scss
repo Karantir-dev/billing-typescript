@@ -19,12 +19,14 @@
 }
 
 .hintWrapper {
-  min-width: 300px;
+  max-width: 300px;
   font-style: normal;
   font-weight: 300;
   font-size: 16px;
   line-height: 130%;
   color: var(--main-text);
+  position: relative;
+  z-index: 3;
 }
 
 .pagination {

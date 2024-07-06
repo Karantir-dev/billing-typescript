@@ -1,0 +1,6 @@
+export { CreateSnapshotOrBackupModal } from '../ImagesModals/CreateSnapshotOrBackupModal'
+export { CreateEditBackupsSchedules } from '../ImagesModals/CreateEditBackupsSchedules'
+export { CopyModal } from '../ImagesModals/CopyModal'
+export { CreateEditImageModal } from './CreateEditImageModal'
+export { DeleteModal } from './DeleteModal'
+export { RestoreModal } from './RestoreModal'

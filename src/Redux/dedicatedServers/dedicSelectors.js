@@ -4,6 +4,7 @@ const getDedicCount = state => state.dedic.dedicCount
 const getVDSCount = state => state.dedic.vdsCount
 const getVDSList = state => state.dedic.VDSList
 const getVDSServersList = state => state.dedic.VDSServersList
+const getIsVdsXLOrdered = state => state.dedic.isVdsXLOrdered
 
 export default {
   getTafifList,
@@ -12,4 +13,5 @@ export default {
   getVDSList,
   getVDSServersList,
   getVDSCount,
+  getIsVdsXLOrdered,
 }

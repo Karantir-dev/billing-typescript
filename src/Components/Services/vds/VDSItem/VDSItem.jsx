@@ -1,12 +1,12 @@
 import cn from 'classnames'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, HintWrapper, ServerState, EditCell, Options } from '@components'
+import { CheckBox, TooltipWrapper, ServerState, EditCell, Options } from '@components'
 import PropTypes from 'prop-types'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
 import s from './VDSItem.module.scss'
-import { isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function VDSItem({
   server,
@@ -24,7 +24,6 @@ export default function VDSItem({
   handleEditSubmit,
   isDedic,
   unpaidItems,
-  orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -32,6 +31,7 @@ export default function VDSItem({
   const [originName, setOriginName] = useState('')
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   useEffect(() => {
     if (server?.server_name?.$) {
@@ -62,11 +62,6 @@ export default function VDSItem({
   const options = [
     deleteOption,
     {
-      label: t('clone_tariff'),
-      icon: 'Copy',
-      onClick: orderSameTariff,
-    },
-    {
       label: t('instruction'),
       icon: 'Info',
       disabled:
@@ -87,6 +82,7 @@ export default function VDSItem({
       icon: 'Clock',
       disabled:
         (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+        server?.status?.$ === '5' ||
         server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
         !rights?.prolong ||
         server?.pricelist?.$?.toLowerCase()?.includes('ddos'),
@@ -131,6 +127,7 @@ export default function VDSItem({
         (server?.status?.$ !== '3' && server?.status?.$ !== '2') || !rights?.history,
       onClick: () => handleToolBtnClick(setIdForHistory),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',
@@ -169,13 +166,13 @@ export default function VDSItem({
         <span className={cn(s.value, { [s.dedic]: isDedic })}>{server?.id?.$}</span>
         <span className={cn(s.value, { [s.dedic]: isDedic })}>
           {server?.domain?.$ ? (
-            <HintWrapper
-              popupClassName={s.HintWrapper}
-              label={server?.domain?.$}
+            <TooltipWrapper
+              disabled={server?.domain?.$.length < 15}
+              content={server?.domain?.$}
               wrapperClassName={cn(s.hint)}
             >
               <span>{server?.domain?.$}</span>
-            </HintWrapper>
+            </TooltipWrapper>
           ) : null}
         </span>
         <span className={cn(s.value, { [s.dedic]: isDedic })}>{server?.ip?.$}</span>

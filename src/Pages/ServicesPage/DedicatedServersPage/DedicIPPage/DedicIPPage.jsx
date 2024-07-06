@@ -3,7 +3,7 @@ import cn from 'classnames'
 import {
   BreadCrumbs,
   Button,
-  HintWrapper,
+  TooltipWrapper,
   IconButton,
   DedicIPOrder,
   DedicIPList,
@@ -85,17 +85,17 @@ export default function DedicIPpage() {
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
             >
-              <HintWrapper
+              <TooltipWrapper
                 wrapperClassName={s.hint_wrapper}
-                popupClassName={s.popup_text}
-                label={t('limit_ip', { ns: 'dedicated_servers' })}
+                className={s.popup_text}
+                content={t('limit_ip', { ns: 'dedicated_servers' })}
               >
                 <Icon
                   name="Attention"
                   isHovered={hovered}
                   className={cn({ [s.attention_icon]: true, [s.hovered]: hovered })}
                 />
-              </HintWrapper>
+              </TooltipWrapper>
             </div>
           )}
         </h3>
@@ -104,16 +104,16 @@ export default function DedicIPpage() {
           {widerThan1550 && (
             <div className={s.icons_wrapper}>
               <div className={s.icon_wrapper}>
-                <HintWrapper label={t('edit', { ns: 'other' })}>
+                <TooltipWrapper content={t('edit', { ns: 'other' })}>
                   <IconButton
                     className={s.tools_icon}
                     onClick={() => setElidForEditModal(activeIP?.id?.$)}
                     disabled={!activeIP || !rights?.edit}
                     icon="edit"
                   />
-                </HintWrapper>
+                </TooltipWrapper>
               </div>
-              <HintWrapper label={t('delete', { ns: 'other' })}>
+              <TooltipWrapper content={t('delete', { ns: 'other' })}>
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setElidForDeleteModal(activeIP?.id?.$)}
@@ -122,7 +122,7 @@ export default function DedicIPpage() {
                   }
                   icon="delete"
                 />
-              </HintWrapper>
+              </TooltipWrapper>
             </div>
           )}
 

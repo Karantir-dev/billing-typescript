@@ -94,6 +94,16 @@ const CloudVpsSSHKeysPage = lazy(() =>
     /* webpackChunkName: "CloudVpsSSHKeysPage" */ '@pages/ServicesPage/CloudVPSPage/SSHKeysPage/SSHKeysPage'
   ),
 )
+const CloudVpsImagesPage = lazy(() =>
+  import(
+    /* webpackChunkName: "CloudVpsImagesPage" */ '@pages/ServicesPage/CloudVPSPage/ImagesPage/ImagesPage'
+  ),
+)
+const CloudVpsImageDetailesPage = lazy(() =>
+  import(
+    /* webpackChunkName: "CloudVpsImageDetailesPage" */ '@pages/ServicesPage/CloudVPSPage/ImagesPage/ImageDetailsPage/ImageDetailsPage'
+  ),
+)
 const CloudInstanceItemPage = lazy(() =>
   import(
     /* webpackChunkName: "CloudInstanceItemPage" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/CloudInstanceItemPage/CloudInstanceItemPage'
@@ -103,6 +113,32 @@ const CloudInstanceItemPage = lazy(() =>
 const InstanceDetailsOverview = lazy(() =>
   import(
     /* webpackChunkName: "InstanceDetailsOverview" */ '@src/Pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceDetailsOverview/InstanceDetailsOverview'
+  ),
+)
+const InstanceMetrics = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceMetrics" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceMetrics/InstanceMetrics'
+  ),
+)
+const InstanceNetworkTraffic = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceNetworkTraffic" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceNetworkTraffic/InstanceNetworkTraffic'
+  ),
+)
+const InstanceSnapshots = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceSnapshots" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceSnapshots/InstanceSnapshots'
+  ),
+)
+const InstanceBackups = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceBackups" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceBackups/InstanceBackups'
+  ),
+)
+
+const InstanceBackupsSchedules = lazy(() =>
+  import(
+    /* webpackChunkName: "InstanceBackupsSchedules" */ '@pages/ServicesPage/CloudVPSPage/InstancesPage/InstanceDetails/InstanceBackupsSchedules/InstanceBackupsSchedules'
   ),
 )
 
@@ -216,6 +252,7 @@ const ShellСomponent = props => {
     'container',
     'vds',
     'crumbs',
+    'cloud_vps',
     'virtual_hosting',
     'domains',
     'dedicated_servers',
@@ -503,6 +540,31 @@ export const CloudVPSSSHKeysPageLazy = () => {
     </ShellСomponent>
   )
 }
+export const CloudVPSImagesPageLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.images', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <CloudVpsImagesPage />
+    </ShellСomponent>
+  )
+}
+
+export const CloudVpsImageDetailesPageLazy = ({ pageList }) => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'burger_menu.services.services_list.images', ns: 'container' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <CloudVpsImageDetailesPage pageList={pageList} />
+    </ShellСomponent>
+  )
+}
 export const CloudInstanceItemPageLazy = () => {
   const title = [
     { value: 'aside_menu.services', ns: 'container' },
@@ -525,6 +587,68 @@ export const InstanceDetailsOverviewLazy = () => {
   return (
     <ShellСomponent title={title}>
       <InstanceDetailsOverview />
+    </ShellСomponent>
+  )
+}
+export const InstanceMetricsLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'metrics', ns: 'crumbs' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceMetrics />
+    </ShellСomponent>
+  )
+}
+export const InstanceNetworkTrafficLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'network_traffic', ns: 'crumbs' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceNetworkTraffic />
+    </ShellСomponent>
+  )
+}
+export const InstanceSnapshotsLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'snaphots', ns: 'crumbs' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceSnapshots />
+    </ShellСomponent>
+  )
+}
+
+export const InstanceBackupsLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'backups', ns: 'crumbs' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceBackups />
+    </ShellСomponent>
+  )
+}
+
+export const InstanceBackupsSchedulesLazy = () => {
+  const title = [
+    { value: 'aside_menu.services', ns: 'container' },
+    { value: 'backup_schedules', ns: 'crumbs' },
+  ]
+
+  return (
+    <ShellСomponent title={title}>
+      <InstanceBackupsSchedules />
     </ShellСomponent>
   )
 }

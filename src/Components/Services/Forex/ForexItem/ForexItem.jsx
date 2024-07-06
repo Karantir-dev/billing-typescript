@@ -5,7 +5,7 @@ import cn from 'classnames'
 import s from './ForexItem.module.scss'
 
 import { CheckBox, EditCell, ServerState, Options } from '@components'
-import { isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function ForexItem({
   server,
@@ -50,6 +50,7 @@ export default function ForexItem({
     fn()
   }
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   useEffect(() => {
     setServerName(server?.server_name?.$ || '')
@@ -66,13 +67,15 @@ export default function ForexItem({
     {
       label: t('prolong'),
       icon: 'Clock',
-      disabled: server?.status?.$ === '1' || !pageRights?.prolong,
+      disabled:
+        server?.status?.$ === '1' || server?.status?.$ === '5' || !pageRights?.prolong,
       onClick: () => handleToolBtnClick(setElidForProlongModal),
     },
     {
       label: t('edit', { ns: 'other' }),
       icon: 'Edit',
-      disabled: !pageRights?.edit || server?.status?.$ === '1',
+      disabled:
+        !pageRights?.edit || server?.status?.$ === '1' || server?.status?.$ === '5',
       onClick: () => handleToolBtnClick(setElidForEditModal),
     },
     {
@@ -81,6 +84,7 @@ export default function ForexItem({
       disabled: !pageRights?.history || server?.status?.$ === '1',
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',

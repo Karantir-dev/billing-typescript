@@ -1,0 +1,13 @@
+.hint.default_theme {
+  background: var(--hint-background);
+  color: var(--main-text);
+  z-index: 10;
+  opacity: 1;
+  font-size: 100%;
+}
+
+@media (max-width: 767px) {
+  .hint {
+    width: fit-content !important;
+  }
+}

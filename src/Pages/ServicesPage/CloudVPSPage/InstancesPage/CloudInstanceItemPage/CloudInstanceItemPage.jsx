@@ -1,9 +1,17 @@
-import { BreadCrumbs, HintWrapper, Icon, Loader, InstancesOptions } from '@components'
+import {
+  BreadCrumbs,
+  TooltipWrapper,
+  Icon,
+  Loader,
+  InstancesOptions,
+  PageTabBar,
+} from '@components'
+import { CloudInstanceItemProvider } from './CloudInstanceItemContext'
 import { useLocation, useParams, Outlet, useNavigate } from 'react-router-dom'
-import { cloudVpsActions, cloudVpsOperations } from '@redux'
+import { cloudVpsActions, cloudVpsOperations, selectors } from '@redux'
 
-import { useDispatch } from 'react-redux'
-import { getInstanceMainInfo, useCancelRequest } from '@src/utils'
+import { useDispatch, useSelector } from 'react-redux'
+import { getInstanceMainInfo, useCancelRequest, getImageIconName } from '@src/utils'
 import { Modals } from '@components/Services/Instances/Modals/Modals'
 
 import s from './CloudInstanceItemPage.module.scss'
@@ -20,20 +28,20 @@ export default function CloudInstanceItemPage() {
   const params = useParams()
   const dispatch = useDispatch()
   const interval = useRef()
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const { state: instanceItem } = location
   const navigate = useNavigate()
   const widerThan768 = useMediaQuery({ query: '(min-width: 768px)' })
-
   const [item, setItem] = useState(instanceItem)
 
-  const { isResized, displayStatus } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, isSuspended } = getInstanceMainInfo(item)
 
-  const { t } = useTranslation(['cloud_vps'])
+  const { t } = useTranslation(['cloud_vps', 'crumbs'])
 
   const setItemData = ([item]) => {
     setItem(item)
-    navigate(`${route.CLOUD_VPS}/${params.id}`, { state: item })
+    navigate(location.pathname, { replace: true, state: item })
   }
 
   const fetchItemById = () => {
@@ -48,6 +56,8 @@ export default function CloudInstanceItemPage() {
               setIsLoading,
             }),
           ),
+        signal,
+        setIsLoading,
       }),
     )
   }
@@ -77,7 +87,7 @@ export default function CloudInstanceItemPage() {
     return () => {
       clearInterval(interval.current)
     }
-  }, [item])
+  }, [item, location])
 
   if (!item) {
     return <Loader local shown halfScreen />
@@ -91,36 +101,64 @@ export default function CloudInstanceItemPage() {
     return pathnames
   }
 
-  // const tavBarSections = [
-  //   {
-  //     route: `${route.CLOUD_VPS}/${params.id}`,
-  //     label: 'Info',
-  //     allowToRender: true,
-  //     replace: true,
-  //     end: true,
-  //   },
-  // {
-  //   route: `${route.CLOUD_VPS}/${params.id}/networking`,
-  //   label: 'Networking',
-  //   allowToRender: true,
-  //   replace: true,
-  //   end: true,
-  // },
-  // {
-  //   route: `${route.CLOUD_VPS}/${params.id}/system_log`,
-  //   label: 'System log',
-  //   allowToRender: true,
-  //   replace: true,
-  //   end: true,
-  // },
-  // {
-  //   route: `${route.CLOUD_VPS}/${params.id}/metrics`,
-  //   label: 'Metrics',
-  //   allowToRender: true,
-  //   replace: true,
-  //   end: true,
-  // },
-  // ]
+  const tabBarSections = [
+    {
+      route: `${route.CLOUD_VPS}/${params.id}`,
+      label: t('info'),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+    // {
+    //   route: `${route.CLOUD_VPS}/${params.id}/networking`,
+    //   label: 'Networking',
+    //   allowToRender: true,
+    //   replace: true,
+    //   end: true,
+    // },
+    // {
+    //   route: `${route.CLOUD_VPS}/${params.id}/system_log`,
+    //   label: 'System log',
+    //   allowToRender: true,
+    //   replace: true,
+    //   end: true,
+    // },
+    {
+      route: `${route.CLOUD_VPS}/${params.id}/metrics`,
+      label: t('metrics', { ns: 'crumbs' }),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+    {
+      route: `${route.CLOUD_VPS}/${params.id}/network_traffic`,
+      label: t('network_traffic', { ns: 'crumbs' }),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+    {
+      route: `${route.CLOUD_VPS}/${params.id}/snapshots`,
+      label: t('snapshots', { ns: 'crumbs' }),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+    {
+      route: `${route.CLOUD_VPS}/${params.id}/backups`,
+      label: t('backups', { ns: 'crumbs' }),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+    {
+      route: `${route.CLOUD_VPS}/${params.id}/backup_schedules`,
+      label: t('backup_schedules', { ns: 'crumbs' }),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+  ]
 
   const editInstanceHandler = ({ values, elid, closeModal, errorCallback }) => {
     dispatch(
@@ -145,60 +183,74 @@ export default function CloudInstanceItemPage() {
     })
   }
 
+  const isHintStatus = isSuspended || isResized
+  const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
+
+  const osIcon = getImageIconName(item?.os_distro?.$, darkTheme)
+
   return (
-    <>
+    <CloudInstanceItemProvider value={{ item, fetchItemById }}>
       <div className={s.page}>
         <BreadCrumbs pathnames={parseLocations()} />
         <div className={s.head_coponent}>
           <div className={s.page_title_container}>
-            <div className={s.page_title_wrapper}>
-              <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
-              <HintWrapper
-                popupClassName={s.popup}
-                wrapperClassName={s.popup__wrapper}
-                label={item.instances_os.$}
-              >
-                <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
-              </HintWrapper>
+            <div>
+              <div className={s.page_title_wrapper}>
+                <h2 className={s.page_title}>{item?.servername?.$ || item?.name?.$}</h2>
+                {osIcon && (
+                  <TooltipWrapper className={s.popup} content={item.os_distro.$}>
+                    <img
+                      src={require(`@images/soft_os_icons/${osIcon}.png`)}
+                      alt={item?.os_distro?.$}
+                    />
+                  </TooltipWrapper>
+                )}
+              </div>
+
+              {isHintStatus ? (
+                <TooltipWrapper className={s.popup} label={hintMessage}>
+                  <span
+                    className={cn(
+                      s.status,
+                      s[
+                        item?.instance_status?.$.trim().toLowerCase() ||
+                          item?.item_status?.$.trim().toLowerCase()
+                      ],
+                    )}
+                  >
+                    {displayStatus}
+                    <Icon name="Attention" />
+                  </span>
+                </TooltipWrapper>
+              ) : (
+                <span
+                  className={cn(
+                    s.status,
+                    s[
+                      item.instance_status?.$.trim().toLowerCase() ||
+                        item.item_status?.$.trim().toLowerCase()
+                    ],
+                  )}
+                >
+                  {displayStatus}
+                </span>
+              )}
             </div>
             <InstancesOptions
               item={item}
               buttonClassName={s.btn_wrapper}
               isMobile={!widerThan768}
+              isTileLayout
             />
           </div>
-
-          <span
-          className={cn(
-            s.status,
-            s[
-              item.fotbo_status?.$.trim().toLowerCase() ||
-                item.item_status?.$.trim().toLowerCase()
-            ],
-          )}
-        >
-          {displayStatus}
-          {isResized && (
-            <HintWrapper
-              popupClassName={s.popup}
-              wrapperClassName={s.popup__wrapper}
-              label={t('resize_popup_text')}
-            >
-              <Icon name="Attention" />
-            </HintWrapper>
-          )}
-        </span>
-
         </div>
 
-        {/* Commented until only one tab exist: */}
-        {/* <PageTabBar sections={tavBarSections} /> */}
+        <PageTabBar sections={tabBarSections} />
 
-        <div className={s.content}>
+        <div className={s.page_content}>
           <Outlet />
         </div>
       </div>
-
       <Modals
         editNameSubmit={editNameSubmit}
         loadingParams={{
@@ -206,9 +258,10 @@ export default function CloudInstanceItemPage() {
           setIsLoading,
         }}
         getInstances={fetchItemById}
-        redirectCallback={() => navigate(`${route.CLOUD_VPS}/${item.id.$}`)}
+        redirectCallback={() => navigate(route.CLOUD_VPS)}
       />
+
       {isLoading && <Loader local shown={isLoading} halfScreen />}
-    </>
+    </CloudInstanceItemProvider>
   )
 }

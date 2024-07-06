@@ -1,0 +1,23 @@
+.title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.buy_btn {
+  height: 50px;
+  max-width: 250px;
+  margin: 0 auto 0;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.buy_btn_text {
+  font-size: 16px;
+  text-wrap: balance;
+}
+
+@media screen and (min-width: 768px) {
+  .buy_btn_text {
+    font-size: 18px;
+  }
+}

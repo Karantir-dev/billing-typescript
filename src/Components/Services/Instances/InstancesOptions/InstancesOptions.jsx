@@ -1,21 +1,37 @@
 import { Options } from '@components'
 import { cloudVpsActions, cloudVpsOperations } from '@src/Redux'
-import * as route from '@src/routes'
-import { getInstanceMainInfo } from '@src/utils'
+import { useCreateTicketOption, getInstanceMainInfo } from '@src/utils'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
 import s from './InstancesOptions..module.scss'
 
-export default function InstancesOptions({ item, isMobile, buttonClassName }) {
+export default function InstancesOptions({
+  item,
+  isMobile,
+  buttonClassName,
+  isTileLayout,
+}) {
   const { t } = useTranslation(['cloud_vps'])
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { isDisabled, isProcessing, isStopped, isResized, isRescued, isWindows } =
-    getInstanceMainInfo(item)
+  const widerThan1024 = useMediaQuery({ query: '(min-width: 1024px)' })
 
-  const isHideMostItems = isResized || isRescued
+  const {
+    isDisabled,
+    isProcessing,
+    isStopped,
+    isResized,
+    isRescued,
+    isWindows,
+    isDeleting,
+    isBootedFromISO,
+    isImageUploading,
+    isErrorStatus,
+  } = getInstanceMainInfo(item)
+  const isHideMostItems = isResized || isRescued || isBootedFromISO
+
+  const createTicketOption = useCreateTicketOption(item.id.$)
 
   const options = [
     {
@@ -27,6 +43,18 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
         dispatch(
           cloudVpsActions.setItemForModals({
             confirm: { ...item, confirm_action: 'unrescue' },
+          }),
+        ),
+    },
+    {
+      label: t('unmount_iso'),
+      icon: 'Wrench',
+      hidden: !isBootedFromISO,
+      disabled: isDisabled,
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            confirm: { ...item, confirm_action: 'unmount' },
           }),
         ),
     },
@@ -107,13 +135,14 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
       onClick: () =>
         dispatch(
           cloudVpsActions.setItemForModals({
-            rebuild: { ...item, rebuild_action: 'bootimage' },
+            rebuild: { ...item, rebuild_action: 'rescue' },
           }),
         ),
     },
     {
       label: t('Instructions'),
       icon: 'Instruction',
+      disabled: isDeleting || isImageUploading || isErrorStatus,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ instruction: item })),
     },
     {
@@ -128,23 +157,29 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
           }),
         ),
     },
-    {
-      label: t('Create ticket'),
-      icon: 'Headphone',
-      onClick: () =>
-        navigate(`${route.SUPPORT}/requests`, {
-          state: { id: item.id.$, openModal: true },
-        }),
-    },
+    createTicketOption,
     {
       label: t('Rename'),
       icon: 'Rename',
+      disabled: isDeleting,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ edit_name: item })),
+    },
+    {
+      label: t('boot_from_iso'),
+      icon: 'Iso',
+      disabled: isProcessing || isDeleting || isImageUploading || isDisabled,
+      hidden: isHideMostItems,
+      onClick: () =>
+        dispatch(
+          cloudVpsActions.setItemForModals({
+            rebuild: { ...item, rebuild_action: 'boot_from_iso' },
+          }),
+        ),
     },
     {
       label: t('Delete'),
       icon: 'Remove',
-      disabled: isProcessing,
+      disabled: isProcessing || isDeleting || isErrorStatus,
       isDelete: true,
       onClick: () => dispatch(cloudVpsActions.setItemForModals({ delete: item })),
     },
@@ -157,6 +192,7 @@ export default function InstancesOptions({ item, isMobile, buttonClassName }) {
       options={options}
       columns={optionsColumns}
       buttonClassName={[s.btn, buttonClassName]}
+      isTileLayout={isTileLayout && widerThan1024}
     />
   )
 }

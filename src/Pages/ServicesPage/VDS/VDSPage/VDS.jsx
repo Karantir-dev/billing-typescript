@@ -18,9 +18,10 @@ import {
   FiltersModal,
   InstructionModal,
   DedicsHistoryModal,
+  VPSCompareModal,
   Pagination,
   Portal,
-  HintWrapper,
+  TooltipWrapper,
   CheckBox,
   Loader,
 } from '@components'
@@ -32,7 +33,12 @@ import {
   vdsOperations,
 } from '@redux'
 import no_vds from '@images/services/no_vds.png'
-import { checkServicesRights, roundToDecimal, useCancelRequest, usePageRender } from '@utils'
+import {
+  checkServicesRights,
+  roundToDecimal,
+  useCancelRequest,
+  usePageRender,
+} from '@utils'
 
 import s from './VDS.module.scss'
 
@@ -57,7 +63,7 @@ export default function VDS({ isDedic }) {
     }
   }, [])
 
-  const isAllowedToRender = usePageRender('mainmenuservice', 'vds')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'vds', true, 6)
 
   const [rights, setRights] = useState({})
   const [servers, setServers] = useState([])
@@ -94,6 +100,7 @@ export default function VDS({ isDedic }) {
   const [isFiltersOpened, setIsFiltersOpened] = useState(false)
   const [isFiltered, setIsFiltered] = useState(false)
   const [isSearchMade, setIsSearchMade] = useState(false)
+  const [isCompareModalOpened, setIsCompareModalOpened] = useState(false)
 
   const getTotalPrice = () => {
     const list = activeServices.length > 0 ? activeServices : []
@@ -241,7 +248,7 @@ export default function VDS({ isDedic }) {
   }
 
   const orderSameTariff = id => {
-    dispatch(cartOperations.orderSameTariff('vds' ,id, navigate))
+    dispatch(cartOperations.orderSameTariff('vds', id, navigate))
   }
   return (
     <div>
@@ -272,9 +279,7 @@ export default function VDS({ isDedic }) {
                     state: { isDedicOrderAllowed: dedicRights?.new },
                     replace: true,
                   })
-                : navigate(route.VPS_ORDER, {
-                    replace: true,
-                  })
+                : setIsCompareModalOpened(true)
             }}
           />
 
@@ -358,7 +363,7 @@ export default function VDS({ isDedic }) {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('delete', { ns: 'other' })}>
+          <TooltipWrapper content={t('delete', { ns: 'other' })}>
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -372,8 +377,8 @@ export default function VDS({ isDedic }) {
               }
               icon="delete"
             />
-          </HintWrapper>
-          <HintWrapper label={t('password_change')}>
+          </TooltipWrapper>
+          <TooltipWrapper content={t('password_change')}>
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -385,9 +390,9 @@ export default function VDS({ isDedic }) {
               }
               icon="passChange"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('reload')}>
+          <TooltipWrapper content={t('reload')}>
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -397,9 +402,9 @@ export default function VDS({ isDedic }) {
               onClick={() => setIdForReboot(activeServices.map(server => server.id.$))}
               icon="reload"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('prolong')}>
+          <TooltipWrapper content={t('prolong')}>
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -411,10 +416,9 @@ export default function VDS({ isDedic }) {
                 ) || !rights?.prolong
               }
               onClick={() => setIdForProlong(activeServices.map(server => server.id.$))}
-              // onClick={() => setIdForProlong(activeServices)}
               icon="clock"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>
@@ -527,6 +531,11 @@ export default function VDS({ isDedic }) {
           isOpen
         />
       )}
+
+      <VPSCompareModal
+        isOpen={isCompareModalOpened}
+        closeModal={() => setIsCompareModalOpened(false)}
+      />
 
       {isLoading && <Loader local shown={isLoading} halfScreen={isDedic} />}
     </div>

@@ -6,7 +6,7 @@ import s from './CloudVPS.module.scss'
 import * as route from '@src/routes'
 
 export default function DedicPage() {
-  const { t } = useTranslation(['vds', 'container', 'other', 'dedicated_servers'])
+  const { t } = useTranslation(['crumbs', 'container'])
 
   const parseLocations = () => {
     let pathnames = location?.pathname.split('/')
@@ -16,17 +16,24 @@ export default function DedicPage() {
     return pathnames
   }
 
-  const tavBarSections = [
+  const tabBarSections = [
     {
-      route: `${route.CLOUD_VPS}`,
-      label: 'Instances',
+      route: route.CLOUD_VPS,
+      label: t('Instances'),
       allowToRender: true,
       replace: true,
       end: true,
     },
     {
-      route: `${route.CLOUD_VPS}/ssh_keys`,
-      label: 'SSH keys',
+      route: route.CLOUD_VPS_SSH_KEYS,
+      label: t('ssh_keys'),
+      allowToRender: true,
+      replace: true,
+      end: true,
+    },
+    {
+      route: route.CLOUD_VPS_IMAGES,
+      label: t('images'),
       allowToRender: true,
       replace: true,
       end: true,
@@ -39,7 +46,7 @@ export default function DedicPage() {
       <h2 className={s.page_title}>
         {t('burger_menu.services.services_list.cloud_vps', { ns: 'container' })}
       </h2>
-      <PageTabBar sections={tavBarSections} />
+      <PageTabBar sections={tabBarSections} />
       <div className={s.content}>
         <Outlet />
       </div>

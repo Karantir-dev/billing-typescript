@@ -8,7 +8,7 @@ import { useMediaQuery } from 'react-responsive'
 import {
   Button,
   IconButton,
-  HintWrapper,
+  TooltipWrapper,
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
@@ -35,7 +35,7 @@ export default function DNS() {
   let dnsRenderData = useSelector(dnsSelectors.getDNSList)
   const dnsCount = useSelector(dnsSelectors.getDNSCount)
 
-  const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'dnshost', true, 41)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
   const [activeServices, setActiveServices] = useState([])
 
@@ -254,9 +254,8 @@ export default function DNS() {
         )}
 
         <div className={s.btns_wrapper}>
-          <HintWrapper
-            label={t('No tariff plans available for order', { ns: 'other' })}
-            popupClassName={s.order_btn__error}
+          <TooltipWrapper
+            content={t('No tariff plans available for order', { ns: 'other' })}
             disabled={!isNoAvailableTariff}
           >
             <Button
@@ -272,7 +271,7 @@ export default function DNS() {
               }}
               disabled={isNoAvailableTariff || !rights?.new}
             />
-          </HintWrapper>
+          </TooltipWrapper>
           <div className={s.tools_container}>
             <div className={s.filterBtnBlock}>
               <IconButton
@@ -355,7 +354,7 @@ export default function DNS() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('prolong')}>
+          <TooltipWrapper content={t('prolong')}>
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -370,7 +369,7 @@ export default function DNS() {
               }
               icon="clock"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>

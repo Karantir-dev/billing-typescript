@@ -160,7 +160,7 @@ const sendTotp = (totp, setError, navigate) => (dispatch, getState) => {
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-      checkIfTokenAlive('totp.confirm - ' + err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
     })
 }
 
@@ -197,7 +197,7 @@ const reset = (email, setEmailSended, setErrorType, setErrorTime) => dispatch =>
     })
     .catch(err => {
       dispatch(actions.hideLoader())
-      checkIfTokenAlive('recovery - ' + err.message, dispatch)
+      checkIfTokenAlive(err.message, dispatch)
     })
 }
 
@@ -287,7 +287,7 @@ const changePassword =
       })
       .catch(err => {
         dispatch(actions.hideLoader())
-        checkIfTokenAlive('recovery - ' + err.message, dispatch)
+        checkIfTokenAlive(err.message, dispatch)
       })
   }
 
@@ -316,8 +316,8 @@ const logout = () => (dispatch, getState) => {
         throw new Error(data.doc.error.msg.$)
       }
     })
-    .catch(e => {
-      checkIfTokenAlive('error during logging out ' + e.message, dispatch)
+    .catch(err => {
+      checkIfTokenAlive(err.message, dispatch)
 
       dispatch(actions.hideLoader())
     })
@@ -731,7 +731,7 @@ const addLoginWithSocial = (state, redirectToSettings) => (dispatch, getState) =
 //     })
 //     .catch(error => {
 //       dispatch(actions.hideLoader())
-//       checkIfTokenAlive('getLoginSocLinks - ' + error, dispatch)
+//       checkIfTokenAlive(error, dispatch)
 //     })
 // }
 

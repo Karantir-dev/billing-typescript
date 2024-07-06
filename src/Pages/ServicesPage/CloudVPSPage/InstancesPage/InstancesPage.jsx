@@ -4,12 +4,12 @@ import {
   IconButton,
   InstancesList,
   Loader,
-  Pagination,
+  PaginationUpdated,
   Select,
 } from '@components'
 import s from './InstancesPage.module.scss'
 import cn from 'classnames'
-import { Fragment, useEffect, useReducer, useRef, useState } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react'
 import { InstanceFiltersModal } from '@components/Services/Instances/Modals'
 import { useDispatch, useSelector } from 'react-redux'
 import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
@@ -23,7 +23,7 @@ import { CLOUD_SORT_LIST } from '@utils/constants'
 
 export default function InstancesPage() {
   const navigate = useNavigate()
-  const { t } = useTranslation(['cloud_vps'])
+  const { t } = useTranslation(['cloud_vps', 'other'])
   const lessThan1550 = useMediaQuery({ query: '(max-width: 1549px)' })
 
   const interval = useRef()
@@ -35,16 +35,10 @@ export default function InstancesPage() {
   const [sortBy, setSortBy] = useState('+id')
 
   const instances = useSelector(cloudVpsSelectors.getInstancesList)
-  const instancesCount = useSelector(cloudVpsSelectors.getInstancesCount)
   const filters = useSelector(cloudVpsSelectors.getInstancesFilters)
   const allSshCount = useSelector(cloudVpsSelectors.getSshCount)
 
-  const [pagination, setPagination] = useReducer(
-    (state, action) => {
-      return { ...state, ...action }
-    },
-    { p_num: 1, p_cnt: '10' },
-  )
+  const [pagination, setPagination] = useState({})
 
   useEffect(() => {
     const isProcessing = instances?.find(item => {
@@ -61,10 +55,6 @@ export default function InstancesPage() {
     }
   }, [instances])
 
-  /* crutch for paginations */
-  const [isPaginationChanged, setIsPaginationChanged] = useState(false)
-  const [isFirstRender, setIsFirstRender] = useState(true)
-
   const loadingParams = {
     signal,
     setIsLoading,
@@ -72,7 +62,6 @@ export default function InstancesPage() {
 
   useEffect(() => {
     setFiltersHandler()
-    setIsFirstRender(false)
 
     return () => {
       dispatch(cloudVpsActions.setInstancesCount(0))
@@ -81,33 +70,33 @@ export default function InstancesPage() {
     }
   }, [])
 
-  const getInstances = ({ p_col, p_num, p_cnt, isLoader } = {}) => {
-    dispatch(
-      cloudVpsOperations.getInstances({
-        ...loadingParams,
-        p_col,
-        p_cnt: p_cnt ?? pagination.p_cnt,
-        p_num: p_num ?? pagination.p_num,
-        isLoader,
-      }),
-    )
-  }
-
-  useEffect(() => {
-    if (!isFirstRender) {
-      getInstances()
-    }
-  }, [isPaginationChanged])
+  const getInstances = useCallback(
+    (() => {
+      let num
+      return ({ p_col, p_num, p_cnt, isLoader } = {}) => {
+        num = p_num ?? num
+        dispatch(
+          cloudVpsOperations.getInstances({
+            ...loadingParams,
+            p_col,
+            p_cnt,
+            p_num: num,
+            setPagination,
+            isLoader,
+          }),
+        )
+      }
+    })(),
+    [],
+  )
 
   const setFiltersHandler = values => {
-    setPagination({ p_num: 1 })
-
     dispatch(
       cloudVpsOperations.setInstancesFilter({
         values,
         ...loadingParams,
         successCallback: () => {
-          getInstances({ p_col: sortBy, p_num: 1, p_cnt: pagination.p_cnt })
+          getInstances({ p_num: 1 })
         },
       }),
     )
@@ -186,10 +175,10 @@ export default function InstancesPage() {
         <>
           <div className={s.options}>
             <Button
-              label={t('create_instance_btn')}
+              label={t('to_order', { ns: 'other' })}
               size="large"
               isShadow
-              onClick={() => navigate(route.CLOUD_VPS_CREATE_INSTANCE)}
+              onClick={() => navigate(route.CLOUD_VPS_CREATE_PREMIUM_INSTANCE)}
             />
             {!instances.length && !isFiltered ? null : (
               <>
@@ -281,21 +270,13 @@ export default function InstancesPage() {
           />
         </>
       )}
-      {instancesCount > 5 && (
-        <Pagination
-          className={s.pagination}
-          currentPage={pagination.p_num}
-          totalCount={Number(instancesCount)}
-          onPageChange={value => {
-            setPagination({ p_num: value })
-            setIsPaginationChanged(prev => !prev)
-          }}
-          pageSize={pagination.p_cnt}
-          onPageItemChange={value => {
-            setPagination({ p_cnt: value })
-          }}
-        />
-      )}
+
+      <PaginationUpdated
+        className={s.pagination}
+        pagination={pagination}
+        getItemsHandler={getInstances}
+      />
+
       <Modals
         editNameSubmit={editNameSubmit}
         loadingParams={loadingParams}

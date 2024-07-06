@@ -36,6 +36,13 @@
   "-- none --": "Not chosen",
   "Yes": "Yes",
   "No": "No",
+  "Sunday": "Sunday",
+  "Monday": "Monday",
+  "Tuesday": "Tuesday",
+  "Wednesday": "Wednesday",
+  "Thursday": "Thursday",
+  "Friday": "Friday",
+  "Saturday": "Saturday",
   "services": {
     "Virtual server": "Virtual server",
     "Shared hosting": "Shared hosting",
@@ -83,6 +90,8 @@
   "Passport": "Passport",
   "Series and passport number": "Series and passport number",
   "Is a required field": "Is a required field",
+  "Invalid time format": "Invalid time format",
+  "At least one day must be selected": "At least one day must be selected",
   "cnp_validation": "CNP must contain 13 digits",
   "error_type": "Page not found",
   "error_text": "Looks like something has gone wrong. Sorry for the inconveniences",
@@ -128,7 +137,6 @@
   "Order date (from/to)": "Order date (from/to)",
   "ok": "OK",
   "FTP server": "FTP-server",
-
   "Trial": "Trial",
   "Trial period": "10 days",
   "Month": "Month",
@@ -137,7 +145,6 @@
   "Year": "Year",
   "Two years": "Two years",
   "Three years": "Three years",
-
   "The minimum order period for this service is {{min}}. {{left}} are left": "The minimum order period for this service is {{min}} month. {{left}} days are left",
   "Hostname": "Hostname",
   "Connection URL": "Connection URL",
@@ -203,7 +210,6 @@
   "email_confirmed": "Email address {{email}} confirmed",
   "address_error_msg": "Enter your full address",
   "symbols_restricted": "Special characters are not allowed",
-
   "discounts_up_to": "DISCOUNTS UP TO {{amount}}",
   "halloween_discount": "for Hosting, VPS, Dedicated Servers and Forex",
   "discounts": "DISCOUNTS",
@@ -215,7 +221,6 @@
   "for VPN": "for VPN",
   "BLACK FRIDAY": "BLACK FRIDAY",
   "IN ZOMRO": "IN ZOMRO",
-
   "Shared hosting": "Shared hosting",
   "Dedicated server": "Dedicated server",
   "Server for Forex": "Server for Forex",
@@ -230,35 +235,26 @@
   "VPS (promo code OM34VS)": "VPS (promo code OM34VS)",
   "Dedicated server (promo code YT52BD)": "Dedicated server (promo code YT52BD)",
   "The above promo codes can only be used once.": "The above promo codes can only be used once.",
-
   "Number of auto-renewable services": "Number of auto-renewable services",
-
   "CASHBACK": "CASHBACK",
-
   "The promotion is valid from 14.02 to 16.02": "The promotion is valid from 14.02 to 16.02",
   "Order any of our services or top up your balance for any amount and get a 14% cashback to your account in your personal account.": "Order any of our services or top up your balance for any amount and get a 14% cashback to your account in your personal account.",
   "Cashback you can spend on our services in the future": "Cashback you can spend on our services in the future",
-
   "for all services from 14.02 to 16.02": "for all services from 14.02 to 16.02",
   "CASHBACK 14%": "CASHBACK 14%",
-
   "more": "more",
-
   "month count 1": "month",
   "month count 3/24": "months",
   "month count 6/12/36": "months",
-
   "fraud_invalid_code": "Incorrect verification code",
   "The phone has been successfully verified": "The phone has been successfully verified",
   "payment_saved": "Payment method successfully saved",
-
   "this_phone_exists": "This phone number has been already used for activating another client account, specify another phone number or contact technical support for phone number confirmation",
   "certificate_code": "Certificate code",
   "enter_certificate_code": "Enter certificate code",
   "certificate_not_exist": "The certificate does not exist",
   "certificate_matches_error": "Only digits and uppercase letters are allowed",
   "certificate_applied_success": "The certificate has been successfully applied",
-
   "payment_processed": "Your payment is being processed, you can check the status in the section",
   "Finance/Accounts": "Finance/Accounts",
   "online": "You`re back online",
@@ -268,9 +264,11 @@
   "Dear": "Dear",
   "Update your server": "The server you are using needs to be replaced. Please take a look at the Replacement Options",
   "here": "here",
-  "eu_vat_info_text": "If you have a valid European VAT ID, fill it in with the country prefix, e.g. NL123456, DE123456.",  
+  "eu_vat_info_text": "If you have a valid European VAT ID, fill it in with the country prefix, e.g. NL123456, DE123456.",
   "new_ticket_message": "New message in ticket #{{id}}",
   "long_request": "Request processing failed, please try again",
   "Invalid SSH public key": "Invalid SSH public key",
-  "A key already exists with the same name": "A key already exists with the same name"
+  "A key already exists with the same name": "A key already exists with the same name",
+  "copied": "Copied",
+  "error_occured": "Error occured"
 }

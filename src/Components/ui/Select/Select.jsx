@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Icon } from '@components'
+import { Icon, TooltipWrapper } from '@components'
 import { useOutsideAlerter } from '@utils'
 import s from './Select.module.scss'
 import { useTranslation } from 'react-i18next'
@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next'
 export default function Select(props) {
   let {
     label,
+    labelTooltip,
+    labelTooltipPlace,
     isShadow, // shadow or border
     className,
     inputClassName,
@@ -92,6 +94,16 @@ export default function Select(props) {
         <label className={s.label}>
           {' '}
           {isRequired ? requiredLabel(label) : label} {saleIcon}
+          {labelTooltip && (
+            <TooltipWrapper
+              content={labelTooltip}
+              wrapperClassName={s.label__tooltip}
+              className={s.hint}
+              place={labelTooltipPlace}
+            >
+              <Icon name="Info" />
+            </TooltipWrapper>
+          )}
         </label>
       )}
       <button

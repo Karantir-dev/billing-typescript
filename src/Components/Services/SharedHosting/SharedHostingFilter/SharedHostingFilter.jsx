@@ -81,7 +81,7 @@ export default function Component(props) {
         )}
         <div className={s.btns_wrapper}>
           <Button
-            disabled={!rights?.new}
+            disabled={!rights?.new || type === 'wordpress'}
             className={s.newTicketBtn}
             isShadow
             size="medium"

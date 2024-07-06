@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import s from './ForexMobileItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
-import { isUnpaidOrder } from '@src/utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@src/utils'
 
 export default function ForexMobileItem({
   server,
@@ -24,6 +24,7 @@ export default function ForexMobileItem({
   }
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
@@ -48,13 +49,15 @@ export default function ForexMobileItem({
     {
       label: t('prolong'),
       icon: 'Clock',
-      disabled: server?.status?.$ === '1' || !pageRights?.prolong,
+      disabled:
+        server?.status?.$ === '1' || server?.status?.$ === '5' || !pageRights?.prolong,
       onClick: () => handleToolBtnClick(setElidForProlongModal),
     },
     {
       label: t('edit', { ns: 'other' }),
       icon: 'Edit',
-      disabled: !pageRights?.edit || server?.status?.$ === '1',
+      disabled:
+        !pageRights?.edit || server?.status?.$ === '1' || server?.status?.$ === '5',
       onClick: () => handleToolBtnClick(setElidForEditModal),
     },
     {
@@ -63,6 +66,7 @@ export default function ForexMobileItem({
       disabled: !pageRights?.history || server?.status?.$ === '1',
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',

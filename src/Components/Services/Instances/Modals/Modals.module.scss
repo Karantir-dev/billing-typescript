@@ -384,9 +384,9 @@
   }
 
   @media screen and (min-width: 1600px) {
-    .form {
-      min-width: 1020px;
-    }
+    // .form {
+    //   min-width: 1020px;
+    // }
 
     .filterModal {
       left: -20px;
@@ -490,7 +490,7 @@
 .error_message {
   margin-left: 2px;
   color: var(--error-color);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.2;
 }
 
@@ -549,7 +549,7 @@
 }
 
 .hint_wrapper {
-  min-width: 242px;
+  max-width: 242px;
 }
 
 @media screen and (min-width: 768px) {
@@ -563,5 +563,21 @@
 
   .btns_wrapper {
     flex-direction: row;
+  }
+}
+
+.infoBtnCard {
+  cursor: help;
+
+  &:hover {
+    path {
+      fill: var(--accent-color-light);
+    }
+  }
+}
+
+.rescue_pass_input {
+  @media (min-width: 1024px) {
+    max-width: 460px;
   }
 }

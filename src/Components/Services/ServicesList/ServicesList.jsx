@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive'
 import * as routes from '@src/routes'
 import { checkIfTokenAlive, usePageRender } from '@utils'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectors } from '@redux'
+import { selectors, vhostSelectors } from '@redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Pagination } from 'swiper'
 import { ServiceCard, ServiceCardDesktop } from '@components'
@@ -23,22 +23,34 @@ export default function ServicesList() {
   const dispatch = useDispatch()
 
   const swiperEl = useRef(null)
+  const isWordpressAllowed = useSelector(vhostSelectors.isWordpressAllowed)
 
-  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false)
-  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false)
-  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false)
-  const isVirtualHostAllowedToRender = usePageRender('mainmenuservice', 'vhost', false)
-  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false)
-  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false)
+  const isDomainsAllowedToRender = usePageRender('mainmenuservice', 'domain', false, 4)
+  const isVdsAllowedToRender = usePageRender('mainmenuservice', 'vds', false, 6)
+  const isDedicactedAllowedToRender = usePageRender('mainmenuservice', 'dedic', false, 20)
+  const isVirtualHostAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'vhost',
+    false,
+    23,
+  )
+  const isDnsAllowedToRender = usePageRender('mainmenuservice', 'dnshost', false, 41)
+  const isFtpAllowedToRender = usePageRender('mainmenuservice', 'storage', false, 27090)
   const isWebsitecareAllowedToRender = usePageRender(
     'mainmenuservice',
     'zabota-o-servere',
     false,
+    27129,
   )
 
-  const isForexServerAllowedToRender = usePageRender('mainmenuservice', 'forexbox', false)
+  const isForexServerAllowedToRender = usePageRender(
+    'mainmenuservice',
+    'forexbox',
+    false,
+    27136,
+  )
 
-  const isVPNAllowedToRender = usePageRender('mainmenuservice', 'vpn', false)
+  const isVPNAllowedToRender = usePageRender('mainmenuservice', 'vpn', false, 27140)
 
   const darkTheme = useSelector(selectors.getTheme)
   const [dark, setDark] = useState(darkTheme)
@@ -88,7 +100,7 @@ export default function ServicesList() {
       name: t('burger_menu.services.services_list.wordpress_hosting'),
       id: 10,
       routeName: routes.WORDPRESS,
-      allowedToRender: isVirtualHostAllowedToRender,
+      allowedToRender: isVirtualHostAllowedToRender && isWordpressAllowed,
       icon_name: 'wordpress',
       icon_width: '131',
       icon_height: '100',
@@ -183,54 +195,57 @@ export default function ServicesList() {
     }
   }, [])
 
-  return laptopAndHigher ? (
-    <ul className="services_list">
-      {filteredServicesMenuList.map((item, index) => {
-        const { id, name, routeName, icon_name, icon_height, icon_width } = item
-
-        return (
-          <ServiceCardDesktop
-            className="swiper-item"
-            key={id}
-            title={name.toUpperCase()}
-            index={index + 1}
-            route={routeName}
-            iconName={icon_name}
-            iconWidth={icon_width}
-            iconHeight={icon_height}
-          />
-        )
-      })}
-    </ul>
-  ) : (
-    <div className="services_swiper_wrapper">
-      <Swiper
-        className="services_swiper"
-        ref={swiperEl}
-        slidesPerView={'auto'}
-        pagination={{
-          clickable: true,
-          dynamicBullets: true,
-          dynamicMainBullets: 4,
-        }}
-      >
+  return (
+    isWordpressAllowed !== null &&
+    (laptopAndHigher ? (
+      <ul className="services_list">
         {filteredServicesMenuList.map((item, index) => {
           const { id, name, routeName, icon_name, icon_height, icon_width } = item
 
           return (
-            <SwiperSlide key={id}>
-              <ServiceCard
-                title={name.toUpperCase()}
-                index={index + 1}
-                route={routeName}
-                iconName={icon_name}
-                iconWidth={icon_width}
-                iconHeight={icon_height}
-              />
-            </SwiperSlide>
+            <ServiceCardDesktop
+              className="swiper-item"
+              key={id}
+              title={name.toUpperCase()}
+              index={index + 1}
+              route={routeName}
+              iconName={icon_name}
+              iconWidth={icon_width}
+              iconHeight={icon_height}
+            />
           )
         })}
-      </Swiper>
-    </div>
+      </ul>
+    ) : (
+      <div className="services_swiper_wrapper">
+        <Swiper
+          className="services_swiper"
+          ref={swiperEl}
+          slidesPerView={'auto'}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+            dynamicMainBullets: 4,
+          }}
+        >
+          {filteredServicesMenuList.map((item, index) => {
+            const { id, name, routeName, icon_name, icon_height, icon_width } = item
+
+            return (
+              <SwiperSlide key={id}>
+                <ServiceCard
+                  title={name.toUpperCase()}
+                  index={index + 1}
+                  route={routeName}
+                  iconName={icon_name}
+                  iconWidth={icon_width}
+                  iconHeight={icon_height}
+                />
+              </SwiperSlide>
+            )
+          })}
+        </Swiper>
+      </div>
+    ))
   )
 }

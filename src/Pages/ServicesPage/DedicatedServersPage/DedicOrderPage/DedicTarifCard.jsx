@@ -3,7 +3,7 @@ import s from './DedicOrderPage.module.scss'
 import classNames from 'classnames'
 import { cartOperations } from '@redux'
 import { useDispatch } from 'react-redux'
-import { HintWrapper, Icon } from '@src/Components'
+import { TooltipWrapper, Icon } from '@src/Components'
 import { useTranslation } from 'react-i18next'
 export default function DedicTarifCard({
   parsePrice,
@@ -82,18 +82,17 @@ export default function DedicTarifCard({
                   count: itemInfo?.specs?.count_exists || 0,
                 })}
               </span>
-              <span>
+              <span className={s.card_title_description}>
                 {itemInfo?.specs?.count_exists
                   ? t('dedic_activation_time')
                   : t('dedic_ready_time')}
                 {!itemInfo?.specs?.count_exists && (
-                  <HintWrapper
-                    popupClassName={s.activation_info_hint}
-                    label={t('dedic_activation_info')}
-                    wrapperClassName={s.activation_info_hint_wrapper}
+                  <TooltipWrapper
+                    className={s.activation_info_hint}
+                    content={t('dedic_activation_info')}
                   >
                     <Icon name="Info" />
-                  </HintWrapper>
+                  </TooltipWrapper>
                 )}
               </span>
             </div>

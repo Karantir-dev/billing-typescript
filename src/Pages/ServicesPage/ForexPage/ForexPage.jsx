@@ -8,7 +8,7 @@ import { useMediaQuery } from 'react-responsive'
 import {
   Button,
   IconButton,
-  HintWrapper,
+  TooltipWrapper,
   BreadCrumbs,
   ProlongModal,
   DedicsHistoryModal,
@@ -42,7 +42,7 @@ export default function ForexPage() {
   const forexCount = useSelector(forexSelectors.getForexCount)
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
-  const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox')
+  const isAllowedToRender = usePageRender('mainmenuservice', 'forexbox', true, 27136)
 
   const [activeServices, setActiveServices] = useState([])
 
@@ -359,7 +359,7 @@ export default function ForexPage() {
         })}
       >
         <div className={s.buttons_wrapper}>
-          <HintWrapper label={t('delete', { ns: 'other' })}>
+          <TooltipWrapper content={t('delete', { ns: 'other' })}>
             <IconButton
               className={s.tools_icon}
               onClick={() =>
@@ -373,9 +373,9 @@ export default function ForexPage() {
               }
               icon="delete"
             />
-          </HintWrapper>
+          </TooltipWrapper>
 
-          <HintWrapper label={t('prolong')}>
+          <TooltipWrapper content={t('prolong', { ns: 'vds' })}>
             <IconButton
               className={s.tools_icon}
               disabled={
@@ -390,7 +390,7 @@ export default function ForexPage() {
               }
               icon="clock"
             />
-          </HintWrapper>
+          </TooltipWrapper>
         </div>
 
         <p className={s.services_selected}>

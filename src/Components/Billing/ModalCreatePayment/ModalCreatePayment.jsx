@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useReducer } from 'react'
+import { useEffect, useLayoutEffect, useReducer, useState } from 'react'
 import cn from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -12,7 +12,7 @@ import {
   Modal,
   Icon,
   CustomPhoneInput,
-  HintWrapper,
+  TooltipWrapper,
   PayersList,
 } from '@components'
 import {
@@ -28,7 +28,7 @@ import {
 } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
 import * as Yup from 'yup'
-import { checkIfTokenAlive, replaceAllFn } from '@utils'
+import { checkIfTokenAlive, sortPaymethodList, parsePaymentInfo } from '@utils'
 import { QIWI_PHONE_COUNTRIES, SBER_PHONE_COUNTRIES, OFFER_FIELD } from '@utils/constants'
 
 import s from './ModalCreatePayment.module.scss'
@@ -66,6 +66,14 @@ export default function ModalCreatePayment() {
   const filteredPayment_method = state.additionalPayMethodts?.find(
     e => e?.$key === state.selectedAddPaymentMethod,
   )
+
+  const [paymentsList, setPaymentsList] = useState([])
+
+  useEffect(() => {
+    const sortedList = sortPaymethodList(paymentsMethodList || [])
+
+    setPaymentsList(sortedList)
+  }, [paymentsMethodList])
 
   useLayoutEffect(() => {
     dispatch(billingActions.setIsModalCreatePaymentOpened(true))
@@ -265,7 +273,7 @@ export default function ModalCreatePayment() {
                 payersList?.[payersList?.length - 1]?.id?.$ ||
                 '',
               amount: paymentData?.amount.$ || state.amount || '',
-              selectedPayMethod: state.selectedPayMethod || undefined,
+              selectedPayMethod: state.selectedPayMethod || paymentsList?.[0],
               name: payersData.state?.name || payersData.selectedPayerFields?.name || '',
               address_physical:
                 payersData.state?.addressPhysical ??
@@ -303,27 +311,6 @@ export default function ModalCreatePayment() {
             onSubmit={createPaymentMethodHandler}
           >
             {({ values, setFieldValue, touched, errors, handleBlur }) => {
-              const parsePaymentInfo = text => {
-                const splittedText = text?.replace(/&nbsp;/g, '').split('<p>')
-                if (splittedText?.length > 0) {
-                  const minAmount = splittedText[0]?.replace('\n', '')
-
-                  let infoText = ''
-
-                  if (splittedText[1] && splittedText?.length > 1) {
-                    let replacedText = splittedText[1]
-                      ?.replace('<p>', '')
-                      ?.replace('</p>', '')
-                      ?.replace('<strong>', '')
-                      ?.replace('</strong>', '')
-
-                    infoText = replaceAllFn(replacedText, '\n', '')
-                  }
-
-                  return { minAmount, infoText }
-                }
-              }
-
               const getFieldErrorNames = formikErrors => {
                 const transformObjectToDotNotation = (obj, prefix = '', result = []) => {
                   Object.keys(obj).forEach(key => {
@@ -399,13 +386,28 @@ export default function ModalCreatePayment() {
               const setAdditionalPayMethodts = value =>
                 setState({ additionalPayMethodts: value })
 
+              useEffect(() => {
+                dispatch(
+                  cartOperations.getPayMethodItem(
+                    {
+                      paymethod: paymentsList[0]?.paymethod?.$,
+                    },
+                    setAdditionalPayMethodts,
+                  ),
+                )
+
+                setState({
+                  minAmount: Number(paymentsList?.[0]?.payment_minamount?.$),
+                  maxAmount: Number(paymentsList?.[0]?.payment_maxamount?.$),
+                })
+              }, [paymentsList])
               return (
                 <Form id="payment">
                   <ScrollToFieldError />
                   <div className={s.formBlock}>
                     <div className={s.formBlockTitle}>1. {t('Payment method')}</div>
                     <div className={s.formFieldsBlock} name="selectedPayMethod">
-                      {paymentsMethodList?.map(method => {
+                      {paymentsList?.map(method => {
                         const {
                           paymethod,
                           image,
@@ -470,14 +472,13 @@ export default function ModalCreatePayment() {
                             </div>
 
                             {paymethod?.$ === '71' && (
-                              <HintWrapper
-                                popupClassName={s.cardHintWrapper}
-                                label={t(method?.name.$, { ns: 'other' })}
+                              <TooltipWrapper
+                                content={t(method?.name.$, { ns: 'other' })}
                                 wrapperClassName={cn(s.infoBtnCard)}
-                                bottom
+                                place="bottom"
                               >
                                 <Icon name="Info" />
-                              </HintWrapper>
+                              </TooltipWrapper>
                             )}
                           </button>
                         )
@@ -654,7 +655,14 @@ export default function ModalCreatePayment() {
                     {values?.selectedPayMethod && (
                       <div>
                         <span>
-                          {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}
+                          {t(`${parsedText?.minAmount?.trim()}`, { ns: 'cart' })}{' '}
+                          {parsedText?.commission && (
+                            <strong>
+                              {t(`Commission ${parsedText?.commission}`, {
+                                ns: 'cart',
+                              })}
+                            </strong>
+                          )}
                         </span>
                         {parsedText?.infoText && (
                           <p>{t(`${parsedText?.infoText?.trim()}`, { ns: 'cart' })}</p>

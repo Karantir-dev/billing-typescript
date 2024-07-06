@@ -1,0 +1,28 @@
+.images {
+  display: grid;
+  gap: 30px;
+  @media (min-width: 768px) {
+    @media (max-width: 1023px) {
+      [data-th='created_at'],
+      [data-target='created_at'] {
+        display: none;
+      }
+    }
+    @media (max-width: 1549px) {
+      [data-th='region'],
+      [data-target='region'] {
+        display: none;
+      }
+    }
+  }
+}
+
+.create_wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  @media (min-width: 768px) {
+    gap: 16px;
+  }
+}

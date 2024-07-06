@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CSSTransition } from 'react-transition-group'
 import { useDispatch, useSelector } from 'react-redux'
 import cn from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 
-import { ServicesSelect, FilesBanner, Icon, Loader } from '@components'
+import { CopyText, ServicesSelect, FilesBanner, Loader } from '@components'
 import { affiliateSelectors, affiliateOperations } from '@redux'
 
-import animations from './animations.module.scss'
 import s from './AboutAffiliateProgram.module.scss'
 import { useCancelRequest } from '@src/utils'
 
@@ -25,8 +23,6 @@ export default function AboutAffiliateProgram() {
   const [isDescrOpened, setIsDescrOpened] = useState(false)
 
   const [link, setLink] = useState('')
-  const [promocodeCopied, setPromocodeCopied] = useState(false)
-  const [refLinkCopied, setRefLinkCopied] = useState(false)
 
   useEffect(() => {
     if (referralLink) {
@@ -34,14 +30,6 @@ export default function AboutAffiliateProgram() {
     }
     dispatch(affiliateOperations.getReferralLink(signal, setIsLoading))
   }, [])
-
-  const showPrompt = fn => {
-    fn(true)
-
-    setTimeout(() => {
-      fn(false)
-    }, 2000)
-  }
 
   const toggleDescrHeight = () => {
     if (!isDescrOpened) {
@@ -58,20 +46,6 @@ export default function AboutAffiliateProgram() {
     const newLink = arr.join('')
 
     setLink(newLink)
-  }
-
-  const handleCopyText = field => {
-    if (field === 'link') {
-      if (!link) {
-        return
-      }
-
-      showPrompt(setRefLinkCopied)
-      navigator.clipboard.writeText(link)
-    } else if (field === 'promocode') {
-      showPrompt(setPromocodeCopied)
-      navigator.clipboard.writeText(promocode)
-    }
   }
 
   return (
@@ -102,7 +76,7 @@ export default function AboutAffiliateProgram() {
                 {t('about_section.Up to', { value: t('15%') }).toUpperCase()}
               </span>
               <span className={s.percents_categories}>
-                {t('about_section.virtual_servers')}
+                {t('about_section.cloud_vps')}
               </span>
             </li>
             <li className={s.percents_item}>
@@ -141,7 +115,6 @@ export default function AboutAffiliateProgram() {
           <label className={s.label}> {t('about_section.referral_link')}: </label>
           <div
             className={cn(s.copy_field, { [s.selected]: link })}
-            onClick={() => handleCopyText('link')}
             role="button"
             tabIndex={0}
             onKeyUp={() => {}}
@@ -154,19 +127,12 @@ export default function AboutAffiliateProgram() {
               disabled
               value={link}
             />
-            <Icon name="Copy" className={cn(s.copy_icon, { [s.selected]: link })} />
-
-            <CSSTransition
-              in={refLinkCopied}
-              classNames={animations}
-              timeout={150}
-              unmountOnExit
-            >
-              <div className={s.copy_prompt}>
-                <div className={s.prompt_pointer}></div>
-                {t('about_section.link_copied')}
-              </div>
-            </CSSTransition>
+            <CopyText
+              text={link}
+              promptText={t('about_section.link_copied')}
+              onMobileLeft
+              isBtnDisabled={!link}
+            />
           </div>
         </div>
 
@@ -174,7 +140,6 @@ export default function AboutAffiliateProgram() {
           <label className={s.label}>{t('about_section.promocode')}:</label>
           <div
             className={cn(s.copy_field, s.selected)}
-            onClick={() => handleCopyText('promocode')}
             role="button"
             tabIndex={0}
             onKeyUp={() => {}}
@@ -188,19 +153,11 @@ export default function AboutAffiliateProgram() {
               value={promocode}
             />
 
-            <Icon name="Copy" className={cn(s.copy_icon, s.selected)} />
-
-            <CSSTransition
-              in={promocodeCopied}
-              classNames={animations}
-              timeout={150}
-              unmountOnExit
-            >
-              <div className={s.copy_prompt}>
-                <div className={s.prompt_pointer}></div>
-                {t('about_section.promocode_copied')}
-              </div>
-            </CSSTransition>
+            <CopyText
+              text={promocode}
+              promptText={t('about_section.promocode_copied')}
+              onMobileLeft
+            />
           </div>
         </div>
       </div>

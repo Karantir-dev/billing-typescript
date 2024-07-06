@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import cn from 'classnames'
 
 import s from './VDSmobileItem.module.scss'
-import { isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function VDSmobileItem({
   server,
@@ -24,7 +24,6 @@ export default function VDSmobileItem({
   goToPanelFn,
   handleEditSubmit,
   unpaidItems,
-  orderSameTariff,
 }) {
   const { t } = useTranslation(['vds', 'other'])
   const navigate = useNavigate()
@@ -32,6 +31,7 @@ export default function VDSmobileItem({
   const [originName, setOriginName] = useState('')
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   useEffect(() => {
     if (server?.server_name?.$) {
@@ -62,11 +62,6 @@ export default function VDSmobileItem({
   const options = [
     deleteOption,
     {
-      label: t('clone_tariff'),
-      icon: 'Copy',
-      onClick: orderSameTariff,
-    },
-    {
       label: t('instruction'),
       icon: 'Info',
       disabled:
@@ -87,6 +82,7 @@ export default function VDSmobileItem({
       icon: 'Clock',
       disabled:
         (server?.status?.$ !== '3' && server?.status?.$ !== '2') ||
+        server?.status?.$ === '5' ||
         server?.item_status?.$?.trim() === 'Suspended by Administrator' ||
         !rights?.prolong ||
         server?.pricelist?.$?.toLowerCase()?.includes('ddos'),
@@ -131,6 +127,7 @@ export default function VDSmobileItem({
         (server?.status?.$ !== '3' && server?.status?.$ !== '2') || !rights?.history,
       onClick: () => handleToolBtnClick(setIdForHistory),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',

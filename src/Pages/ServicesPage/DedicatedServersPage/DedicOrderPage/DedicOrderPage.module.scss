@@ -175,8 +175,8 @@
   font-size: 15px;
   line-height: 130.5%;
   color: var(--main-text);
-  .disabled & {
-    color: red;
+  &.disabled {
+    color: var(--transparent-color);
   }
 }
 
@@ -294,7 +294,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 85px;
+  height: 106px;
 }
 
 .card_title {
@@ -320,13 +320,9 @@
   font-weight: 300;
 }
 
-.activation_info_hint_wrapper {
-  vertical-align: middle;
-  margin-left: 5px;
-}
-
 .activation_info_hint {
-  width: 250px;
+  max-width: 250px;
+  width: 100%;
 }
 
 .price {
@@ -540,8 +536,6 @@
   }
 
   .tarif_card {
-    width: 201px;
-
     &:not(:last-child),
     &:last-child {
       margin-bottom: 0;
@@ -704,4 +698,29 @@
     margin: unset;
     padding: 0 155px 0 290px;
   }
+}
+
+.no_service_wrapper {
+  max-width: 531px;
+  margin: 30px auto 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  img {
+    margin-bottom: 15px;
+  }
+}
+
+.no_service_title {
+  font-weight: 600;
+  text-align: center;
+  font-size: 18px;
+  color: var(--main-text);
+  margin-bottom: 15px;
+}
+
+.price__filed {
+  margin-top: 15px;
 }

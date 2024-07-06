@@ -6,7 +6,7 @@ import s from './DNSItem.module.scss'
 import { CheckBox, ServerState, Options } from '@components'
 import { useDispatch } from 'react-redux'
 import { dedicOperations } from '@redux'
-import { isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isUnpaidOrder } from '@utils'
 
 export default function DNSItem({
   storage,
@@ -24,6 +24,7 @@ export default function DNSItem({
   const dispatch = useDispatch()
 
   const deleteOption = isUnpaidOrder(storage, unpaidItems)
+  const createTicketOption = useCreateTicketOption(storage.id.$)
 
   const isToolsBtnVisible =
     Object.keys(pageRights)?.filter(
@@ -62,7 +63,8 @@ export default function DNSItem({
     {
       label: t('prolong'),
       icon: 'Clock',
-      disabled: storage?.status?.$ === '1' || !pageRights?.prolong,
+      disabled:
+        storage?.status?.$ === '1' || storage?.status?.$ === '5' || !pageRights?.prolong,
       onClick: () => handleToolBtnClick(setElidForProlongModal),
     },
     {
@@ -77,6 +79,7 @@ export default function DNSItem({
       disabled: !pageRights?.history || storage?.status?.$ === '1',
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
   ]
 
   return (

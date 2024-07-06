@@ -726,16 +726,6 @@
   }
 }
 
-.cardHintWrapper {
-  width: 200px;
-  left: -67px;
-  word-break: normal;
-
-  div div {
-    left: 88%;
-  }
-}
-
 .infoBtnCard {
   &:hover {
     path {
@@ -803,14 +793,6 @@
     }
   }
 
-  .cardHintWrapper {
-    left: -50px;
-
-    div div {
-      left: 80%;
-    }
-  }
-
   .promocodeBtn {
     width: auto;
     margin: 13px 0 0 0;
@@ -840,4 +822,8 @@
       margin-bottom: 35px;
     }
   }
+}
+
+.close_compare {
+  display: none;
 }

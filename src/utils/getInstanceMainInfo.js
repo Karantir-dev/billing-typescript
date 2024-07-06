@@ -1,15 +1,21 @@
 export default function getInstanceMainInfo(item) {
-  const fotboStatus = item.fotbo_status?.$.trim()
+  if (!item) return {}
+  const fotboStatus = item.instance_status?.$.trim().toLowerCase()
   const billingStatus = item.item_status?.$.trim()
 
   const isStopped = fotboStatus === 'stopped'
   const isResized = fotboStatus === 'resized'
   const isRescued = fotboStatus === 'rescued'
-  const isSuspended = fotboStatus === 'suspend'
+  const isSuspended = fotboStatus === 'suspended'
+  const isBootedFromISO = fotboStatus === 'booted_from_iso'
+  const isImageUploading = fotboStatus === 'image_uploading'
+  const isErrorStatus = fotboStatus === 'error'
   const isWindows = item.instances_os?.$.includes('Windows')
 
   const isNotActive =
-    item.status.$ === '1' || item.status.$ === '4' || item.status.$ === '5'
+    item?.status?.$ === '1' || item?.status?.$ === '4' || item?.status?.$ === '5'
+
+  const isDeleting = billingStatus === 'Deletion in progress'
 
   const isProcessing =
     fotboStatus === 'stopping' ||
@@ -22,12 +28,25 @@ export default function getInstanceMainInfo(item) {
     fotboStatus === 'rescuing' ||
     fotboStatus === 'unrescuing' ||
     fotboStatus === 'rebuilding' ||
-    billingStatus === 'Activation in progress'
+    fotboStatus === 'suspending' ||
+    fotboStatus === 'booting_from_iso' ||
+    billingStatus === 'Activation in progress' ||
+    isImageUploading ||
+    isDeleting
 
-  const isDisabled = isProcessing || isNotActive || isSuspended
+  const isDisabled =
+    isProcessing ||
+    isNotActive ||
+    isSuspended ||
+    isDeleting ||
+    isImageUploading ||
+    isErrorStatus
 
-  const displayName = item.servername?.$ || item.name.$
-  const displayStatus = fotboStatus?.replaceAll('_', ' ') || billingStatus
+  const displayName = item?.servername?.$ || item?.name?.$
+  const displayStatus = isDeleting
+    ? billingStatus
+    : fotboStatus?.replaceAll('_', ' ') || billingStatus
+
   return {
     isNotActive,
     isDisabled,
@@ -39,5 +58,9 @@ export default function getInstanceMainInfo(item) {
     isWindows,
     displayName,
     displayStatus,
+    isDeleting,
+    isBootedFromISO,
+    isImageUploading,
+    isErrorStatus,
   }
 }

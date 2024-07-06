@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { useOutsideAlerter } from '@utils'
-import { HintWrapper, Icon } from '@components'
+import { TooltipWrapper, Icon } from '@components'
 import { useDispatch } from 'react-redux'
 import { billingActions, billingOperations } from '@src/Redux'
 
@@ -204,13 +204,9 @@ export default function Component(props) {
         {mobile && (
           <div className={s.item_title}>{t('Payment method', { ns: 'other' })}:</div>
         )}
-        <HintWrapper
-          disabled={t(paymethod).length < 10}
-          popupClassName={s.HintWrapper}
-          label={t(paymethod)}
-        >
+        <TooltipWrapper disabled={t(paymethod).length < 10} content={t(paymethod)}>
           <div className={cn(s.item_text, s.sixth_item)}>{t(paymethod)}</div>
-        </HintWrapper>
+        </TooltipWrapper>
       </div>
       <div className={s.tableBlockSeventh}>
         {mobile && <div className={s.item_title}>{t('status', { ns: 'other' })}:</div>}

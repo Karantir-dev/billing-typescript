@@ -36,6 +36,13 @@
   "-- none --": "Не обрано",
   "Yes": "Так",
   "No": "Ні",
+  "Sunday": "Неділя",
+  "Monday": "Понеділок",
+  "Tuesday": "Вівторок",
+  "Wednesday": "Середа",
+  "Thursday": "Четвер",
+  "Friday": "П'ятниця",
+  "Saturday": "Субота",
   "services": {
     "Virtual server": "Віртуальний сервер",
     "Shared hosting": "Віртуальний хостинг",
@@ -83,6 +90,8 @@
   "Passport": "Паспорт",
   "Series and passport number": "Серія та номер паспорта",
   "Is a required field": "Обов'язкове поле",
+  "Invalid time format": "Неправильний формат часу",
+  "At least one day must be selected": "Необхідно вибрати принаймні один день",
   "cnp_validation": "CNP має містити 13 цифр",
   "error_type": "Сторінку не знайдено",
   "error_text": "Схоже, щось пішло не так. Приносимо вибачення за незручності",
@@ -127,7 +136,6 @@
   "Order date (from/to)": "Дата замовлення (від/до)",
   "ok": "OK",
   "FTP server": "FTP-сервер",
-
   "Trial": "Пробний",
   "Trial period": "10 днів",
   "Month": "Місяць",
@@ -141,7 +149,6 @@
   "Connection URL": "URL для підключення",
   "Service deletion": "Видалення послуги",
   "Are you sure you want to delete service": "Ви впевнені, що хочете видалити послугу",
-
   "IP-address removing": "Видалення IP-адреси",
   "DNS-hosting activation": "Активація DNS-хостингу",
   "FTP storage activation": "Активація сховища FTP",
@@ -203,20 +210,17 @@
   "email_confirmed": "Електронну адресу {{email}} підтверджено",
   "address_error_msg": "Введіть повну адресу",
   "symbols_restricted": "Спеціальні символи заборонені",
-
   "discounts_up_to": "ЗНИЖКИ ДО {{amount}}",
   "halloween_discount": "на Хостинг, VPS, Виділені сервери та Сервер для Forex",
   "discounts": "ЗНИЖКИ",
   "on_halloween": "НА ХЕЛОУІН",
   "promotion_period": "Акція діє з 31 жовтня до 2 листопада",
-
   "for virtual hosting": "на віртуальний хостинг",
   "for VPS": "на VPS",
   "for dedicated servers": "на виділені сервери",
   "for VPN": "на VPN",
   "BLACK FRIDAY": "ЧОРНА П`ЯТНИЦЯ",
   "IN ZOMRO": "В ZOMRO",
-
   "Shared hosting": "Віртуальний хостингг",
   "Dedicated server": "Виділений сервер",
   "Server for Forex": "Сервер для Forex",
@@ -232,30 +236,21 @@
   "Dedicated server (promo code YT52BD)": "Виділений сервер (промокод YT52BD)",
   "The above promo codes can only be used once.": "Наведені вище промокоди можна використовувати лише 1 раз",
   "Number of auto-renewable services": "К-ть автоматично поновлюваних послуг",
-
   "On Valentines Day": "У ДЕНЬ ВСІХ ЗАКОХАНИХ",
   "CASHBACK": "КЕШБЕК",
-
   "The promotion is valid from 14.02 to 16.02": "Акція діє з 14.02 по 16.02",
-
   "Order any of our services or top up your balance for any amount and get a 14% cashback to your account in your personal account.": "Замовте будь-які наші послуги або поповніть баланс на будь-яку суму та отримайте кешбек 14% на рахунок в особистому кабінеті.",
   "Cashback you can spend on our services in the future": "Кешбек ви зможете витратити на наші послуги у майбутньому",
-
   "for all services from 14.02 to 16.02": "на всі послуги з 14.02 до 16.02",
   "CASHBACK 14%": "КЕШБЕК 14%",
-
   "more": "детальніше",
-
   "month count 1": "місяць",
   "month count 3/24": "місяці",
   "month count 6/12/36": "місяців",
-
   "fraud_invalid_code": "Неправильний код підтвердження",
   "The phone has been successfully verified": "Телефон успішно перевірено",
   "payment_saved": "Спосіб оплати успішно збережено",
-
   "this_phone_exists": "Цей номер телефону вже використовувався для активації іншого облікового запису клієнта, вкажіть інший номер телефону або зв'яжіться зі службою технічної підтримки для підтвердження номера телефону",
-
   "certificate_code": "Код сертифіката",
   "enter_certificate_code": "Введіть код сертифіката",
   "certificate_not_exist": "Сертифікат не існує",
@@ -273,5 +268,7 @@
   "new_ticket_message": "Нове повідомлення в тікеті #{{id}}",
   "long_request": "Обробка запиту не вдалась, спробуйте ще раз",
   "Invalid SSH public key": "Недійсне значення відкритого SSH ключа",
-  "A key already exists with the same name": "Ключ з такою ж назвою вже існує"
+  "A key already exists with the same name": "Ключ з такою ж назвою вже існує",
+  "copied": "Скопійовано",
+  "error_occured": "Виникла помилка"
 }

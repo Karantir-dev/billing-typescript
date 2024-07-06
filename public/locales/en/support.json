@@ -47,5 +47,7 @@
   "Ticket was moved to Archive": "Ticket was moved to Archive",
   "Ticket was removed from Archive": "Ticket was removed from Archive",
   "The ticket was split. New discussion in the ticket": "The ticket was split. New discussion in the ticket {{ticket}}",
-  "The ticket was split. Previous discussion in the ticket": "The ticket was split. Previous discussion in the ticket {{ticket}}"
+  "The ticket was split. Previous discussion in the ticket": "The ticket was split. Previous discussion in the ticket {{ticket}}",
+  "create_ticket": "Create ticket",
+  "choose_service": "Choose service"
 }

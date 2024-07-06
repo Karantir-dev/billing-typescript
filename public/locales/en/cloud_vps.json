@@ -1,6 +1,10 @@
 {
   "Instance specifications": "Instance specifications",
   "Image": "Image",
+  "Snapshot": "Snapshot",
+  "Backup": "Backup",
+  "manual": "Manual",
+  "auto": "On schedule",
   "Flavor": "Flavor",
   "Memory": "Memory",
   "Virtual CPUs": "Virtual CPUs",
@@ -28,7 +32,6 @@
   "Price": "Price",
   "Access IP": "Access IP",
   "OS": "OS",
-  "create_instance_btn": "Order",
   "day": "Day",
   "hour": "Hour",
   "Yes": "Yes",
@@ -54,15 +57,16 @@
   "Name can only contain": "The name must contain only valid characters: Latin letters, numbers, spaces, dashes or underscores",
   "pass_method_ssh": "Connect to your instance using SSH key pair",
   "pass_method_password": "Connect to your instance as {{user}} user via password",
-  "windows_password_warning": "Please create an instance and go to the console to set a password",
+  "windows_password_warning": "After connecting the image, go to the console to set the password.",
   "resize_popup_text": "Check if files have been successfully migrated to the new instance disk. Choose Confirm resize from the instance menu to confirm migration was successful, otherwise choose Revert resize to revert back to the initial disk.",
+  "by_admin": "Suspended by admin",
   "sort": "Sort by",
   "Active": "Active",
   "Suspended": "Suspended",
   "Stopped": "Stopped",
   "Verify Resize": "Verify Resize",
   "Not selected": "Not selected",
-  "fotbo_status": "Status",
+  "instance_status": "Status",
   "pricelist": "Tariff plan",
   "period": "Period",
   "datacenter": "Datacenter",
@@ -82,6 +86,9 @@
   "Unrescue": "Unrescue",
   "Confirm Resize": "Confirm Resize",
   "Revert Resize": "Revert Resize",
+  "unmount_iso": "Unmount ISO",
+  "restore": "Restore with this image",
+  "temp_password": "Rescue temporary password",
   "confirm": {
     "title": {
       "stop": "Stop instance",
@@ -89,7 +96,8 @@
       "reboot": "Reboot instance",
       "resize_confirm": "Confirm instance resize",
       "resize_rollback": "Revert instance resize",
-      "unrescue": "Unrescue instance"
+      "unrescue": "Unrescue instance",
+      "unmount": "Unmount instance"
     },
     "text": {
       "stop": "Are you sure you want to stop instance {{name}}?",
@@ -97,16 +105,22 @@
       "reboot": "Are you sure you want to reboot instance {{name}}?",
       "resize_confirm": "Are you sure you want to resize instance {{name}}?",
       "resize_rollback": "Are you sure you want to revert instance {{name}}?",
-      "unrescue": "Are you sure you want to unrescue instance {{name}}?"
+      "unrescue": "Are you sure you want to unrescue instance {{name}}?",
+      "unmount": "Are you sure you want to unmount instance {{name}}?"
     }
   },
   "rebuild_modal": {
     "title": {
       "bootimage": "Rescue",
-      "rebuild": "Rebuild instance"
+      "rescue": "Rescue",
+      "rebuild": "Rebuild instance",
+      "boot_from_iso": "Boot from ISO",
+      "restore": "Restore from image"
     },
     "text": {
       "bootimage": "Select distribution",
+      "rescue": "Select distribution",
+      "boot_from_iso": "Select distribution",
       "rebuild": "Select boot source"
     },
     "warning": {
@@ -115,14 +129,18 @@
     },
     "os_description": {
       "shr": "Here are images uploaded by technical support staff for you",
-      "pub": "Here are publicly available LiveCD images of various systems"
+      "pub": "Here are publicly available images of various systems",
+      "image": "Here are publicly available images of various systems",
+      "own": "Your uploaded images"
     }
   },
   "server_location": "Server location",
   "location": "Location",
   "server_image": "Server image",
   "server_size": "Server size",
+  "server_type": "Server type",
   "cloud_ipv6": "Enable only IPv6",
+  "ip_address_copied": "IP address copied",
   "price_per": "Price per",
   "authentication_method": "Choose Authentication Method",
   "create_instance": "Create instance",
@@ -135,12 +153,14 @@
   "key_copied": "SSH key copied",
   "rescue_tab": {
     "shr": "Shared",
-    "pub": "Public"
+    "pub": "Public",
+    "image": "Public",
+    "own": "My Images"
   },
   "create": "Create",
   "download": "Download",
   "hint_description": {
-    "period": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours unused on the day of the order is returned to the balance if the server has not been deleted before 08:30 GMT+2 the next day. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable",
+    "period": "Payment for the service is debited from the balance in your personal account immediately 24 hours in advance, regardless of the time of order. Money for hours not used on the day of order is returned to the balance if the server has not been deleted within 24 hours from the moment of activation. Otherwise, recalculation and refund will not occur. Unused hours on the day of removal are non-refundable.",
     "ip": "Your provider should support IPv6 functionality"
   },
   "excluding_vat": "Excluding VAT",
@@ -149,5 +169,163 @@
   "insufficient_funds": "Insufficient balance. Total price including VAT is {{price}} euros. Please <button>top up</button> your balance and try again.",
   "choose_tariff": "Choose new tariff",
   "upgrade_cost": "Upgrade cost:",
-  "resize_explanation": "The upgrade cost is the difference between the cost of the current and new tariff."
+  "resize_explanation": "The upgrade cost is the difference between the cost of the current and new tariff.",
+  "windows_os_notice": "Please note: Windows-based servers only include a trial license type. To obtain a license for Microsoft Windows products, please contact the vendors",
+  "traffic_per_cycle": "Traffic per cycle",
+  "traffic_per_month": "Traffic per month",
+  "start_date": "Start date",
+  "end_date": "End Date",
+  "incoming": "Incoming",
+  "outgoing": "Outgoing",
+  "total": "Total",
+  "info": "Info",
+  "select_metrics": "Select metrics type",
+  "metrics": {
+    "interface_traffic": {
+      "$packets_in": "Packets in",
+      "$packets_out": "Packets out",
+      "$bytes_in": "Bytes in",
+      "$bytes_out": "Bytes out"
+    },
+    "cpu_util": {
+      "$value": "CPU"
+    },
+    "period": {
+      "1h": "Last hour",
+      "24h": "24 hours",
+      "168h": "7 days",
+      "720h": "30 days"
+    },
+    "type": {
+      "network_metrics": "Network metrics",
+      "cpu_metrics": "CPU metrics"
+    },
+    "scales": {
+      "packets": "Quantity",
+      "bytes": "Traffic",
+      "cpu": "AVG usage, %"
+    }
+  },
+  "metrics_chart_empty": "No data available to generate the chart",
+  "name": "Name",
+  "type": "Type",
+  "region": "Region",
+  "created_at": "Created at",
+  "rotation_days": "Days",
+  "rotation_time": "Time",
+  "size": "Size",
+  "os": "OS",
+  "price_per_day": "Price/day",
+  "edit": "Edit",
+  "launch": "Create a new server with this image",
+  "copy": "Copy",
+  "delete": "Delete",
+  "disk_format": "Disk format",
+  "pcs": "pcs.",
+  "create_snapshot": "Create Snapshot",
+  "create_backup": "Create New Backup",
+  "create_backup_schedule": "Create new schedule",
+  "rotation_time_descr": "Please note that the time will change depending on the transition to daylight saving time or standard time.",
+  "boot_from_iso": "Boot from ISO",
+  "backup_type": "Backup type",
+  "snapshot": {
+    "create": "Create snapshot for instance",
+    "create_warning": "Instance will not be available while the snapshot is being processed.",
+    "limit_value": "Instances created for today",
+    "limit_reached": "You have reached the limit for creating snapshots for today."
+  },
+  "backup": {
+    "create": "Create backup for instance",
+    "create_warning": "Instance will not be available while the backup is being processed.",
+    "count": "Number of backups",
+    "backup_rotation": "Backup rotation",
+    "value_in_a_range": "The value must be in the range from 1 to 10",
+    "limit_value": "Backups created for today",
+    "backup_rotation_changed": "Backup rotation quantity changed",
+    "rotation_info": "Maximum number of scheduled backups that will be stored (older copies will be overwritten)",
+    "limit_reached": "You have reached the limit for creating backups for today."
+  },
+  "schedule_backups": {
+    "create": "Create backup schedule for instance",
+    "edit": "Edit backup schedule for instance",
+    "warning": "The instance will be unavailable during the backup."
+  },
+  "empty_list": "Empty list",
+  "create_image": "Create image",
+  "image": {
+    "create": "Create new image",
+    "image_name": "Image name",
+    "min_disk": "Minimum disk size (GB)",
+    "min_ram": "Minimum required RAM (GB)",
+    "disk_format": "Disk format",
+    "os_distro": "OS distro",
+    "os_version": "OS version",
+    "architecture": "Architecture",
+    "url": "Source",
+    "url_placeholder": "Enter URL",
+    "protected": "Protected from deletion",
+    "name": {
+      "image": "Image name",
+      "snapshot": "Snapshot name",
+      "backup": "Backup name"
+    },
+    "description": {
+      "image_name": "Set a display name that will reflect what the image contains.",
+      "min_disk": "This property will tell OpenStack Compute what the minimum required disk size is for this image. This allows you to set a limit in order to avoid potential problems while creating an Instance with a lower disk size than the installed software on that image.",
+      "min_ram": "Minimum required RAM (GB)Like the minimum required disk size, this option allows you to set a limit for the minimum required RAM an instance created from this image will required in order to run properly.",
+      "os": "These special attributes allows Zomro to show the distro icon next to each instance created from this image and allows OpenStack to properly create an Instance especially for Windows or other non Linux distributions.",
+      "protected": {
+        "image": "Set this option in order to protect the image from accidental deletion.",
+        "snapshot": "Set this option in order to protect the snapshot from accidental deletion.",
+        "backup": "Set this option in order to protect the backup from accidental deletion."
+      }
+    },
+    "copy_title": "Create Copy",
+    "edit": {
+      "image": "Update image",
+      "snapshot": "Update snapshot",
+      "backup": "Update backup"
+    }
+  },
+  "change_access_method": "Change access data",
+  "new_access_method_warning": "Setting a new access method may not work for modified images.",
+  "delete_image": "Delete image",
+  "delete_image_text": "Are you sure you want to delete image \"{{name}}\"?",
+  "delete_schedule": "Delete schedule",
+  "delete_schedule_text": "Are you sure you want to delete schedule \"{{name}}\"?",
+  "details": {
+    "title": "Details",
+    "fleio_id": "ID",
+    "region": "Region",
+    "image_size": "Size",
+    "min_ram": "Minimum required RAM",
+    "min_disk": "Minimum disk size",
+    "created": "Created at",
+    "updated": "Updated at",
+    "architecture": "Architecture",
+    "disk_format": "Disk format",
+    "os_distro": "OS distro",
+    "hypervisor_type": "Hypervisor type",
+    "os_version": "OS version",
+    "fleio_status": "Status",
+    "visibility": "Visibility",
+    "image_type": "Type",
+    "url": "URL",
+    "backup_type": "Backup type",
+    "instances_id": "Server ID"
+  },
+  "sold_out_messsage": "Unfortunately, this plan is currently sold out!",
+  "sold_out_description": "You can buy it now and your server will be activated as soon as we have resources. Usually it takes no more than 3 days. You will receive a notification about the activation of the service using the method selected in <a>profile settings</a>. Tariffing for the service will begin from the moment the server is activated, and the funds written off for the purchase will be counted towards payment for the first day of use.",
+  "move_the_image": "Do you need a server in another DC?<br/> <a>Copy the image</a> to the DC in which you want to create a server.",
+  "no_tariffs_for_launch": "No tariffs match the current image's minimum required parameters. Check the values of the minimum disk size and minimum RAM parameters set into the image details and adjust them if necessary",
+  "sunday": "Sun",
+  "monday": "Mon",
+  "tuesday": "Tue",
+  "wednesday": "Wed",
+  "thursday": "Thu",
+  "friday": "Fri",
+  "saturday": "Sat",
+  "value_too_large": "The value cannot be greater than {{number}}",
+  "value_too_short": "The value cannot be less than {{number}}",
+  "functionality_unavailable": "This functionality is unavailable when the status is \"{{status}}\""
 }

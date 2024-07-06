@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Formik, Form } from 'formik'
@@ -11,6 +11,7 @@ import {
   SelectGeo,
   Modal,
   Icon,
+  TooltipWrapper,
 } from '@components'
 import { payersOperations, payersSelectors, authSelectors } from '@redux'
 import { OFERTA_URL, PRIVACY_URL } from '@config/config'
@@ -28,8 +29,6 @@ export default function ModalAddPayer(props) {
   const { t } = useTranslation(['payers', 'other', 'trusted_users', 'domains'])
 
   const { elid, closeAddModalHandler } = props
-
-  const dropdownDescription = useRef(null)
 
   const payersSelectLists = useSelector(payersSelectors.getPayersSelectLists)
   const payersSelectedFields = useSelector(payersSelectors.getPayersSelectedFields)
@@ -70,7 +69,10 @@ export default function ModalAddPayer(props) {
       ? Yup.string().required(t('Is a required field', { ns: 'other' }))
       : null,
     cnp:
-      payersSelectedFields?.profiletype === '1' && payersSelectedFields?.country === '181'
+      payersSelectedFields?.profiletype === '1' &&
+      (payersSelectedFields?.country === '181' ||
+        payersSelectedFields?.country_physical === '181') &&
+      !payersSelectedFields?.cnp
         ? Yup.string()
             .required(t('Is a required field', { ns: 'other' }))
             .matches(CNP_REGEX, t('cnp_validation', { ns: 'other' }))
@@ -200,7 +202,9 @@ export default function ModalAddPayer(props) {
                     />
 
                     {payersSelectedFields?.profiletype === '1' &&
-                    payersSelectedFields?.country === '181' ? (
+                    (payersSelectedFields?.country === '181' ||
+                      payersSelectedFields?.country_physical === '181') &&
+                    !payersSelectedFields?.cnp ? (
                       <InputField
                         inputWrapperClass={s.inputHeight}
                         name="cnp"
@@ -312,12 +316,14 @@ export default function ModalAddPayer(props) {
                         inputClassName={s.field}
                       />
 
-                      <button type="button" className={s.infoBtn}>
+                      <TooltipWrapper
+                        wrapperClassName={s.infoBtn}
+                        className={s.descriptionBlock}
+                        content={t('address_format', { ns: 'other' })}
+                        place="top-end"
+                      >
                         <Icon name="Info" />
-                        <div ref={dropdownDescription} className={s.descriptionBlock}>
-                          {t('address_format', { ns: 'other' })}
-                        </div>
-                      </button>
+                      </TooltipWrapper>
                     </div>
                   </div>
                 </div>

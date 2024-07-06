@@ -27,6 +27,15 @@
   "wordpress": "Wordpress hosting",
   "wordpress_order": "Wordpress hosting order",
   "cloud_vps": "Cloud VPS",
+  "Instances": "Instances",
   "ssh_keys": "SSH keys",
-  "create_instance": "Create virtual server"
+  "create_instance": "Create virtual server",
+  "premium": "Premium VPS",
+  "basic": "Basic VPS",
+  "network_traffic": "Network Traffic",
+  "metrics": "Metrics",
+  "images": "Images",
+  "snapshots": "Snapshots",
+  "backups": "Backups",
+  "backup_schedules": "Backup schedules"
 }

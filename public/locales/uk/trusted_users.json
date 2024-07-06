@@ -6,14 +6,12 @@
     "read_more": "Читати більше",
     "read_less": "Приховати",
     "users_title": "Ваші користувачі",
-
     "table_header": {
       "email": "Email",
       "name": "ПІБ або назва",
       "full_access": "Повний доступ",
       "status": "Статус"
     },
-
     "user_cards": {
       "turn_on_field": "Увімк.",
       "turn_off_field": "Вимк.",
@@ -22,14 +20,12 @@
       "yes": "Так",
       "no": "Ні",
       "warning_message": "Цей користувач має повний доступ, якщо Ви бажаєте керувати конкретними правами, будь ласка, відключіть повний доступ",
-
       "drop_list": {
         "settings": "Налаштування",
         "access_rights": "Права доступу",
         "delete": "Видалити"
       }
     },
-
     "alerts": {
       "remove": {
         "title": "Видалення користувача",
@@ -89,11 +85,9 @@
       "password": "Обов'язкове поле для заповнення",
       "conf_password": "Обов'язкове поле для заповнення"
     },
-
     "rights_alert": {
       "title_short": "Права доступу",
       "title_long": "Права доступу довіреного користувача",
-
       "TRANSLATION FOR CLIENT SECTION": "TRANSLATION FOR CLIENT SECTION",
       "customer": "Клієнт",
       "clientoption": "Профіль",
@@ -114,11 +108,9 @@
       "rights2_user_suspend": "$t(Деактивувати)",
       "rights2_user_hardfilter": "$t(Фільтр)",
       "rights2_user_filter#create": "$t(Фільтр)",
-
       "coupon_use": "Використати сертифікат",
       "coupon_use#read": "Читання даних форми доступне",
       "coupon_use#write": "Збереження даних доступне",
-
       "profile": "Платники",
       "profile_add#create": "$t(Додати)",
       "profile_edit": "$t(Редагувати)",
@@ -132,21 +124,18 @@
       "profile_edit#write": "Редагування інформації про платника (доступ дозбереження даних)",
       "profile_reconciliation#read": "Друк для звіряння (доступ до читання даних форми)",
       "profile_reconciliation#write": "Друк для звіряння (доступ до збереження даних)",
-
       "service_profile": "Контакти домену",
       "service_profile_edit#create": "$t(Додати)",
       "service_profile_edit": "$t(Редагувати)",
       "service_profile_delete": "$t(Видалити)",
       "service_profile_edit#read": "Параметри контакту (доступ до читання даних форми)",
       "service_profile_edit#write": "Параметри контакту (доступ до збереження даних)",
-
       "affiliate_client": "Реферальна програма",
       "affiliate_client_reward": "Дохід",
       "affiliate_client#read": "Реферальна програма (доступне для читання даних форм)",
       "affiliate_client#write": "Реферальна програма (доступне збереження даних)",
       "affiliate_client_click": "$t(Статистика)",
       "affiliate_client_click_filter#create": "$t(Фільтр)",
-
       "contract": "Договори",
       "contract_edit#create": "$t(Додати)",
       "contract_edit": "$t(Редагувати)",
@@ -157,15 +146,12 @@
       "contract_filter#create": "$t(Фільтр)",
       "contract_edit#read": "Договір (доступне читання даних форм)",
       "contract_edit#write": "Договір (доступне збереження даних)",
-
       "basket": "$t(Кошик)",
       "basket#write": "Кошик (доступне збереження даних)",
       "basket#read": "Кошик (доступне для читання даних форм)",
-
       "order": "$t(Замовлення)",
       "order#read": "Замовлення (доступне для читання даних форм)",
       "order#write": "Замовлення (доступне збереження даних)",
-
       "payment_recurring_stored_methods": "Способи оплати",
       "payment_recurring_stored_methods_edit#create": "$t(Додати)",
       "payment_recurring_stored_methods_edit": "$t(Редагувати)",
@@ -173,13 +159,10 @@
       "payment_recurring_stored_methods_reconfigure": "Налаштувати повторно",
       "payment_recurring_stored_methods_edit#read": "Змінити спосіб оплати (доступне читання даних форм)",
       "payment_recurring_stored_methods_edit#write": "Змінити спосіб оплати (доступне збереження даних)",
-
       "usrparam": "Налаштування користувача",
       "usrparam#read": "Налаштування користувача (доступне для читання даних форм)",
       "usrparam#write": "Налаштування користувача (доступне збереження даних)",
-
       "account_discountinfo": "Знижки",
-
       "TRANSLATION FOR PRODUCTS/SERVICES SECTION": "TRANSLATION FOR PRODUCTS/SERVICES SECTION",
       "mainmenuservice": "Товари/Послуги",
       "dedic": "Виділені сервери",
@@ -220,7 +203,6 @@
       "gotoserver#read": "Перехід до панелі керування (доступ до читання даних форми)",
       "gotoserver#write": "Перехід до панелі керування (доступ до збереження даних)",
       "webconsole": "Консоль",
-
       "domain": "Домени",
       "domain_order_register#create": "Реєстрація",
       "domain_order_transfer#create": "Передача",
@@ -247,7 +229,6 @@
       "domain_doc_edit#write": "Тип документа (доступ до збереження даних)",
       "domain_order_register_new#create": "Реєстрація",
       "domain_order_transfer_new#create": "Перенесення",
-
       "vhost_order#create": "$t(Замовити)",
       "vhost_edit": "$t(Редагувати)",
       "vhost_delete": "$t(Видалити)",
@@ -256,7 +237,6 @@
       "vhost_edit#read": "Редагування послуги (доступне читання даних форми)",
       "vhost_edit#write": "Редагування послуги (доступне збереження даних)",
       "vhost_filter#create": "$t(Фільтр)",
-
       "dnshost": "DNS-хостинг",
       "dnshost_order#create": "$t(Замовити)",
       "dnshost_edit": "$t(Редагувати)",
@@ -266,7 +246,6 @@
       "dnshost_filter#create": "$t(Фільтр)",
       "dnshost_edit#read": "Редагування послуги (доступне для читання даних форми)",
       "dnshost_edit#write": "Редагування послуги (доступне збереження даних)",
-
       "storage": "FTP-сховище",
       "storage_order#create": "$t(Замовити)",
       "storage_edit": "$t(Редагувати)",
@@ -276,7 +255,6 @@
       "storage_filter#create": "$t(Фільтр)",
       "storage_edit#read": "Редагування послуги (доступне для читання даних форми)",
       "storage_edit#write": "Редагування послуги (доступне збереження даних)",
-
       "zabota-o-servere": "Служба догляду за сайтом",
       "zabota-o-servere_order#create": "$t(Замовити)",
       "zabota-o-servere_edit": "$t(Редагувати)",
@@ -286,7 +264,6 @@
       "zabota-o-servere_filter#create": "$t(Фільтр)",
       "zabota-o-servere_edit#read": "Редагування послуги (доступне читання даних форми)",
       "zabota-o-servere_edit#write": "Редагування послуги (доступне збереження даних)",
-
       "forexbox": "Forex сервер",
       "forexbox_order#create": "$t(Замовити)",
       "forexbox_edit": "$t(Редагувати)",
@@ -296,7 +273,6 @@
       "forexbox_filter#create": "$t(Фільтр)",
       "forexbox_edit#read": "Редагування послуги (доступне для читання даних форми)",
       "forexbox_edit#write": "Редагування послуги (доступне збереження даних)",
-
       "vds_order#create": "$t(Замовити)",
       "vds_edit": "$t(Редагувати)",
       "vds_delete": "$t(Видалити)",
@@ -305,7 +281,6 @@
       "vds_filter#create": "$t(Фільтр)",
       "vds_edit#read": "Редагування послуги (доступне для читання даних форми)",
       "vds_edit#write": "Редагування послуги (доступне збереження даних)",
-
       "wuwuwuw_order#create": "$t(Замовити)",
       "wuwuwuw_edit": "$t(Редагувати)",
       "wuwuwuw_delete": "$t(Видалити)",
@@ -314,7 +289,6 @@
       "wuwuwuw_filter#create": "$t(Фільтр)",
       "wuwuwuw_edit#read": "Редагування послуги (доступне читання даних форми)",
       "wuwuwuw_edit#write": "Редагування послуги (доступне збереження даних)",
-
       "vpn": "VPN",
       "vpn_order": "Замовити",
       "vpn_order#create": "$t(Замовити)",
@@ -325,7 +299,6 @@
       "vpn_edit#read": "Редагування послуги (доступне читання даних форми)",
       "vpn_edit#write": "Редагування послуги (доступне збереження даних)",
       "vpn_filter#create": "$t(Фільтр)",
-
       "TRANSLATION FOR BILLING SECTION": "TRANSLATION FOR BILLING SECTION",
       "finance": "Фінанси",
       "payment_recurring_settings": "Автопоповнення балансу",
@@ -335,7 +308,6 @@
       "services_autoprolong": "Автопродовження послуг",
       "payment_recurring_settings#read": "Автопоповнення балансу (доступне для читання даних форм)",
       "payment_recurring_settings#write": "Автопоповнення балансу (доступне збереження даних)",
-
       "payment_add#create": "$t(Додати)",
       "payment_edit": "$t(Редагувати)",
       "payment_add_redirect": "$t(Оплатити)",
@@ -345,7 +317,6 @@
       "payment_orderinfo": "$t(Деталі)",
       "payment_history": "$t(Історія)",
       "payment_filter#create": "$t(Фільтр)",
-
       "payment_orderinfo_edit": "$t(Редагувати)",
       "payment_edit#read": "Властивості платежу (доступне для читання даних форм)",
       "payment_edit#write": "Властивості платежу (доступне збереження даних)",
@@ -365,13 +336,11 @@
       "promisepayment_add#write": "Активація обіцяного платежу (доступне збереження даних)",
       "services_autoprolong_set_paymethod#read": "Вибір способу оплати (доступне для читання даних форм)",
       "services_autoprolong_set_paymethod#write": "Вибір способу оплати (доступне збереження даних)",
-
       "TRANSLATION FOR SUPPORT SECTION": "TRANSLATION FOR SUPPORT SECTION",
       "support": "Підтримка",
       "clientticket": "Запити",
       "clientticket_archive": "Архів запитів",
       "notification": "Повідомлення",
-
       "clientticket_edit#create": "$t(Додати)",
       "clientticket_edit": "$t(Відкрити)",
       "incident#create": "Купити звернення",
@@ -386,30 +355,44 @@
       "notification_view#write": "Запит (доступ до збереження даних)",
       "clientticket_edit#read": "Запит (доступ до читання даних форми)",
       "clientticket_edit#write": "Запит (доступ до збереження даних)",
-
       "TRANSLATION FOR TOOLS SECTION": "TRANSLATION FOR TOOLS SECTION",
       "mainmenutool": "Інструменти",
       "profile_add": "Додати платника",
-
       "TRANSLATION FOR STATISTICS SECTION": "TRANSLATION FOR STATISTICS SECTION",
       "stat": "$t(Статистика)",
       "authlog": "Журнал відвідувань",
       "authlog_filter#create": "$t(Фільтр)",
-
       "TRANSLATION FOR HELP SECTION": "TRANSLATION FOR HELP SECTION",
       "mgrhelp": "Довідка",
       "clienthelp": "Довідка",
-
       "TRANSLATION FOR DASHBOARD SECTION": "TRANSLATION FOR DASHBOARD SECTION",
       "dashboard": "Головна",
       "dashboard_info": "Інформація",
       "dashboard_providers": "Провайдери",
-
       "TRANSLATION FOR PROMISED PAY SECTION": "TRANSLATION FOR PROMISED PAY SECTION",
-
       "TRANSLATION FOR RESELLING SECTION": "TRANSLATION FOR RESELLING SECTION",
       "reselling": "Перепродаж послуг",
-      "availableprice": "Функції перепродажу послуг"
+      "availableprice": "Функції перепродажу послуг",
+      "instances": "Cloud VPS",
+      "instances_order#create": "Замовити",
+      "instances_edit": "Редагувати",
+      "instances_edit#read": "Редагування послуги (доступне для читання даних форми)",
+      "instances_edit#write": "Редагування послуги (доступне збереження даних)",
+      "instances_delete": "Видалити",
+      "instances_resume": "Активувати",
+      "instances_suspend": "Деактивувати",
+      "instances_filter#create": "Фільтр",
+      "instances_fleio_rescue": "Відновити",
+      "instances_fleio_rebuild": "Змінити ОС",
+      "instances_fleio_changepassword": "Зміна пароля",
+      "instances_fleio_vnc": "Консоль управління",
+      "cloud": "Хмарні сервіси",
+      "sshkeys": "Список SSH ключів",
+      "sshkeys_edit#create": "Додати",
+      "sshkeys_edit": "Редагувати",
+      "sshkeys_edit#read": "Перегляд SSH ключів",
+      "sshkeys_edit#write": "Редагування SSH ключів",
+      "sshkeys_delete": "Видалити"
     },
     "Allow_all": "Дозволити все",
     "Add": "Додати",
@@ -443,6 +426,5 @@
   "edit#read": "Редагувати властивості вибраної послуги (доступ до читання даних)",
   "edit#write": "Редагувати властивості вибраної послуги (доступ до збереження даних)",
   "insufficient_rights": "Недостатньо прав для доступу!",
-
   "Unable to delete item due to dependencies.  Delete the objects that depend on it and try again": "Неможливо видалити через існуючі залежності. Для видалення необхідно спочатку видалити залежні елементи"
 }

@@ -1,0 +1,170 @@
+.modal__subtitle {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 700;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // -webkit-line-clamp: 1;
+  &_transparent {
+    font-weight: 400;
+    color: var(--transparent-color);
+  }
+}
+
+.tariff__param_name {
+  color: #b3a9c1;
+  font-size: 14px;
+}
+
+.snapshot_create__footer_wrapper {
+  display: grid;
+  width: 100%;
+  gap: 4px;
+
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.snapshot_create__footer_block {
+  display: grid;
+  gap: 4px;
+  width: fit-content;
+}
+
+.snapshot_create__field_wrapper {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 5px;
+}
+
+.snapshot_create__buttons_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row-reverse;
+    grid-column: 2;
+  }
+}
+
+.cancel_btn {
+  text-decoration: underline;
+}
+
+.copy_modal__wrapper {
+  display: grid;
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.copy_modal__footer_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column-reverse;
+  gap: 16px;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.copy_modal__input_wrapper {
+  @media screen and (max-width: 767px) {
+    padding-bottom: unset;
+  }
+}
+
+.copy_modal__checkbox_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.image_modal {
+  max-width: 950px;
+}
+
+.image_modal_wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.image_modal_fields {
+  display: grid;
+  gap: 15px;
+  width: 100%;
+  @media (min-width: 1024px) {
+    width: 530px;
+    flex-shrink: 0;
+  }
+}
+
+.image_modal_description {
+  @media (max-width: 1023px) {
+    display: none;
+  }
+  h3 {
+    margin-bottom: 5px;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+}
+
+.fields_row {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 10px;
+  }
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.image_modal_input {
+  padding-bottom: 0;
+}
+
+.label__tooltip {
+  display: inline-block;
+  cursor: pointer;
+  svg {
+    vertical-align: middle;
+  }
+}
+
+.hint {
+  max-width: 300px;
+}
+
+.restore_modal {
+  max-width: 1000px;
+}
+
+.restore_modal__body {
+  overflow-x: hidden;
+}
+
+.backup_schedules {
+  display: grid;
+  gap: 15px;
+  margin-top: 15px;
+
+  @media (min-width: 768px) {
+    margin-top: 20px;
+    gap: 20px;
+  }
+}

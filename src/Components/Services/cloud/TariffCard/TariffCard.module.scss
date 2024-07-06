@@ -7,6 +7,7 @@
 
   &.active {
     outline: 1px solid var(--accent-color-light);
+    pointer-events: none;
   }
 
   &.disabled {
@@ -25,6 +26,8 @@
 }
 
 .tariff_title {
+  display: flex;
+  gap: 5px;
   text-align: start;
   font-weight: 700;
   font-size: 16px;
@@ -68,6 +71,50 @@
   font-weight: 700;
   font-size: 16px;
   line-height: 100%;
+  text-align: left;
+}
+
+.warn_icon {
+  width: 24px;
+  height: 24px;
+}
+
+.tooltip_bg {
+  background-color: #fff !important;
+  box-shadow: var(--forms2_shadow);
+}
+
+.tooltip_html {
+  display: flex;
+  gap: 8px;
+  max-width: 400px;
+}
+
+.icon_triangle {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.tooltip_message {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: initial;
+  color: var(--red-text_2);
+}
+
+.tooltip_description {
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: initial;
+}
+
+.link {
+  @extend %link;
+  font-size: inherit;
 }
 
 @media screen and (min-width: 768px) {
@@ -76,7 +123,7 @@
   }
 
   .tariff_title {
-    font-size: 25px;
+    font-size: 22px;
     line-height: 1.28;
   }
 

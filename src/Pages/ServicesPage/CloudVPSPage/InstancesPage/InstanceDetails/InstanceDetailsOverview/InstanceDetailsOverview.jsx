@@ -1,38 +1,34 @@
-import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { cloudVpsOperations, cloudVpsActions, cloudVpsSelectors } from '@redux'
+import { useDispatch } from 'react-redux'
+import { cloudVpsOperations, cloudVpsActions } from '@redux'
 import { CopyText, Loader } from '@components'
-import { getFlagFromCountryName, useCancelRequest, formatCountryName } from '@utils'
-
+import {
+  getFlagFromCountryName,
+  useCancelRequest,
+  formatCountryName,
+  cutDcSuffix,
+} from '@utils'
+import { useCloudInstanceItemContext } from '../../CloudInstanceItemPage/CloudInstanceItemContext'
 import s from './InstanceDetailsOverview.module.scss'
 
 export default function InstanceDetailsOverview() {
   const { t } = useTranslation(['cloud_vps'])
   const dispatch = useDispatch()
-  const location = useLocation()
   const { signal, isLoading, setIsLoading } = useCancelRequest()
 
-  const { state: item } = location
+  const { item } = useCloudInstanceItemContext()
 
   const [instanceInfo, setInstanceInfo] = useState({})
 
   const elid = item?.id?.$
-  const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
-
-  useEffect(() => {
-    elid &&
-      dispatch(
-        cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading),
-      )
-  }, [])
-
   const itemCountry = formatCountryName(item)
 
   useEffect(() => {
-    dispatch(cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo))
-  }, [itemForModals])
+    dispatch(
+      cloudVpsOperations.getInstanceInfo(elid, setInstanceInfo, signal, setIsLoading),
+    )
+  }, [])
 
   return (
     <>
@@ -49,11 +45,11 @@ export default function InstanceDetailsOverview() {
 
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Flavor')}</p>
-                <p className={s.item_info}>{item?.name?.$}</p>
+                <p className={s.item_info}>{cutDcSuffix(item?.name?.$)}</p>
               </div>
 
               <div className={s.info_block_item}>
-                <p className={s.item_name}>{t('Memory')}</p>
+                <p className={s.item_name}>RAM</p>
                 <p className={s.item_info}>{instanceInfo?.Memory?.replace('.', '')}</p>
               </div>
 
@@ -78,12 +74,14 @@ export default function InstanceDetailsOverview() {
             <div className={s.info_block_wrapper}>
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('UUID')}</p>
-                <p className={s.item_info}>{instanceInfo?.fotbo_id}</p>
+                <p className={s.item_info}>{instanceInfo?.instances_uuid}</p>
               </div>
               <div className={s.info_block_item}>
                 <p className={s.item_name}>{t('Created at')}</p>
                 {instanceInfo?.createdate && (
-                  <p className={s.item_info}>{instanceInfo.createdate}</p>
+                  <p className={s.item_info}>
+                    {instanceInfo.createdate} {instanceInfo.opentime}
+                  </p>
                 )}
               </div>
               {/* Region Block */}
@@ -98,7 +96,7 @@ export default function InstanceDetailsOverview() {
                     height={14}
                     alt={itemCountry}
                   />
-                  <p>{itemCountry}</p>
+                  <p>{t(itemCountry)}</p>
                 </div>
               </div>
             </div>
@@ -124,7 +122,10 @@ export default function InstanceDetailsOverview() {
                       <div className={s.network_info}>
                         <p className={s.ip_text}>{isIpv4 ? ip : ip_v6}</p>
 
-                        <CopyText text={isIpv4 ? ip : ip_v6} />
+                        <CopyText
+                          text={isIpv4 ? ip : ip_v6}
+                          promptText={t('ip_address_copied')}
+                        />
                       </div>
                       <button
                         className={s.network_rdns}

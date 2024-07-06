@@ -3,10 +3,9 @@ import {
   InputField,
   Modal,
   ConnectMethod,
-  SoftwareOSBtn,
-  SoftwareOSSelect,
   WarningMessage,
   PageTabBar,
+  OsList,
 } from '@components'
 import { ErrorMessage, Form, Formik } from 'formik'
 import * as Yup from 'yup'
@@ -17,9 +16,15 @@ import { cloudVpsActions, cloudVpsOperations, cloudVpsSelectors } from '@redux'
 import { generatePassword, getInstanceMainInfo } from '@utils'
 
 import s from './Modals.module.scss'
-import { DISALLOW_SPACE, PASS_REGEX, PASS_REGEX_ASCII } from '@utils/constants'
+import {
+  DISALLOW_SPACE,
+  PASS_REGEX,
+  PASS_REGEX_ASCII,
+  DISALLOW_PASS_SPECIFIC_CHARS,
+  IMAGES_TYPES,
+} from '@utils/constants'
 
-const RESCUE_TABS_ORDER = ['shr', 'pub']
+const RESCUE_TABS_ORDER = [IMAGES_TYPES.public, IMAGES_TYPES.own, IMAGES_TYPES.shared]
 
 export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const { t } = useTranslation(['cloud_vps', 'auth', 'other', 'vds'])
@@ -30,20 +35,36 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   const [data, setData] = useState()
   const allSshList = useSelector(cloudVpsSelectors.getAllSshList)
 
+  const [isConnectMethodOpened, setIsConnectMethodOpened] = useState(false)
+
+  const isRebuild = item.rebuild_action === 'rebuild'
+  const isBootFromIso = item.rebuild_action === 'boot_from_iso'
+
+  const select = isRebuild
+    ? 'select_rebuild'
+    : isBootFromIso
+      ? 'select_boot_from_iso'
+      : 'select_boot'
+
   const [state, setState] = useReducer(
     (state, action) => {
       return { ...state, ...action }
     },
-    { zone: 'shr' },
+    { zone: IMAGES_TYPES.own },
   )
-
-  const isRebuild = item.rebuild_action === 'rebuild'
-  const select = isRebuild ? 'select_rebuild' : 'select_boot'
-  const depends = isRebuild ? 'image' : state.zone
 
   const navSections = useMemo(() => {
     const zoneList = data?.slist.find(el => el.$name === 'zone')?.val.map(({ $ }) => $)
-    const renderTabs = new Set([...RESCUE_TABS_ORDER, ...(zoneList || [])])
+
+    /* Filter `RESCUE_TABS_ORDER` leaving only those that are present in `zoneList` */
+    const filteredRescueTabsOrder = RESCUE_TABS_ORDER.filter(tab =>
+      zoneList?.includes(tab),
+    )
+
+    setState({ zone: filteredRescueTabsOrder?.[0] })
+
+    /* Combine the filtered `RESCUE_TABS_ORDER` and all unique elements from `zoneList` */
+    const renderTabs = new Set([...filteredRescueTabsOrder, ...(zoneList || [])])
 
     return [...renderTabs]?.map(zone => ({
       label: t(`rescue_tab.${zone}`),
@@ -51,6 +72,8 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
       localValue: zone,
       onLocalClick: () => {
         setState({ [select]: '', zone })
+
+        setIsConnectMethodOpened(zone === IMAGES_TYPES.own ? false : true)
       },
     }))
   }, [data])
@@ -85,73 +108,35 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
     )
   }, [])
 
-  const renderSoftwareOSFields = (fieldName, current, depends) => {
-    const changeOSHandler = value => {
-      setState({ passwordType: '' })
-      setState({ [fieldName]: value })
-    }
-
-    let dataArr = data?.slist?.find(el => el.$name === fieldName)?.val
-
-    const elemsData = {}
-    dataArr = dataArr?.filter(el => el.$depend === depends && el.$key !== 'null')
-
-    dataArr?.forEach(element => {
-      const itemName = element.$.match(/^(.+?)(?=-|\s|$)/g)
-
-      if (!Object.prototype.hasOwnProperty.call(elemsData, itemName)) {
-        elemsData[itemName] = [element]
-      } else {
-        elemsData[itemName].push(element)
-      }
-    })
-
-    return Object.entries(elemsData).map(([name, el]) => {
-      if (el.length > 1) {
-        const optionsList = el.map(({ $key, $ }) => ({
-          value: $key,
-          label: $,
-        }))
-
-        return (
-          <SoftwareOSSelect
-            key={optionsList[0].value}
-            iconName={name.toLowerCase()}
-            svgIcon={name}
-            itemsList={optionsList}
-            state={current}
-            getElement={item => changeOSHandler(item)}
-          />
-        )
-      } else {
-        return (
-          <SoftwareOSBtn
-            key={el[0].$key}
-            value={el[0].$key}
-            state={current}
-            iconName={name.toLowerCase()}
-            label={el[0].$}
-            onClick={item => changeOSHandler(item)}
-            svgIcon={name}
-          />
-        )
-      }
-    })
-  }
-
   const validationSchema = Yup.object().shape({
     password:
-      ((!isRebuild && !isWindowsOS) ||
-        (isRebuild && (state.passwordType === 'password' || isWindowsOS))) &&
+      ((!isRebuild &&
+        !isWindowsOS &&
+        state.zone !== IMAGES_TYPES.shared &&
+        !isBootFromIso) ||
+        (isRebuild &&
+          (state.passwordType === 'password' || isWindowsOS) &&
+          state.zone === IMAGES_TYPES.public &&
+          !isBootFromIso)) &&
       Yup.string()
         .min(8, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .max(48, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .matches(PASS_REGEX_ASCII, t('warnings.invalid_ascii', { ns: 'auth' }))
         .matches(PASS_REGEX, t('warnings.invalid_pass', { min: 8, max: 48, ns: 'auth' }))
         .matches(DISALLOW_SPACE, t('warnings.disallow_space', { ns: 'auth' }))
-        .required(t('warnings.password_required', { ns: 'auth' })),
+        .matches(
+          DISALLOW_PASS_SPECIFIC_CHARS,
+          t('warnings.disallow_hash', { ns: 'auth' }),
+        )
+        .when('zone', {
+          is: IMAGES_TYPES.public,
+          then: schema =>
+            schema.required(t('warnings.password_required', { ns: 'auth' })),
+        }),
     password_type:
-      isRebuild && Yup.string().required(t('Is a required field', { ns: 'other' })),
+      isRebuild &&
+      state.zone === IMAGES_TYPES.public &&
+      Yup.string().required(t('Is a required field', { ns: 'other' })),
     ssh_keys:
       state.passwordType === 'ssh' &&
       Yup.string()
@@ -165,8 +150,13 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
   })
 
   useEffect(() => {
-    setState({ ssh_keys: allSshList?.[0]?.fotbokeyid.$ })
+    setState({ ssh_keys: allSshList?.[0]?.fleio_key_uuid.$ })
   }, [allSshList])
+
+  const changeOSHandler = value => {
+    setState({ passwordType: '' })
+    setState({ [select]: value })
+  }
 
   return (
     <Modal isOpen={!!item && !!data} closeModal={closeModal} className={s.rebuild_modal}>
@@ -184,17 +174,17 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
             [select]: state?.[select],
             password: state.password || '',
             password_type: state.passwordType,
-            ssh_keys: state.ssh_keys || allSshList?.[0]?.fotbokeyid.$,
+            ssh_keys: state.ssh_keys || allSshList?.[0]?.fleio_key_uuid.$,
           }}
           validationSchema={validationSchema}
           onSubmit={values => {
             const submitData = values
+            submitData.zone = state.zone
+
             if (isRebuild) {
               submitData.enablessh = state.passwordType === 'ssh' ? 'on' : 'off'
             }
-            if (!isRebuild) {
-              submitData.zone = state.zone
-            }
+
             if (isWindowsOS && !isRebuild) {
               submitData.password = generatePassword({
                 length: 10,
@@ -207,6 +197,14 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
           }}
         >
           {({ values, errors, touched }) => {
+            const allImages = data?.slist?.find(el => el.$name === select)?.val
+
+            const osListToRender = useMemo(
+              () =>
+                allImages?.filter(el => el.$depend === state.zone && el.$key !== 'null'),
+              [state.zone],
+            )
+
             return (
               <Form id={'rebuild'}>
                 <div className={s.body}>
@@ -218,17 +216,23 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                   <p className={s.body__text}>
                     {t(`rebuild_modal.text.${item.rebuild_action}`)}
                   </p>
-                  {!isRebuild && (
-                    <>
-                      <PageTabBar sections={navSections} activeValue={state.zone} />
-                      <p>{t(`rebuild_modal.os_description.${state.zone}`)}</p>
-                    </>
-                  )}
+
+                  <PageTabBar sections={navSections} activeValue={state.zone} />
+                  <p>{t(`rebuild_modal.os_description.${state.zone}`)}</p>
 
                   <div>
                     <div className={s.rebuild__os_list}>
-                      {renderSoftwareOSFields(select, values[select], depends)}
+                      <OsList
+                        value={values[select]}
+                        list={osListToRender}
+                        onOSchange={changeOSHandler}
+                      />
                     </div>
+
+                    {isWindowsOS && (
+                      <WarningMessage>{t('windows_os_notice')}</WarningMessage>
+                    )}
+
                     <ErrorMessage
                       className={s.error_message}
                       name={[select]}
@@ -247,10 +251,13 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                         touched={touched}
                         sshList={allSshList.map(el => ({
                           label: el.comment.$,
-                          value: el.fotbokeyid.$,
+                          value: el.fleio_key_uuid.$,
                         }))}
                         sshKey={values.ssh_keys}
                         isWindows={isWindowsOS}
+                        hiddenMode={state.zone === IMAGES_TYPES.own}
+                        isOpened={isConnectMethodOpened}
+                        setIsOpened={setIsConnectMethodOpened}
                       />
                       <ErrorMessage
                         className={s.error_message}
@@ -260,22 +267,22 @@ export const RebuildModal = ({ item, closeModal, onSubmit }) => {
                     </div>
                   ) : isWindowsOS ? (
                     <WarningMessage>{t('windows_password_warning')}</WarningMessage>
-                  ) : (
+                  ) : state.zone === IMAGES_TYPES.public && !isBootFromIso ? (
                     <InputField
-                      inputClassName={s.input}
+                      className={s.rescue_pass_input}
                       name="password"
                       isShadow
                       type="password"
-                      label={`${t('new_password', { ns: 'vds' })}:`}
+                      label={`${t('temp_password', { ns: 'cloud_vps' })}:`}
                       placeholder={t('new_password_placeholder', { ns: 'vds' })}
                       error={!!errors.password}
                       touched={!!touched.password}
-                      isRequired
+                      isRequired={state.zone === IMAGES_TYPES.public}
                       autoComplete="off"
                       onChange={e => setState({ password: e.target.value })}
                       generatePasswordValue={value => setState({ password: value })}
                     />
-                  )}
+                  ) : null}
                 </div>
               </Form>
             )

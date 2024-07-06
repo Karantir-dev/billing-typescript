@@ -18,6 +18,7 @@ export default function ServicesPage(props) {
     registerDomainHandler,
     transfer,
     siteDomainCheckData,
+    billUnavailableDomains,
   } = props
 
   const [domainsList, setDomainsList] = useState(null)
@@ -31,7 +32,11 @@ export default function ServicesPage(props) {
       domains &&
         Object.entries(domains).forEach(d => {
           allResults.push(d)
-          if (selected?.includes(d[1]?.info?.billing_id) && d[1]?.info?.is_available) {
+          if (
+            selected?.includes(d[1]?.info?.billing_id) &&
+            d[1]?.info?.is_available &&
+            !billUnavailableDomains.includes(d[0])
+          ) {
             setIsSelectedHandler(d)
             suggested.push(d)
           }
@@ -52,7 +57,10 @@ export default function ServicesPage(props) {
     }
   }, [domains])
 
-  const itemIsSelected = item => selectedDomains.some(dom => dom[0] === item[0])
+  const itemIsSelected = item =>
+    selectedDomains.some(
+      dom => dom[0] === item[0] && !billUnavailableDomains.includes(item[0]),
+    )
 
   const setIsSelectedHandler = item => {
     const isDomainNameSelected = selectedDomains.some(dom => dom[0] === item[0])
@@ -88,14 +96,17 @@ export default function ServicesPage(props) {
 
     const salePercent = Math.floor(reg === 0 ? 0 : 100 - (100 * reg) / main_price_reg)
 
-    const notAvailable = is_available === false || tld === 'invalid'
+    const notAvailable =
+      is_available === false ||
+      tld === 'invalid' ||
+      billUnavailableDomains.includes(domainName)
 
     return (
       <div
         tabIndex={0}
         role="button"
         onKeyDown={null}
-        key={`domain-${billing_id}`}
+        key={`${domainName}-${billing_id}`}
         className={cn(s.domainItem, {
           [s.selected]: itemIsSelected(d),
           [s.notAvailable]: notAvailable,
@@ -158,7 +169,7 @@ export default function ServicesPage(props) {
 
     return (
       <div
-        key={`${billing_id}`}
+        key={`${domain}-${billing_id}`}
         role="button"
         tabIndex={0}
         onKeyUp={() => {}}
@@ -263,7 +274,7 @@ export default function ServicesPage(props) {
             const { reg, main_price_reg } = price
 
             return (
-              <div className={s.selectedItem} key={`dom_${billing_id}`}>
+              <div className={s.selectedItem} key={`${domainName}_${billing_id}`}>
                 <div className={s.domainName}>{domainName}</div>
                 <div className={s.pricesBlock}>
                   <div className={s.domainPrice}>

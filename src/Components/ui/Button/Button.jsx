@@ -15,6 +15,7 @@ export default function Component(props) {
     dataTestid,
     loading,
     form,
+    textClassName,
   } = props
 
   return (
@@ -38,7 +39,9 @@ export default function Component(props) {
       {loading ? (
         <LoaderDots classname={s.loader} />
       ) : (
-        <span className={s.btn_text}>{label}</span>
+        <span className={cn(s.btn_text, { [textClassName]: textClassName })}>
+          {label}
+        </span>
       )}
     </button>
   )

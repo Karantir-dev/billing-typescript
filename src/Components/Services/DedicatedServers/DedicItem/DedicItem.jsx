@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 import s from './DedicItem.module.scss'
-import { CheckBox, EditCell, HintWrapper, ServerState, Options } from '@components'
+import { CheckBox, EditCell, TooltipWrapper, ServerState, Options } from '@components'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { dedicOperations } from '@redux'
-import { isDisabledDedicTariff, isUnpaidOrder } from '@utils'
+import { isDisabledDedicTariff, isUnpaidOrder, useCreateTicketOption } from '@utils'
 
 export default function DedicItem({
   server,
@@ -32,6 +32,7 @@ export default function DedicItem({
   const [originName, setOriginName] = useState('')
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   useEffect(() => {
     if (server?.server_name?.$) {
@@ -80,6 +81,7 @@ export default function DedicItem({
       icon: 'Clock',
       disabled:
         server?.status?.$ === '1' ||
+        server?.status?.$ === '5' ||
         !rights?.prolong ||
         isDisabledDedicTariff(server?.name?.$),
       onClick: () => handleToolBtnClick(setElidForProlongModal),
@@ -99,7 +101,8 @@ export default function DedicItem({
     {
       label: t('ip_addresses'),
       icon: 'IP',
-      disabled: server.has_ip_pricelist?.$ !== 'on' || !rights?.ip,
+      disabled:
+        server.has_ip_pricelist?.$ !== 'on' || server?.status?.$ === '5' || !rights?.ip,
       onClick: () =>
         navigate(route.DEDICATED_SERVERS_IP, {
           state: { plid: server?.id?.$, isIpAllowedRender: rights?.ip },
@@ -112,6 +115,7 @@ export default function DedicItem({
       disabled: server?.status?.$ === '1' || !rights?.history,
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',
@@ -150,13 +154,13 @@ export default function DedicItem({
         <span className={s.value}>{server?.id?.$}</span>
         <span className={s.value}>
           {server?.domain?.$ ? (
-            <HintWrapper
-              popupClassName={s.HintWrapper}
-              label={server?.domain?.$}
+            <TooltipWrapper
+              disabled={server?.domain?.$.length < 15}
+              content={server?.domain?.$}
               wrapperClassName={cn(s.hint)}
             >
               <span>{server?.domain?.$}</span>
-            </HintWrapper>
+            </TooltipWrapper>
           ) : null}
         </span>
         <span className={s.value}>{server?.ip?.$}</span>

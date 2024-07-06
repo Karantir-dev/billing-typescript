@@ -30,6 +30,7 @@ export { default as CustomPhoneInput } from './ui/CustomPhoneInput/CustomPhoneIn
 export { default as LoginBtnBlock } from './ui/LoginBtnBlock/LoginBtnBlock'
 
 export { default as Select } from './ui/Select/Select'
+export { default as RSelect } from './ui/ReactSelect/ReactSelect'
 export { default as SelectMultiple } from './ui/SelectMultiple/SelectMultiple'
 export { default as SelectGeo } from './ui/SelectGeo/SelectGeo'
 
@@ -44,6 +45,7 @@ export { default as RadioButton } from './ui/RadioButton/RadioButton'
 export { default as Alert } from './ui/Alert/Alert'
 
 export { default as Pagination } from './ui/Pagination/Pagination'
+export { default as PaginationUpdated } from './ui/PaginationUpdated/Pagination'
 export { default as Portal } from './ui/Portal/Portal'
 export { default as PageTabBar } from './ui/PageTabBar/PageTabBar'
 export { default as Loader } from './ui/Loader/Loader'
@@ -52,6 +54,7 @@ export { default as LoaderDots } from './ui/LoaderDots/LoaderDots'
 export { default as CheckBox } from './ui/CheckBox/CheckBox'
 export { default as BreadCrumbs } from './ui/BreadCrumbs/BreadCrumbs'
 export { default as HintWrapper } from './ui/HintWrapper/HintWrapper'
+export { default as TooltipWrapper } from './ui/TooltipWrapper/TooltipWrapper'
 export { default as Backdrop } from './ui/Backdrop/Backdrop'
 
 export { default as DoubleInputField } from './ui/DoubleInputField/DoubleInputField'
@@ -64,10 +67,15 @@ export { default as CertificateModal } from './ui/CertificateModal/CertificateMo
 export { default as InstructionModal } from './ui/InstructionModal/InstructionModal'
 export { default as InputRange } from './ui/InputRange/InputRange'
 export { default as WarningMessage } from './ui/WarningMessage/WarningMessage'
+export { default as WeekdaySelector } from './ui/WeekdaySelector/WeekdaySelector'
 export { default as RadioTypeButton } from './ui/RadioTypeButton/RadioTypeButton'
 export { default as CopyText } from './ui/CopyText/CopyText'
 export { default as Incrementer } from './ui/Incrementer/Incrementer'
 export { default as FixedFooter } from './ui/FixedFooter/FixedFooter'
+export { default as Error } from './ui/Error/Error'
+export { default as CountryButton } from './ui/CountryButton/CountryButton'
+export { default as Filter } from './ui/Filter/Filter'
+export { default as BlockPageMessage } from './ui/BlockPageMessage/BlockPageMessage'
 
 //==========================================ACCESS LOGS==========================================//
 
@@ -171,6 +179,7 @@ export { default as VDSPasswordChange } from './Services/vds/PasswordChange/Pass
 export { default as VdsRebootModal } from './Services/vds/RebootModal/RebootModal'
 export { default as IPeditModal } from './Services/vds/IPeditModal/IPeditModal'
 export { default as FiltersModal } from './Services/vds/FiltersModal/FiltersModal'
+export { default as VPSCompareModal } from './Services/vds/VPSCompareModal/VPSCompareModal'
 
 //==========================================VPN==========================================//
 export { default as VpnFilter } from './Services/vpn/VpnFilter/VpnFilter'
@@ -208,7 +217,6 @@ export { default as SiteCareItem } from './Cart/SiteCareItem/SiteCareItem'
 export { default as VpnItem } from './Cart/VpnItem/VpnItem'
 
 export { default as EmailTrigger } from './EmailTrigger/EmailTrigger'
-export { default as UpdateService } from './UpdateService/UpdateService'
 export { default as MainEmailConfirmation } from './MainEmailConfirmation/MainEmailConfirmation'
 export { default as InputWithAutocomplete } from './ui/InputWithAutocomplete/InputWithAutocomplete'
 export { default as ScrollToFieldError } from './ui/ScrollToFieldError'
@@ -229,7 +237,6 @@ export { default as OrderTariff } from './OrderTariff/OrderTariff'
 
 /** I suggest to rename this section and all of the files with "Cloud" */
 //==========================================Instances==========================================//
-
 export { default as InstancesList } from './Services/Instances/InstancesList/InstancesList'
 export { default as SshList } from './Services/Instances/SshList/SshList'
 
@@ -237,3 +244,8 @@ export { default as ConnectMethod } from './Services/Instances/ConnectMethod/Con
 export { default as InstancesOptions } from './Services/Instances/InstancesOptions/InstancesOptions'
 export { InstanceFiltersModal } from './Services/Instances/Modals'
 export { default as TariffCard } from './Services/cloud/TariffCard/TariffCard'
+export { default as OsList } from './Services/cloud/OsList'
+export { default as CloudTypeSection } from './Services/cloud/CloudTypeSection'
+export { default as ImagesList } from './Services/cloud/ImagesList/ImagesList'
+export { default as ImagesOptions } from './Services/cloud/ImagesOptions/ImagesOptions'
+export { default as SoldOutModal } from './Services/cloud/SoldOutModal/SoldOutModal'

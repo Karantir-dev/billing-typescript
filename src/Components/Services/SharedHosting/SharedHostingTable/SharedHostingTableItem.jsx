@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import { CheckBox, ServerState, Options } from '@components'
 import s from './SharedHostingTable.module.scss'
-import { isUnpaidOrder } from '@src/utils'
+import { isUnpaidOrder, useCreateTicketOption } from '@src/utils'
 
 export default function Component(props) {
   const {
@@ -42,6 +42,7 @@ export default function Component(props) {
   }
 
   const deleteOption = isUnpaidOrder(el, unpaidItems)
+  const createTicketOption = useCreateTicketOption(id)
 
   const options = [
     deleteOption,
@@ -60,7 +61,7 @@ export default function Component(props) {
     {
       label: t('prolong', { ns: 'vds' }),
       icon: 'Clock',
-      disabled: !rights?.prolong || el?.status?.$ === '1',
+      disabled: !rights?.prolong || el?.status?.$ === '1' || el?.status?.$ === '5',
       onClick: () => {
         prolongVhostHandler()
         setElidForProlongModal([id])
@@ -69,13 +70,14 @@ export default function Component(props) {
     {
       label: t('edit', { ns: 'other' }),
       icon: 'Edit',
-      disabled: !rights?.edit,
+      disabled: el?.status?.$ === '5' || !rights?.edit,
       onClick: () => editVhostHandler(),
     },
     {
       label: t('trusted_users.Change tariff', { ns: 'trusted_users' }),
       icon: 'ChangeTariff',
-      disabled: !rights?.changepricelist || el?.status?.$ === '1',
+      disabled:
+        !rights?.changepricelist || el?.status?.$ === '1' || el?.status?.$ === '5',
       onClick: changeTariffVhostHandler,
     },
     {
@@ -84,6 +86,7 @@ export default function Component(props) {
       disabled: !rights?.history,
       onClick: historyVhostHandler,
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',

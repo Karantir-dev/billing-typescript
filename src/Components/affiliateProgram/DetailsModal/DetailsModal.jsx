@@ -1,5 +1,4 @@
 import cn from 'classnames'
-import { nanoid } from 'nanoid'
 import { useTranslation } from 'react-i18next'
 import { useMediaQuery } from 'react-responsive'
 import PropTypes from 'prop-types'
@@ -38,7 +37,7 @@ export default function DetailsModal({ details, closeModal }) {
             <span className={s.date}>{details[0]?.cdate?.$}</span>
           </p>
           <button type="button" onClick={closeModal}>
-            <Icon  name="Cross" className={s.icon_cross} />
+            <Icon name="Cross" className={s.icon_cross} />
           </button>
         </div>
 
@@ -68,7 +67,7 @@ export default function DetailsModal({ details, closeModal }) {
                   <span className={s.row_value}>{referal.$}</span>
                 </li>
               ) : (
-                <li className={s.list_item} key={nanoid()}>
+                <li className={s.list_item} key={index}>
                   <span className={s.label}>{t('income_section.service')}:</span>
                   <span>{t(`services.${name.$.trim()}`, { ns: 'other' })}</span>
 

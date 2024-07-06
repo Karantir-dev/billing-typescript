@@ -1,0 +1,28 @@
+.dots {
+  transform: rotate(90deg);
+  line-height: 0;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  justify-content: flex-end;
+  svg {
+    fill: var(--icon-color_2);
+    &:hover {
+      fill: url('#gradient');
+    }
+  }
+
+  :disabled {
+    svg {
+      fill: var(--disabled_icon_color);
+    }
+  }
+}
+
+.option__btn_text {
+  white-space: normal;
+  min-width: 220px;
+}

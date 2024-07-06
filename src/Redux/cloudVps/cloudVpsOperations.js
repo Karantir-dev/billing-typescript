@@ -1,11 +1,5 @@
 import qs from 'qs'
-import {
-  actions,
-  authSelectors,
-  cartActions,
-  cloudVpsActions,
-  cloudVpsSelectors,
-} from '@redux'
+import { actions, authSelectors, cartActions, cloudVpsActions } from '@redux'
 import { toast } from 'react-toastify'
 import { axiosInstance } from '@config/axiosInstance'
 import {
@@ -13,6 +7,9 @@ import {
   handleLoadersClosing,
   renameAddonFields,
   cookies,
+  sortCloudsByType,
+  handleLongRequest,
+  handleLoadersOpen,
 } from '@utils'
 import { t } from 'i18next'
 import * as routes from '@src/routes'
@@ -26,10 +23,12 @@ const getInstances =
     signal,
     setIsLoading,
     isLoader = true,
+    setPagination,
     setLocalInstancesItems,
   }) =>
   (dispatch, getState) => {
-    isLoader && (setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader()))
+    isLoader && handleLoadersOpen(setIsLoading, dispatch)
+
     const sessionId = authSelectors.getSessionId(getState())
 
     return axiosInstance
@@ -50,6 +49,17 @@ const getInstances =
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
         const elemsList = data.doc.elem || []
+        /** unifies the data structure */
+        elemsList.forEach(el => {
+          if (!el.createdate.$ && el.createdate?.[0]?.$) {
+            el.createdate.$ = el.createdate[0].$
+          }
+        })
+
+        const p_cnt = +data.doc.p_cnt.$
+        const p_elems = +data.doc.p_elems.$
+        const p_num = +data.doc.p_num.$
+        setPagination?.({ p_cnt, p_elems, p_num })
 
         if (setLocalInstancesItems) {
           setLocalInstancesItems(elemsList)
@@ -80,18 +90,19 @@ const getInstances =
           datacenter: data.doc?.slist?.find(el => el.$name === 'datacenter')?.val,
           period: data.doc?.slist?.find(el => el.$name === 'period')?.val,
           pricelist: data.doc?.slist?.find(el => el.$name === 'pricelist')?.val,
-          fotbo_status: FOTBO_STATUSES_LIST,
+          instance_status: FOTBO_STATUSES_LIST,
         }
         const active = {
           id: data.doc?.id?.$ || '',
           ip: data.doc?.ip?.$ || '',
           pricelist: data.doc?.pricelist?.$ || '',
-          fotbo_status: data.doc?.fotbo_status?.$ || '',
+          instance_status: data.doc?.instance_status?.$ || '',
           orderdatefrom: data.doc?.orderdatefrom?.$ || '',
           orderdateto: data.doc?.orderdateto?.$ || '',
           cost_from: data.doc?.cost_from?.$ || '',
           cost_to: data.doc?.cost_to?.$ || '',
           datacenter: data.doc?.datacenter?.$ || '',
+          name: data.doc?.name?.$ || '',
         }
         dispatch(cloudVpsActions.setInstancesFilters({ active, filtersList }))
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
@@ -105,7 +116,7 @@ const getInstances =
 const setInstancesFilter =
   ({ values, signal, setIsLoading, successCallback }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -130,7 +141,8 @@ const setInstancesFilter =
           orderdateto: values?.orderdateto || '',
           period: values?.period || '',
           pricelist: values?.pricelist || '',
-          fotbo_status: values?.fotbo_status || '',
+          instance_status: values?.instance_status || '',
+          name: values?.name || '',
         }),
         { signal },
       )
@@ -151,11 +163,12 @@ const editInstance =
     errorCallback = () => {},
     closeModal = () => {},
     successCallback,
+    successToast,
     setIsLoading,
     signal,
   }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
@@ -178,7 +191,9 @@ const editInstance =
         successCallback()
         closeModal()
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('request_sent', { ns: 'cloud_vps' }))
+        successToast
+          ? toast.success(successToast)
+          : toast.success(t('request_sent', { ns: 'cloud_vps' }))
       })
       .catch(error => {
         errorCallback()
@@ -258,9 +273,11 @@ const changeInstanceState =
 const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getState) => {
   dispatch(actions.showLoader())
   const sessionId = authSelectors.getSessionId(getState())
+
   serviceActionRequest({ elid, action: 'changepricelist', sessionId })
     .then(({ data }) => {
       if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
       const tariffs = data.doc.slist.find(item => item.$name === 'pricelist')?.val
       setTariffs(tariffs)
       dispatch(actions.hideLoader())
@@ -271,8 +288,9 @@ const getTariffsListToChange = (elid, setTariffs, closeModal) => (dispatch, getS
       dispatch(actions.hideLoader())
     })
 }
+
 const changeTariff =
-  ({ elid, pricelist, successCallback, errorCallback }) =>
+  ({ elid, pricelist, successCallback }) =>
   (dispatch, getState) => {
     dispatch(actions.showLoader())
     const sessionId = authSelectors.getSessionId(getState())
@@ -286,16 +304,8 @@ const changeTariff =
       sok: 'ok',
     })
       .then(({ data }) => {
-        if (data.doc?.error) {
-          if (data.doc.error.$type === 'not_enough_money') {
-            errorCallback(data.doc.error)
-            handleLoadersClosing('closeLoader', dispatch)
-          } else {
-            throw new Error(data.doc.error.msg.$)
-          }
-        } else {
-          successCallback()
-        }
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
@@ -340,21 +350,21 @@ const changeTariffConfirm =
 const changeInstancePassword =
   ({ password, elid, closeModal, setIsLoading, signal }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
     axiosInstance
       .post(
         '/',
         qs.stringify({
-          func: 'instances.fotbo.fotbochangepassword',
+          func: 'instances.fleio.changepassword',
           out: 'json',
           sok: 'ok',
           auth: sessionId,
           elid,
           lang: 'en',
           clicked_button: 'ok',
-          fotbochangepassword: password,
+          password,
         }),
         { signal },
       )
@@ -382,7 +392,7 @@ const rebuildInstance =
       .post(
         '/',
         qs.stringify({
-          func: `instances.fotbo.${action}`,
+          func: `instances.fleio.${action}`,
           out: 'json',
           auth: sessionId,
           elid,
@@ -412,7 +422,7 @@ const openConsole =
       .post(
         '/',
         qs.stringify({
-          func: 'instances.fotbovnc',
+          func: 'instances.fleio.vnc',
           out: 'json',
           auth: sessionId,
           elid,
@@ -444,7 +454,7 @@ const openConsole =
 /* EDIT SERVERS OPERATION TO GET FULL DATA */
 const getInstanceInfo =
   (elid, setInstanceInfo, signal, setIsLoading) => (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const {
       auth: { sessionId },
     } = getState()
@@ -468,10 +478,11 @@ const getInstanceInfo =
 
         const d = {
           createdate: renamedSlistData?.createdate?.$,
-          fotbo_id: renamedSlistData?.fotbo_id.$,
+          instances_uuid: renamedSlistData?.instances_uuid.$,
           ip: renamedSlistData?.ip?.$,
           ip_v6: renamedSlistData?.ip_v6?.$,
           rdns_record: renamedSlistData?.rdns_record?.$,
+          backup_rotation: renamedSlistData?.backup_rotation?.$,
         }
 
         const clearStr = /\s*\(.*?\)\s*\.?/g
@@ -501,49 +512,86 @@ const getInstanceInfo =
       })
   }
 
-const writeTariffsWithDC = data => {
-  return {
-    [data.doc.datacenter.$]:
-      data.doc.list.find(el => el.$name === 'pricelist').elem || [],
+const getInstanceNetworkTrafficInfo =
+  (elid, setNetworkTrafficInfo, signal, setIsLoading) => (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const {
+      auth: { sessionId },
+    } = getState()
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.fleio.trafficdata',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc.error) throw new Error(data.doc.error.msg.$)
+
+        const { cycle_traffic, month_traffic } = data.doc
+
+        setNetworkTrafficInfo({ cycle_traffic, month_traffic })
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
   }
-}
 
 const getOsList =
   ({ signal, setIsLoading, lastTariffID, closeLoader, datacenter, setSshList }) =>
-  (dispatch, getState) => {
+  dispatch => {
     setIsLoading && setIsLoading(true)
-
-    if (!lastTariffID) {
-      const tariffs = cloudVpsSelectors.getInstancesTariffs(getState())
-
-      const tariffsArray = tariffs[datacenter || Object.keys(tariffs)[0]]
-      lastTariffID = tariffsArray[tariffsArray.length - 1].id.$
-    }
 
     return dispatch(getTariffParamsRequest({ signal, id: lastTariffID, datacenter }))
       .then(({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
+        try {
+          const osList = data.doc.slist.find(el => el.$name === 'instances_os').val
 
-        const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
+          const OsByZones = {}
+          osList.forEach(el => {
+            if (!OsByZones[el.$depend]) {
+              OsByZones[el.$depend] = [el]
+            } else {
+              OsByZones[el.$depend].push(el)
+            }
+          })
 
-        let formatedSshList
-        if (sshList[0].$key === 'none') {
-          formatedSshList = []
-        } else {
-          formatedSshList = sshList.map(el => ({
-            label: el.$,
-            value: el.$key,
-          }))
+          const sshList = data.doc.slist.find(el => el.$name === 'instances_ssh_keys').val
+
+          let formatedSshList
+          if (sshList[0].$key === 'none') {
+            formatedSshList = []
+          } else {
+            formatedSshList = sshList.map(el => ({
+              label: el.$,
+              value: el.$key,
+            }))
+          }
+
+          const operationSystems = { [data.doc.datacenter.$]: OsByZones }
+
+          dispatch(cloudVpsActions.setOperationSystems(operationSystems))
+
+          setSshList && setSshList(formatedSshList)
+
+          closeLoader && closeLoader()
+        } catch (error) {
+          console.error(error)
+          toast.error(t('warnings.unknown_error', { ns: 'auth' }), {
+            toastId: 'unknown_error',
+            updateId: 'unknown_error',
+          })
         }
-
-        const operationSystems = { [data.doc.datacenter.$]: osList }
-
-        dispatch(cloudVpsActions.setOperationSystems(operationSystems))
-        setSshList && setSshList(formatedSshList)
-
-        closeLoader && closeLoader()
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
@@ -552,12 +600,20 @@ const getOsList =
   }
 
 const getAllTariffsInfo =
-  ({ signal, setIsLoading, needOsList, datacenter, setSshList }) =>
+  ({
+    signal,
+    setIsLoading,
+    needOsList,
+    datacenter,
+    setSshList,
+    needDcList = true,
+    isBasic,
+  }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     const sessionId = authSelectors.getSessionId(getState())
 
-    axiosInstance
+    return axiosInstance
       .post(
         '/',
         qs.stringify({
@@ -572,34 +628,51 @@ const getAllTariffsInfo =
       .then(async ({ data }) => {
         if (data.doc?.error) throw new Error(data.doc.error.msg.$)
 
-        const datacenter = data.doc.datacenter.$
-        const allTariffs = {
-          ...writeTariffsWithDC(data),
-        }
+        const dcID = data.doc.datacenter.$
         const DClist = data.doc.slist.find(el => el.$name === 'datacenter').val
 
-        /**
-         * it is important to get ID of the last Tariff because it must have full list of OS,
-         * and the Tariff must be from selected DC,
-         * because OS IDs differs between DC
-         */
-        const tariffs = allTariffs[datacenter]
-        const lastTariffID = tariffs[tariffs.length - 1].id.$
-
+        const cloudBasicTag = data?.doc?.flist?.val.find(el =>
+          el?.$.toLowerCase().includes('type:basic'),
+        )?.$key
         const windowsTag = data.doc.flist.val.find(el =>
           el.$.toLowerCase().includes('windows'),
         ).$key
+        const soldOutTag = data.doc.flist.val.find(el =>
+          el.$.toLowerCase().includes('soldout:true'),
+        )?.$key
 
+        const { basicTariffs, premiumTariffs } = sortCloudsByType(data, cloudBasicTag)
+
+        /**
+         * it is important to get ID of the last Tariff for Premium type
+         * because it must have full list of OS,
+         * and the Tariff must be from selected DC,
+         * because OS IDs differs between DC
+         */
         if (needOsList) {
-          await dispatch(getOsList({ signal, lastTariffID, datacenter, setSshList }))
+          let lastTariffID
+
+          if (isBasic) {
+            /** we pick last tariff in the list because first one doesn`t have Windows OS */
+            lastTariffID = basicTariffs[dcID][basicTariffs[dcID].length - 1].id.$
+          } else {
+            /** we pick last tariff in the list because first one doesn`t have Windows OS */
+            lastTariffID = premiumTariffs[dcID][premiumTariffs[dcID].length - 1].id.$
+          }
+          await dispatch(
+            getOsList({ signal, lastTariffID, datacenter: dcID, setSshList }),
+          )
         }
 
-        dispatch(cloudVpsActions.setInstancesTariffs(allTariffs))
-        dispatch(cloudVpsActions.setInstancesDCList(DClist))
+        basicTariffs && dispatch(cloudVpsActions.setBasicTariffs(basicTariffs))
+        dispatch(cloudVpsActions.setPremiumTariffs(premiumTariffs))
+        needDcList && dispatch(cloudVpsActions.setInstancesDCList(DClist))
         dispatch(cloudVpsActions.setWindowsTag(windowsTag))
+        soldOutTag && dispatch(cloudVpsActions.setSoldOutTag(soldOutTag))
       })
       .then(() => {
         handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+        return 'success'
       })
       .catch(err => {
         checkIfTokenAlive(err.message, dispatch)
@@ -693,7 +766,7 @@ const setOrderData =
 const getSshKeys =
   ({ p_col, p_cnt, p_num, setAllSshItems, setTotalElems, signal, setIsLoading }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
 
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -747,7 +820,7 @@ const editSsh =
     p_cnt,
   }) =>
   (dispatch, getState) => {
-    setIsLoading ? setIsLoading(true) : dispatch(actions.showLoader())
+    handleLoadersOpen(setIsLoading, dispatch)
     closeModal()
     const sessionId = authSelectors.getSessionId(getState())
 
@@ -767,34 +840,49 @@ const editSsh =
         }),
         { signal },
       )
-      .then(({ data }) => {
-        if (data.doc?.error) {
-          /* Get and parse errors */
-          const errorObject = JSON.parse(data.doc.error.msg.$)
-          /* Get the first key */
-          const firstKey = Object.keys(errorObject)[0]
-          if (firstKey) {
-            const errorMessage = errorObject[firstKey]
+      .then(async ({ data }) => {
+        function errorHandler(data) {
+          if (data.doc?.error) {
+            /* Get and parse errors */
+            let errorMessage = data.doc?.error?.msg?.$
+            const errorObject = JSON.parse(data.doc?.error?.$object)
+            /* Get the first key */
+            const errorKey = Object.keys(errorObject)?.[0]
+
+            if (errorKey) {
+              const specifiedErrorDescr = errorObject[errorKey]?.[0]
+              toast.error(t(specifiedErrorDescr, { ns: 'other' }))
+              errorMessage = `${errorMessage}: ${specifiedErrorDescr}`
+              console.error(errorMessage)
+            } else if (data.doc.error.$type) {
+              console.error(`${errorMessage}: ${data.doc.error?.$type}`)
+            } else {
+              console.error(errorMessage)
+            }
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
             throw new Error(errorMessage)
+          } else if (typeof data === 'string' && !data.match(/long.+billmgr/)) {
+            handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+            throw new Error(data)
           }
-        } else if (typeof data === 'string') {
-          /* if long request - throw Error */
-          throw new Error('Request in process, please wait')
         }
 
-        dispatch(
-          getSshKeys({
-            p_col,
-            p_num,
-            p_cnt,
-            setTotalElems,
-            setAllSshItems,
-            signal,
-            setIsLoading,
-          }),
-        )
-        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
-        toast.success(t('Changes saved successfully', { ns: 'other' }))
+        const successCallback = () => {
+          dispatch(
+            getSshKeys({
+              p_col,
+              p_num,
+              p_cnt,
+              setTotalElems,
+              setAllSshItems,
+              signal,
+              setIsLoading,
+            }),
+          )
+          toast.success(t('Changes saved successfully', { ns: 'other' }))
+        }
+
+        await handleLongRequest(data, errorHandler, successCallback)
       })
       .catch(error => {
         closeModal()
@@ -875,6 +963,336 @@ const generateSsh =
       })
   }
 
+const getMetrics =
+  ({ elid, metric, hours, setData, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'instances.fleio.measures',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          hours,
+          metric,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setData(data.doc.measures || [])
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
+const setImageFilter =
+  ({ func, values, signal, setIsLoading, successCallback }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `${func}.filter`,
+          out: 'json',
+          auth: sessionId,
+          sok: 'ok',
+          lang: 'en',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
+const getImages =
+  ({
+    func,
+    elid,
+    p_cnt,
+    p_num,
+    p_col,
+    setData,
+    setPagination,
+    setDailyCosts,
+    signal,
+    setIsLoading,
+    setFilters,
+    setBackupRotation,
+  }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func,
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          p_cnt,
+          p_num,
+          p_col,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        const elemsList = data.doc.elem || []
+        /** unifies the data structure */
+        elemsList.forEach(el => {
+          if (!el.createdate?.$ && el.createdate?.[0]?.$) {
+            el.createdate.$ = el.createdate?.[0]?.$
+          }
+        })
+
+        const created_today_value = data.doc?.manual_created_today?.$ || 0
+        const created_total = data.doc?.manual_created_total?.$ || 0
+        const priceObj = data.doc.cost || {}
+
+        const costSummaryObj = {
+          ...priceObj,
+          created_today: { $: Number(created_today_value) },
+          created_total: { $: Number(created_total) },
+        }
+
+        const p_cnt = +data.doc.p_cnt.$
+        const p_elems = +data.doc.p_elems.$
+        const p_num = +data.doc.p_num.$
+
+        setDailyCosts?.(costSummaryObj)
+        setBackupRotation && setBackupRotation(data.doc?.backup_rotation?.$)
+        setPagination({ p_cnt, p_elems, p_num })
+        setData(elemsList)
+        if (setFilters) {
+          return axiosInstance.post(
+            '/',
+            qs.stringify({
+              func: `${func}.filter`,
+              out: 'json',
+              auth: sessionId,
+              lang: 'en',
+              elid,
+            }),
+            { signal },
+          )
+        } else {
+          handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+          return
+        }
+      })
+      .then(({ data } = {}) => {
+        setFilters?.(data.doc)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
+const editImage =
+  ({ func, values, successCallback = () => {}, elid, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `${func}.edit`,
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error && !data.doc?.error?.$object === 'runningoperation')
+          throw new Error(data.doc.error.msg.$)
+
+        successCallback(data.doc)
+
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
+const getImageParams =
+  ({ setData, signal, setIsLoading } = {}) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'v2.image.order.pricelist',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          plid: '',
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+
+        const pricelistElem = data.doc.list.find(el => el.$name === 'pricelist')
+          ?.elem?.[0]
+
+        const pricelist = pricelistElem.id.$
+        const pricePeriod = pricelistElem.prices.price.period.$
+
+        return axiosInstance.post(
+          '/',
+          qs.stringify({
+            func: 'v2.image.order.param',
+            out: 'json',
+            auth: sessionId,
+            lang: 'en',
+            [`period_${pricelist}`]: pricePeriod,
+            pricelist,
+          }),
+          { signal },
+        )
+      })
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setData(data.doc)
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
+const createImage =
+  ({ values, successCallback, closeModal, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'v2.image.order.param',
+          out: 'xjson',
+          auth: sessionId,
+          lang: 'en',
+          sok: 'ok',
+          image_type: 'image',
+          skipbasket: 'on',
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
+        closeModal()
+
+        handleLoadersClosing('closeLoader', dispatch)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        closeModal()
+        handleLoadersClosing(error?.message, dispatch)
+      })
+  }
+
+const deleteImage =
+  ({ func, elid, successCallback, signal, setIsLoading, values }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: `${func}.delete`,
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        successCallback()
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
+const copyModal =
+  ({ elid, values, successCallback = () => {}, setItemData, signal, setIsLoading }) =>
+  (dispatch, getState) => {
+    handleLoadersOpen(setIsLoading, dispatch)
+    const sessionId = authSelectors.getSessionId(getState())
+
+    axiosInstance
+      .post(
+        '/',
+        qs.stringify({
+          func: 'image.copy',
+          out: 'json',
+          auth: sessionId,
+          lang: 'en',
+          elid,
+          ...values,
+        }),
+        { signal },
+      )
+      .then(({ data }) => {
+        if (data.doc?.error) throw new Error(data.doc.error.msg.$)
+        setItemData && setItemData(data.doc)
+        successCallback()
+        values?.sok === 'ok' && toast.success(t('request_sent', { ns: 'cloud_vps' }))
+        handleLoadersClosing('closeLoader', dispatch, setIsLoading)
+      })
+      .catch(error => {
+        checkIfTokenAlive(error.message, dispatch)
+        handleLoadersClosing(error?.message, dispatch, setIsLoading)
+      })
+  }
+
 export default {
   getInstances,
   setInstancesFilter,
@@ -890,6 +1308,7 @@ export default {
   editSsh,
   deleteSsh,
   getInstanceInfo,
+  getInstanceNetworkTrafficInfo,
   openConsole,
   getAllTariffsInfo,
   getTariffParams,
@@ -897,4 +1316,12 @@ export default {
   setOrderData,
   getTariffParamsRequest,
   generateSsh,
+  getMetrics,
+  getImages,
+  editImage,
+  getImageParams,
+  createImage,
+  deleteImage,
+  copyModal,
+  setImageFilter,
 }

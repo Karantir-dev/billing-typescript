@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import PropTypes from 'prop-types'
 import s from './DedicMobileItem.module.scss'
-import { CheckBox, EditCell, ServerState, Options } from '@components'
+import { CheckBox, EditCell, ServerState, Options, TooltipWrapper } from '@components'
 import { useNavigate } from 'react-router-dom'
 import * as route from '@src/routes'
 import { dedicOperations } from '@redux'
 import { useDispatch } from 'react-redux'
 import cn from 'classnames'
-import { isDisabledDedicTariff, isUnpaidOrder } from '@utils'
+import { useCreateTicketOption, isDisabledDedicTariff, isUnpaidOrder } from '@utils'
 
 export default function DedicMobileItem({
   server,
@@ -32,6 +32,7 @@ export default function DedicMobileItem({
   const [originName, setOriginName] = useState('')
 
   const deleteOption = isUnpaidOrder(server, unpaidItems)
+  const createTicketOption = useCreateTicketOption(server.id.$)
 
   const handleToolBtnClick = fn => {
     fn()
@@ -79,6 +80,7 @@ export default function DedicMobileItem({
       icon: 'Clock',
       disabled:
         server?.status?.$ === '1' ||
+        server?.status?.$ === '5' ||
         !rights?.prolong ||
         isDisabledDedicTariff(server?.name?.$),
 
@@ -99,7 +101,8 @@ export default function DedicMobileItem({
     {
       label: t('ip_addresses'),
       icon: 'IP',
-      disabled: server.has_ip_pricelist?.$ !== 'on' || !rights?.ip,
+      disabled:
+        server.has_ip_pricelist?.$ !== 'on' || server?.status?.$ === '5' || !rights?.ip,
       onClick: () =>
         navigate(route.DEDICATED_SERVERS_IP, {
           state: { plid: server?.id?.$, isIpAllowedRender: rights?.ip },
@@ -112,6 +115,7 @@ export default function DedicMobileItem({
       disabled: server?.status?.$ === '1' || !rights?.history,
       onClick: () => handleToolBtnClick(setElidForHistoryModal),
     },
+    createTicketOption,
     {
       label: t('delete', { ns: 'other' }),
       icon: 'Delete',
@@ -152,7 +156,13 @@ export default function DedicMobileItem({
       <span className={s.label}>Id:</span>
       <span className={s.value}>{server?.id?.$}</span>
       <span className={s.label}>{t('domain_name')}:</span>
-      <span className={s.value}>{server?.domain?.$}</span>
+      <TooltipWrapper
+        disabled={server?.domain?.$.length < 15}
+        content={server?.domain?.$}
+        wrapperClassName={cn(s.hint)}
+      >
+        <span className={cn(s.value, s.hide_lont_text)}>{server?.domain?.$}</span>
+      </TooltipWrapper>
       <span className={s.label}>{t('ip_address')}:</span>
       <span className={s.value}>{server?.ip?.$}</span>
       <span className={s.label}>{t('ostempl')}:</span>

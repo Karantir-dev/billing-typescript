@@ -79,6 +79,24 @@
         }
       }
     </style>
+
+    <script>
+      ;(function (w, d, s, r, n) {
+        w.TrustpilotObject = n
+        w[n] =
+          w[n] ||
+          function () {
+            ;(w[n].q = w[n].q || []).push(arguments)
+          }
+        a = d.createElement(s)
+        a.async = 1
+        a.src = r
+        a.type = 'text/java' + s
+        f = d.getElementsByTagName(s)[0]
+        f.parentNode.insertBefore(a, f)
+      })(window, document, 'script', 'https://invitejs.trustpilot.com/tp.min.js', 'tp')
+      tp('register', 'dreuovocmhHHAhTE')
+    </script>
   </head>
 
   <body>
@@ -127,6 +145,38 @@
         scriptEl.src = 'https://tracker.zomro.com/trackpixel/track.js'
         document.body.insertAdjacentElement('beforeend', scriptEl)
       }
+    </script>
+
+    <script>
+      ;(function (b, e, f, g, c, a, d) {
+        b[c] =
+          b[c] ||
+          function () {
+            ;(b[c].a = b[c].a || []).push(arguments)
+          }
+        b[c].l = 1 * new Date()
+        for (a = 0; a < document.scripts.length; a++)
+          if (document.scripts[a].src === g) return
+        a = e.createElement(f)
+        d = e.getElementsByTagName(f)[0]
+        a.async = 1
+        a.src = g
+        d.parentNode.insertBefore(a, d)
+      })(
+        window,
+        document,
+        'script',
+        'https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js',
+        'ym',
+      )
+      ym(96104642, 'init', {
+        clickmap: !0,
+        trackLinks: !0,
+        accurateTrackBounce: !0,
+        webvisor: !0,
+        trackHash: !0,
+        ecommerce: 'dataLayer',
+      })
     </script>
   </body>
 </html>

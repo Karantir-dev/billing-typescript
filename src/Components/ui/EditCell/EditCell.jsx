@@ -10,6 +10,8 @@ export default function EditCell({
   onSubmit,
   isShadow,
   className,
+  initBtnClassName,
+  validateOnChange,
 }) {
   const [isEdit, setIsEdit] = useState(false)
   const [editName, setEditName] = useState('')
@@ -44,6 +46,16 @@ export default function EditCell({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [isEdit])
 
+  const handleChange = e => {
+    const value = e.target.value
+    const isValid = validateOnChange?.(value) ?? true
+
+    /* Update editName if onChange returns undefined (no validation = backward compatibility) or true (valid input) */
+    if (isValid) {
+      setEditName(value)
+    }
+  }
+
   return (
     <div
       style={isEdit ? { overflow: 'inherit' } : {}}
@@ -52,22 +64,27 @@ export default function EditCell({
     >
       {!isEdit ? (
         <button
-          className={cn(s.edit_btn, {
-            [s.placeholder]: editName === '' && originName === '',
-            [s.shadow]: isShadow,
-          })}
+          className={cn(
+            s.edit_btn,
+            {
+              [s.placeholder]: editName === '' && originName === '',
+              [s.shadow]: isShadow,
+            },
+            initBtnClassName,
+          )}
           onMouseDown={activateEditMode}
         >
           <span className={s.text}>{placeholder}</span>
           <Icon name="Edit" />
         </button>
       ) : (
-        <form className={s.editBlock} onSubmit={onSubmitHandler}>
+        <form className={cn(s.editBlock, initBtnClassName)} onSubmit={onSubmitHandler}>
           <input
             placeholder={placeholder}
             value={editName}
-            onChange={e => setEditName(e.target.value)}
+            onChange={handleChange}
             onMouseUp={() => input.current.focus()}
+            className={s.edit_input}
             ref={input}
           />
           <Icon

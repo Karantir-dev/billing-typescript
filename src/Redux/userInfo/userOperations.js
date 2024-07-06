@@ -101,9 +101,17 @@ const getAvailableCredit = (data, dispatch) => {
   }
 }
 
+const getActiveServices = (data, dispatch) => {
+  const { elem } = data.doc
+  dispatch(userActions.setUserActiveServices(elem))
+}
+
 const funcsArray = [
   userInfo,
-  userNotifications,
+  (...args) => {
+    userNotifications(...args)
+    getActiveServices(...args)
+  },
   currentSessionRights,
   userTickets,
   clearBasket,
@@ -131,6 +139,7 @@ const getUserInfo = (sessionId, setLoading, disableClearBasket) => dispatch => {
         out: 'json',
         lang: 'en',
         auth: sessionId,
+        notifiaction: 'count',
       }),
     ),
     axiosInstance.post(
@@ -434,5 +443,6 @@ export default {
   sendVerificationEmail,
   verifyMainEmail,
   cleanBsketHandler,
+  getActiveServices,
   // getDashboardInfo,
 }

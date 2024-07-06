@@ -121,6 +121,7 @@ const getDomainsOrderName =
     signal,
     setIsLoading,
     siteDomainCheckData,
+    setBillUnavailableDomains,
   ) =>
   (dispatch, getState) => {
     setIsLoading(true)
@@ -142,8 +143,12 @@ const getDomainsOrderName =
         { signal },
       )
       .then(async ({ data }) => {
-        if (data?.doc?.error) {
-          throw new Error(data.doc.error.msg.$)
+        function errorHandler(data) {
+          if (data?.doc?.error) {
+            throw new Error(data.doc.error?.msg?.$)
+          } else if (typeof data === 'string' && !data.match(/long.+billmgr/)) {
+            throw new Error(data)
+          }
         }
 
         let domainData
@@ -155,13 +160,24 @@ const getDomainsOrderName =
           if (typeof data === 'string') {
             const longUrl = data.match(/long.+billmgr/)?.[0]
 
-            await axiosInstance.get(longUrl).then(({ data }) => {
-              handleLongRequest(data)
-            })
+            try {
+              const response = await axiosInstance.get(longUrl)
+              const responseData = response.data
+
+              if (responseData) {
+                handleLongRequest(responseData)
+              } else {
+                errorHandler('No data received from the server')
+              }
+            } catch (error) {
+              errorHandler(error)
+            }
           } else {
             domainData = data?.doc
           }
         }
+
+        errorHandler(data)
         await handleLongRequest(data)
 
         const domains = []
@@ -192,13 +208,18 @@ const getDomainsOrderName =
           return setIsLoading(false)
         }
 
+        const unavailableDomains = []
         domainData?.list?.forEach(l => {
           if (l?.$name === 'domain_list') {
             l?.elem?.forEach(e => {
               if (e?.id) {
+                if (e?.desc.$.includes('Not available')) {
+                  unavailableDomains.push(e?.domain.$)
+                }
                 domains.push(e)
               }
             })
+            setBillUnavailableDomains(unavailableDomains)
           }
         })
 
@@ -332,7 +353,7 @@ const getDomainsContacts =
         '/',
         qs.stringify({
           func: 'domain.order.contact',
-          out: 'json',
+          out: 'xjson',
           auth: sessionId,
           ...body,
         }),
@@ -550,22 +571,26 @@ const getDomainPaymentInfo =
         const paymentData = {}
 
         selectedDomains?.forEach(selected => {
-          paymentData[`autoprolong_${selected}`] = data?.doc[`autoprolong_${selected}`]
+          const formatedSelect = selected.replace(/-/g, '_')
 
-          paymentData[`licence_link_${selected}`] = data?.doc[`licence_link_${selected}`]
+          paymentData[`autoprolong_${formatedSelect}`] =
+            data?.doc[`autoprolong_${formatedSelect}`]
 
-          paymentData[`licence_agreement_${selected}`] =
-            data?.doc[`licence_agreement_${selected}`]
+          paymentData[`licence_link_${formatedSelect}`] =
+            data?.doc[`licence_link_${formatedSelect}`]
 
-          paymentData[`domain_${selected}_details`] =
-            data?.doc[`domain_${selected}_details`]
+          paymentData[`licence_agreement_${formatedSelect}`] =
+            data?.doc[`licence_agreement_${formatedSelect}`]
 
-          paymentData[`domain_${selected}_details`] =
-            data?.doc[`domain_${selected}_details`]
+          paymentData[`domain_${formatedSelect}_details`] =
+            data?.doc[`domain_${formatedSelect}_details`]
+
+          paymentData[`domain_${formatedSelect}_details`] =
+            data?.doc[`domain_${formatedSelect}_details`]
 
           data?.doc?.slist?.forEach(s => {
-            if (s?.$name === `autoprolong_${selected}`) {
-              paymentData[`autoprolong_${selected}_list`] = s?.val
+            if (s?.$name === `autoprolong_${formatedSelect}`) {
+              paymentData[`autoprolong_${formatedSelect}_list`] = s?.val
             }
           })
         })

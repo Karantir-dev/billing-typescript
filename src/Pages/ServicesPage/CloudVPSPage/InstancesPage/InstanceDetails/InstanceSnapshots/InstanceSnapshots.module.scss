@@ -1,0 +1,26 @@
+.container {
+  padding-top: 16px;
+  display: grid;
+  gap: 20px;
+}
+
+.create_wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.snapshot_limit_message {
+  margin: unset;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    padding-top: 32px;
+  }
+
+  .create_wrapper {
+    gap: 16px;
+  }
+}

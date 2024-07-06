@@ -7,6 +7,7 @@ const setVhostFiltersLists = createAction('SET_VHOST_FILTERS_LISTS')
 const setVhostFilters = createAction('SET_VHOST_FILTERS')
 
 const setVhostCount = createAction('SET_VHOST_COUNT')
+const setWordpressAllowed = createAction('SET_WORDPRESS_ALLOWED')
 
 export default {
   setVhostList,
@@ -14,4 +15,5 @@ export default {
   setVhostFiltersLists,
   setVhostFilters,
   setVhostCount,
+  setWordpressAllowed,
 }

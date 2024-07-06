@@ -1,5 +1,5 @@
 .content {
-  margin-top: 16px;
+  padding-top: 16px;
   display: grid;
   gap: 20px;
 }
@@ -111,7 +111,7 @@
 
 @media screen and (min-width: 768px) {
   .content {
-    margin-top: 32px;
+    padding-top: 32px;
   }
 
   .block_title {

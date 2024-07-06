@@ -10,7 +10,6 @@ import {
   Portal,
   CartFromSite,
   EmailTrigger,
-  UpdateService,
   MainEmailConfirmation,
   PromotionBanner,
   SuccessPayment,
@@ -68,9 +67,16 @@ import {
   CloudVPSPageLazy,
   CloudVPSInstancesPageLazy,
   CloudVPSSSHKeysPageLazy,
+  CloudVPSImagesPageLazy,
+  CloudVpsImageDetailesPageLazy,
   CreateInstancePageLazy,
   CloudInstanceItemPageLazy,
   InstanceDetailsOverviewLazy,
+  InstanceMetricsLazy,
+  InstanceNetworkTrafficLazy,
+  InstanceSnapshotsLazy,
+  InstanceBackupsLazy,
+  InstanceBackupsSchedulesLazy,
 } from './LazyRoutes'
 import s from './SecurePage.module.scss'
 import BlockingModal from '@src/Components/BlockingModal/BlockingModal'
@@ -80,7 +86,7 @@ import { navigateIfFromSite } from '@utils'
 const Component = ({ fromPromotionLink }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const cartState = useSelector(cartSelectors?.getCartIsOpened)
+  const cartState = useSelector(cartSelectors.getCartState)
   const promotionsList = useSelector(selectors.getPromotionsList)
   const paymentsList = useSelector(billingSelectors.getPaymentsReadOnlyList)
   const isModalCreatePaymentOpened = useSelector(
@@ -186,7 +192,6 @@ const Component = ({ fromPromotionLink }) => {
       {isShowPromotion && promotionType && location.pathname === route.SHARED_HOSTING && (
         <PromotionBanner type={promotionType} closeBanner={closePromotionBanner} />
       )}
-      <UpdateService />
       <EmailTrigger />
       <div className={s.page}>
         <Routes>
@@ -247,14 +252,36 @@ const Component = ({ fromPromotionLink }) => {
           <Route path={route.CLOUD_VPS} element={<CloudVPSPageLazy />}>
             <Route index element={<CloudVPSInstancesPageLazy />} />
             <Route path="ssh_keys" element={<CloudVPSSSHKeysPageLazy />} />
+            <Route path="images" element={<CloudVPSImagesPageLazy />} />
           </Route>
+
+          <Route
+            path={`${route.CLOUD_VPS}/images/:elid`}
+            element={<CloudVpsImageDetailesPageLazy pageList="images" />}
+          />
+
           <Route
             path={route.CLOUD_VPS_CREATE_INSTANCE}
             element={<CreateInstancePageLazy />}
           />
+
           <Route path={`${route.CLOUD_VPS}/:id`} element={<CloudInstanceItemPageLazy />}>
             <Route index element={<InstanceDetailsOverviewLazy />} />
+            <Route path="metrics" element={<InstanceMetricsLazy />} />
+            <Route path="network_traffic" element={<InstanceNetworkTrafficLazy />} />
+            <Route path="snapshots" element={<InstanceSnapshotsLazy />} />
+            <Route path="backups" element={<InstanceBackupsLazy />} />
+            <Route path="backup_schedules" element={<InstanceBackupsSchedulesLazy />} />
           </Route>
+
+          <Route
+            path={`${route.CLOUD_VPS}/:id/snapshots/:elid`}
+            element={<CloudVpsImageDetailesPageLazy pageList="snapshots" />}
+          />
+          <Route
+            path={`${route.CLOUD_VPS}/:id/backups/:elid`}
+            element={<CloudVpsImageDetailesPageLazy pageList="backups" />}
+          />
 
           <Route path={route.DEDICATED_SERVERS_ORDER} element={<DedicOrderPageLazy />} />
           <Route path={route.DEDICATED_SERVERS_IP} element={<DedicIPpageLazy />} />

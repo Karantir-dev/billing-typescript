@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
 import s from './InstancesList.module.scss'
 import cn from 'classnames'
-import { CopyText, EditCell, HintWrapper, Icon, InstancesOptions } from '@components'
+import { CopyText, EditCell, TooltipWrapper, Icon, InstancesOptions } from '@components'
 import * as route from '@src/routes'
 import { useNavigate } from 'react-router-dom'
-import { getFlagFromCountryName, getInstanceMainInfo, formatCountryName } from '@utils'
+import {
+  getFlagFromCountryName,
+  getInstanceMainInfo,
+  formatCountryName,
+  cutDcSuffix,
+  getImageIconName,
+} from '@utils'
 import { useTranslation } from 'react-i18next'
+import { useSelector } from 'react-redux'
+import { selectors } from '@redux'
 
 export default function InstanceItem({ item, editInstance }) {
   const { t } = useTranslation(['cloud_vps', 'vds', 'countries'])
@@ -14,11 +22,14 @@ export default function InstanceItem({ item, editInstance }) {
   // const checkboxCell = useRef()
   const servernameCell = useRef()
   const ipCell = useRef()
+  const hintCell = useRef()
   const navigate = useNavigate()
+  const darkTheme = useSelector(selectors.getTheme) === 'dark'
 
   const [serverName, setServerName] = useState(item.servername?.$ || '')
 
-  const { isResized, displayStatus, isNotActive } = getInstanceMainInfo(item)
+  const { isResized, displayStatus, isNotActive, isDeleting, isSuspended } =
+    getInstanceMainInfo(item)
 
   const editServerName = value => {
     const slicedValue = value.slice(0, 100)
@@ -38,6 +49,11 @@ export default function InstanceItem({ item, editInstance }) {
 
   const ip = item.ip?.$ || item.ip_v6?.$
 
+  const isHintStatus = isSuspended || isResized
+  const hintMessage = isResized ? t('resize_popup_text') : t('by_admin')
+
+  const osIcon = getImageIconName(item?.os_distro?.$, darkTheme)
+
   return (
     <tr
       className={cn(s.tr, { [s.disabled]: isNotActive })}
@@ -47,6 +63,7 @@ export default function InstanceItem({ item, editInstance }) {
           // checkboxCell.current.contains(e.target) ||
           servernameCell.current.contains(e.target) ||
           ipCell.current.contains(e.target) ||
+          hintCell.current.contains(e.target) ||
           isNotActive
         )
           return
@@ -67,35 +84,51 @@ export default function InstanceItem({ item, editInstance }) {
         />
       </td>
       <td className={s.td}>
-        <span
-          className={cn(
-            s.status,
-            s[
-              item?.fotbo_status?.$.trim().toLowerCase() ||
-                item?.item_status?.$.trim().toLowerCase()
-            ],
-          )}
-        >
-          {displayStatus}
-          {isResized && (
-            <HintWrapper
-              popupClassName={s.popup}
+        <div className={s.status_wrapper} ref={hintCell}>
+          {isHintStatus && !isDeleting ? (
+            <TooltipWrapper
+              className={s.popup}
               wrapperClassName={s.popup__wrapper}
-              label={t('resize_popup_text')}
+              content={hintMessage}
             >
-              <Icon name="Attention" />
-            </HintWrapper>
+              <span
+                className={cn(
+                  s.status,
+                  s[
+                    item?.instance_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
+                  ],
+                )}
+              >
+                {displayStatus}
+                <Icon name="Attention" />
+              </span>
+            </TooltipWrapper>
+          ) : (
+            <span
+              className={cn(
+                s.status,
+                s[
+                  isDeleting
+                    ? 'deletion_in_progress'
+                    : item?.instance_status?.$.trim().toLowerCase() ||
+                      item?.item_status?.$.trim().toLowerCase()
+                ],
+              )}
+            >
+              {displayStatus}
+            </span>
           )}
-        </span>
+        </div>
       </td>
-      <td className={s.td}>{item.pricelist.$}</td>
+      <td className={s.td}>{cutDcSuffix(item.pricelist.$)}</td>
       <td className={s.td}>{item.cost.$.replace('Day', t('day'))}</td>
       <td className={s.td}>
         {item?.datacentername && (
-          <HintWrapper
-            popupClassName={s.popup}
+          <TooltipWrapper
+            className={s.popup}
             wrapperClassName={cn(s.popup__wrapper, s.popup__wrapper_flag)}
-            label={t(itemCountry, { ns: 'countries' })}
+            content={t(itemCountry, { ns: 'countries' })}
           >
             <img
               src={require(`@images/countryFlags/${getFlagFromCountryName(
@@ -105,25 +138,30 @@ export default function InstanceItem({ item, editInstance }) {
               height={14}
               alt={itemCountry}
             />
-          </HintWrapper>
+          </TooltipWrapper>
         )}
       </td>
       <td className={s.td}>{item.createdate.$}</td>
       <td className={s.td}>
-        <HintWrapper
-          popupClassName={s.popup}
-          wrapperClassName={s.popup__wrapper}
-          label={item.instances_os.$}
-        >
-          <Icon name={item.instances_os.$.split(/[\s-]+/)[0]} />
-        </HintWrapper>
+        {osIcon && (
+          <TooltipWrapper
+            className={s.popup}
+            wrapperClassName={s.popup__wrapper}
+            content={`${item?.os_distro?.$} ${item?.os_version?.$}`}
+          >
+            <img
+              src={require(`@images/soft_os_icons/${osIcon}.png`)}
+              alt={item?.os_distro?.$}
+            />
+          </TooltipWrapper>
+        )}
       </td>
-      <td ref={ipCell} className={s.td}>
-        <div className={s.ip_cell}>
+      <td className={s.td}>
+        <div className={s.ip_cell} ref={ipCell}>
           <span>{ip}</span>
           {ip && (
             <div className={s.fade_in}>
-              <CopyText text={ip} />
+              <CopyText text={ip} promptText={t('ip_address_copied')} />
             </div>
           )}
         </div>

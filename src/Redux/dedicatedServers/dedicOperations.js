@@ -58,7 +58,7 @@ const getServersList = (data, signal, setIsLoading) => (dispatch, getState) => {
 
 //ORDER NEW SERVER OPERATIONS
 const getTarifs =
-  (period, setNewVds, setDedicInfoList, signal, setIsLoading) => (dispatch, getState) => {
+  (period, setDedicInfoList, signal, setIsLoading) => (dispatch, getState) => {
     setIsLoading(true)
 
     const {
@@ -91,19 +91,8 @@ const getTarifs =
         { signal },
       ),
       axiosInstance.get(`${process.env.REACT_APP_API_URL}/api/service/dedic/`),
-      axiosInstance.post(
-        '/',
-        qs.stringify({
-          func: 'vds.order',
-          auth: sessionId,
-          out: 'json',
-          lang: 'en',
-          period,
-        }),
-        { signal },
-      ),
     ])
-      .then(([firstDatacenterResp, secondDatacenterResp, dedicInfoResp, vdsResp]) => {
+      .then(([firstDatacenterResp, secondDatacenterResp, dedicInfoResp]) => {
         const { data: firstDatacenterData } = firstDatacenterResp
         const { data: secondDatacenterData } = secondDatacenterResp
         const { data: dedicInfoData } = dedicInfoResp
@@ -140,7 +129,7 @@ const getTarifs =
           period,
         }
         setDedicInfoList(dedicInfoData.services)
-        setNewVds(vdsResp.data?.doc?.list[0]?.elem)
+        // setNewVds(vdsResp.data?.doc?.list[0]?.elem)
         dispatch(dedicActions.setTarifList(orderData))
         setIsLoading(false)
       })
@@ -189,67 +178,6 @@ const getUpdatedTarrifs =
           currentDatacenter,
         }
 
-        dispatch(dedicActions.setTarifList(orderData))
-        setIsLoading(false)
-      })
-      .catch(error => {
-        handleLoadersClosing(error?.message, dispatch, setIsLoading)
-        checkIfTokenAlive(error.message, dispatch, true)
-      })
-  }
-
-const getUpdatedPeriod =
-  (period, setNewVds, signal, setIsLoading) => (dispatch, getState) => {
-    setIsLoading(true)
-
-    const {
-      auth: { sessionId },
-    } = getState()
-
-    Promise.all([
-      axiosInstance.post(
-        '/',
-        qs.stringify({
-          func: 'dedic.order',
-          out: 'json',
-          auth: sessionId,
-          period,
-          lang: 'en',
-        }),
-        { signal },
-      ),
-      axiosInstance.post(
-        '/',
-        qs.stringify({
-          func: 'vds.order.pricelist',
-          auth: sessionId,
-          out: 'json',
-          period: period,
-          sv_field: 'period',
-          lang: 'en',
-        }),
-        { signal },
-      ),
-    ])
-      .then(([dedicResp, vdsResp]) => {
-        const { data } = dedicResp
-        if (data.doc.error) throw new Error(data.doc.error.msg.$)
-        const { val: fpricelist } = data.doc.flist
-        const { elem: tarifList } =
-          data.doc.list.find(el => el?.$name === 'tariflist') || {}
-        const { val: datacenter } =
-          data.doc.slist.find(el => el?.$name === 'datacenter') || {}
-        const { val: period } = data.doc.slist.find(el => el.$name === 'period') || {}
-        const { $: currentDatacenter } = data.doc.datacenter
-
-        const orderData = {
-          fpricelist: Array.isArray(fpricelist) ? fpricelist : [fpricelist],
-          tarifList,
-          datacenter,
-          period,
-          currentDatacenter,
-        }
-        setNewVds(vdsResp.data?.doc?.list[0]?.elem)
         dispatch(dedicActions.setTarifList(orderData))
         setIsLoading(false)
       })
@@ -1434,17 +1362,33 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
   const {
     auth: { sessionId },
   } = getState()
+
   axiosInstance
     .post(
       '/',
       qs.stringify({
-        func: 'dedic.delete',
-        auth: sessionId,
-        elid: id.join(', '),
+        func: 'dedic.edit',
         out: 'json',
+        auth: sessionId,
         lang: 'en',
+        elid: id.join(', '),
+        autoprolong: 'null',
+        clicked_button: 'basket',
+        sok: 'ok',
       }),
     )
+    .then(() => {
+      return axiosInstance.post(
+        '/',
+        qs.stringify({
+          func: 'dedic.delete',
+          auth: sessionId,
+          elid: id.join(', '),
+          out: 'json',
+          lang: 'en',
+        }),
+      )
+    })
     .then(({ data }) => {
       if (data.doc.error) {
         if (data.doc.error.$type === 'pricelist_min_order') {
@@ -1474,7 +1418,7 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
               { ns: 'other', min: min, left: left },
             )}`,
           )
-
+          dispatch(getServersList({ p_num: 1 }, signal, setIsLoading))
           closeFn()
           dispatch(actions.hideLoader())
           return
@@ -1503,7 +1447,6 @@ const deleteDedic = (id, closeFn, signal, setIsLoading) => (dispatch, getState) 
 export default {
   getTarifs,
   getUpdatedTarrifs,
-  getUpdatedPeriod,
   getParameters,
   orderServer,
   updatePrice,

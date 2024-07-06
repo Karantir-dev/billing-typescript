@@ -25,10 +25,8 @@ export const Modals = ({
   renameSshSubmit,
   addNewSshSubmit,
   loadingParams = {},
-  pagination = {},
-  setPagination = () => {},
   getInstances = () => {},
-  redirectCallback = () => {},
+  redirectCallback,
 }) => {
   const dispatch = useDispatch()
   const itemForModals = useSelector(cloudVpsSelectors.getItemForModals)
@@ -40,9 +38,11 @@ export const Modals = ({
         closeModal: () => dispatch(cloudVpsActions.setItemForModals({ delete: false })),
         ...loadingParams,
         successCallback: () => {
-          getInstances({ p_num: 1 })
-          setPagination({ p_num: 1 })
-          redirectCallback()
+          if (redirectCallback) {
+            redirectCallback()
+          } else {
+            getInstances()
+          }
         },
       }),
     )
@@ -56,13 +56,13 @@ export const Modals = ({
           elid,
           closeModal: () =>
             dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-          successCallback: () => getInstances({ ...loadingParams, ...pagination }),
+          successCallback: () => getInstances({ ...loadingParams }),
         }),
       )
-    } else if (action === 'unrescue') {
+    } else if (action === 'unrescue' || action === 'unmount') {
       return dispatch(
         cloudVpsOperations.rebuildInstance({
-          action: itemForModals.confirm.confirm_action,
+          action: 'unrescue',
           elid: itemForModals.confirm.id.$,
           successCallback: () => {
             dispatch(cloudVpsActions.setItemForModals({ confirm: false }))
@@ -77,7 +77,7 @@ export const Modals = ({
           elid,
           closeModal: () =>
             dispatch(cloudVpsActions.setItemForModals({ confirm: false })),
-          successCallback: () => getInstances({ ...loadingParams, ...pagination }),
+          successCallback: () => getInstances({ ...loadingParams }),
         }),
       )
     }
@@ -90,7 +90,7 @@ export const Modals = ({
         pricelist: values.pricelist,
         successCallback: () => {
           dispatch(cloudVpsActions.setItemForModals({ resize: false }))
-          getInstances({ ...loadingParams, ...pagination })
+          getInstances({ ...loadingParams })
         },
         errorCallback,
       }),
@@ -118,7 +118,6 @@ export const Modals = ({
         action: itemForModals.rebuild.rebuild_action,
         elid: itemForModals.rebuild.id.$,
         sok: 'ok',
-        clicked_button: 'ok',
         ...values,
         successCallback: () => getInstances(),
       }),

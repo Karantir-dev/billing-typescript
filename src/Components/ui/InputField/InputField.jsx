@@ -3,13 +3,15 @@ import { ErrorMessage, Field } from 'formik'
 import { useMediaQuery } from 'react-responsive'
 import cn from 'classnames'
 import PropTypes from 'prop-types'
-import { Icon } from '@components'
+import { Icon, TooltipWrapper } from '@components'
 import s from './InputField.module.scss'
 import { generatePassword } from '@utils'
 
 const InputField = function InputField(props) {
   const {
     label,
+    labelTooltip,
+    labelTooltipPlace,
     iconRight, // icon type
     iconLeft, // icon type
     error,
@@ -110,9 +112,21 @@ const InputField = function InputField(props) {
   return (
     <div className={cn({ [s.field_wrapper]: true, [className]: className })}>
       {label && (
-        <label htmlFor={name} className={s.label}>
-          {isRequired ? requiredLabel(label) : label}
-        </label>
+        <>
+          <label htmlFor={name} className={s.label}>
+            {isRequired ? requiredLabel(label) : label}
+            {labelTooltip && (
+              <TooltipWrapper
+                content={labelTooltip}
+                wrapperClassName={s.label__tooltip}
+                className={s.hint}
+                place={labelTooltipPlace}
+              >
+                <Icon name="Info" />
+              </TooltipWrapper>
+            )}
+          </label>
+        </>
       )}
       <div
         className={cn(s.input_wrapper, inputWrapperClass, {
@@ -179,7 +193,7 @@ InputField.propTypes = {
   placeholder: PropTypes.string,
   className: PropTypes.string,
   dataTestid: PropTypes.string,
-  type: PropTypes.oneOf(['text', 'email', 'number', 'password']),
+  type: PropTypes.oneOf(['text', 'email', 'number', 'password', 'time']),
   as: PropTypes.string,
   name: PropTypes.string.isRequired,
   error: PropTypes.bool,

@@ -8,6 +8,7 @@ const initialState = {
 
   vhostFiltersList: null,
   vhostFilters: null,
+  isWordpressAllowed: null,
 }
 
 const vhostList = createReducer(initialState.vhostList, {
@@ -27,12 +28,16 @@ const vhostFiltersList = createReducer(initialState.vhostFiltersList, {
 const vhostFilters = createReducer(initialState.vhostFilters, {
   [vhostActions.setVhostFilters]: (_, { payload }) => payload,
 })
+const isWordpressAllowed = createReducer(initialState.isWordpressAllowed, {
+  [vhostActions.setWordpressAllowed]: (_, { payload }) => payload,
+})
 
 const vhostReducer = combineReducers({
   vhostList,
   vhostCount,
   vhostFiltersList,
   vhostFilters,
+  isWordpressAllowed,
 })
 
 export default vhostReducer

@@ -27,6 +27,15 @@
   "wordpress": "Wordpress хостинг",
   "wordpress_order": "Замовлення Wordpress хостингу",
   "cloud_vps": "Cloud VPS",
+  "Instances": "Сервери",
   "ssh_keys": "SSH ключі",
-  "create_instance": "Створити сервер VPS"
+  "create_instance": "Створити сервер VPS",
+  "premium": "Premium VPS",
+  "basic": "Basic VPS",
+  "network_traffic": "Мережевий трафік",
+  "metrics": "Метрики",
+  "images": "Образи",
+  "snapshots": "Знімки",
+  "backups": "Бекапи",
+  "backup_schedules": "Розклади бекапів"
 }

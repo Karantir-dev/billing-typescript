@@ -8,7 +8,7 @@ import {
   OpenedTicketMessages,
   SendMessageForm,
   Button,
-  HintWrapper,
+  TooltipWrapper,
   IconButton,
   Modal,
   Icon,
@@ -103,23 +103,23 @@ export default function Component() {
                 disabled={realbalance < 1}
               />
             ) : (
-              <HintWrapper label={t('THANK YOU')}>
+              <TooltipWrapper content={t('THANK YOU')}>
                 <IconButton
                   className={s.tools_icon}
                   onClick={() => setTipsModa(true)}
                   icon="euro"
                   disabled={realbalance < 1}
                 />
-              </HintWrapper>
+              </TooltipWrapper>
             )}
 
-            <HintWrapper label={t('Refresh')}>
+            <TooltipWrapper content={t('Refresh')}>
               <IconButton
                 className={s.tools_icon}
                 onClick={getTicketHandler}
                 icon="reload"
               />
-            </HintWrapper>
+            </TooltipWrapper>
           </div>
 
           <OpenedTicketMessages messages={ticket?.mlist[0]?.message || []} />

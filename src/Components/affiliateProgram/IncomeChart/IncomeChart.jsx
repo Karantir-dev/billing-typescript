@@ -34,6 +34,9 @@ export default function IncomeChart({ incomeData }) {
             titleColor: darkTheme ? '#fff' : '#392955',
             backgroundColor: darkTheme ? '#3B3447' : '#E8E0F5',
           },
+          legend: {
+            display: false,
+          },
         },
       }}
       data={{

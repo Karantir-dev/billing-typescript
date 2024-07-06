@@ -1,0 +1,38 @@
+.container {
+  padding-top: 16px;
+  display: grid;
+  gap: 20px;
+}
+
+.backup_rotation_select {
+  max-width: 260px;
+
+  background-color: var(--forms_bgc_2);
+  box-shadow: var(--forms2_shadow);
+}
+
+.backup_rotation_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.create_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.backup_limit_message {
+  margin: unset;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    padding-top: 32px;
+  }
+
+  .create_wrapper {
+    gap: 16px;
+  }
+}

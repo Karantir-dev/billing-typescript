@@ -36,6 +36,8 @@ export default function InputField(props) {
     dates,
     setFieldValue,
     range,
+    onBlurLeft = () => {},
+    onBlurRight = () => {},
   } = props
 
   const dropdownCalendar = useRef(null)
@@ -73,12 +75,14 @@ export default function InputField(props) {
             className={cn({
               [s.input]: true,
               [inputClassName]: inputClassName,
+              [s.number]: type === 'number',
             })}
             id={nameLeft}
             name={nameLeft}
             type={type}
             placeholder={placeholderLeft}
             onChange={onChangeLeft}
+            onBlur={onBlurLeft}
             value={valueLeft}
             maxLength={maxLengthLeft}
             autoComplete="off"
@@ -97,12 +101,14 @@ export default function InputField(props) {
             className={cn({
               [s.input]: true,
               [inputClassName]: inputClassName,
+              [s.number]: type === 'number',
             })}
             id={nameRight}
             name={nameRight}
             type={type}
             placeholder={placeholderRight}
             onChange={onChangeRight}
+            onBlur={onBlurRight}
             value={valueRight}
             maxLength={maxLengthRight}
             autoComplete="off"
