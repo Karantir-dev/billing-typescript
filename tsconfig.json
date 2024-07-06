@@ -34,5 +34,5 @@
       "@scss/*": ["./src/scss/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src/**/*.tsx", "src/**/*.ts"]
 }
